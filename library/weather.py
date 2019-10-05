@@ -27,9 +27,7 @@ def get_weather(city_id):
         return data
 
 def main():
-    city_id = get_city_id_from_city_name()
-    data = get_weather(city_id)
-    print(data)
+    print('Hello World')
 
 if __name__ == '__main__':
     main()
