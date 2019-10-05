@@ -2,10 +2,14 @@
 from slackbot.bot import respond_to     # @botname: で反応するデコーダ
 from slackbot.bot import listen_to      # チャネル内発言で反応するデコーダ
 from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
+from slacker import Slacker
 import unicodedata
 from logging import getLogger
 from library.weather import get_city_id_from_city_name
 from library.weather import get_weather
+from library.amesh import get_map
+# Todo: もっと賢くインポートしたい
+from slackbot_settings import API_TOKEN
 
 logger = getLogger(__name__)
 
@@ -45,7 +49,17 @@ def totuzensi(message):
     word = generator(word)
     msg = '\n```' + word + '```'
     message.send(msg)
-    
+
+@respond_to('^amesh')
+def amesh(message):
+    user = message.user['name']
+    channel = message.channel._body['name']
+    logger.debug("%s called 'hato amesh'", user)
+    test = get_map()
+    file = test
+    slacker = Slacker(API_TOKEN)
+    slacker.files.upload(file_=file, channels=channel)
+
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
 def text_len(text):
