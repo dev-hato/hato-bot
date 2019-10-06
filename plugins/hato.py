@@ -4,14 +4,13 @@ from slackbot.bot import listen_to      # チャネル内発言で反応する�
 from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
 from slacker import Slacker
 import unicodedata
+import os
 from logging import getLogger
 from library.weather import get_city_id_from_city_name
 from library.weather import get_weather
 from library.amesh import get_map
 from PIL import Image
 from datetime import datetime
-# Todo: もっと賢くインポートしたい
-from slackbot_settings import API_TOKEN
 
 logger = getLogger(__name__)
 
@@ -63,7 +62,7 @@ def amesh(message):
     im1.save(orgn_map_file, 'JPEG', quality=80)
     file = orgn_map_file
     message.send('東京の雨雲状況をお知らせするっぽ！')
-    slacker = Slacker(API_TOKEN)
+    slacker = Slacker(str(os.environ['SLACKBOT_API_TOKEN']))
     slacker.files.upload(file_=file, channels=channel)
 
 @respond_to('^laboin')

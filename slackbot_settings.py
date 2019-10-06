@@ -1,7 +1,4 @@
 # coding: utf-8
 
-API_TOKEN = "xxxxxx"
-
 DEFAULT_REPLY = "鳩は唐揚げ"
-
 PLUGINS = ['plugins']
