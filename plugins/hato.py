@@ -8,6 +8,8 @@ from logging import getLogger
 from library.weather import get_city_id_from_city_name
 from library.weather import get_weather
 from library.amesh import get_map
+from PIL import Image
+from datetime import datetime
 # Todo: もっと賢くインポートしたい
 from slackbot_settings import API_TOKEN
 
@@ -55,11 +57,27 @@ def amesh(message):
     user = message.user['name']
     channel = message.channel._body['name']
     logger.debug("%s called 'hato amesh'", user)
-    test = get_map()
-    file = test
+    orgn_map_file = get_map()
+    # 圧縮する
+    im1 = Image.open(orgn_map_file)
+    im1.save(orgn_map_file, 'JPEG', quality=80)
+    file = orgn_map_file
     message.send('東京の雨雲状況をお知らせするっぽ！')
     slacker = Slacker(API_TOKEN)
     slacker.files.upload(file_=file, channels=channel)
+
+@respond_to('^laboin')
+def laboin(message):
+    user = message.user['name']
+    logger.debug("%s called 'laboin'", user)
+    message.send('その機能にはまだ対応してないっぽ！')
+
+@respond_to('^laborida')
+def laborida(message):
+    user = message.user['name']
+    logger.debug("%s called 'laborida", user)
+    hour = str(datetime.today().strftime('%H'))
+    message.send('まだ'+ hour +'時なのに帰るっぽ? 進捗あったっぽ?')
 
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
