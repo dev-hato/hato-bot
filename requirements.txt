@@ -1,0 +1,2 @@
+Pillow==6.2.0
+slackbot==0.5.4
