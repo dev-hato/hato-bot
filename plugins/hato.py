@@ -57,6 +57,7 @@ def amesh(message):
     logger.debug("%s called 'hato amesh'", user)
     test = get_map()
     file = test
+    message.send('東京の雨雲状況をお知らせするっぽ！')
     slacker = Slacker(API_TOKEN)
     slacker.files.upload(file_=file, channels=channel)
 
