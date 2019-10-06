@@ -10,7 +10,6 @@ SAVE_FILE_NAME = './image/map.png'
 
 def get_map():
     timestamp = get_amesh_img_path()
-    #mesh_file = '201910051400.gif'
     mesh_file = get_img_from_url('https://tokyo-ame.jwa.or.jp/mesh/100/' + timestamp + '.gif')
     amesh_file_without_cityname = generate_img(BASE_MAP_FILE, mesh_file)
     amesh_map = generate_img(amesh_file_without_cityname, MASK_MAP_FILE)
@@ -26,7 +25,7 @@ def generate_img(base: str, top: str)-> str:
     return SAVE_FILE_NAME
 
 def get_img_from_url(url: str) -> str:
-    r = requests.get(url)
+    r = requests.get(url, stream = True)
     f_name = get_filename_from_url('./image/' + url)
     if r.status_code == 200:
         with open(f_name, 'wb') as f:
