@@ -1,6 +1,7 @@
 # coding: utf-8
 import requests
 import slackbot_settings
+from pytz import timezone
 from PIL import Image
 from datetime import datetime
 
@@ -33,7 +34,7 @@ def get_img_from_url(url: str) -> str:
         return f_name
 
 def get_amesh_img_path() -> str:
-    now = int(datetime.today().strftime('%Y%m%d%H%M'))
+    now = int(datetime.now(timezone('Asia/Tokyo')).strftime('%Y%m%d%H%M'))
     now = now - (now % 5)
     return str(now)
 
