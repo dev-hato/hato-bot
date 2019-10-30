@@ -16,6 +16,5 @@ Slackで動くbotです。
 
 ## 初期設定
 
-1. `slackbot_settings.py_sample` を `slackbot_settings.py` へリネームします。
-2. `slackbot_settings.py` を開き `API_TOKEN` にSlackのAPI Tokenを入力し保存します。
+1. 環境変数 `SLACKBOT_API_TOKEN` にSlackのAPI Tokenを設定します。
 3. `python3 ./run.py` します。
