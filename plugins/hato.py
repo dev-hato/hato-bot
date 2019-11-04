@@ -13,6 +13,7 @@ from PIL import Image
 from datetime import datetime
 
 logger = getLogger(__name__)
+VERSION = "0.1.1"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
@@ -25,6 +26,8 @@ def help(message):
         'help       ... botの使い方を表示する。\n'
         '天気 [地名] ... 地名の天気予報を表示する。\n'
         '>< [文字列] ... 文字列を吹き出しで表示する。\n'
+        'amesh      ... ameshを表示する。\n'
+        'version    ... バージョン情報を表示する。\n'
         '```')
 
 @respond_to('^天気 .+')
@@ -65,18 +68,11 @@ def amesh(message):
     slacker = Slacker(str(os.environ['SLACKBOT_API_TOKEN']))
     slacker.files.upload(file_=file, channels=channel)
 
-@respond_to('^laboin')
-def laboin(message):
+@respond_to('^version')
+def amesh(message):
     user = message.user['name']
-    logger.debug("%s called 'laboin'", user)
-    message.send('その機能にはまだ対応してないっぽ！')
-
-@respond_to('^laborida')
-def laborida(message):
-    user = message.user['name']
-    logger.debug("%s called 'laborida", user)
-    hour = str(datetime.today().strftime('%H'))
-    message.send('まだ'+ hour +'時なのに帰るっぽ? 進捗あったっぽ?')
+    logger.debug("%s called 'hato version'", user)
+    message.send("Version " + VERSION)
 
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
