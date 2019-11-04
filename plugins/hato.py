@@ -69,7 +69,7 @@ def amesh(message):
     slacker.files.upload(file_=file, channels=channel)
 
 @respond_to('^version')
-def amesh(message):
+def version(message):
     user = message.user['name']
     logger.debug("%s called 'hato version'", user)
     message.send("Version " + VERSION)
