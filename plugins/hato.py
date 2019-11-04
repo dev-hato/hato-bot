@@ -15,7 +15,7 @@ from datetime import datetime
 logger = getLogger(__name__)
 
 # 「hato help」を見つけたら、使い方を表示する
-@respond_to('help')
+@respond_to('^help')
 def help(message):
     user = message.user['name']
     logger.debug("%s called 'hato help'", user)
@@ -27,7 +27,7 @@ def help(message):
         '>< [文字列] ... 文字列を吹き出しで表示する。\n'
         '```')
 
-@respond_to('天気 .+')
+@respond_to('^天気 .+')
 def weather(message):
     user = message.user['name']
     logger.debug("%s called 'hato 天気'", user)
