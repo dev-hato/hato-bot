@@ -77,17 +77,18 @@ def version(message):
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
 def text_length_list(text):
-    count = list()
+    count_list = list()
 
     for t in text:
-        cnt = 0
+        count = 0
 
         for c in t:
-            cnt += 2 if unicodedata.east_asian_width(c) in 'FWA' else 1
+            count += 2 if unicodedata.east_asian_width(c) in 'FWA' else 1
 
-        count.append(cnt)
+        count_list.append(count)
 
-    return count
+    return count_list
+
 
 def generator(msg):
     msg = msg.split('\n')
