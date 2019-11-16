@@ -76,19 +76,49 @@ def version(message):
 
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
-def text_len(text):
-    count = 0
-    for c in text:
-        count += 2 if unicodedata.east_asian_width(c) in 'FWA' else 1
+def text_length_list(text):
+    count = list()
+
+    for t in text:
+        cnt = 0
+
+        for c in t:
+            cnt += 2 if unicodedata.east_asian_width(c) in 'FWA' else 1
+
+        count.append(cnt)
+
     return count
 
 def generator(msg):
-    length = text_len(msg)
-    generating = '＿人'
-    for i in range(length//2):
+    msg = msg.split('\n')
+    msg_length_list = text_length_list(msg)
+    max_length = max(msg_length_list)
+    half_max_length = max_length // 2
+    generating = '＿'
+
+    for _ in range(half_max_length + 2):
         generating += '人'
-    generating += '人＿\n＞  ' + msg + '  ＜\n￣^Y'
-    for i in range(length//2):
+
+    generating += '＿\n'
+
+    for l, m in zip(msg_length_list, msg):
+        half_length = (max_length - l) // 2
+        generating += '＞  '
+
+        for _ in range(half_length):
+            generating += ' '
+
+        generating += m
+
+        for _ in range(max_length - half_length - l):
+            generating += ' '
+
+        generating += '  ＜\n'
+
+    generating += '￣'
+
+    for _ in range(half_max_length + 2):
         generating += '^Y'
-    generating += '^Y￣'
+
+    generating += '￣'
     return generating
