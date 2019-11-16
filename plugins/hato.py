@@ -104,17 +104,17 @@ def generator(msg):
 
     for l, m in zip(msg_length_list, msg):
         half_length = (max_length - l) // 2
-        generating += '＞  '
+        generating += '＞'
 
-        for _ in range(half_length):
+        for _ in range(half_length + 2):
             generating += ' '
 
         generating += m
 
-        for _ in range(max_length - half_length - l):
+        for _ in range(max_length - half_length - l + 2):
             generating += ' '
 
-        generating += '  ＜\n'
+        generating += '＜\n'
 
     generating += '￣'
 
