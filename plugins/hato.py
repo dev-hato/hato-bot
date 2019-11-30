@@ -54,7 +54,7 @@ def totuzensi(message):
     msg = '\n```' + word + '```'
     message.send(msg)
 
-@respond_to('^amesh')
+@respond_to('^amesh$')
 def amesh(message):
     user = message.user['name']
     channel = message.channel._body['name']
