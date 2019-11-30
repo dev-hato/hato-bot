@@ -13,7 +13,7 @@ from PIL import Image
 from datetime import datetime
 
 logger = getLogger(__name__)
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
