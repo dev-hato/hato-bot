@@ -20,7 +20,7 @@
     cd hato-bot
     ```
 
-2. pipenvで仮想環境を作成します。
+2. [Pipenv](https://pipenv-ja.readthedocs.io/ja/translate-ja/)で仮想環境を作成します。
     ```
     pipenv install
     ```
