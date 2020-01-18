@@ -1,3 +1,5 @@
-.vscode/
-slackbot_settings.py
+.env
+.DS_Store
 __pycache__/
+.vscode/
+hato/
