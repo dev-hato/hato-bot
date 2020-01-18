@@ -1,3 +1,4 @@
 Pillow==6.2.0
 pytz==2019.2
 slackbot==0.5.4
+python-dotenv==0.10.4

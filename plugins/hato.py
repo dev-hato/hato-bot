@@ -5,12 +5,15 @@ from slackbot.bot import default_reply  # 該当する応答がない場合に�
 from slacker import Slacker
 import unicodedata
 import os
+from dotenv import load_dotenv, find_dotenv
 from logging import getLogger
 from library.weather import get_city_id_from_city_name
 from library.weather import get_weather
 from library.amesh import get_map
 from PIL import Image
 from datetime import datetime
+
+load_dotenv(find_dotenv())
 
 logger = getLogger(__name__)
 VERSION = "0.1.2"

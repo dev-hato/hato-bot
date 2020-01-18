@@ -1,3 +1,4 @@
 .vscode/
 slackbot_settings.py
 __pycache__/
+.env
