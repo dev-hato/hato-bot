@@ -12,6 +12,7 @@
 
 ## [Version 0.2.0] - 2020-01-18
 ### Added
+* READMEに Deploy to Herokuボタンを追加しました。
 * Changelogを追加しました。
 * `.env` ファイルで環境変数を設定できるようにしました。
 
