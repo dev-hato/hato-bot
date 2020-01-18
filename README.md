@@ -30,4 +30,4 @@
     SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
     ```
 
-4. `pipenv run  python ./run.py` します。
+4. `pipenv run python ./run.py` します。
