@@ -1,5 +1,7 @@
 # 鳩bot
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 - Slackで動くbotです。
 - `天気 <地名>` で天気予報を教えてくれます。
 - `amesh` で東京近郊の雨雲情報を教えてくれます。
