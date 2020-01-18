@@ -1,0 +1,202 @@
+[[package]]
+category = "main"
+description = "Python package for providing Mozilla's CA Bundle."
+name = "certifi"
+optional = false
+python-versions = "*"
+version = "2019.11.28"
+
+[[package]]
+category = "main"
+description = "Universal encoding detector for Python 2 and 3"
+name = "chardet"
+optional = false
+python-versions = "*"
+version = "3.0.4"
+
+[[package]]
+category = "main"
+description = "Internationalized Domain Names in Applications (IDNA)"
+name = "idna"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.8"
+
+[[package]]
+category = "main"
+description = "Python Imaging Library (Fork)"
+name = "pillow"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "6.2.0"
+
+[[package]]
+category = "main"
+description = "Add .env support to your django/flask apps in development and deployments"
+name = "python-dotenv"
+optional = false
+python-versions = "*"
+version = "0.10.4"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
+category = "main"
+description = "World timezone definitions, modern and historical"
+name = "pytz"
+optional = false
+python-versions = "*"
+version = "2019.2"
+
+[[package]]
+category = "main"
+description = "Python HTTP for Humans."
+name = "requests"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "2.22.0"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+chardet = ">=3.0.2,<3.1.0"
+idna = ">=2.5,<2.9"
+urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
+
+[package.extras]
+security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
+
+[[package]]
+category = "main"
+description = "Python 2 and 3 compatibility utilities"
+name = "six"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "1.14.0"
+
+[[package]]
+category = "main"
+description = "A simple chat bot for Slack"
+name = "slackbot"
+optional = false
+python-versions = "*"
+version = "0.5.6"
+
+[package.dependencies]
+requests = ">=2.4.0"
+six = ">=1.10.0"
+slacker = ">=0.9.50"
+websocket-client = ">=0.22.0,<=0.44.0"
+
+[[package]]
+category = "main"
+description = "Slack API client"
+name = "slacker"
+optional = false
+python-versions = "*"
+version = "0.13.0"
+
+[package.dependencies]
+requests = ">=2.2.1"
+
+[[package]]
+category = "main"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+name = "urllib3"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
+version = "1.25.7"
+
+[package.extras]
+brotli = ["brotlipy (>=0.6.0)"]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
+
+[[package]]
+category = "main"
+description = "WebSocket client for python. hybi13 is supported."
+name = "websocket-client"
+optional = false
+python-versions = "*"
+version = "0.44.0"
+
+[package.dependencies]
+six = "*"
+
+[metadata]
+content-hash = "0aa7bd16f21a3c411e742e2211e774babd9cf6e66bed88fc3ddc7b335a550d70"
+python-versions = "^3.7"
+
+[metadata.files]
+certifi = [
+    {file = "certifi-2019.11.28-py2.py3-none-any.whl", hash = "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3"},
+    {file = "certifi-2019.11.28.tar.gz", hash = "sha256:25b64c7da4cd7479594d035c08c2d809eb4aab3a26e5a990ea98cc450c320f1f"},
+]
+chardet = [
+    {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
+    {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
+]
+idna = [
+    {file = "idna-2.8-py2.py3-none-any.whl", hash = "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"},
+    {file = "idna-2.8.tar.gz", hash = "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407"},
+]
+pillow = [
+    {file = "Pillow-6.2.0-cp27-cp27m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:38c7d48a21cd06fdeee93987147b9b1c55b73b4cfcbf83240568bfbd5adee447"},
+    {file = "Pillow-6.2.0-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:892bb52b70bd5ea9dbbc3ac44f38e84f5a04e9d8b1bff48159d96cb795b81159"},
+    {file = "Pillow-6.2.0-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:00fdeb23820f30e43bba78eb9abb00b7a937a655de7760b2e09101d63708b64e"},
+    {file = "Pillow-6.2.0-cp27-cp27m-win32.whl", hash = "sha256:01f948e8220c85eae1aa1a7f8edddcec193918f933fb07aaebe0bfbbcffefbf1"},
+    {file = "Pillow-6.2.0-cp27-cp27m-win_amd64.whl", hash = "sha256:2c1c61546e73de62747e65807d2cc4980c395d4c5600ecb1f47a650c6fa78c79"},
+    {file = "Pillow-6.2.0-cp27-cp27mu-manylinux1_i686.whl", hash = "sha256:8a9becd5cbd5062f973bcd2e7bc79483af310222de112b6541f8af1f93a3cc42"},
+    {file = "Pillow-6.2.0-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:099a61618b145ecb50c6f279666bbc398e189b8bc97544ae32b8fcb49ad6b830"},
+    {file = "Pillow-6.2.0-cp35-cp35m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:5bbba34f97a26a93f5e8dec469ca4ddd712451418add43da946dbaed7f7a98d2"},
+    {file = "Pillow-6.2.0-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:43fd026f613c8e48a25eba1a92f4d2ad7f3903c95d8c33a11611a7717d2ab654"},
+    {file = "Pillow-6.2.0-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:c79a8546c48ae6465189e54e3245a97ddf21161e33ff7eaa42787353417bb2b6"},
+    {file = "Pillow-6.2.0-cp35-cp35m-win32.whl", hash = "sha256:b1b0e1f626a0f079c0d3696db70132fb1f29aa87c66aecb6501a9b8be64ce9f7"},
+    {file = "Pillow-6.2.0-cp35-cp35m-win_amd64.whl", hash = "sha256:97b119c436bfa96a92ac2ca525f7025836d4d4e64b1c9f9eff8dbaf3ff1d86f3"},
+    {file = "Pillow-6.2.0-cp36-cp36m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:ec883b8e44d877bda6f94a36313a1c6063f8b1997aa091628ae2f34c7f97c8d5"},
+    {file = "Pillow-6.2.0-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:c14c1224fd1a5be2733530d648a316974dbbb3c946913562c6005a76f21ca042"},
+    {file = "Pillow-6.2.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:ceb76935ac4ebdf6d7bc845482a4450b284c6ccfb281e34da51d510658ab34d8"},
+    {file = "Pillow-6.2.0-cp36-cp36m-win32.whl", hash = "sha256:e22bffaad04b4d16e1c091baed7f2733fc1ebb91e0c602abf1b6834d17158b1f"},
+    {file = "Pillow-6.2.0-cp36-cp36m-win_amd64.whl", hash = "sha256:338581b30b908e111be578f0297255f6b57a51358cd16fa0e6f664c9a1f88bff"},
+    {file = "Pillow-6.2.0-cp37-cp37m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:2ed9c4f694861642401f27dc3cb99772be67cd190e84845c749dae0a06c3bfae"},
+    {file = "Pillow-6.2.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:972a7aaeb7c4a2795b52eef52ee991ef040b31009f36deca6207a986607b55f3"},
+    {file = "Pillow-6.2.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:9ba37698e242223f8053cc158f130aee046a96feacbeab65893dbe94f5530118"},
+    {file = "Pillow-6.2.0-cp37-cp37m-win32.whl", hash = "sha256:65a28969a025a0eb4594637b6103201dc4ed2a9508bdab56ac33e43e3081c404"},
+    {file = "Pillow-6.2.0-cp37-cp37m-win_amd64.whl", hash = "sha256:f1baa54d50ec031d1a9beb89974108f8f2c0706f49798f4777df879df0e1adb6"},
+    {file = "Pillow-6.2.0-pp271-pypy_41-win32.whl", hash = "sha256:f53a5385932cda1e2c862d89460992911a89768c65d176ff8c50cddca4d29bed"},
+    {file = "Pillow-6.2.0-pp370-pp370-win32.whl", hash = "sha256:08abf39948d4b5017a137be58f1a52b7101700431f0777bec3d897c3949f74e6"},
+    {file = "Pillow-6.2.0-pp371-pp371-win32.whl", hash = "sha256:5090857876c58885cfa388dc649e5db30aae98a068c26f3fd0ac9d7d9a4d9572"},
+    {file = "Pillow-6.2.0.tar.gz", hash = "sha256:4548236844327a718ce3bb182ab32a16fa2050c61e334e959f554cac052fb0df"},
+]
+python-dotenv = [
+    {file = "python-dotenv-0.10.4.tar.gz", hash = "sha256:007f0bacef4093a7588c1ed0a3d746a59c04f9bac00f68aaa4e9c30c5fe9429b"},
+    {file = "python_dotenv-0.10.4-py2.py3-none-any.whl", hash = "sha256:26a252f7931a448a78d3322d69b60e193d847a02fb96260de1d7b37aadcd46b3"},
+]
+pytz = [
+    {file = "pytz-2019.2-py2.py3-none-any.whl", hash = "sha256:c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"},
+    {file = "pytz-2019.2.tar.gz", hash = "sha256:26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32"},
+]
+requests = [
+    {file = "requests-2.22.0-py2.py3-none-any.whl", hash = "sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"},
+    {file = "requests-2.22.0.tar.gz", hash = "sha256:11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4"},
+]
+six = [
+    {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
+    {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+]
+slackbot = [
+    {file = "slackbot-0.5.6-py2.py3-none-any.whl", hash = "sha256:c9da20cb34c8e898520f454d39cddd8abee8d9a612983717bbd4694157e0e1fc"},
+    {file = "slackbot-0.5.6.tar.gz", hash = "sha256:94a026738096b5aa6a6e98bfc230594e3d9a11278fbc910583f613cd7a8e2ca5"},
+]
+slacker = [
+    {file = "slacker-0.13.0.tar.gz", hash = "sha256:f4c55415096229c1cc616c1504d93672b05521e5499a9be26475e0a9a623c4dc"},
+]
+urllib3 = [
+    {file = "urllib3-1.25.7-py2.py3-none-any.whl", hash = "sha256:a8a318824cc77d1fd4b2bec2ded92646630d7fe8619497b142c84a9e6f5a7293"},
+    {file = "urllib3-1.25.7.tar.gz", hash = "sha256:f3c5fd51747d450d4dcf6f923c81f78f811aab8205fda64b0aba34a4e48b0745"},
+]
+websocket-client = [
+    {file = "websocket_client-0.44.0-py2.py3-none-any.whl", hash = "sha256:91222bb3a22ba989ac87eec9121655f295dcb746b6207c5576ffa549ab69302c"},
+    {file = "websocket_client-0.44.0.tar.gz", hash = "sha256:15f585566e2ea7459136a632b9785aa081093064391878a448c382415e948d72"},
+]

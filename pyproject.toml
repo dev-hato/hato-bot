@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "hato-bot"
+version = "0.2.0"
+description = "愛嬌のあるslack用bot"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+slackbot = "0.5.6"
+requests = "2.22.0"
+pytz = "2019.2"
+Pillow = "6.2.0"
+python-dotenv = "0.10.4"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
