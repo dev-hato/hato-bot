@@ -13,7 +13,7 @@ from PIL import Image
 from datetime import datetime
 
 logger = getLogger(__name__)
-VERSION = "0.1.2"
+VERSION = "0.2.0"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
@@ -59,12 +59,10 @@ def amesh(message):
     user = message.user['name']
     channel = message.channel._body['name']
     logger.debug("%s called 'hato amesh'", user)
-    orgn_map_file = get_map()
-    # 圧縮する
-    im1 = Image.open(orgn_map_file)
-    im1.save(orgn_map_file, 'JPEG', quality=80)
-    file = orgn_map_file
-    message.send('東京の雨雲状況をお知らせするっぽ！')
+    message.send('東京の雨雲状況をお知らせするっぽ！(ちょっと時間かかるっぽ!)')
+    # amesh画像を取得する
+    file = get_map()
+
     slacker = Slacker(str(os.environ['SLACKBOT_API_TOKEN']))
     slacker.files.upload(file_=file, channels=channel)
 

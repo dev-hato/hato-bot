@@ -1,6 +1,7 @@
 # coding: utf-8
 import requests
 import slackbot_settings
+import os
 from pytz import timezone
 from PIL import Image
 from datetime import datetime
@@ -9,11 +10,19 @@ BASE_MAP_FILE = './image/map050.jpg'
 MASK_MAP_FILE = './image/msk050.png'
 SAVE_FILE_NAME = './image/map.png'
 
+# 雨雲画像を取得する。
 def get_map():
     timestamp = get_amesh_img_path()
     mesh_file = get_img_from_url('https://tokyo-ame.jwa.or.jp/mesh/100/' + timestamp + '.gif')
     amesh_file_without_cityname = generate_img(BASE_MAP_FILE, mesh_file)
     amesh_map = generate_img(amesh_file_without_cityname, MASK_MAP_FILE)
+    # 圧縮する
+    im1 = Image.open(amesh_map)
+    im1.save(amesh_map, 'JPEG', quality=50)
+    file = amesh_map
+    # ダウンロードしたamesh画像を削除する
+    os.remove(mesh_file)
+
     return amesh_map
 
 def generate_img(base: str, top: str)-> str:
