@@ -1,23 +1,34 @@
 # 鳩bot
 
-Slackで動くbotです。
+- Slackで動くbotです。
+- `天気 <地名>` で天気予報を教えてくれます。
+- `amesh` で東京近郊の雨雲情報を教えてくれます。
+- `>< 文字列` で文字列を「突然の死」吹き出しで整形してくれます。
 
 ![](https://github.com/nakkaa/hato-age-bot/blob/images/hato1.png)
 
-## できること
-
-- Bot宛で空のメンションを飛ばすと「鳩は唐揚げ」と真理を返してくれます。
-- Botに「天気 <地名>」とメンションすると、天気予報を教えてくれます。
-![](https://github.com/nakkaa/hato-age-bot/blob/images/hato2.png)
-- Botに「>< 文字列」とメンションすると文字列を「突然の死」吹き出しで整形してくれます。
-
 ## 必要なもの
-- Python3が動く環境
+- Python3が動作する環境。
 
 ## 初期設定
 
-1. 環境変数 `SLACKBOT_API_TOKEN` にSlackのAPI Tokenを設定します。
+1. このリポジトリをcloneします。
 ```
-export SLACKBOT_API_TOKEN=hogehoge
+git clone git@github.com:nakkaa/hato-bot.git
+cd hato-bot
 ```
-2. `python3 ./run.py` します。
+
+2. (お好みで) virtualenvを作成します。
+
+```
+pip3 install virtualenv
+virtualenv --no-site-packages hato
+source ./hato/bin/activate
+```
+
+3. `.env` ファイルを作成し、SlackのAPI Tokenを記述します。
+```
+SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
+```
+
+4. `python ./run.py` します。
