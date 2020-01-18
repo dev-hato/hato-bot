@@ -2,7 +2,6 @@
 from slackbot.bot import respond_to     # @botname: で反応するデコーダ
 from slackbot.bot import listen_to      # チャネル内発言で反応するデコーダ
 from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
-from slacker import Slacker
 import unicodedata
 import os
 from logging import getLogger
@@ -63,8 +62,7 @@ def amesh(message):
     # amesh画像を取得する
     file = get_map()
 
-    slacker = Slacker(str(os.environ['SLACKBOT_API_TOKEN']))
-    slacker.files.upload(file_=file, channels=channel)
+    message.channel.upload_file("amesh", file)
 
 @respond_to('^version')
 def version(message):
