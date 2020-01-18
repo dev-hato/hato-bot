@@ -16,8 +16,8 @@ Slackで動くbotです。
 
 ## 初期設定
 
-1. 環境変数 `SLACKBOT_API_TOKEN` にSlackのAPI Tokenを設定します。
-```
-export SLACKBOT_API_TOKEN=hogehoge
-```
+1. `.env` ファイルを作成し、SlackのAPI Tokenを記述します。
+    ```.env
+    SLACKBOT_API_TOKEN=hogehoge
+    ```
 2. `python3 ./run.py` します。
