@@ -15,22 +15,19 @@
 ## 初期設定
 
 1. このリポジトリをcloneします。
-```
-git clone git@github.com:nakkaa/hato-bot.git
-cd hato-bot
-```
+    ```
+    git clone git@github.com:nakkaa/hato-bot.git
+    cd hato-bot
+    ```
 
-2. (お好みで) virtualenvを作成します。
-
-```
-pip3 install virtualenv
-virtualenv --no-site-packages hato
-source ./hato/bin/activate
-```
+2. [Pipenv](https://pipenv-ja.readthedocs.io/ja/translate-ja/)で仮想環境を作成します。
+    ```
+    pipenv install
+    ```
 
 3. `.env` ファイルを作成し、SlackのAPI Tokenを記述します。
-```
-SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
-```
+    ```
+    SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
+    ```
 
-4. `python ./run.py` します。
+4. `pipenv run python ./run.py` します。
