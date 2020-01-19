@@ -10,7 +10,7 @@
     },
     "addons":[
       {
-        "plan": "heroku-postgresql:Hobby-dev",
+        "plan": "heroku-postgresql",
         "as": "HatoBotDB"
       }
     ]
