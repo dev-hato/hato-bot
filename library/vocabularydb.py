@@ -8,7 +8,10 @@ class VocabularyDatabase:
             self.conn = pg8000.connect(
                 host=conf.DB_HOST,
                 user=conf.DB_USER,
-                password=conf.DB_PASSWORD
+                password=conf.DB_PASSWORD,
+                port=conf.DB_PORT,
+                ssl=conf.DB_SSL,
+                database=conf.DB_NAME
             )
         except:
             print('Can not connect to database.')

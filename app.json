@@ -8,17 +8,11 @@
       "description": "Set your slack API Token.",
       "value": ""
     },
-    "DB_HOST": {
-      "description": "Set your PostgreSQL host.",
-      "value": ""
-    },
-    "DB_USER": {
-      "description": "Set your PostgreSQL user name.",
-      "value": ""
-    },
-    "DB_PASSWORD": {
-      "description": "Set your PostgreSQL password.",
-      "value": ""
-    }
+    "addons":[
+      {
+        "plan": "heroku-postgresql:Hobby-dev",
+        "as": "HatoBotDB"
+      }
+    ]
   }
 }

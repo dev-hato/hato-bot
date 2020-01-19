@@ -41,7 +41,7 @@ def add_text(message):
     text = message.body['text']
     tmp, tmp2, word = text.split(' ', 2)
     add_vocabulary(word)
-    message.send("そのワード、しかと覚えたっぽ!")
+    message.send("覚えたっぽ!")
 
 @respond_to('^text show .+')
 def add_text(message):
@@ -88,7 +88,6 @@ def totuzensi(message):
 @respond_to('^amesh$')
 def amesh(message):
     user = message.user['name']
-    channel = message.channel._body['name']
     logger.debug("%s called 'hato amesh'", user)
     message.send('東京の雨雲状況をお知らせするっぽ！(ちょっと時間かかるっぽ!)')
     # amesh画像を取得する
