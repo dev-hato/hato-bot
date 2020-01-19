@@ -7,9 +7,11 @@
     "SLACKBOT_API_TOKEN": {
       "description": "Set your slack API Token.",
       "value": ""
-    },
-    "addons": [
-      "heroku-postgresql"
-    ]
-  }
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql"
+    }
+  ]
 }
