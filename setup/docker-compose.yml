@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:12.1
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pgsql-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
