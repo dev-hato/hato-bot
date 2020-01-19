@@ -8,11 +8,8 @@
       "description": "Set your slack API Token.",
       "value": ""
     },
-    "addons":[
-      {
-        "plan": "heroku-postgresql",
-        "as": "HatoBotDB"
-      }
+    "addons": [
+      "heroku-postgresql"
     ]
   }
 }
