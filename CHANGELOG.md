@@ -7,14 +7,19 @@
     * `Removed` 削除された機能について。
     * `Fixed` バグ修正について。
 
-## [Unreleased]
+## Unreleased
 ### Added
-* botに文字列を覚えさせることができるようになりました。
+* 文字列を覚えられるようになりました。
+* 出退勤時間を計算する機能を追加しました。(簡易版labotter)
 
 ### Changed
-* botの動作環境にPostgreSQLが必須となりました。
+* 動作環境にPostgreSQLが必須となりました。
+* バージョン管理システムにpipenvを使うようになりました。
 
-## [0.2.0] - 2020-01-18
+### Fixed
+* Deploy to Herokuボタンを押下し、60秒経つとbotが落ちる問題を修正しました。
+
+## v0.2.0 - 2020-01-18
 ### Added
 * READMEに Deploy to Herokuボタンを追加しました。
 * Changelogを追加しました。
