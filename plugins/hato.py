@@ -107,6 +107,10 @@ def version(message):
 
 # 突然の死で使う関数
 # Todo: 別ファイルに移したい。
+## Sudden Death
+# MIT License
+# Copyright (c) 2016 koluku
+# https://github.com/koluku/sudden-death/blob/master/LICENSE
 def text_length_list(text):
     count_list = list()
 
