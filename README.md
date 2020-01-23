@@ -10,7 +10,9 @@
 ![](https://github.com/nakkaa/hato-age-bot/blob/images/hato1.png)
 
 ## 必要なもの
-- Python3が動作する環境。
+鳩botを動かすためには以下が必要です。
+- Python3
+- PostgreSQL(Dockerで導入可)
 
 ## 初期設定
 
@@ -25,9 +27,19 @@
     pipenv install
     ```
 
-3. `.env` ファイルを作成し、SlackのAPI Tokenを記述します。
+3. `.env` ファイルを作成し、SlackのAPI TokenとPostgreSQLの認証情報を記述します。
     ```
     SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
+    DATABASE_URL=postgres://postgres:password@localhost:5432/
+    ```
+4. PostgreSQLを起動します。(Dockerの場合は以下のコマンドを実行します。)
+
+    ```
+    cd ./setup
+    docker-compose up -d
+    cd ..
     ```
 
-4. `pipenv run python ./run.py` します。
+5. `pipenv run python ./create_env.py` を実行しPostgreSQLにテーブルを作成します。
+
+6. `pipenv run python ./run.py` を実行します。
