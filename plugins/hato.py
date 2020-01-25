@@ -11,7 +11,7 @@ from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
 
 logger = getLogger(__name__)
-VERSION = "0.3.0 Beta"
+VERSION = "0.3.0"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
