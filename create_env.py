@@ -35,6 +35,7 @@ class CreateEnvDatabase:
 def create_table():
     db = CreateEnvDatabase()
     db.execute_sql("CREATE TABLE IF NOT EXISTS vocabulary(no serial UNIQUE, word text);")
+    db.execute_sql("CREATE TABLE IF NOT EXISTS labotter(user_name text UNIQUE, lab_in_flag int, lab_in timestamp, lab_rida timestamp, min_sum int);")
     db.close()
     
 def main():
