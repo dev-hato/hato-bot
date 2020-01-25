@@ -7,6 +7,7 @@ from datetime import datetime
 from slackbot.bot import respond_to, listen_to, default_reply
 from library.weather import get_city_id_from_city_name, get_weather
 from library.amesh import get_map
+from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
 
 logger = getLogger(__name__)
@@ -26,6 +27,24 @@ def help(message):
         'version    ... バージョン情報を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
     message.send(str_help)
+
+@respond_to('^in$')
+def labotter_in(message):
+    msg = "らぼいんに失敗したっぽ!(既に入っているかもしれないっぽ)"
+    user_id = message.user['id']
+    flag, start_time = labo_in(user_id)
+    if flag:
+        msg = "らぼいんしたっぽ! \nいん時刻: {}".format(start_time)
+    message.send(msg)
+
+@respond_to('^rida$')
+def labotter_rida(message):
+    msg = "らぼりだに失敗したっぽ!"
+    user_id = message.user['id']
+    flag, start_time, end_time, dt = labo_rida(user_id)
+    if flag:
+        msg = "らぼりだしたっぽ!お疲れ様っぽ! \nいん時刻: {}\nりだ時刻: {} \n拘束時間: {}".format(start_time, end_time, dt)
+    message.send(msg)
 
 @respond_to('^text list$')
 def get_text_list(message):
