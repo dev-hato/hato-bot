@@ -59,14 +59,15 @@ class LabotterDatabase:
         cursor.close()
         return r_lab_in_flag
 
-    def registory_labo_rida(self, id, end_time):
+    def registory_labo_rida(self, id, end_time, add_sum):
         r_lab_rida_flag = True
         cursor = self.conn.cursor()
         try:
             cursor.execute("UPDATE labotter SET \
             lab_in_flag = '0', \
+            min_sum = ?, \
             lab_rida = ? \
-            WHERE user_name = ?;", (end_time,id,))
+            WHERE user_name = ?;", (add_sum,end_time,id,))
             self.conn.commit()
         except:
             r_lab_rida_flag = False
@@ -74,12 +75,12 @@ class LabotterDatabase:
         cursor.close()
         return r_lab_rida_flag
 
-    def get_labo_in_time(self, id):
+    def get_labo_in_time_and_sum_time(self, id):
         labo_in_time = None
         cursor = self.conn.cursor()
-        cursor.execute("SELECT lab_in FROM labotter WHERE user_name = ?;", (id,))
-        labo_in_time = cursor.fetchone()[0]
-        return labo_in_time
+        cursor.execute("SELECT lab_in, min_sum FROM labotter WHERE user_name = ?;", (id,))
+        labo_in_time, min_sum = cursor.fetchone()
+        return labo_in_time, min_sum
 
     def close(self):
         self.conn.close()
@@ -113,9 +114,11 @@ def labo_rida(user_id) -> str:
         lab.create_labo_row(user_id)
     # らぼいん中ならば処理をする
     if lab.check_lab_in_flag(user_id) == True:
-        labo_in_time = str(lab.get_labo_in_time(user_id))
-        start_time = datetime.datetime.strptime(labo_in_time, '%Y-%m-%d %H:%M:%S')
+        labo_in_time, min_sum = lab.get_labo_in_time_and_sum_time(user_id)
+        start_time = datetime.datetime.strptime(str(labo_in_time), '%Y-%m-%d %H:%M:%S')
         dt = dt_now - start_time
-        success_flag = lab.registory_labo_rida(user_id, end_time)
+        diff_time = int(dt.total_seconds())
+        min_sum = min_sum + diff_time
+        success_flag = lab.registory_labo_rida(user_id, end_time, min_sum)
     lab.close()
-    return success_flag, start_time, end_time, dt
+    return success_flag, end_time, diff_time, min_sum

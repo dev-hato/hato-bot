@@ -3,7 +3,7 @@ import unicodedata
 import os
 from logging import getLogger
 from PIL import Image
-from datetime import datetime
+import datetime
 from slackbot.bot import respond_to, listen_to, default_reply
 from library.weather import get_city_id_from_city_name, get_weather
 from library.amesh import get_map
@@ -41,9 +41,11 @@ def labotter_in(message):
 def labotter_rida(message):
     msg = "らぼりだに失敗したっぽ!"
     user_id = message.user['id']
-    flag, start_time, end_time, dt = labo_rida(user_id)
+    flag, end_time, dt, sum = labo_rida(user_id)
+    diff_time = datetime.timedelta(seconds=dt)
+    sum_time = datetime.timedelta(seconds=sum)
     if flag:
-        msg = "らぼりだしたっぽ!お疲れ様っぽ! \nいん時刻: {}\nりだ時刻: {} \n拘束時間: {}".format(start_time, end_time, dt)
+        msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(end_time, diff_time, sum_time)
     message.send(msg)
 
 @respond_to('^text list$')
