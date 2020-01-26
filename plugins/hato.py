@@ -20,11 +20,15 @@ def help(message):
     logger.debug("%s called 'hato help'", user)
     str_help = '\n使い方\n'\
         '```'\
-        'help       ... botの使い方を表示する。\n'\
-        '天気 [地名] ... 地名の天気予報を表示する。\n'\
-        '>< [文字列] ... 文字列を吹き出しで表示する。\n'\
-        'amesh      ... ameshを表示する。\n'\
-        'version    ... バージョン情報を表示する。\n'\
+        '天気 [text] ... 地名の天気予報を表示する。\n'\
+        'amesh ... ameshを表示する。\n'\
+        'text list ... パワーワード一覧を表示する。 \n'\
+        'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n'\
+        'text add [text] ... パワーワードに[text]を登録する。 \n'\
+        'in ... らぼいんする\n'\
+        'rida ... らぼいんからの経過時間を表示する\n'\
+        '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
+        'version ... バージョン情報を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
     message.send(str_help)
 
