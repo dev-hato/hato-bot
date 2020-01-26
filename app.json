@@ -7,6 +7,15 @@
     "SLACKBOT_API_TOKEN": {
       "description": "Set your slack API Token.",
       "value": ""
+    },
+    "TZ": {
+      "description": "Set your timezone.",
+      "value": "Asia/Tokyo"
     }
-  }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql"
+    }
+  ]
 }
