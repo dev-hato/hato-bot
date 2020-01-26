@@ -1,5 +1,4 @@
 # coding: utf-8
-import unicodedata
 import os
 from logging import getLogger
 from PIL import Image
@@ -9,9 +8,11 @@ from library.weather import get_city_id_from_city_name, get_weather
 from library.amesh import get_map
 from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
+from library.earthquake import generate_quake_info_for_slack, get_quake_list
+from library.hukidasi import generator
 
 logger = getLogger(__name__)
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
@@ -31,6 +32,15 @@ def help(message):
         'version ... バージョン情報を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
     message.send(str_help)
+
+@respond_to('^eq$|^地震$')
+def earth_quake(message):
+    msg = "地震情報を取得できなかったっぽ!"
+    result, data = get_quake_list()
+    if result:
+        msg = "地震情報を取得したっぽ!\n"
+        msg = msg + generate_quake_info_for_slack(data, 3)
+    message.send(msg)
 
 @respond_to('^in$')
 def labotter_in(message):
@@ -129,57 +139,3 @@ def version(message):
         "Copyright (C) 2020 hato-bot Develop team\n"\
         "https://github.com/nakkaa/hato-bot ```".format(VERSION)
     message.send(str_ver)
-
-# 突然の死で使う関数
-# Todo: 別ファイルに移したい。
-## Sudden Death
-# MIT License
-# Copyright (c) 2016 koluku
-# https://github.com/koluku/sudden-death/blob/master/LICENSE
-def text_length_list(text):
-    count_list = list()
-
-    for t in text:
-        count = 0
-
-        for c in t:
-            count += 2 if unicodedata.east_asian_width(c) in 'FWA' else 1
-
-        count_list.append(count)
-
-    return count_list
-
-
-def generator(msg):
-    msg = msg.split('\n')
-    msg_length_list = text_length_list(msg)
-    max_length = max(msg_length_list)
-    half_max_length = max_length // 2
-    generating = '＿'
-
-    for _ in range(half_max_length + 2):
-        generating += '人'
-
-    generating += '＿\n'
-
-    for l, m in zip(msg_length_list, msg):
-        half_length = (max_length - l) // 2
-        generating += '＞'
-
-        for _ in range(half_length + 2):
-            generating += ' '
-
-        generating += m
-
-        for _ in range(max_length - half_length - l + 2):
-            generating += ' '
-
-        generating += '＜\n'
-
-    generating += '￣'
-
-    for _ in range(half_max_length + 2):
-        generating += '^Y'
-
-    generating += '￣'
-    return generating
