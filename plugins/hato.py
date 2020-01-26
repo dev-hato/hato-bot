@@ -23,6 +23,7 @@ def help(message):
         '```'\
         '天気 [text] ... 地名の天気予報を表示する。\n'\
         'amesh ... ameshを表示する。\n'\
+        '地震 ... 最新の地震情報を3件表示する。\n'\
         'text list ... パワーワード一覧を表示する。 \n'\
         'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n'\
         'text add [text] ... パワーワードに[text]を登録する。 \n'\
