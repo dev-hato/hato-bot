@@ -50,21 +50,25 @@ class VocabularyDatabase:
 
 # 一覧を表示する
 def get_vocabularys():
-    slack_msg ="```"
-
     with VocabularyDatabase() as z:
         result = z.get_word_list()
 
-    # SELECTした順に連番を振る。
-    cnt = 1
-    for row in result:
-        no, text = row
-        slack_msg = slack_msg + '\n {0}. {1}'.format(cnt, text)
-        cnt += 1
+    if 0 < len(result):
+        slack_msg = "```"
 
-    slack_msg = slack_msg +"```"
+        # SELECTした順に連番を振る。
+        cnt = 1
+        for row in result:
+            no, text = row
+            slack_msg = slack_msg + '\n {0}. {1}'.format(cnt, text)
+            cnt += 1
 
-    return slack_msg
+        slack_msg = slack_msg + "```"
+
+        return slack_msg
+    else:
+        return "登録されている単語はないっぽ！"
+
 
 # 追加する
 def add_vocabulary(msg) -> str:
