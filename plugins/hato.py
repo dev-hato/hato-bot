@@ -14,8 +14,13 @@ from library.hukidasi import generator
 logger = getLogger(__name__)
 VERSION = "0.3.2"
 
+
+def respond_to_with_space(matchstr, flags=0):
+    return respond_to(matchstr.replace('^', '^[\u00c2\u00a0]*'), flags)
+
+
 # 「hato help」を見つけたら、使い方を表示する
-@respond_to('^help')
+@respond_to_with_space('^help')
 def help(message):
     user = message.user['name']
     logger.debug("%s called 'hato help'", user)
@@ -34,7 +39,8 @@ def help(message):
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
     message.send(str_help)
 
-@respond_to('^eq$|^地震$')
+
+@respond_to_with_space('^eq$|^地震$')
 def earth_quake(message):
     msg = "地震情報を取得できなかったっぽ!"
     result, data = get_quake_list()
@@ -43,7 +49,8 @@ def earth_quake(message):
         msg = msg + generate_quake_info_for_slack(data, 3)
     message.send(msg)
 
-@respond_to('^in$')
+
+@respond_to_with_space('^in$')
 def labotter_in(message):
     msg = "らぼいんに失敗したっぽ!(既に入っているかもしれないっぽ)"
     user_id = message.user['id']
@@ -52,7 +59,8 @@ def labotter_in(message):
         msg = "らぼいんしたっぽ! \nいん時刻: {}".format(start_time)
     message.send(msg)
 
-@respond_to('^rida$')
+
+@respond_to_with_space('^rida$')
 def labotter_rida(message):
     msg = "らぼりだに失敗したっぽ!"
     user_id = message.user['id']
@@ -63,14 +71,16 @@ def labotter_rida(message):
         msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(end_time, diff_time, sum_time)
     message.send(msg)
 
-@respond_to('^text list$')
+
+@respond_to_with_space('^text list$')
 def get_text_list(message):
     user = message.user['name']
     logger.debug("%s called 'text list'", user)
     msg = get_vocabularys()
     message.send(msg)
 
-@respond_to('^text add .+')
+
+@respond_to_with_space('^text add .+')
 def add_text(message):
     user = message.user['name']
     logger.debug("%s called 'text add'", user)
@@ -79,7 +89,8 @@ def add_text(message):
     add_vocabulary(word)
     message.send("覚えたっぽ!")
 
-@respond_to('^text show .+')
+
+@respond_to_with_space('^text show .+')
 def add_text(message):
     user = message.user['name']
     logger.debug("%s called 'text show'", user)
@@ -88,7 +99,8 @@ def add_text(message):
     msg = show_vocabulary(int(id))
     message.send(msg)
 
-@respond_to('^text delete .+')
+
+@respond_to_with_space('^text delete .+')
 def add_text(message):
     user = message.user['name']
     logger.debug("%s called 'text delete'", user)
@@ -97,7 +109,8 @@ def add_text(message):
     msg = delete_vocabulary(int(id))
     message.send(msg)
 
-@respond_to('^天気 .+')
+
+@respond_to_with_space('^天気 .+')
 def weather(message):
     user = message.user['name']
     logger.debug("%s called 'hato 天気'", user)
@@ -111,7 +124,7 @@ def weather(message):
         message.send('```' + weather_info +'```')
 
 # 「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する
-@respond_to('^&gt;&lt; .+')
+@respond_to_with_space('^&gt;&lt; .+')
 def totuzensi(message):
     user = message.user['name']
     text = message.body['text']
@@ -121,7 +134,8 @@ def totuzensi(message):
     msg = '\n```' + word + '```'
     message.send(msg)
 
-@respond_to('^amesh$')
+
+@respond_to_with_space('^amesh$')
 def amesh(message):
     user = message.user['name']
     logger.debug("%s called 'hato amesh'", user)
@@ -131,7 +145,8 @@ def amesh(message):
 
     message.channel.upload_file("amesh", file)
 
-@respond_to('^version')
+
+@respond_to_with_space('^version')
 def version(message):
     user = message.user['name']
     logger.debug("%s called 'hato version'", user)
