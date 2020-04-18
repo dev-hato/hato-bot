@@ -16,7 +16,7 @@ VERSION = "0.3.2"
 
 
 def respond_to_with_space(matchstr, flags=0):
-    return respond_to(matchstr.replace('^', '^[\u00c2\u00a0]*'), flags)
+    return respond_to(matchstr.replace('^', r'^\s*'), flags)
 
 
 # 「hato help」を見つけたら、使い方を表示する
