@@ -17,6 +17,9 @@ DB_PORT = db_auth.port
 DB_NAME = db_auth.path[1:]
 DB_SSL = bool(db_auth.path[1:]) #DB_NAMEが空の場合はSSLを無効にする(for Develop)。Herokuの場合はTrue。
 
+# Yahoo APIを用いるためのTokenを指定する。
+YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
+
 # Slack bot用の設定
 DEFAULT_REPLY = "使い方がわからない時は `help` とメンションするっぽ!"
 PLUGINS = ['plugins']

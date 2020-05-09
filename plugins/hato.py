@@ -3,16 +3,17 @@ import os
 from logging import getLogger
 from PIL import Image
 import datetime
+import requests
+import slackbot_settings as conf
 from slackbot.bot import respond_to, listen_to, default_reply
 from library.weather import get_city_id_from_city_name, get_weather
-from library.amesh import get_map
 from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 
 logger = getLogger(__name__)
-VERSION = "0.3.2"
+VERSION = "0.4.0 Beta"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')
@@ -125,11 +126,51 @@ def totuzensi(message):
 def amesh(message):
     user = message.user['name']
     logger.debug("%s called 'hato amesh'", user)
-    message.send('東京の雨雲状況をお知らせするっぽ！(ちょっと時間かかるっぽ!)')
-    # amesh画像を取得する
-    file = get_map()
+    message.send('東京の雨雲状況をお知らせするっぽ！')
 
-    message.channel.upload_file("amesh", file)
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=35.698856&lon=139.73091159273&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN)
+    r = requests.get(url, stream = True)
+    f_name = "amesh.jpg"
+    if r.status_code == 200:
+        with open(f_name, 'wb') as f:
+            f.write(r.content)
+
+    message.channel.upload_file("amesh", f_name)
+    os.remove(f_name)
+
+@respond_to('^amesh kyoto$')
+def amesh_kyoto(message):
+    user = message.user['name']
+    logger.debug("%s called 'hato amesh kyoto'", user)
+    message.send('京都の雨雲状況をお知らせするっぽ！')
+
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=34.966944&lon=135.773056&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN)
+    r = requests.get(url, stream = True)
+    f_name = "amesh.jpg"
+    if r.status_code == 200:
+        with open(f_name, 'wb') as f:
+            f.write(r.content)
+
+    message.channel.upload_file("amesh", f_name)
+    os.remove(f_name)
+
+@respond_to('^amesh .+ .+')
+def amesh_with_gis(message):
+    user = message.user['name']
+    text = message.body['text']
+    logger.debug("%s called 'hato amesh '", user)
+    message.send('雨雲状況をお知らせするっぽ！')
+    tmp, lat, lon = text.split(' ', 2)
+
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN, lat, lon)
+    r = requests.get(url, stream = True)
+    f_name = "amesh.jpg"
+    if r.status_code == 200:
+        with open(f_name, 'wb') as f:
+            f.write(r.content)
+
+    message.channel.upload_file("amesh", f_name)
+    os.remove(f_name)
 
 @respond_to('^version')
 def version(message):
