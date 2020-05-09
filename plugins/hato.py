@@ -13,7 +13,7 @@ from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 
 logger = getLogger(__name__)
-VERSION = "0.4.0 Beta"
+VERSION = "0.4.0"
 
 # 「hato help」を見つけたら、使い方を表示する
 @respond_to('^help')

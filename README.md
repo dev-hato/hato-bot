@@ -27,10 +27,11 @@
     pipenv install
     ```
 
-3. `.env` ファイルを作成し、SlackのAPI TokenとPostgreSQLの認証情報を記述します。
+3. `.env` ファイルを作成し、SlackのAPI TokenとPostgreSQLの認証情報、(雨雲情報を取得する場合は)Yahoo APIのトークンを記述します。
     ```
     SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
     DATABASE_URL=postgres://postgres:password@localhost:5432/
+    YAHOO_API_TOKEN=xxxxxxxxx
     ```
 4. PostgreSQLを起動します。(Dockerの場合は以下のコマンドを実行します。)
 
