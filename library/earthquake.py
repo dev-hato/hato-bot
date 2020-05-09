@@ -25,7 +25,13 @@ def generate_quake_info_for_slack(data, max_cnt=1):
             singenti = row['earthquake']['hypocenter']['name']
             magnitude = row['earthquake']['hypocenter']['magnitude']
             sindo = row['earthquake']['maxScale']
-            msg = msg + '\n---\n発生時刻: {}\n震源地: {}\nマグニチュード: {}\n最大震度: {}'.format(time, singenti, magnitude, sindo/10)
+
+            if sindo is None:
+                sindo = ''
+            else:
+                sindo /= 10
+
+            msg = msg + '\n---\n発生時刻: {}\n震源地: {}\nマグニチュード: {}\n最大震度: {}'.format(time, singenti, magnitude, sindo)
             if max_cnt <= cnt:
                 break
             cnt += 1
