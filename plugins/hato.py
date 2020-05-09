@@ -13,7 +13,7 @@ from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 
 logger = getLogger(__name__)
-VERSION = "0.4.0"
+VERSION = "1.0.0"
 
 
 def respond_to_with_space(matchstr, flags=0):
@@ -150,7 +150,9 @@ def amesh(message):
             f.write(r.content)
 
     message.channel.upload_file("amesh", f_name)
-    os.remove(f_name)
+
+    if os.path.exists(f_name):
+        os.remove(f_name)
 
 @respond_to('^amesh kyoto$')
 def amesh_kyoto(message):
@@ -193,6 +195,6 @@ def version(message):
     logger.debug("%s called 'hato version'", user)
     str_ver = "バージョン情報\n```"\
         "Version {}\n"\
-        "Copyright (C) 2020 hato-bot Develop team\n"\
+        "Copyright (C) 2020 hato-bot Development team\n"\
         "https://github.com/nakkaa/hato-bot ```".format(VERSION)
     message.send(str_ver)
