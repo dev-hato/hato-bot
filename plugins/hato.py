@@ -20,9 +20,10 @@ def respond_to_with_space(matchstr, flags=0):
     return respond_to(matchstr.replace('^', r'^\s*'), flags)
 
 
-# 「hato help」を見つけたら、使い方を表示する
 @respond_to_with_space('^help')
 def help(message):
+    """「hato help」を見つけたら、使い方を表示する"""
+
     user = message.user['name']
     logger.debug("%s called 'hato help'", user)
     str_help = '\n使い方\n'\
@@ -125,9 +126,11 @@ def weather(message):
         weather_info = get_weather(city_id)
         message.send('```' + weather_info + '```')
 
-# 「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する
+
 @respond_to_with_space('^&gt;&lt; .+')
 def totuzensi(message):
+    """「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する"""
+
     user = message.user['name']
     text = message.body['text']
     tmp, word = text.split(' ', 1)

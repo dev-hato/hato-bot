@@ -93,8 +93,9 @@ class LabotterDatabase:
         self.conn.close()
 
 
-# らぼいん処理
 def labo_in(user_id) -> str:
+    """らぼいん処理"""
+
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
     dt_now = datetime.datetime.now()
     start_time = dt_now.strftime('%Y-%m-%d %H:%M:%S')
@@ -109,10 +110,10 @@ def labo_in(user_id) -> str:
 
     return success_flag, start_time
 
-# らぼりだ処理
-
 
 def labo_rida(user_id) -> str:
+    """らぼりだ処理"""
+
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
     dt_now = datetime.datetime.now()
     dt = 0

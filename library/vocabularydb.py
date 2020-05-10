@@ -50,10 +50,10 @@ class VocabularyDatabase:
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
-# 一覧を表示する
-
 
 def get_vocabularys():
+    """一覧を表示する"""
+
     with VocabularyDatabase() as z:
         result = z.get_word_list()
 
@@ -74,15 +74,16 @@ def get_vocabularys():
         return "登録されている単語はないっぽ！"
 
 
-# 追加する
 def add_vocabulary(msg) -> str:
+    """追加する"""
+
     with VocabularyDatabase() as vd:
         vd.add_word(msg)
 
-# 指定したものを表示する
-
 
 def show_vocabulary(id) -> int:
+    """指定したものを表示する"""
+
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
     with VocabularyDatabase() as vd:
@@ -97,10 +98,10 @@ def show_vocabulary(id) -> int:
 
     return slack_msg
 
-# 削除する
-
 
 def delete_vocabulary(id) -> int:
+    """削除する"""
+
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
     with VocabularyDatabase() as vd:

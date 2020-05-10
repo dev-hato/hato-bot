@@ -1,11 +1,13 @@
 import pg8000
 import slackbot_settings as conf
 
-# DBのテーブル作成用スクリプト
-# 初回環境構築時のみ必要
-
 
 class CreateEnvDatabase:
+    """
+    DBのテーブル作成用スクリプト
+    初回環境構築時のみ必要
+    """
+
     def __init__(self):
         try:
             pg8000.paramstyle = 'qmark'
