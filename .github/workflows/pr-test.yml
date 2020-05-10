@@ -1,0 +1,47 @@
+name: pr-test
+
+# masterへ直接pushされた時と、pull_requestで何かあった時に起動する
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  pr-test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: pipenv cache
+      uses: actions/cache@v1
+      with:
+        key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+        path: ~/.cache/pipenv
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+    - name: pip cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install --dev
+    - name: Format files
+      run: |
+        pipenv run autopep8 --exit-code --in-place --recursive .
+    - name: Test
+      run: |
+        pipenv run python -m unittest
