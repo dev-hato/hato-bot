@@ -1,9 +1,9 @@
 name: pr-test
 
-# masterへ直接pushされた時と、pull_requestで何かあった時に起動する
+# master,developへ直接pushされた時と、pull_requestで何かあった時に起動する
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
 
 jobs:
