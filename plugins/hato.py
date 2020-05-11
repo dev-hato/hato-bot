@@ -11,6 +11,7 @@ from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
+from library.hatokaraage import hato_ha_karaage
 
 logger = getLogger(__name__)
 VERSION = "1.0.0"
@@ -130,6 +131,7 @@ def totuzensi(message):
     user = message.user['name']
     text = message.body['text']
     tmp, word = text.split(' ', 1)
+    word = hato_ha_karaage(word)
     logger.debug("%s called 'hato >< %s'", user, word)
     word = generator(word)
     msg = '\n```' + word + '```'
