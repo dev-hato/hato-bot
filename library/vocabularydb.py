@@ -1,9 +1,10 @@
 import pg8000
 import slackbot_settings as conf
 
+
 class VocabularyDatabase:
     def __init__(self):
-        try: 
+        try:
             pg8000.paramstyle = 'qmark'
             self.conn = pg8000.connect(
                 host=conf.DB_HOST,
@@ -21,7 +22,7 @@ class VocabularyDatabase:
 
     def get_word_list(self):
         with self.conn.cursor() as cursor:
-            try: 
+            try:
                 cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
                 results = cursor.fetchall()
             except:
@@ -31,15 +32,16 @@ class VocabularyDatabase:
 
     def add_word(self, word) -> str:
         with self.conn.cursor() as cursor:
-            try: 
-                cursor.execute("INSERT INTO vocabulary(word) VALUES(?);", (word,))
+            try:
+                cursor.execute(
+                    "INSERT INTO vocabulary(word) VALUES(?);", (word,))
                 self.conn.commit()
             except:
                 print('Can not execute sql(add).')
 
     def delete_word(self, id) -> int:
         with self.conn.cursor() as cursor:
-            try: 
+            try:
                 cursor.execute("DELETE FROM vocabulary WHERE no = ?;", (id,))
                 self.conn.commit()
             except:
@@ -48,8 +50,10 @@ class VocabularyDatabase:
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
-# 一覧を表示する
+
 def get_vocabularys():
+    """一覧を表示する"""
+
     with VocabularyDatabase() as z:
         result = z.get_word_list()
 
@@ -70,13 +74,16 @@ def get_vocabularys():
         return "登録されている単語はないっぽ！"
 
 
-# 追加する
 def add_vocabulary(msg) -> str:
+    """追加する"""
+
     with VocabularyDatabase() as vd:
         vd.add_word(msg)
 
-# 指定したものを表示する
+
 def show_vocabulary(id) -> int:
+    """指定したものを表示する"""
+
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
     with VocabularyDatabase() as vd:
@@ -91,8 +98,10 @@ def show_vocabulary(id) -> int:
 
     return slack_msg
 
-# 削除する
+
 def delete_vocabulary(id) -> int:
+    """削除する"""
+
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
     with VocabularyDatabase() as vd:
