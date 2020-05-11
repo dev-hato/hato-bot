@@ -44,3 +44,7 @@
 5. `pipenv run python ./create_env.py` を実行しPostgreSQLにテーブルを作成します。
 
 6. `pipenv run python ./run.py` を実行します。
+
+## formatする
+
+1. `pipenv run autopep8 --in-place --recursive .`

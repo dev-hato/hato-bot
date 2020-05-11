@@ -21,9 +21,10 @@ def respond_to_with_space(matchstr, flags=0):
     return respond_to(matchstr.replace('^', r'^\s*'), flags)
 
 
-# 「hato help」を見つけたら、使い方を表示する
 @respond_to_with_space('^help')
 def help(message):
+    """「hato help」を見つけたら、使い方を表示する"""
+
     user = message.user['name']
     logger.debug("%s called 'hato help'", user)
     str_help = '\n使い方\n'\
@@ -70,7 +71,8 @@ def labotter_rida(message):
     diff_time = datetime.timedelta(seconds=dt)
     sum_time = datetime.timedelta(seconds=sum)
     if flag:
-        msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(end_time, diff_time, sum_time)
+        msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(
+            end_time, diff_time, sum_time)
     message.send(msg)
 
 
@@ -123,11 +125,13 @@ def weather(message):
         message.send('該当する情報が見つからなかったっぽ！')
     else:
         weather_info = get_weather(city_id)
-        message.send('```' + weather_info +'```')
+        message.send('```' + weather_info + '```')
 
-# 「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する
+
 @respond_to_with_space('^&gt;&lt; .+')
 def totuzensi(message):
+    """「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する"""
+
     user = message.user['name']
     text = message.body['text']
     tmp, word = text.split(' ', 1)
@@ -144,8 +148,9 @@ def amesh(message):
     logger.debug("%s called 'hato amesh'", user)
     message.send('東京の雨雲状況をお知らせするっぽ！')
 
-    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=35.698856&lon=139.73091159273&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN)
-    r = requests.get(url, stream = True)
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=35.698856&lon=139.73091159273&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(
+        conf.YAHOO_API_TOKEN)
+    r = requests.get(url, stream=True)
     f_name = "amesh.jpg"
     if r.status_code == 200:
         with open(f_name, 'wb') as f:
@@ -156,14 +161,16 @@ def amesh(message):
     if os.path.exists(f_name):
         os.remove(f_name)
 
+
 @respond_to('^amesh kyoto$')
 def amesh_kyoto(message):
     user = message.user['name']
     logger.debug("%s called 'hato amesh kyoto'", user)
     message.send('京都の雨雲状況をお知らせするっぽ！')
 
-    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=34.966944&lon=135.773056&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN)
-    r = requests.get(url, stream = True)
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat=34.966944&lon=135.773056&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(
+        conf.YAHOO_API_TOKEN)
+    r = requests.get(url, stream=True)
     f_name = "amesh.jpg"
     if r.status_code == 200:
         with open(f_name, 'wb') as f:
@@ -171,6 +178,7 @@ def amesh_kyoto(message):
 
     message.channel.upload_file("amesh", f_name)
     os.remove(f_name)
+
 
 @respond_to('^amesh .+ .+')
 def amesh_with_gis(message):
@@ -180,8 +188,9 @@ def amesh_with_gis(message):
     message.send('雨雲状況をお知らせするっぽ！')
     tmp, lat, lon = text.split(' ', 2)
 
-    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(conf.YAHOO_API_TOKEN, lat, lon)
-    r = requests.get(url, stream = True)
+    url = 'https://map.yahooapis.jp/map/V1/static?appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'.format(
+        conf.YAHOO_API_TOKEN, lat, lon)
+    r = requests.get(url, stream=True)
     f_name = "amesh.jpg"
     if r.status_code == 200:
         with open(f_name, 'wb') as f:

@@ -5,8 +5,10 @@ import unicodedata
 # Copyright (c) 2016 koluku
 # https://github.com/koluku/sudden-death/blob/master/LICENSE
 
-# 突然の死で使う関数
+
 def text_length_list(text):
+    """突然の死で使う関数"""
+
     count_list = list()
 
     for t in text:
