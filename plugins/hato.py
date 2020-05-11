@@ -95,7 +95,7 @@ def add_text(message):
 
 
 @respond_to_with_space('^text show .+')
-def add_text(message):
+def show_text(message):
     user = message.user['name']
     logger.debug("%s called 'text show'", user)
     text = message.body['text']
@@ -105,7 +105,7 @@ def add_text(message):
 
 
 @respond_to_with_space('^text delete .+')
-def add_text(message):
+def delete_text(message):
     user = message.user['name']
     logger.debug("%s called 'text delete'", user)
     text = message.body['text']
