@@ -16,7 +16,7 @@ class CreateEnvDatabase:
                 user=conf.DB_USER,
                 password=conf.DB_PASSWORD,
                 port=conf.DB_PORT,
-                ssl=False,
+                ssl=conf.DB_SSL,
                 database=conf.DB_NAME
             )
         except:
