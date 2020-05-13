@@ -16,11 +16,12 @@ class CreateEnvDatabase:
                 user=conf.DB_USER,
                 password=conf.DB_PASSWORD,
                 port=conf.DB_PORT,
-                ssl=conf.DB_SSL,
+                ssl_context=conf.DB_SSL,
                 database=conf.DB_NAME
             )
         except:
             print('Can not connect to database.')
+            raise
 
     def __enter__(self):
         return self

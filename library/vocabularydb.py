@@ -11,7 +11,7 @@ class VocabularyDatabase:
                 user=conf.DB_USER,
                 password=conf.DB_PASSWORD,
                 port=conf.DB_PORT,
-                ssl=conf.DB_SSL,
+                ssl_context=conf.DB_SSL,
                 database=conf.DB_NAME
             )
         except:
