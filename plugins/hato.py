@@ -14,7 +14,7 @@ from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
 
 logger = getLogger(__name__)
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
 
 def respond_to_with_space(matchstr, flags=0):
