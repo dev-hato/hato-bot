@@ -77,8 +77,6 @@ jobs:
   # unittestを行う
   # testが落ちたらチェックが落ちる
   pr-test:
-    needs: pr-format
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -116,8 +114,6 @@ jobs:
   # lintを行い、結果をPRにコメントとして表示する。
   # ここではチェックは落ちない
   pr-lint:
-    needs: pr-format
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
