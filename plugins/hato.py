@@ -8,7 +8,7 @@ import slackbot_settings as conf
 from slackbot.bot import respond_to, listen_to, default_reply
 from library.weather import get_city_id_from_city_name, get_weather
 from library.labotter import labo_in, labo_rida
-from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary
+from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
@@ -101,6 +101,14 @@ def show_text(message):
     text = message.body['text']
     tmp, tmp2, id = text.split(' ', 2)
     msg = show_vocabulary(int(id))
+    message.send(msg)
+
+
+@respond_to_with_space('^text random$')
+def show_random_text(message):
+    user = message.user['name']
+    logger.debug("%s called 'text random'", user)
+    msg = show_random_vocabulary()
     message.send(msg)
 
 
