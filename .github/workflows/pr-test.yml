@@ -155,7 +155,7 @@ jobs:
           git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
           files=$(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py')
 
-          if ${files}
+          if [ -n "${files}" ]
           then
             result=$(pipenv run pylint --rcfile=./.pylintrc ${files} 2>&1) || true
             result="${result//'%'/'%25'}"
