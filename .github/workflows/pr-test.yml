@@ -153,16 +153,23 @@ jobs:
         run: |
           git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
           git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
-          result=$(pipenv run pylint --rcfile=./.pylintrc $(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py') 2>&1) || true
-          result="${result//'%'/'%25'}"
-          result="${result//$'\n'/'%0A'}"
-          result="${result//$'\r'/'%0D'}"
-          echo "::set-output name=result::$result"
+          files=$(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py')
+
+          if files
+          then
+            result=$(pipenv run pylint --rcfile=./.pylintrc files 2>&1) || true
+            result="${result//'%'/'%25'}"
+            result="${result//$'\n'/'%0A'}"
+            result="${result//$'\r'/'%0D'}"
+            echo "::set-output name=result::$result"
+          end
+
           true
         continue-on-error: true
       # lint結果をコメントに残す
       - name: Lint Comment
         uses: actions/github-script@0.9.0
+        if: steps.lint.outputs.result != Null
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
