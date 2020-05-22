@@ -162,7 +162,7 @@ jobs:
         id: lint
         if: steps.files.outputs.result != ''
         run: |
-          result=$(pipenv run pylint --rcfile=./.pylintrc $(${{steps.files.outputs.result}}) 2>&1) || true
+          result=$(pipenv run pylint --rcfile=./.pylintrc ${{steps.files.outputs.result}} 2>&1) || true
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
