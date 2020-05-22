@@ -3,6 +3,8 @@ import slackbot_settings as conf
 
 
 class VocabularyDatabase:
+    """パワーワードを扱うDBを操作するためのクラス"""
+
     def __init__(self):
         try:
             pg8000.paramstyle = 'qmark'
@@ -21,6 +23,7 @@ class VocabularyDatabase:
         return self
 
     def get_word_list(self):
+        """パワーワードの一覧をDBから取得する"""
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
@@ -31,6 +34,8 @@ class VocabularyDatabase:
         return results
 
     def get_random_word(self):
+        """パワーワードをDBからランダムで取得する"""
+
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute(
@@ -42,6 +47,8 @@ class VocabularyDatabase:
         return results
 
     def add_word(self, word) -> str:
+        """パワーワードをDBに登録する"""
+
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute(
@@ -51,6 +58,8 @@ class VocabularyDatabase:
                 print('Can not execute sql(add).')
 
     def delete_word(self, id) -> int:
+        """指定したidのパワーワードをDBから削除する"""
+
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute("DELETE FROM vocabulary WHERE no = ?;", (id,))
