@@ -35,11 +35,12 @@ def help_message(message):
         '```'\
         '天気 [text] ... 地名の天気予報を表示する。\n'\
         'amesh ... ameshを表示する。\n'\
-        '地震 ... 最新の地震情報を3件表示する。\n'\
+        'eq ... 最新の地震情報を3件表示する。\n'\
         'text list ... パワーワード一覧を表示する。 \n'\
         'text random ... パワーワードをひとつ、ランダムで表示する。 \n'\
         'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n'\
         'text add [text] ... パワーワードに[text]を登録する。 \n'\
+        'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n'\
         'in ... らぼいんする\n'\
         'rida ... らぼいんからの経過時間を表示する\n'\
         '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
@@ -111,7 +112,7 @@ def add_text(message):
 
 @respond_to_with_space('^text show .+')
 def show_text(message):
-    """指定したIDのパワーワードを表示する"""
+    """指定した番号のパワーワードを表示する"""
 
     user = message.user['name']
     logger.debug("%s called 'text show'", user)
@@ -121,8 +122,9 @@ def show_text(message):
     message.send(msg)
 
 
-@respond_to_with_space('^text random$')
+@respond_to_with_space('^text$|^text random$')
 def show_random_text(message):
+    """パワーワードの一覧からランダムで1つを表示する"""
     user = message.user['name']
     logger.debug("%s called 'text random'", user)
     msg = show_random_vocabulary()
@@ -131,7 +133,7 @@ def show_random_text(message):
 
 @respond_to_with_space('^text delete .+')
 def delete_text(message):
-    """指定したパワーワードを削除する"""
+    """指定した番号のパワーワードを削除する"""
 
     user = message.user['name']
     logger.debug("%s called 'text delete'", user)
