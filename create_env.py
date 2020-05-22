@@ -24,6 +24,7 @@ class CreateEnvDatabase:
             raise
 
     def __enter__(self):
+        print('aaaaa')
         return self
 
     def execute_sql(self, SQL) -> str:
