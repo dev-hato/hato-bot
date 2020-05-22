@@ -2,6 +2,7 @@
 import os
 import urllib.parse
 from dotenv import load_dotenv, find_dotenv
+import ssl
 
 # .envファイルがあれば読み込む。存在しなければ環境変数から読み込む。
 load_dotenv(find_dotenv())
@@ -17,7 +18,7 @@ DB_PORT = db_auth.port
 DB_NAME = db_auth.path[1:]
 
 # DB_NAMEが空の場合はSSLを無効にする(for Develop)。Herokuの場合はTrue。
-DB_SSL = True if db_auth.path[1:] != '' else None
+DB_SSL = ssl.SSLContext(ssl.PROTOCOL_TLSv1) if db_auth.path[1:] != '' else None
 
 # Yahoo APIを用いるためのTokenを指定する。
 YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
