@@ -123,6 +123,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      # Pythonコードが差分に含まれていない場合はこれ以降のステップを全てスキップ
       - name: Get diff files
         id: files
         run: |
