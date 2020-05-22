@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-diff-files
     # Pythonコードが差分に含まれていない場合はスキップ
-    if: jobs.check-diff-files.steps.check_diff_files.outputs.files != ''
+    if: needs.check-diff-files.steps.check_diff_files.outputs.files != ''
     strategy:
       matrix:
         python-version: [3.8]
@@ -169,7 +169,7 @@ jobs:
       - name: Lint files
         id: lint
         run: |
-          result=$(pipenv run pylint --rcfile=./.pylintrc ${{jobs.check-diff-files.steps.check_diff_files.outputs.files}} 2>&1) || true
+          result=$(pipenv run pylint --rcfile=./.pylintrc ${{needs.check-diff-files.steps.check_diff_files.outputs.files}} 2>&1) || true
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
