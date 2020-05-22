@@ -122,7 +122,7 @@ def show_vocabulary(id) -> int:
 def show_random_vocabulary() -> str:
     """ランダムに一つ表示する"""
 
-    slack_msg = "鳩は唐揚げ！!"
+    slack_msg = "鳩は唐揚げ！！"
 
     with VocabularyDatabase() as vd:
         result = vd.get_random_word()
