@@ -171,7 +171,6 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         uses: actions/github-script@0.9.0
-        if: steps.lint.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
