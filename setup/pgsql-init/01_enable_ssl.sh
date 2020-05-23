@@ -8,11 +8,8 @@ cd /var/lib/postgresql/data
 
 # SSL証明書作成
 key_filename=server.key
-csr_filename=server.csr
-openssl genrsa 2048 > ${key_filename}
+openssl req -x509 -nodes -new -newkey rsa:2048 -keyout ${key_filename} -out server.crt -days 365 -subj "/C=JP/ST=Tokyo/L=Tokyo/O=hato-bot Development Team/OU=hato-bot Development Team/CN=example.com"
 chmod 600 ${key_filename}
-openssl req -new -key ${key_filename} -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com" > ${csr_filename}
-openssl x509 -days 36500 -req -signkey ${key_filename} < ${csr_filename} > server.crt
 
 # SSL設定
 sed -i -e "s/#ssl = off/ssl = on/g" postgresql.conf
