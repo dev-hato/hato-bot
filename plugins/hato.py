@@ -3,6 +3,7 @@
 """hatobotのチャット部分"""
 
 import os
+import re
 from logging import getLogger
 import datetime
 import requests
@@ -18,11 +19,13 @@ from library.hatokaraage import hato_ha_karaage
 logger = getLogger(__name__)
 VERSION = "1.0.3"
 
+space_pattern = re.compile(r'[ 　]')
+
 
 def respond_to_with_space(matchstr, flags=0):
     """スペースを削除する"""
 
-    return respond_to(matchstr.replace('^', r'^\s*'), flags)
+    return respond_to(matchstr.replace(' ', '[ 　]').replace('^', r'^\s*'), flags)
 
 
 @respond_to_with_space('^help')
@@ -105,7 +108,7 @@ def add_text(message):
     user = message.user['name']
     logger.debug("%s called 'text add'", user)
     text = message.body['text']
-    _, _, word = text.split(' ', 2)
+    _, _, word = space_pattern.split(text, 2)
     add_vocabulary(word)
     message.send("覚えたっぽ!")
 
@@ -117,7 +120,7 @@ def show_text(message):
     user = message.user['name']
     logger.debug("%s called 'text show'", user)
     text = message.body['text']
-    _, _, power_word_id = text.split(' ', 2)
+    _, _, power_word_id = space_pattern.split(text, 2)
     msg = show_vocabulary(int(power_word_id))
     message.send(msg)
 
@@ -138,7 +141,7 @@ def delete_text(message):
     user = message.user['name']
     logger.debug("%s called 'text delete'", user)
     text = message.body['text']
-    _, _, power_word_id = text.split(' ', 2)
+    _, _, power_word_id = space_pattern.split(text, 2)
     msg = delete_vocabulary(int(power_word_id))
     message.send(msg)
 
@@ -150,7 +153,7 @@ def weather(message):
     user = message.user['name']
     logger.debug("%s called 'hato 天気'", user)
     text = message.body['text']
-    _, word = text.split(' ', 1)
+    _, word = space_pattern.split(text, 1)
     city_id = get_city_id_from_city_name(word)
     if city_id is None:
         message.send('該当する情報が見つからなかったっぽ！')
@@ -165,7 +168,7 @@ def totuzensi(message):
 
     user = message.user['name']
     text = message.body['text']
-    _, word = text.split(' ', 1)
+    _, word = space_pattern.split(text, 1)
     word = hato_ha_karaage(word)
     logger.debug("%s called 'hato >< %s'", user, word)
     word = generator(word)
@@ -229,7 +232,7 @@ def amesh_with_gis(message):
     text = message.body['text']
     logger.debug("%s called 'hato amesh '", user)
     message.send('雨雲状況をお知らせするっぽ！')
-    _, lat, lon = text.split(' ', 2)
+    _, lat, lon = space_pattern.split(text, 2)
 
     url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
     req = requests.get(url, stream=True)
