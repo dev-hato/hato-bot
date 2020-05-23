@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      files: ${{steps.check_diff_files.outputs.files}}
+      files: steps.check_diff_files.outputs.files
 
     steps:
       - uses: actions/checkout@v2
