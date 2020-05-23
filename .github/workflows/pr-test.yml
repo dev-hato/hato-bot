@@ -111,10 +111,31 @@ jobs:
         run: |
           pipenv run python -m unittest
 
+  # 差分があるPythonファイルを取得する
+  pr-check-python-files-with-diff:
+    runs-on: ubuntu-latest
+
+    outputs:
+      files: ${{steps.check-python-files-with-diff.outputs.files}}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check Python file with diff
+        id: check-python-files-with-diff
+        run: |
+          git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
+          git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
+          echo "::set-output name=files::$(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py')"
+
   # lintを行い、結果をPRにコメントとして表示する。
   # ここではチェックは落ちない
   pr-lint:
     runs-on: ubuntu-latest
+    needs: pr-check-python-files-with-diff
+    # Pythonファイルが差分に含まれていない場合はスキップ
+    if: needs.pr-check-python-files-with-diff.outputs.files != ''
     strategy:
       matrix:
         python-version: [3.8]
@@ -151,9 +172,7 @@ jobs:
       - name: Lint files
         id: lint
         run: |
-          git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
-          git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
-          result=$(pipenv run pylint --rcfile=./.pylintrc $(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py') 2>&1) || true
+          result=$(pipenv run pylint --rcfile=./.pylintrc ${{needs.pr-check-python-files-with-diff.outputs.files}} 2>&1) || true
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
