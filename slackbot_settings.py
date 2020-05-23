@@ -26,3 +26,5 @@ YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
 # Slack bot用の設定
 DEFAULT_REPLY = "使い方がわからない時は `help` とメンションするっぽ!"
 PLUGINS = ['plugins']
+
+print('ssss')
