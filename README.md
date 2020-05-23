@@ -1,18 +1,30 @@
-# 鳩bot
+# 鳩bot - 愛嬌のあるSlack Bot
 ![](https://github.com/nakkaa/hato-bot/workflows/pr-test/badge.svg) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=nakkaa/hato-bot)](https://dependabot.com)  
+  
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-- 愛嬌のあるSlack用botです。
-- `天気 <地名>` で天気予報を教えてくれます。
-- `amesh` で東京近郊の雨雲情報を教えてくれます。
-- `>< 文字列` で文字列を「突然の死」吹き出しで整形してくれます。
+鳩botではこんなことができます。
+
+- 全国の天気予報 ... `天気 東京` で東京の天気予報を表示します。
+- 東京近郊の雨雲情報 ... `amesh` で東京の雨雲情報を画像で表示します。
+- 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
+- パワーワードの登録、表示 ... `text` で登録したパワーワードを表示します。
+- 突然の死吹き出しで整形 ... `>< 文字列` で文字列を「突然の死」吹き出しで整形します。
 
 ![](https://github.com/nakkaa/hato-age-bot/blob/images/hato1.png)
 
+# 鳩botを動かす
+
+鳩botを動かす方法は主に2種類あります。  
+簡単でおすすめなHerokuで動かす方法と自分のPC上で動かす方法です。  
+前者については、[Herokuで動かす手順](https://github.com/nakkaa/hato-bot/wiki/Heroku%E3%81%A7%E5%8B%95%E3%81%8B%E3%81%99%E6%89%8B%E9%A0%86) を参照してください。  
+ここでは後者の自分のPC上で動かす方法を説明します。
+
 ## 必要なもの
-鳩botを動かすためには以下が必要です。
-- Python3
-- PostgreSQL(Dockerで導入可)
+以下が必要です。
+- Git、Python3、Pipenv、Docker(またはPostgreSQL)が動作するPC
+- Slack API Token ([Slack API Tokenの取得方法](https://github.com/nakkaa/hato-bot/wiki/Slack-API-Token%E3%81%AE%E5%8F%96%E5%BE%97%E6%96%B9%E6%B3%95))
+- Yahoo APIのトークン([Yahoo API Tokenの取得方法](https://github.com/nakkaa/hato-bot/wiki/Yahoo-API-Token%E3%81%AE%E5%8F%96%E5%BE%97%E6%96%B9%E6%B3%95))
 
 ## 初期設定
 
@@ -27,7 +39,7 @@
     pipenv install
     ```
 
-3. `.env` ファイルを作成し、SlackのAPI TokenとPostgreSQLの認証情報、(雨雲情報を取得する場合は)Yahoo APIのトークンを記述します。
+3. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenを記述します。
     ```
     SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
     DATABASE_URL=postgres://postgres:password@localhost:5432/
@@ -45,6 +57,6 @@
 
 6. `pipenv run python ./run.py` を実行します。
 
-## formatする
+## 補足
 
-1. `pipenv run autopep8 --in-place --recursive .`
+- コードをformatする場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
