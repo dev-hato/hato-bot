@@ -17,7 +17,7 @@ DB_PASSWORD = db_auth.password
 DB_PORT = db_auth.port
 DB_NAME = db_auth.path[1:]
 
-# DB_NAMEが空の場合はSSLを無効にする(for Develop)。Herokuの場合はTrue。
+# DB_NAMEが空の場合はSSLを無効にする(for Develop)。Herokuの場合はSSLContextをセット。
 DB_SSL = ssl.SSLContext(ssl.PROTOCOL_TLSv1) if db_auth.path[1:] != '' else None
 
 # Yahoo APIを用いるためのTokenを指定する。
