@@ -18,7 +18,7 @@
 
 ## v1.0.2 - 2020-05-11
 ### Fixed
-* Deploy to Herokuした時にDBが作成されない問題を修正。
+* Deploy to Herokuした時にDBが作成されない問題を修正しました。
 
 ## v1.0.1 - 2020-05-11
 ### Changed

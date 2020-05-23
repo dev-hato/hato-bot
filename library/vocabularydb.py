@@ -3,6 +3,8 @@ import slackbot_settings as conf
 
 
 class VocabularyDatabase:
+    """パワーワードを扱うDBを操作するためのクラス"""
+
     def __init__(self):
         try:
             pg8000.paramstyle = 'qmark'
@@ -11,7 +13,7 @@ class VocabularyDatabase:
                 user=conf.DB_USER,
                 password=conf.DB_PASSWORD,
                 port=conf.DB_PORT,
-                ssl=conf.DB_SSL,
+                ssl_context=conf.DB_SSL,
                 database=conf.DB_NAME
             )
         except:
@@ -21,6 +23,7 @@ class VocabularyDatabase:
         return self
 
     def get_word_list(self):
+        """パワーワードの一覧をDBから取得する"""
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
@@ -30,7 +33,22 @@ class VocabularyDatabase:
 
         return results
 
+    def get_random_word(self):
+        """パワーワードをDBからランダムで取得する"""
+
+        with self.conn.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
+                results = cursor.fetchone()
+            except:
+                print('Can not execute sql(select_random).')
+
+        return results
+
     def add_word(self, word) -> str:
+        """パワーワードをDBに登録する"""
+
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute(
@@ -40,6 +58,8 @@ class VocabularyDatabase:
                 print('Can not execute sql(add).')
 
     def delete_word(self, id) -> int:
+        """指定したidのパワーワードをDBから削除する"""
+
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute("DELETE FROM vocabulary WHERE no = ?;", (id,))
@@ -95,6 +115,20 @@ def show_vocabulary(id) -> int:
         if cnt == id:
             slack_msg = '{}'.format(text)
         cnt += 1
+
+    return slack_msg
+
+
+def show_random_vocabulary() -> str:
+    """ランダムに一つ表示する"""
+
+    slack_msg = "鳩は唐揚げ！！"
+
+    with VocabularyDatabase() as vd:
+        result = vd.get_random_word()
+
+    if result is not None and len(result) > 0:
+        slack_msg = '{}'.format(result[0])
 
     return slack_msg
 

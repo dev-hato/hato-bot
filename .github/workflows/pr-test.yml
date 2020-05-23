@@ -1,0 +1,175 @@
+name: pr-test
+
+# pull_requestで何かあった時に起動する
+on:
+  pull_request:
+
+jobs:
+  # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
+  pr-format:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: pipenv cache
+        uses: actions/cache@v1
+        with:
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ~/.cache/pipenv
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev
+      # autopep8でformatする
+      # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
+      - name: Format files
+        id: format
+        run: |
+          pipenv run autopep8 --exit-code --in-place --recursive .
+        continue-on-error: true
+      # 差分があったときは、コミットを作りpushする
+      - name: Push
+        if: steps.format.outcome == 'failure'
+        run: |
+          git config user.name "hatohakaraage"
+          git config user.email "hatohakaraage@example.com"
+          git add -u
+          git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
+          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-format-${{github.event.pull_request.head.ref}}
+      # pushしたブランチでPRを作る
+      - name: Create PullRequest
+        uses: actions/github-script@0.9.0
+        if: steps.format.outcome == 'failure'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
+              head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
+              base: "${{github.event.pull_request.head.ref}}"
+            })
+      - name: Exit
+        if: steps.format.outcome == 'failure'
+        run: return 1
+
+  # unittestを行う
+  # testが落ちたらチェックが落ちる
+  pr-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: pipenv cache
+        uses: actions/cache@v1
+        with:
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ~/.cache/pipenv
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev
+      - name: Test
+        run: |
+          pipenv run python -m unittest
+
+  # lintを行い、結果をPRにコメントとして表示する。
+  # ここではチェックは落ちない
+  pr-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: pipenv cache
+        uses: actions/cache@v1
+        with:
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ~/.cache/pipenv
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev
+      # 差分があるファイルのみlintする。
+      # PRに関係のないところのlint結果を出されても困るだけなので。
+      - name: Lint files
+        id: lint
+        run: |
+          git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
+          git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
+          result=$(pipenv run pylint --rcfile=./.pylintrc $(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py') 2>&1) || true
+          result="${result//'%'/'%25'}"
+          result="${result//$'\n'/'%0A'}"
+          result="${result//$'\r'/'%0D'}"
+          echo "::set-output name=result::$result"
+          true
+        continue-on-error: true
+      # lint結果をコメントに残す
+      - name: Lint Comment
+        uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const result = `${{steps.lint.outputs.result}}`
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Lint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
+            })
