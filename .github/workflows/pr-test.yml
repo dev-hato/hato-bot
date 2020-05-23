@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-diff-files
     # Pythonコードが差分に含まれていない場合はスキップ
-    if: needs.check-diff-files.outputs.files != ''
+    if: ${{needs.check-diff-files.outputs.files}} != ''
     strategy:
       matrix:
         python-version: [3.8]
