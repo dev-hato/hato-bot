@@ -172,8 +172,6 @@ jobs:
       - name: Lint files
         id: lint
         run: |
-          git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
-          git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
           result=$(pipenv run pylint --rcfile=./.pylintrc ${{needs.check-diff-files.outputs.files}} 2>&1) || true
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
