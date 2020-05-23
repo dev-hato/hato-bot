@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SSL対応
+# SSL有効化
 
 # 途中でエラーが発生したら即異常終了する
 set -e -o pipefail
