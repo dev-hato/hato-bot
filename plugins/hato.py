@@ -19,13 +19,14 @@ from library.hatokaraage import hato_ha_karaage
 logger = getLogger(__name__)
 VERSION = "1.0.3"
 
-space_pattern = re.compile(r'[ 　]')
+space_pattern_str = r'[ 　]'
+space_pattern = re.compile(space_pattern_str)
 
 
 def respond_to_with_space(matchstr, flags=0):
     """スペースを削除する"""
 
-    return respond_to(matchstr.replace(' ', '[ 　]').replace('^', r'^\s*'), flags)
+    return respond_to(matchstr.replace(' ', space_pattern_str).replace('^', r'^\s*'), flags)
 
 
 @respond_to_with_space('^help')
