@@ -230,7 +230,7 @@ def amesh_kyoto(message):
     os.remove(f_name)
 
 
-@respond_to('^amesh .+ .+')
+@respond_to_with_space('^amesh .+ .+')
 def amesh_with_gis(message):
     """位置を指定したameshを表示する"""
 
