@@ -34,23 +34,27 @@ class CreateEnvDatabase:
                 cursor.execute(sql)
                 self.conn.commit()
                 print('Create table. {}'.format(sql))
-            except Exception as e:
+            except Exception as _e:
                 print('Can not execute sql(create_table).')
-                raise e
+                raise _e
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
 
 def create_table():
-    with CreateEnvDatabase() as db:
-        db.execute_sql(
+    """テーブルを作成する"""
+
+    with CreateEnvDatabase() as _db:
+        _db.execute_sql(
             "CREATE TABLE IF NOT EXISTS vocabulary(no serial UNIQUE, word text);")
-        db.execute_sql(
+        _db.execute_sql(
             "CREATE TABLE IF NOT EXISTS labotter(user_name text UNIQUE, lab_in_flag int, lab_in timestamp, lab_rida timestamp, min_sum int);")
 
 
 def main():
+    """メイン関数"""
+
     create_table()
 
 
