@@ -153,7 +153,7 @@ def weather(message):
 
     user = message.user['name']
     logger.debug("%s called 'hato 天気'", user)
-    text = message.body['text']
+    text = message.body['text'].strip().strip('　')
     _, word = space_pattern.split(text, 1)
     city_id = get_city_id_from_city_name(word)
     if city_id is None:
