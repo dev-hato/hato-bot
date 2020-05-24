@@ -445,7 +445,7 @@ signature-mutators=
 expected-line-ending-format=
 
 # Regexp for a line that is allowed to be longer than the limit.
-ignore-long-lines=^\s*((# )?<?https?://\S+>?|(from)? .* import .*)$
+ignore-long-lines=^\s*((# )?<?https?://\S+>?|(from .* )?import .*)$
 
 # Number of spaces of indent required inside a hanging or continued line.
 indent-after-paren=4
