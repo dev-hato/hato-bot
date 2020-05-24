@@ -110,6 +110,9 @@ jobs:
       - name: Test
         run: |
           pipenv run python -m unittest
+      - name: Check type hints
+        run: |
+          pipenv run mypy .
 
   # 差分があるPythonファイルを取得する
   pr-check-python-files-with-diff:
