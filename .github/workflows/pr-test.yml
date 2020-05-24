@@ -127,7 +127,7 @@ jobs:
         run: |
           git fetch --no-tags --prune --depth=1 origin ${GITHUB_HEAD_REF}
           git fetch --no-tags --prune --depth=1 origin ${GITHUB_BASE_REF}
-          echo "::set-output name=files::$(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py')"
+          echo "::set-output name=files::$(git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} --diff-filter=AM --name-only -- '*.py' | tr '\n' ' ')"
 
   # lintを行い、結果をPRにコメントとして表示する。
   # ここではチェックは落ちない
