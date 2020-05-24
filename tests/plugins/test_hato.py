@@ -8,11 +8,23 @@ from plugins.hato import split_command, respond_to_with_space
 
 
 class TestRespondToWithSpace(unittest.TestCase):
-    def test_normal(self):
+    @staticmethod
+    def func():
         func = MagicMock()
         func.__name__ = 'test'
-        respond_to_with_space('^amesh kyoko$')(func)
-        pattern = re.compile('^\s*amesh[ 　]kyoko$', 0)
+        return func
+
+    def test_normal(self):
+        func = self.func()
+        respond_to_with_space(r'^amesh kyoko$')(func)
+        pattern = re.compile(r'^\s*amesh\s*kyoko$')
+        self.assertEqual(PluginsManager.commands['respond_to'][pattern], func)
+
+    def test_flag(self):
+        func = self.func()
+        flag = re.DOTALL
+        respond_to_with_space(r'^amesh kyoko$', flag)(func)
+        pattern = re.compile(r'^\s*amesh\s*kyoko$', flag)
         self.assertEqual(PluginsManager.commands['respond_to'][pattern], func)
 
 
