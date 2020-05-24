@@ -26,12 +26,14 @@ class CreateEnvDatabase:
     def __enter__(self):
         return self
 
-    def execute_sql(self, SQL) -> None:
+    def execute_sql(self, sql: str) -> None:
+        """SQLを実行する"""
+
         with self.conn.cursor() as cursor:
             try:
-                cursor.execute(SQL)
+                cursor.execute(sql)
                 self.conn.commit()
-                print('Create table. {}'.format(SQL))
+                print('Create table. {}'.format(sql))
             except:
                 print('Can not execute sql(create_table).')
 
