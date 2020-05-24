@@ -1,8 +1,9 @@
 # coding: utf-8
 import os
-import urllib.parse
-from dotenv import load_dotenv, find_dotenv
 import ssl
+import urllib.parse
+
+from dotenv import load_dotenv, find_dotenv
 
 # .envファイルがあれば読み込む。存在しなければ環境変数から読み込む。
 load_dotenv(find_dotenv())
@@ -26,3 +27,5 @@ YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
 # Slack bot用の設定
 DEFAULT_REPLY = "使い方がわからない時は `help` とメンションするっぽ!"
 PLUGINS = ['plugins']
+
+print('aaaa')
