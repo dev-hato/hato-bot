@@ -26,7 +26,7 @@ class CreateEnvDatabase:
     def __enter__(self):
         return self
 
-    def execute_sql(self, SQL) -> str:
+    def execute_sql(self, SQL) -> None:
         with self.conn.cursor() as cursor:
             try:
                 cursor.execute(SQL)

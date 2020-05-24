@@ -1,5 +1,7 @@
 import pg8000
 import datetime
+from typing import Tuple
+
 import slackbot_settings as conf
 
 
@@ -93,7 +95,7 @@ class LabotterDatabase:
         self.conn.close()
 
 
-def labo_in(user_id) -> str:
+def labo_in(user_id) -> Tuple[bool, str]:
     """らぼいん処理"""
 
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
@@ -111,7 +113,7 @@ def labo_in(user_id) -> str:
     return success_flag, start_time
 
 
-def labo_rida(user_id) -> str:
+def labo_rida(user_id) -> Tuple[bool, str, int, int]:
     """らぼりだ処理"""
 
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
