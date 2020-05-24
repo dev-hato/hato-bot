@@ -23,7 +23,8 @@ class TestSplitCommand(unittest.TestCase):
         self.assertEqual(split_command(' 天気 東京　'), ['天気', '東京'])
 
     def test_maxsplit(self):
-        self.assertEqual(split_command(' text add テスト', 1), ['text', 'add テスト'])
+        self.assertEqual(split_command(' text add テスト', 1),
+                         ['text', 'add テスト'])
 
 
 if __name__ == '__main__':
