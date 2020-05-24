@@ -6,6 +6,7 @@ import os
 import re
 from logging import getLogger
 import datetime
+from typing import List, Callable
 import requests
 from slackbot.bot import respond_to
 import slackbot_settings as conf
@@ -20,14 +21,14 @@ logger = getLogger(__name__)
 VERSION = "1.0.3"
 
 
-def respond_to_with_space(matchstr: str, flags: int = 0):
+def respond_to_with_space(matchstr: str, flags: int = 0) -> Callable[[Callable[[str], None]], Callable[[str], None]]:
     """スペースを削除する"""
 
     space = ' '
     return respond_to(matchstr.replace('^', f'^{space}').replace(space, r'\s*'), flags)
 
 
-def split_command(command: str, maxsplit: int = 0) -> list:
+def split_command(command: str, maxsplit: int = 0) -> List[str]:
     """コマンドを分離する"""
 
     return re.split(r'\s+', command.strip().strip('　'), maxsplit)
