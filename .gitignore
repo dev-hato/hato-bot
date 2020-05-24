@@ -3,4 +3,4 @@
 __pycache__/
 .vscode/
 setup/pgsql-data
-.mypy_cache
+.mypy_cache/
