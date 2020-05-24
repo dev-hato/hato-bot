@@ -13,7 +13,8 @@ class TestRespondToWithSpace(unittest.TestCase):
         func.__name__ = 'test'
         wrapper = respond_to_with_space('^amesh kyoko$')
         wrapper(func)
-        self.assertEqual(PluginsManager.commands['respond_to'][re.compile('^\s*amesh[ 　]kyoko$', 0)], func)
+        self.assertEqual(PluginsManager.commands['respond_to'][re.compile(
+            '^\s*amesh[ 　]kyoko$', 0)], func)
 
 
 class TestSplitCommand(unittest.TestCase):
