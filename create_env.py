@@ -34,8 +34,9 @@ class CreateEnvDatabase:
                 cursor.execute(sql)
                 self.conn.commit()
                 print('Create table. {}'.format(sql))
-            except:
+            except Exception as e:
                 print('Can not execute sql(create_table).')
+                raise e
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
