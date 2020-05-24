@@ -22,13 +22,13 @@ VERSION = "1.0.3"
 SPACE_PATTERN_STR = r'[ 　]'
 
 
-def respond_to_with_space(matchstr, flags=0):
+def respond_to_with_space(matchstr: str, flags: int = 0):
     """スペースを削除する"""
 
     return respond_to(matchstr.replace(' ', SPACE_PATTERN_STR).replace('^', r'^\s*'), flags)
 
 
-def split_command(command, maxsplit):
+def split_command(command: str, maxsplit: int) -> list:
     """コマンドを分離する"""
 
     return re.split(SPACE_PATTERN_STR, command.strip().strip('　'), maxsplit)
