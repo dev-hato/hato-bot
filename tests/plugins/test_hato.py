@@ -12,7 +12,8 @@ class TestRespondToWithSpace(unittest.TestCase):
         func = MagicMock()
         func.__name__ = 'test'
         respond_to_with_space('^amesh kyoko$')(func)
-        result = PluginsManager.commands['respond_to'][re.compile('^\s*amesh[ 　]kyoko$', 0)]
+        result = PluginsManager.commands['respond_to'][re.compile(
+            '^\s*amesh[ 　]kyoko$', 0)]
         self.assertEqual(result, func)
 
 
