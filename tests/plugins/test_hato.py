@@ -1,6 +1,19 @@
+import re
 import unittest
+from unittest.mock import MagicMock
 
-from plugins.hato import split_command
+from slackbot.manager import PluginsManager
+
+from plugins.hato import split_command, respond_to_with_space
+
+
+class TestRespondToWithSpace(unittest.TestCase):
+    def test_normal(self):
+        func = MagicMock()
+        func.__name__ = 'test'
+        wrapper = respond_to_with_space('^amesh kyoko$')
+        wrapper(func)
+        self.assertEqual(PluginsManager.commands['respond_to'][re.compile('^\s*amesh[ 　]kyoko$', 0)], func)
 
 
 class TestSplitCommand(unittest.TestCase):
