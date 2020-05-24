@@ -28,7 +28,7 @@ def respond_to_with_space(matchstr: str, flags: int = 0):
     return respond_to(matchstr.replace(' ', SPACE_PATTERN_STR).replace('^', r'^\s*'), flags)
 
 
-def split_command(command: str, maxsplit: int) -> list:
+def split_command(command: str, maxsplit: int = 0) -> list:
     """コマンドを分離する"""
 
     return re.split(SPACE_PATTERN_STR, command.strip().strip('　'), maxsplit)
