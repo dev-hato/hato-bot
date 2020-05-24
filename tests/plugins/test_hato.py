@@ -11,9 +11,9 @@ class TestRespondToWithSpace(unittest.TestCase):
     def test_normal(self):
         func = MagicMock()
         func.__name__ = 'test'
-        wrapper = respond_to_with_space('^amesh kyoko$')
-        wrapper(func)
-        self.assertEqual(PluginsManager.commands['respond_to'][re.compile('^\s*amesh[ 　]kyoko$', 0)], func)
+        respond_to_with_space('^amesh kyoko$')(func)
+        result = PluginsManager.commands['respond_to'][re.compile('^\s*amesh[ 　]kyoko$', 0)]
+        self.assertEqual(result, func)
 
 
 class TestSplitCommand(unittest.TestCase):
