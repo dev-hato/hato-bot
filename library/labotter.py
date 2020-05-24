@@ -118,7 +118,6 @@ def labo_rida(user_id) -> Tuple[bool, str, int, int]:
 
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
     dt_now = datetime.datetime.now()
-    dt = 0
     diff_time = 0
     min_sum = 0
     end_time = dt_now.strftime('%Y-%m-%d %H:%M:%S')
