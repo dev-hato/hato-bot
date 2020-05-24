@@ -42,7 +42,7 @@ class CreateEnvDatabase:
         self.conn.close()
 
 
-def create_table():
+def create_table() -> None:
     """テーブルを作成する"""
 
     with CreateEnvDatabase() as _db:
