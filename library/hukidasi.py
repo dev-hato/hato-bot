@@ -11,7 +11,7 @@ import unicodedata
 # https://github.com/koluku/sudden-death/blob/master/LICENSE
 
 
-def text_length_list(text: str) -> list:
+def text_length_list(text: list) -> list:
     """
     各行で何文字あるかリストで返す
     """
@@ -41,8 +41,8 @@ def generator(msg: str) -> str:
     ￣^Y^Y^Y^Y^Y^Y￣
     を作る
     """
-    msg = msg.split('\n')
-    msg_length_list = text_length_list(msg)
+    msg_list = msg.split('\n')
+    msg_length_list = text_length_list(msg_list)
     max_line_length = max(msg_length_list)
     half_max_line_length = max_line_length // 2
     generating = '＿'
