@@ -1,5 +1,7 @@
 import pg8000
 import datetime
+from typing import Tuple
+
 import slackbot_settings as conf
 
 
@@ -21,14 +23,14 @@ class LabotterDatabase:
     def __enter__(self):
         return self
 
-    def check_exist_id(self, id):
+    def check_exist_id(self, id: str) -> int:
         with self.conn.cursor() as cursor:
             cursor.execute(
                 "SELECT COUNT(*) FROM labotter WHERE user_name = ?;", (id,))
             row = int(cursor.fetchone()[0])
             return row
 
-    def check_lab_in_flag(self, id):
+    def check_lab_in_flag(self, id: str) -> bool:
         lab_in_flag = False
         with self.conn.cursor() as cursor:
             cursor.execute(
@@ -37,7 +39,7 @@ class LabotterDatabase:
 
         return lab_in_flag
 
-    def create_labo_row(self, id):
+    def create_labo_row(self, id: str) -> bool:
         c_lab_row_flag = True
         with self.conn.cursor() as cursor:
             try:
@@ -50,7 +52,7 @@ class LabotterDatabase:
 
         return c_lab_row_flag
 
-    def registory_labo_in(self, id, start_time):
+    def registory_labo_in(self, id: str, start_time: str) -> bool:
         r_lab_in_flag = True
         with self.conn.cursor() as cursor:
             try:
@@ -65,7 +67,7 @@ class LabotterDatabase:
 
         return r_lab_in_flag
 
-    def registory_labo_rida(self, id, end_time, add_sum):
+    def registory_labo_rida(self, id: str, end_time: str, add_sum: int) -> bool:
         r_lab_rida_flag = True
         with self.conn.cursor() as cursor:
             try:
@@ -81,7 +83,7 @@ class LabotterDatabase:
 
         return r_lab_rida_flag
 
-    def get_labo_in_time_and_sum_time(self, id):
+    def get_labo_in_time_and_sum_time(self, id: str) -> Tuple[str, int]:
         labo_in_time = None
         with self.conn.cursor() as cursor:
             cursor.execute(
@@ -93,7 +95,7 @@ class LabotterDatabase:
         self.conn.close()
 
 
-def labo_in(user_id) -> str:
+def labo_in(user_id: str) -> Tuple[bool, str]:
     """らぼいん処理"""
 
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
@@ -111,12 +113,11 @@ def labo_in(user_id) -> str:
     return success_flag, start_time
 
 
-def labo_rida(user_id) -> str:
+def labo_rida(user_id: str) -> Tuple[bool, str, int, int]:
     """らぼりだ処理"""
 
     success_flag = False  # 登録処理管理用のフラグ。成功したらTrueにする
     dt_now = datetime.datetime.now()
-    dt = 0
     diff_time = 0
     min_sum = 0
     end_time = dt_now.strftime('%Y-%m-%d %H:%M:%S')
