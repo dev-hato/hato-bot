@@ -46,7 +46,7 @@ class VocabularyDatabase:
 
         return results
 
-    def add_word(self, word) -> str:
+    def add_word(self, word: str) -> None:
         """パワーワードをDBに登録する"""
 
         with self.conn.cursor() as cursor:
@@ -57,7 +57,7 @@ class VocabularyDatabase:
             except:
                 print('Can not execute sql(add).')
 
-    def delete_word(self, id) -> int:
+    def delete_word(self, id: int) -> None:
         """指定したidのパワーワードをDBから削除する"""
 
         with self.conn.cursor() as cursor:
@@ -94,14 +94,14 @@ def get_vocabularys():
         return "登録されている単語はないっぽ！"
 
 
-def add_vocabulary(msg) -> str:
+def add_vocabulary(msg: str) -> None:
     """追加する"""
 
     with VocabularyDatabase() as vd:
         vd.add_word(msg)
 
 
-def show_vocabulary(id) -> int:
+def show_vocabulary(id: int) -> str:
     """指定したものを表示する"""
 
     slack_msg = "該当する番号は見つからなかったっぽ!"
@@ -133,7 +133,7 @@ def show_random_vocabulary() -> str:
     return slack_msg
 
 
-def delete_vocabulary(id) -> int:
+def delete_vocabulary(id: int) -> str:
     """削除する"""
 
     slack_msg = "該当する番号は見つからなかったっぽ!"

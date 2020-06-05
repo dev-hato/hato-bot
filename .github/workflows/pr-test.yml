@@ -114,6 +114,42 @@ jobs:
         run: |
           pipenv run python -m unittest
 
+  # 型ヒントのチェックを行う
+  pr-type-hint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: pipenv cache
+        uses: actions/cache@v1
+        with:
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ~/.cache/pipenv
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev
+      - name: Check type hints
+        run: |
+          pipenv run mypy .
+
   # 差分があるPythonファイルを取得する
   pr-check-python-files-with-diff:
     runs-on: ubuntu-latest

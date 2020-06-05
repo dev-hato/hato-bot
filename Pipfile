@@ -13,6 +13,7 @@ requests = "==2.23.0"
 slackbot = "==0.5.6"
 Pillow = ">=7.1.2"
 pg8000 = "==1.15.2"
+mypy = "*"
 
 [requires]
 python_version = "3.8"
