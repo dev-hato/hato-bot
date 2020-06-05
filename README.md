@@ -60,3 +60,8 @@
 ## 補足
 
 - コードをformatする場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
+
+## クレジット
+Botで利用しているサービスのクレジットを記載します。
+
+- [Web Services by Yahoo! JAPAN](https://developer.yahoo.co.jp/about)
