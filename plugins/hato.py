@@ -3,8 +3,10 @@
 """hatobotのチャット部分"""
 
 import os
+import re
 from logging import getLogger
 import datetime
+from typing import List, Callable
 import requests
 from slackbot.bot import respond_to
 import slackbot_settings as conf
@@ -19,10 +21,17 @@ logger = getLogger(__name__)
 VERSION = "1.0.3"
 
 
-def respond_to_with_space(matchstr, flags=0):
+def respond_to_with_space(matchstr: str, flags: int = 0) -> Callable[[Callable[[str], None]], Callable[[str], None]]:
     """スペースを削除する"""
 
-    return respond_to(matchstr.replace('^', r'^\s*'), flags)
+    space = ' '
+    return respond_to(matchstr.replace('^', f'^{space}').replace(space, r'\s*'), flags)
+
+
+def split_command(command: str, maxsplit: int = 0) -> List[str]:
+    """コマンドを分離する"""
+
+    return re.split(r'\s+', command.strip().strip('　'), maxsplit)
 
 
 @respond_to_with_space('^help')
@@ -105,7 +114,7 @@ def add_text(message):
     user = message.user['name']
     logger.debug("%s called 'text add'", user)
     text = message.body['text']
-    _, _, word = text.split(' ', 2)
+    _, _, word = split_command(text, 2)
     add_vocabulary(word)
     message.send("覚えたっぽ!")
 
@@ -117,7 +126,7 @@ def show_text(message):
     user = message.user['name']
     logger.debug("%s called 'text show'", user)
     text = message.body['text']
-    _, _, power_word_id = text.split(' ', 2)
+    _, _, power_word_id = split_command(text, 2)
     msg = show_vocabulary(int(power_word_id))
     message.send(msg)
 
@@ -138,7 +147,7 @@ def delete_text(message):
     user = message.user['name']
     logger.debug("%s called 'text delete'", user)
     text = message.body['text']
-    _, _, power_word_id = text.split(' ', 2)
+    _, _, power_word_id = split_command(text, 2)
     msg = delete_vocabulary(int(power_word_id))
     message.send(msg)
 
@@ -150,7 +159,7 @@ def weather(message):
     user = message.user['name']
     logger.debug("%s called 'hato 天気'", user)
     text = message.body['text']
-    _, word = text.split(' ', 1)
+    _, word = split_command(text, 1)
     city_id = get_city_id_from_city_name(word)
     if city_id is None:
         message.send('該当する情報が見つからなかったっぽ！')
@@ -165,7 +174,7 @@ def totuzensi(message):
 
     user = message.user['name']
     text = message.body['text']
-    _, word = text.split(' ', 1)
+    _, word = split_command(text, 1)
     word = hato_ha_karaage(word)
     logger.debug("%s called 'hato >< %s'", user, word)
     word = generator(word)
@@ -210,7 +219,7 @@ def amesh_with_gis(message):
     text = message.body['text']
     logger.debug("%s called 'hato amesh '", user)
     message.send('雨雲状況をお知らせするっぽ！')
-    _, lat, lon = text.split(' ', 2)
+    _, lat, lon = split_command(text, 2)
 
     url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
     req = requests.get(url, stream=True)
