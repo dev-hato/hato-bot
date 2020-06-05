@@ -46,7 +46,7 @@ def create_table() -> None:
     """テーブルを作成する"""
 
     with CreateEnvDatabase() as _db:
-        init_sql = open('setup/pgsql-init/02-init.sql')
+        init_sql = open('setup/pgsql-init/02_init.sql')
         for line in init_sql.readlines():
             _db.execute_sql(line)
 
