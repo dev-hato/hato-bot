@@ -1,3 +1,7 @@
+"""
+初回動かす必要のあるスクリプト
+"""
+
 import pg8000
 import slackbot_settings as conf
 
