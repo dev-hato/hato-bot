@@ -17,7 +17,7 @@ DB_USER = db_auth.username
 DB_PASSWORD = db_auth.password
 DB_PORT = db_auth.port
 DB_NAME = db_auth.path[1:]
-DB_SSL = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+DB_SSL = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 
 # Yahoo APIを用いるためのTokenを指定する。
 YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
