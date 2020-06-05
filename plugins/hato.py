@@ -211,26 +211,7 @@ def amesh(message):
         os.remove(f_name)
 
 
-@respond_to('^amesh kyoto$')
-def amesh_kyoto(message):
-    """京都の天気を表示する"""
-
-    user = message.user['name']
-    logger.debug("%s called 'hato amesh kyoto'", user)
-    message.send('京都の雨雲状況をお知らせするっぽ！')
-
-    url = weather_map_url(conf.YAHOO_API_TOKEN, '34.966944', '135.773056')
-    req = requests.get(url, stream=True)
-    f_name = "amesh.jpg"
-    if req.status_code == 200:
-        with open(f_name, 'wb') as weather_map_file:
-            weather_map_file.write(req.content)
-
-    message.channel.upload_file("amesh", f_name)
-    os.remove(f_name)
-
-
-@respond_to_with_space('^amesh .+ .+')
+@respond_to('^amesh .+ .+')
 def amesh_with_gis(message):
     """位置を指定したameshを表示する"""
 
