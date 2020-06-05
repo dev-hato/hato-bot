@@ -1,10 +1,17 @@
 # coding: utf-8
 
-import requests
+"""
+地震情報
+"""
+
 import json
+import requests
 
 
 def get_quake_list(limit=10):
+    """
+    地震リストを取得
+    """
     flag = False
     data = None
     quake_url = 'https://api.p2pquake.net/v1/human-readable?limit={}'.format(
@@ -14,13 +21,15 @@ def get_quake_list(limit=10):
         flag = True
         data = json.loads(response.text)
         return flag, data
-    else:
-        return flag, data
+    return flag, data
 
 
 def generate_quake_info_for_slack(data, max_cnt=1):
+    """
+    地震情報をslack表示用に加工する
+    """
     cnt = 1
-    msg = '```'
+    msg = '```\n'
     for row in data:
         code = row['code']
         if code == 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
@@ -34,11 +43,15 @@ def generate_quake_info_for_slack(data, max_cnt=1):
             else:
                 sindo /= 10
 
-            msg = msg + \
-                '\n---\n発生時刻: {}\n震源地: {}\nマグニチュード: {}\n最大震度: {}'.format(
-                    time, singenti, magnitude, sindo)
+            msg += '---\n'
+            msg += '発生時刻: {}\n'.format(time)
+            msg += '震源地: {}\n'.format(singenti)
+            msg += 'マグニチュード: {}\n'.format(magnitude)
+            msg += '最大震度: {}\n\n'.format(sindo)
             if max_cnt <= cnt:
                 break
             cnt += 1
-    msg = msg + '\n\n出典: https://www.p2pquake.net/dev/json-api/ \n気象庁HP: https://www.jma.go.jp/jp/quake/```'
+    msg += '出典: https://www.p2pquake.net/dev/json-api/ \n'
+    msg += '気象庁HP: https://www.jma.go.jp/jp/quake/\n'
+    msg += '```\n'
     return msg
