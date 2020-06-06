@@ -3,28 +3,12 @@
 """
 
 import pg8000
-import slackbot_settings as conf
+
+from library.database import Database
 
 
-class VocabularyDatabase:
+class VocabularyDatabase(Database):
     """パワーワードを扱うDBを操作するためのクラス"""
-
-    def __init__(self):
-        try:
-            pg8000.paramstyle = 'qmark'
-            self.conn = pg8000.connect(
-                host=conf.DB_HOST,
-                user=conf.DB_USER,
-                password=conf.DB_PASSWORD,
-                port=conf.DB_PORT,
-                ssl_context=conf.DB_SSL,
-                database=conf.DB_NAME
-            )
-        except pg8000.Error:
-            print('Can not connect to database.')
-
-    def __enter__(self):
-        return self
 
     def get_word_list(self):
         """パワーワードの一覧をDBから取得する"""
@@ -71,9 +55,6 @@ class VocabularyDatabase:
                 self.conn.commit()
             except pg8000.Error:
                 print('Can not execute sql(delete).')
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.conn.close()
 
 
 def get_vocabularys():
