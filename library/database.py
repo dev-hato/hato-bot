@@ -29,3 +29,15 @@ class Database:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
+
+    def execute_sql(self, sql: str) -> None:
+        """SQLを実行する"""
+
+        with self.conn.cursor() as cursor:
+            try:
+                cursor.execute(sql)
+                self.conn.commit()
+                print('Execute: {}'.format(sql))
+            except Exception as _e:
+                print('Can not execute sql(create_table).')
+                raise _e
