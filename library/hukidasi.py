@@ -4,6 +4,7 @@
 吹き出し用にtextを装飾する
 """
 
+from typing import List
 import unicodedata
 # Sudden Death(元にしたコードのライセンスは以下の通り)
 # MIT License
@@ -11,7 +12,7 @@ import unicodedata
 # https://github.com/koluku/sudden-death/blob/master/LICENSE
 
 
-def text_length_list(text: list) -> list:
+def text_length_list(text: List[str]) -> List[int]:
     """
     各行で何文字あるかリストで返す
     """
