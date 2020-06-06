@@ -6,30 +6,13 @@ import datetime
 from typing import Tuple
 import pg8000
 
-import slackbot_settings as conf
+from library.database import Database
 
 
-class LabotterDatabase:
+class LabotterDatabase(Database):
     """
     らぼったーのDB処理
     """
-
-    def __init__(self):
-        try:
-            pg8000.paramstyle = 'qmark'
-            self.conn = pg8000.connect(
-                host=conf.DB_HOST,
-                user=conf.DB_USER,
-                password=conf.DB_PASSWORD,
-                port=conf.DB_PORT,
-                ssl_context=conf.DB_SSL,
-                database=conf.DB_NAME
-            )
-        except pg8000.Error:
-            print('Can not connect to database.')
-
-    def __enter__(self):
-        return self
 
     def check_exist_user_name(self, user_name: str) -> bool:
         """
@@ -120,9 +103,6 @@ class LabotterDatabase:
                 "SELECT lab_in, min_sum FROM labotter WHERE user_name = ?;", (user_name,))
             labo_in_time, min_sum = cursor.fetchone()
         return labo_in_time, min_sum
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.conn.close()
 
 
 def labo_in(user_name: str) -> Tuple[bool, str]:
