@@ -1,4 +1,9 @@
 # coding: utf-8
+
+"""
+env情報ファイル
+"""
+
 import os
 import ssl
 import urllib.parse
