@@ -45,11 +45,9 @@ class CreateEnvDatabase:
 def create_table() -> None:
     """テーブルを作成する"""
 
-    with CreateEnvDatabase() as _db:
-        _db.execute_sql(
-            "CREATE TABLE IF NOT EXISTS vocabulary(no serial UNIQUE, word text);")
-        _db.execute_sql(
-            "CREATE TABLE IF NOT EXISTS labotter(user_name text UNIQUE, lab_in_flag int, lab_in timestamp, lab_rida timestamp, min_sum int);")
+    with CreateEnvDatabase() as _db, open('setup/pgsql-init/02_init.sql') as init_sql:
+        for line in init_sql.readlines():
+            _db.execute_sql(line)
 
 
 def main():
