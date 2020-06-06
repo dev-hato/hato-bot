@@ -50,19 +50,16 @@
 
     ```env
     SLACKBOT_API_TOKEN=xoxb_xxxxxxxxx
-    DATABASE_URL=postgres://postgres:password@localhost:5432/
+    DATABASE_URL=postgres://postgres:password@postgres:5432/
     YAHOO_API_TOKEN=xxxxxxxxx
     ```
-
-4. PostgreSQLを起動します。(Dockerの場合は以下のコマンドを実行します。)
+4. docker-composeで全てを起動します。
 
     ```sh
     cd ./setup
     docker-compose up -d
     cd ..
     ```
-
-5. `pipenv run python ./run.py` を実行します。
 
 ## 補足
 
