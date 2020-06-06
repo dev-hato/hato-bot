@@ -38,14 +38,3 @@ def get_weather(city_id: str) -> str:
         return data['description']['text']
     data = "天気情報の取得に失敗 code:" + str(response.status_code)
     return data
-
-
-def main():
-    """
-    debug用？
-    """
-    print('Hello World')
-
-
-if __name__ == '__main__':
-    main()
