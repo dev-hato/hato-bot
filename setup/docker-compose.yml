@@ -9,3 +9,11 @@ services:
       - ./pgsql-init:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
+  hato-bot:
+    build:
+      dockerfile: ./setup/hato-bot/Dockerfile
+      context: ../
+    env_file:
+      - ../.env
+    depends_on:
+      - postgres
