@@ -63,8 +63,8 @@ def earth_quake(message):
     """地震 地震情報を取得する"""
 
     msg = "地震情報を取得できなかったっぽ!"
-    result, data = get_quake_list()
-    if result:
+    data = get_quake_list()
+    if data is not None:
         msg = "地震情報を取得したっぽ!\n"
         msg = msg + generate_quake_info_for_slack(data, 3)
     message.send(msg)

@@ -5,33 +5,31 @@
 """
 
 import json
+from typing import Optional, Tuple, Any
 import requests
 
 
-def get_quake_list(limit=10):
+def get_quake_list(limit: int = 10) -> Optional[Any]:
     """
     地震リストを取得
     """
-    flag = False
-    data = None
     quake_url = 'https://api.p2pquake.net/v1/human-readable?limit={}'.format(
         limit)
     response = requests.get(quake_url)
     if response.status_code == 200:
-        flag = True
         data = json.loads(response.text)
-        return flag, data
-    return flag, data
+        return data
+    return None
 
 
-def generate_quake_info_for_slack(data, max_cnt=1):
+def generate_quake_info_for_slack(data: Any, max_cnt: int = 1) -> str:
     """
     地震情報をslack表示用に加工する
     """
     cnt = 1
-    msg = '```\n'
+    msg: str = '```\n'
     for row in data:
-        code = row['code']
+        code = int(row['code'])
         if code == 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
             time = row['earthquake']['time']
             singenti = row['earthquake']['hypocenter']['name']
