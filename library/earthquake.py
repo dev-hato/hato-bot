@@ -5,7 +5,7 @@
 """
 
 import json
-from typing import Optional, Tuple, Any
+from typing import Optional, Any
 import requests
 
 
