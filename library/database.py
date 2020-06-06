@@ -2,7 +2,7 @@
 DBを操作するためのベースクラス
 """
 
-import pg8000
+import psycopg2
 
 import slackbot_settings as conf
 
@@ -12,16 +12,8 @@ class Database:
 
     def __init__(self):
         try:
-            pg8000.paramstyle = 'qmark'
-            self.conn = pg8000.connect(
-                host=conf.DB_HOST,
-                user=conf.DB_USER,
-                password=conf.DB_PASSWORD,
-                port=conf.DB_PORT,
-                ssl_context=conf.DB_SSL,
-                database=conf.DB_NAME
-            )
-        except pg8000.Error:
+            self.conn = psycopg2.connect(conf.DB_URL, sslmode='require')
+        except psycopg2.Error:
             print('Can not connect to database.')
 
     def __enter__(self):
