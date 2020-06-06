@@ -16,7 +16,8 @@ load_dotenv(find_dotenv())
 API_TOKEN = str(os.environ['SLACKBOT_API_TOKEN'])
 # データベースの接続情報(URL形式)
 # postgres://user:password@host:port/dbname
-db_auth = urllib.parse.urlparse(str(os.environ['DATABASE_URL']))
+DB_URL = str(os.environ['DATABASE_URL'])
+db_auth = urllib.parse.urlparse(DB_URL)
 DB_HOST = db_auth.hostname
 DB_USER = db_auth.username
 DB_PASSWORD = db_auth.password
