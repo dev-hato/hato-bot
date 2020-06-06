@@ -16,8 +16,8 @@ class TestRespondToWithSpace(unittest.TestCase):
     スペースが含まれているときのテスト
     """
     @staticmethod
-    def func():
-        """ init """
+    def func() -> MagicMock:
+        """ mockを返す """
         func = MagicMock()
         func.__name__ = 'test'
         return func
