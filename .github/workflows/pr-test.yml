@@ -194,6 +194,7 @@ jobs:
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::$result"
+          echo "$result"
           true
         continue-on-error: true
       # lint結果をコメントに残す
