@@ -4,7 +4,7 @@
 
 import datetime
 from typing import Tuple
-import pg8000
+import psycopg2
 
 from library.database import Database
 
@@ -20,7 +20,7 @@ class LabotterDatabase(Database):
         """
         with self.conn.cursor() as cursor:
             cursor.execute(
-                "SELECT COUNT(*) FROM labotter WHERE user_name = ?;", (user_name,))
+                "SELECT COUNT(*) FROM labotter WHERE user_name = %s;", (user_name,))
             row = int(cursor.fetchone()[0])
             return row != 0
 
@@ -31,10 +31,10 @@ class LabotterDatabase(Database):
         lab_in_flag = False
         with self.conn.cursor() as cursor:
             cursor.execute(
-                "SELECT lab_in_flag FROM labotter WHERE user_name = ?;", (user_name,))
+                "SELECT lab_in_flag FROM labotter WHERE user_name = %s;", (user_name,))
             lab_in_flag = cursor.fetchone()[0]
 
-        return lab_in_flag
+        return bool(lab_in_flag)
 
     def create_labo_row(self, user_name: str) -> bool:
         """
@@ -47,10 +47,10 @@ class LabotterDatabase(Database):
                     """
                     INSERT INTO
                     labotter(user_name, lab_in_flag, lab_in, lab_rida, min_sum)
-                    VALUES (?, '0', null, null, '0');
+                    VALUES (%s, '0', null, null, '0');
                     """, (user_name,))
                 self.conn.commit()
-            except pg8000.Error:
+            except psycopg2.Error:
                 c_lab_row_flag = False
                 print('Can not execute sql(add).')
 
@@ -65,10 +65,10 @@ class LabotterDatabase(Database):
             try:
                 cursor.execute("UPDATE labotter SET \
                 lab_in_flag = '1', \
-                lab_in = ? \
-                WHERE user_name = ?;", (start_time, user_name,))
+                lab_in = %s \
+                WHERE user_name = %s;", (start_time, user_name,))
                 self.conn.commit()
-            except pg8000.Error:
+            except psycopg2.Error:
                 r_lab_in_flag = False
                 print('Can not execute sql(labo_in).')
 
@@ -83,11 +83,11 @@ class LabotterDatabase(Database):
             try:
                 cursor.execute("UPDATE labotter SET \
                 lab_in_flag = '0', \
-                min_sum = ?, \
-                lab_rida = ? \
-                WHERE user_name = ?;", (add_sum, end_time, user_name,))
+                min_sum = %s, \
+                lab_rida = %s \
+                WHERE user_name = %s;", (add_sum, end_time, user_name,))
                 self.conn.commit()
-            except pg8000.Error:
+            except psycopg2.Error:
                 r_lab_rida_flag = False
                 print('Can not execute sql(labo_rida).')
 
@@ -100,7 +100,7 @@ class LabotterDatabase(Database):
         labo_in_time = None
         with self.conn.cursor() as cursor:
             cursor.execute(
-                "SELECT lab_in, min_sum FROM labotter WHERE user_name = ?;", (user_name,))
+                "SELECT lab_in, min_sum FROM labotter WHERE user_name = %s;", (user_name,))
             labo_in_time, min_sum = cursor.fetchone()
         return labo_in_time, min_sum
 
@@ -136,8 +136,9 @@ def labo_rida(user_name: str) -> Tuple[bool, str, int, int]:
         # 初回登録時の処理
         if not lab.check_exist_user_name(user_name):
             lab.create_labo_row(user_name)
+
         # らぼいん中ならば処理をする
-        if not lab.check_lab_in_flag(user_name):
+        if lab.check_lab_in_flag(user_name):
             labo_in_time, min_sum = lab.get_labo_in_time_and_sum_time(
                 user_name)
             start_time = datetime.datetime.strptime(
