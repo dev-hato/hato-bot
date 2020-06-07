@@ -190,11 +190,11 @@ jobs:
         id: lint
         run: |
           result=$(pipenv run pylint --rcfile=./.pylintrc $(find . -iname "*.py") 2>&1) || true
+          echo "$result"
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::$result"
-          echo -e "$result"
           true
         continue-on-error: true
       # lint結果をコメントに残す
