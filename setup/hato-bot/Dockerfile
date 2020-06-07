@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN pip install pipenv --no-cache-dir && \
-    pipenv install --system --deploy && \
-    pip uninstall -y pipenv virtualenv-clone viertualenv
+    pipenv install
 
 CMD ["sh", "./setup/hato-bot/entrypoint.sh"]
