@@ -56,8 +56,7 @@ def on_app_mention(event_data):
     channel = event_data["event"]["channel"]
     user = event_data["event"]["user"]
 
-    space = ' '
-    message = message_raw.replace('^', f'^{space}').replace(space, r'\s*')
+    message = hato.respond_to_with_space(message_raw)
 
     if re.match('^help', message):
         hato.help_message(SlackClient(channel, user))
