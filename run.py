@@ -42,6 +42,10 @@ class SlackClient:
 
 @slack_events_adapter.on("app_mention")
 def on_app_mention(event_data):
+    """
+    appにメンションが送られたらここが呼ばれる
+    """
+
     message_raw = event_data["event"]["text"]
     channel = event_data["event"]["channel"]
 
