@@ -33,7 +33,7 @@ class SlackClient:
         self.slack_channel = channel
         self.send_user = send_user
 
-    def send(self, message):
+    def post(self, message):
         self.client.chat_postMessage(
             channel=self.slack_channel,
             text=message
