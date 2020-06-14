@@ -42,7 +42,7 @@ class SlackClient:
     def get_send_user(self):
         return self.send_user
 
-    def type(self):
+    def get_type(self):
         return 'slack'
 
 
