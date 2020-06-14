@@ -4,8 +4,12 @@
   "website": "https://github.com/nakkaa/hato-bot",
   "repository": "https://github.com/nakkaa/hato-bot",
   "env": {
-    "SLACKBOT_API_TOKEN": {
+    "SLACK_API_TOKEN": {
       "description": "Set your slack API Token.",
+      "value": ""
+    },
+    "SLACK_SIGNING_SECRET": {
+      "description": "Set your slack signing secret.",
       "value": ""
     },
     "YAHOO_API_TOKEN": {
