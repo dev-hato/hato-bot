@@ -15,6 +15,7 @@ from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabular
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
+from library.clientclass import AbstractClient
 
 logger = getLogger(__name__)
 VERSION = "1.0.4"
@@ -33,7 +34,7 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
     return re.split(r'\s+', command.strip().strip('　'), maxsplit)
 
 
-def help_message(client):
+def help_message(client: AbstractClient):
     """「hato help」を見つけたら、使い方を表示する"""
 
     logger.debug("%s called 'hato help'", client.get_send_user())
