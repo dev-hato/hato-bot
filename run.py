@@ -52,13 +52,11 @@ def on_app_mention(event_data):
     appにメンションが送られたらここが呼ばれる
     """
 
-    message_raw = event_data["event"]["text"]
+    message = event_data["event"]["text"]
     channel = event_data["event"]["channel"]
     user = event_data["event"]["user"]
 
-    message = hato.respond_to_with_space(message_raw)
-
-    if re.match('^help', message):
+    if re.match(hato.respond_to_with_space('^help'), message):
         hato.help_message(SlackClient(channel, user))
 
     print(message)
