@@ -25,7 +25,7 @@ DB_PASSWORD = db_auth.password
 DB_PORT = db_auth.port
 DB_NAME = db_auth.path[1:]
 DB_SSL = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-PORT = int(os.environ['PORT'] | '3000')
+PORT = int(os.environ('PORT', '3000'))
 
 # Yahoo APIを用いるためのTokenを指定する。
 YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
