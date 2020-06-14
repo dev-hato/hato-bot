@@ -8,10 +8,9 @@ import logging
 import logging.config
 import re
 from slackeventsapi import SlackEventAdapter
-from slack import WebClient
 import slackbot_settings as conf
 import plugins.hato as hato
-
+from library.clientclass import SlackClient
 
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
@@ -25,31 +24,6 @@ log_format_config = {
 logging.basicConfig(**log_format_config)
 logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
     logging.WARNING)
-
-
-class SlackClient:
-    """
-    Slackを操作するClient
-    """
-    def __init__(self, channel, send_user):
-        self.client = WebClient(token=conf.SLACK_API_TOKEN)
-        self.slack_channel = channel
-        self.send_user = send_user
-
-    def post(self, message):
-        """Slackにポストする"""
-        self.client.chat_postMessage(
-            channel=self.slack_channel,
-            text=message
-        )
-
-    def get_send_user(self):
-        """botを呼び出したユーザーを返す"""
-        return self.send_user
-
-    def get_type(self):
-        """slack"""
-        return 'slack'
 
 
 @slack_events_adapter.on("app_mention")
