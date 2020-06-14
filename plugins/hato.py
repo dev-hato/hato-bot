@@ -26,11 +26,11 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
     return re.split(r'\s+', command.strip().strip('　'), maxsplit)
 
 
-def help_message(message):
+def help_message(client):
     """「hato help」を見つけたら、使い方を表示する"""
 
-    user = message.user['name']
-    logger.debug("%s called 'hato help'", user)
+    logger.debug("%s called 'hato help'", client.get_send_user())
+    logger.debug("%s app called 'hato help'", client.type())
     str_help = '\n使い方\n'\
         '```'\
         '天気 [text] ... 地名の天気予報を表示する。\n'\
@@ -46,7 +46,7 @@ def help_message(message):
         '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
         'version ... バージョン情報を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
-    message.send(str_help)
+    client.send(str_help)
 
 
 # @respond_to_with_space('^eq$|^地震$')
