@@ -13,7 +13,8 @@ from dotenv import load_dotenv, find_dotenv
 # .envファイルがあれば読み込む。存在しなければ環境変数から読み込む。
 load_dotenv(find_dotenv())
 # SlackのAPI Tokenを指定する。
-API_TOKEN = str(os.environ['SLACKBOT_API_TOKEN'])
+SLACK_API_TOKEN = str(os.environ['SLACK_API_TOKEN'])
+SLACK_SIGNING_SECRET = os.environ["SLACK_SIGNING_SECRET"]
 # データベースの接続情報(URL形式)
 # postgres://user:password@host:port/dbname
 DB_URL = str(os.environ['DATABASE_URL'])
