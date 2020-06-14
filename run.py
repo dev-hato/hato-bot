@@ -31,6 +31,7 @@ class SlackClient:
     """
     Slackを操作するClient
     """
+
     def __init__(self, channel, send_user):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
