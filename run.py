@@ -54,4 +54,4 @@ def on_app_mention(event_data):
     print(message)
 
 
-slack_events_adapter.start(port=3000)
+slack_events_adapter.start(port=conf.PORT)
