@@ -34,9 +34,8 @@ class SlackClient:
         self.send_user = send_user
 
     def send(self, message):
-        self.client.chat_postEphemeral(
+        self.client.chat_postMessage(
             channel=self.slack_channel,
-            user="hato",
             text=message
         )
 
