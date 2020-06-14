@@ -28,9 +28,10 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
 
 
 class SlackClient:
-    def __init__(self, channel):
+    def __init__(self, channel, send_user):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
+        self.send_user = send_user
 
     def send(self, message):
         self.client.chat_postEphemeral(
@@ -38,6 +39,12 @@ class SlackClient:
             user="hato",
             text=message
         )
+
+    def get_send_user(self):
+        return self.send_user
+
+    def type(self):
+        return 'slack'
 
 
 @slack_events_adapter.on("app_mention")
@@ -48,12 +55,13 @@ def on_app_mention(event_data):
 
     message_raw = event_data["event"]["text"]
     channel = event_data["event"]["channel"]
+    user = event_data["event"]["user"]
 
     space = ' '
     message = message_raw.replace('^', f'^{space}').replace(space, r'\s*')
 
     if re.match('^help', message):
-        hato.help_message(SlackClient(channel))
+        hato.help_message(SlackClient(channel, user))
 
     print(message)
 
