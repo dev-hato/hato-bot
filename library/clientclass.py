@@ -32,6 +32,11 @@ class BaseClient(metaclass=ABCMeta):
         """
         pass
 
+    @abstractmethod
+    def upload(self, file, message):
+        """ファイルを投稿する"""
+        pass
+
     def get_type(self) -> str:
         """インスタンスの種類を返す"""
         return 'test'
@@ -54,6 +59,13 @@ class SlackClient(BaseClient):
         self.client.chat_postMessage(
             channel=self.slack_channel,
             text=message
+        )
+
+    def upload(self, file, message):
+        """ファイルを投稿する"""
+        self.client.files_upload(
+            file=file,
+            content=message
         )
 
     def get_send_user(self):
