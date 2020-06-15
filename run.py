@@ -11,6 +11,7 @@ from slackeventsapi import SlackEventAdapter
 import slackbot_settings as conf
 import plugins.hato as hato
 from library.clientclass import SlackClient, BaseClient
+from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from typing import Callable, List
 
 slack_events_adapter = SlackEventAdapter(
@@ -29,8 +30,11 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
 
 def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
     if len(messages) > 0 and messages[0]['type'] == 'text':
-        if messages[0]['text'].strip().startswith('help'):
+        message = messages[0]['text'].strip()
+        if message.startswith('help'):
             return hato.help_message
+        if message.startswith('eq') or message.startswith('地震'):
+            return hato.earth_quake(get_quake_list())
 
     return hato.default_action
 
@@ -53,7 +57,7 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                    block_element_elements[0]['user_id'] in authed_users:
+                        block_element_elements[0]['user_id'] in authed_users:
                         analyze_message(block_element_elements[1:]
                                         )(SlackClient(channel, block_element_elements[0]['user_id']))
 
