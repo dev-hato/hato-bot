@@ -16,6 +16,7 @@ from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
+from typing import Optional, Any, Callable
 
 logger = getLogger(__name__)
 VERSION = "1.1.0"
@@ -60,18 +61,19 @@ def help_message(client: BaseClient):
 def default_action(client: BaseClient):
     client.post(conf.DEFAULT_REPLY)
 
-# @respond_to_with_space('^eq$|^地震$')
 
-
-def earth_quake(message):
+def earth_quake(data: Optional[Any]) -> Callable[[BaseClient], None]:
     """地震 地震情報を取得する"""
 
     msg = "地震情報を取得できなかったっぽ!"
-    data = get_quake_list()
     if data is not None:
         msg = "地震情報を取得したっぽ!\n"
         msg = msg + generate_quake_info_for_slack(data, 3)
-    message.send(msg)
+
+    return (
+        lambda client:
+            client.post(msg)
+    )
 
 
 # @respond_to_with_space('^in$')
