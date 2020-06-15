@@ -16,15 +16,17 @@ from typing import Callable, List
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
 
-log_format_config = {
-    'format': '[%(asctime)s] %(message)s',
-    'datefmt': '%Y-%m-%d %H:%M:%S',
-    'level': logging.DEBUG,
-    'stream': sys.stdout,
-}
-logging.basicConfig(**log_format_config)
-logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
-    logging.WARNING)
+
+def __init__():
+    log_format_config = {
+        'format': '[%(asctime)s] %(message)s',
+        'datefmt': '%Y-%m-%d %H:%M:%S',
+        'level': logging.DEBUG,
+        'stream': sys.stdout,
+    }
+    logging.basicConfig(**log_format_config)
+    logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
+        logging.WARNING)
 
 
 def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient], None]:
@@ -71,7 +73,7 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                    block_element_elements[0]['user_id'] in authed_users:
+                        block_element_elements[0]['user_id'] in authed_users:
                         analyze_message(block_element_elements[1:], user
                                         )(SlackClient(channel, block_element_elements[0]['user_id']))
 
