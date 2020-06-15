@@ -125,14 +125,12 @@ def add_text(message: str):
     return ret
 
 
-def show_text(message: str):
+def show_text(power_word_id: str):
     """指定した番号のパワーワードを表示する"""
 
     def ret(client: BaseClient):
         user = client.get_send_user_name()
         logger.debug("%s called 'text show'", user)
-        text = message
-        _, _, power_word_id = split_command(text, 2)
         msg = show_vocabulary(int(power_word_id))
         client.post(msg)
     return ret
@@ -146,33 +144,30 @@ def show_random_text(client: BaseClient):
     client.post(msg)
 
 
-def delete_text(message: str):
+def delete_text(power_word_id: str):
     """指定した番号のパワーワードを削除する"""
 
     def ret(client: BaseClient):
         user = client.get_send_user_name()
         logger.debug("%s called 'text delete'", user)
-        text = message
-        _, _, power_word_id = split_command(text, 2)
         msg = delete_vocabulary(int(power_word_id))
         client.post(msg)
     return ret
 
 
-# @respond_to_with_space('^天気 .+')
-def weather(message):
+def weather(place: str):
     """指定した都市の天気を表示する"""
 
-    user = message.user['name']
-    logger.debug("%s called 'hato 天気'", user)
-    text = message.body['text']
-    _, word = split_command(text, 1)
-    city_id = get_city_id_from_city_name(word)
-    if city_id is None:
-        message.send('該当する情報が見つからなかったっぽ！')
-    else:
-        weather_info = get_weather(city_id)
-        message.send('```' + weather_info + '```')
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        logger.debug("%s called 'hato 天気'", user)
+        city_id = get_city_id_from_city_name(place)
+        if city_id is None:
+            client.post('該当する情報が見つからなかったっぽ！')
+        else:
+            weather_info = get_weather(city_id)
+            client.post('```' + weather_info + '```')
+    return ret
 
 
 # @respond_to_with_space('^&gt;&lt; .+')

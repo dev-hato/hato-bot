@@ -50,6 +50,8 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
             return hato.delete_text(message[len('text delete '):])
         if message.startswith('text random') or message.startswith('text'):
             return hato.show_random_text
+        if message.startswith('天気'):
+            return hato.weather((message[len('天気'):]).stripe())
 
     return hato.default_action
 
