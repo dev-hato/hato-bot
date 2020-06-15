@@ -37,7 +37,7 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
         if message.startswith('in'):
             return hato.labotter_in(user_id)
         if message.startswith('rida'):
-            return hato, labotter_rida(user_id)
+            return hato.labotter_rida(user_id)
 
     return hato.default_action
 
