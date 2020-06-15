@@ -29,7 +29,7 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
 
 def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
     if len(messages) > 0 and messages[0]['type'] == 'text':
-        if messages[0]['text'].strip().startsWith('help'):
+        if messages[0]['text'].strip().startswith('help'):
             return hato.help_message
 
     return hato.no_action
