@@ -177,6 +177,7 @@ def totuzensi(message: str):
         logger.debug("%s called 'hato >< %s'", user, word)
         print(word)
         msg = generator(word)
+        print(msg)
         client.post(msg)
     return ret
 
