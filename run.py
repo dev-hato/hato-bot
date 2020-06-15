@@ -28,6 +28,7 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
 
 
 def analyze_message(message: str) -> Callable[[BaseClient], None]:
+    print(message)
     if re.match(hato.respond_to_with_space('^help'), message):
         return hato.help_message
     else:
