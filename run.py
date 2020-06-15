@@ -10,7 +10,8 @@ import re
 from slackeventsapi import SlackEventAdapter
 import slackbot_settings as conf
 import plugins.hato as hato
-from library.clientclass import SlackClient
+from library.clientclass import SlackClient, BaseClient
+from typing import Callable
 
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
@@ -26,6 +27,13 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
     logging.WARNING)
 
 
+def analyze_message(message: str) -> Callable[BaseClient, ]:
+    if re.match(hato.respond_to_with_space('^help'), message):
+        return hato.help_message
+    else:
+        return hato.no_action
+
+
 @slack_events_adapter.on("app_mention")
 def on_app_mention(event_data):
     """
@@ -36,8 +44,8 @@ def on_app_mention(event_data):
     channel = event_data["event"]["channel"]
     user = event_data["event"]["user"]
 
-    if re.match(hato.respond_to_with_space('^help'), message):
-        hato.help_message(SlackClient(channel, user))
+    analyze_message(message.replace('<@'+user+'>', '').strip()
+                    )(SlackClient(channel, user))
 
     print(message)
 
