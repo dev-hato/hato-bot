@@ -14,7 +14,8 @@ class TestRespondToWithSpace(unittest.TestCase):
 
     def test_normal(self):
         """ 通常パターン """
-        self.assertEqual(respond_to_with_space(r'^amesh kyoko$'), r'^\s*amesh\s*kyoko$')
+        self.assertEqual(respond_to_with_space(r'^amesh kyoko$'),
+                         r'^\s*amesh\s*kyoko$')
 
 
 class TestSplitCommand(unittest.TestCase):
