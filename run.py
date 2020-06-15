@@ -47,16 +47,19 @@ def on_app_mention(event_data):
     authed_users = event_data['authed_users']
 
     for block in blocks:
+        print(block['type'])
         if block['type'] == 'rich_text':
             block_elements = block['elements']
             for block_element in block_elements:
+                print(block_element['type'])
                 if block_element['type'] == 'rich_text_section':
                     block_element_elements = block_element['elements']
+                    print(len(block_element_elements))
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
                     block_element_elements[0]['user_id'] in authed_users:
                         analyze_message(block_element_elements[1:]
-                                        )(SlackClient(channel, user))
+                                        )(SlackClient(channel, block_element_elements[0]['user_id']))
 
     print(event_data)
 
