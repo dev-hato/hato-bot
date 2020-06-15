@@ -57,8 +57,8 @@ def help_message(client: BaseClient):
     client.post(str_help)
 
 
-def no_action(_: BaseClient):
-    pass
+def default_action(client: BaseClient):
+    client.post(conf.DEFAULT_REPLY)
 
 # @respond_to_with_space('^eq$|^地震$')
 
