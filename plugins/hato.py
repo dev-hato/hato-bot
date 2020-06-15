@@ -175,6 +175,7 @@ def totuzensi(message: str):
         user = client.get_send_user_name()
         word = hato_ha_karaage(message)
         logger.debug("%s called 'hato >< %s'", user, word)
+        print(word)
         msg = generator(word)
         client.post(msg)
     return ret
