@@ -11,7 +11,6 @@ from slackeventsapi import SlackEventAdapter
 import slackbot_settings as conf
 import plugins.hato as hato
 from library.clientclass import SlackClient, BaseClient
-from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from typing import Callable, List
 
 slack_events_adapter = SlackEventAdapter(
@@ -34,7 +33,7 @@ def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
         if message.startswith('help'):
             return hato.help_message
         if message.startswith('eq') or message.startswith('地震'):
-            return hato.earth_quake(get_quake_list())
+            return hato.earth_quake
 
     return hato.default_action
 
