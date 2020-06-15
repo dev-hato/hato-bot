@@ -8,7 +8,7 @@ from slack import WebClient
 import slackbot_settings as conf
 
 
-class AbstractClient(object, metaclass=ABCMeta):
+class BaseClient(metaclass=ABCMeta):
     """
     client用の基底クラス
     """
@@ -30,7 +30,7 @@ class AbstractClient(object, metaclass=ABCMeta):
         return 'test'
 
 
-class SlackClient(AbstractClient):
+class SlackClient(BaseClient):
     """
     Slackを操作するClient
     """
