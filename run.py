@@ -28,8 +28,8 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
 
 
 def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
-    if len(messages) > 0:
-        if messages[0]['type'] == 'text' and messages[0]['text'] == 'help':
+    if len(messages) > 0 and messages[0]['type'] == 'text':
+        if messages[0]['text'].strip().startsWith('help'):
             return hato.help_message
 
     return hato.no_action
@@ -42,19 +42,15 @@ def on_app_mention(event_data):
     """
 
     channel = event_data["event"]["channel"]
-    user = event_data["event"]["user"]
     blocks = event_data['event']['blocks']
     authed_users = event_data['authed_users']
 
     for block in blocks:
-        print(block['type'])
         if block['type'] == 'rich_text':
             block_elements = block['elements']
             for block_element in block_elements:
-                print(block_element['type'])
                 if block_element['type'] == 'rich_text_section':
                     block_element_elements = block_element['elements']
-                    print(len(block_element_elements))
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
                     block_element_elements[0]['user_id'] in authed_users:
