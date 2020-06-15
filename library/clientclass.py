@@ -25,6 +25,13 @@ class BaseClient(metaclass=ABCMeta):
         """
         pass
 
+    @abstractmethod
+    def get_send_user_name(self) -> str:
+        """
+        発火させたユーザーの名前を返す
+        """
+        pass
+
     def get_type(self) -> str:
         """インスタンスの種類を返す"""
         return 'test'
@@ -39,6 +46,7 @@ class SlackClient(BaseClient):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
         self.send_user = send_user
+        self.send_user_name = self.client.users_info(send_user)['user']['name']
 
     def post(self, message):
         """Slackにポストする"""
@@ -50,6 +58,9 @@ class SlackClient(BaseClient):
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""
         return self.send_user
+
+    def get_send_user_name(self):
+        return self.send_user_name
 
     def get_type(self):
         """slack"""
