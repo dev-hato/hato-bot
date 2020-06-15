@@ -168,18 +168,16 @@ def weather(place: str):
     return ret
 
 
-# @respond_to_with_space('^&gt;&lt; .+')
-def totuzensi(message):
+def totuzensi(word: str):
     """「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する"""
 
-    user = message.user['name']
-    text = message.body['text']
-    _, word = split_command(text, 1)
-    word = hato_ha_karaage(word)
-    logger.debug("%s called 'hato >< %s'", user, word)
-    word = generator(word)
-    msg = '\n```' + word + '```'
-    message.send(msg)
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        word = hato_ha_karaage(word)
+        logger.debug("%s called 'hato >< %s'", user, word)
+        msg = generator(word)
+        client.post(msg)
+    return ret
 
 
 def weather_map_url(appid: str, lat: str, lon: str) -> str:
