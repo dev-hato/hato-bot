@@ -44,8 +44,7 @@ class SlackClient(BaseClient):
         """Slackにポストする"""
         self.client.chat_postMessage(
             channel=self.slack_channel,
-            text=message,
-            icon_url='https://raw.githubusercontent.com/nakkaa/hato-bot/slack-newapi/hato-icon.png'
+            text=message
         )
 
     def get_send_user(self):
