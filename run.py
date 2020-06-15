@@ -59,8 +59,8 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                    block_element_elements[0]['user_id'] in authed_users:
-                        analyze_message(block_element_elements[1:],user
+                        block_element_elements[0]['user_id'] in authed_users:
+                        analyze_message(block_element_elements[1:], user
                                         )(SlackClient(channel, block_element_elements[0]['user_id']))
 
     print(event_data)
