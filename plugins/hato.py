@@ -168,12 +168,12 @@ def weather(place: str):
     return ret
 
 
-def totuzensi(word: str):
+def totuzensi(message: str):
     """「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する"""
 
     def ret(client: BaseClient):
         user = client.get_send_user_name()
-        word = hato_ha_karaage(word)
+        word = hato_ha_karaage(message)
         logger.debug("%s called 'hato >< %s'", user, word)
         msg = generator(word)
         client.post(msg)
