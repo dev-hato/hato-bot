@@ -2,11 +2,7 @@
 hato.pyのテスト
 """
 
-import re
 import unittest
-from unittest.mock import MagicMock
-
-from slackbot.manager import PluginsManager
 
 from plugins.hato import split_command, respond_to_with_space
 
@@ -15,27 +11,10 @@ class TestRespondToWithSpace(unittest.TestCase):
     """
     スペースが含まれているときのテスト
     """
-    @staticmethod
-    def func() -> MagicMock:
-        """ mockを返す """
-        func = MagicMock()
-        func.__name__ = 'test'
-        return func
 
     def test_normal(self):
         """ 通常パターン """
-        func = self.func()
-        respond_to_with_space(r'^amesh kyoko$')(func)
-        pattern = re.compile(r'^\s*amesh\s*kyoko$')
-        self.assertEqual(PluginsManager.commands['respond_to'][pattern], func)
-
-    def test_flag(self):
-        """ 改行が含まれる場合のマッチフラグが入ったパターン """
-        func = self.func()
-        flag = re.DOTALL
-        respond_to_with_space(r'^amesh kyoko$', flag)(func)
-        pattern = re.compile(r'^\s*amesh\s*kyoko$', flag)
-        self.assertEqual(PluginsManager.commands['respond_to'][pattern], func)
+        self.assertEqual(respond_to_with_space(r'^amesh kyoko$'), r'^\s*amesh\s*kyoko$')
 
 
 class TestSplitCommand(unittest.TestCase):
