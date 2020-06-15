@@ -6,9 +6,8 @@ import os
 import re
 from logging import getLogger
 import datetime
-from typing import List, Callable
+from typing import List
 import requests
-from slackbot.bot import respond_to
 import slackbot_settings as conf
 from library.weather import get_city_id_from_city_name, get_weather
 from library.labotter import labo_in, labo_rida
@@ -16,17 +15,18 @@ from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabular
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
+from library.clientclass import BaseClient
+from typing import Optional, Any, Callable
 
 logger = getLogger(__name__)
 VERSION = "1.0.4"
 
 
-def respond_to_with_space(matchstr: str, flags: int = 0) -> \
-        Callable[[Callable[[str], None]], Callable[[str], None]]:
+def respond_to_with_space(matchstr: str) -> str:
     """スペースを削除する"""
 
     space = ' '
-    return respond_to(matchstr.replace('^', f'^{space}').replace(space, r'\s*'), flags)
+    return matchstr.replace('^', f'^{space}').replace(space, r'\s*')
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
@@ -35,12 +35,11 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
     return re.split(r'\s+', command.strip().strip('　'), maxsplit)
 
 
-@respond_to_with_space('^help')
-def help_message(message):
+def help_message(client: BaseClient):
     """「hato help」を見つけたら、使い方を表示する"""
 
-    user = message.user['name']
-    logger.debug("%s called 'hato help'", user)
+    logger.debug("%s called 'hato help'", client.get_send_user())
+    logger.debug("%s app called 'hato help'", client.get_type())
     str_help = '\n使い方\n'\
         '```'\
         '天気 [text] ... 地名の天気予報を表示する。\n'\
@@ -56,11 +55,14 @@ def help_message(message):
         '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
         'version ... バージョン情報を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/nakkaa/hato-bot/wiki)も見てくれっぽ!```\n'
-    message.send(str_help)
+    client.post(str_help)
 
 
-@respond_to_with_space('^eq$|^地震$')
-def earth_quake(message):
+def default_action(client: BaseClient):
+    client.post(conf.DEFAULT_REPLY)
+
+
+def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
     msg = "地震情報を取得できなかったっぽ!"
@@ -68,22 +70,25 @@ def earth_quake(message):
     if data is not None:
         msg = "地震情報を取得したっぽ!\n"
         msg = msg + generate_quake_info_for_slack(data, 3)
-    message.send(msg)
+
+    client.post(msg)
 
 
-@respond_to_with_space('^in$')
-def labotter_in(message):
+def labotter_in(user_id: str):
     """らぼいん！"""
 
     msg = "らぼいんに失敗したっぽ!(既に入っているかもしれないっぽ)"
-    user_id = message.user['id']
     flag, start_time = labo_in(user_id)
     if flag:
         msg = "らぼいんしたっぽ! \nいん時刻: {}".format(start_time)
-    message.send(msg)
+
+    def labotter_in_ret(client: BaseClient):
+        client.post(msg)
+    return labotter_in_ret
+
+# @respond_to_with_space('^rida$')
 
 
-@respond_to_with_space('^rida$')
 def labotter_rida(message):
     """らぼりだ！"""
 
@@ -98,7 +103,7 @@ def labotter_rida(message):
     message.send(msg)
 
 
-@respond_to_with_space('^text list$')
+# @respond_to_with_space('^text list$')
 def get_text_list(message):
     """パワーワードのリストを表示"""
 
@@ -108,7 +113,7 @@ def get_text_list(message):
     message.send(msg)
 
 
-@respond_to_with_space('^text add .+')
+# @respond_to_with_space('^text add .+')
 def add_text(message):
     """パワーワードの追加"""
 
@@ -120,7 +125,7 @@ def add_text(message):
     message.send("覚えたっぽ!")
 
 
-@respond_to_with_space('^text show .+')
+# @respond_to_with_space('^text show .+')
 def show_text(message):
     """指定した番号のパワーワードを表示する"""
 
@@ -132,7 +137,7 @@ def show_text(message):
     message.send(msg)
 
 
-@respond_to_with_space('^text$|^text random$')
+# @respond_to_with_space('^text$|^text random$')
 def show_random_text(message):
     """パワーワードの一覧からランダムで1つを表示する"""
     user = message.user['name']
@@ -141,7 +146,7 @@ def show_random_text(message):
     message.send(msg)
 
 
-@respond_to_with_space('^text delete .+')
+# @respond_to_with_space('^text delete .+')
 def delete_text(message):
     """指定した番号のパワーワードを削除する"""
 
@@ -153,7 +158,7 @@ def delete_text(message):
     message.send(msg)
 
 
-@respond_to_with_space('^天気 .+')
+# @respond_to_with_space('^天気 .+')
 def weather(message):
     """指定した都市の天気を表示する"""
 
@@ -169,7 +174,7 @@ def weather(message):
         message.send('```' + weather_info + '```')
 
 
-@respond_to_with_space('^&gt;&lt; .+')
+# @respond_to_with_space('^&gt;&lt; .+')
 def totuzensi(message):
     """「hato >< 文字列」を見つけたら、文字列を突然の死で装飾する"""
 
@@ -191,7 +196,7 @@ def weather_map_url(appid: str, lat: str, lon: str) -> str:
     ).format(appid, lat, lon)
 
 
-@respond_to_with_space('^amesh$')
+# @respond_to_with_space('^amesh$')
 def amesh(message):
     """東京の天気を表示する"""
 
@@ -212,7 +217,7 @@ def amesh(message):
         os.remove(f_name)
 
 
-@respond_to('^amesh .+ .+')
+# @respond_to('^amesh .+ .+')
 def amesh_with_gis(message):
     """位置を指定したameshを表示する"""
 
@@ -233,7 +238,7 @@ def amesh_with_gis(message):
     os.remove(f_name)
 
 
-@respond_to_with_space('^version')
+# @respond_to_with_space('^version')
 def version(message):
     """versionを表示する"""
 
