@@ -188,13 +188,12 @@ def weather_map_url(appid: str, lat: str, lon: str) -> str:
     ).format(appid, lat, lon)
 
 
-# @respond_to_with_space('^amesh$')
-def amesh(message):
+def amesh(client: BaseClient):
     """東京の天気を表示する"""
 
-    user = message.user['name']
+    user = client.get_send_user_name()
     logger.debug("%s called 'hato amesh'", user)
-    message.send('東京の雨雲状況をお知らせするっぽ！')
+    client.post('東京の雨雲状況をお知らせするっぽ！')
 
     url = weather_map_url(conf.YAHOO_API_TOKEN, '35.698856', '139.73091159273')
     req = requests.get(url, stream=True)
@@ -203,7 +202,7 @@ def amesh(message):
         with open(f_name, 'wb') as weather_map_file:
             weather_map_file.write(req.content)
 
-    message.channel.upload_file("amesh", f_name)
+    client.upload(f_name, "amesh")
 
     if os.path.exists(f_name):
         os.remove(f_name)
