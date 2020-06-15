@@ -47,7 +47,7 @@ def on_app_mention(event_data):
     """
 
     channel = event_data["event"]["channel"]
-    user = event_data['ebent']['user']
+    user = event_data['event']['user']
     blocks = event_data['event']['blocks']
     authed_users = event_data['authed_users']
 
