@@ -111,12 +111,10 @@ def get_text_list(client: BaseClient):
     client.post(msg)
 
 
-def add_text(message: str):
+def add_text(word: str):
     """パワーワードの追加"""
 
     def ret(client: BaseClient):
-        text = message
-        _, _, word = split_command(text, 2)
         add_vocabulary(word)
         user = client.get_send_user_name()
         logger.debug("%s called 'text add'", user)
@@ -234,14 +232,13 @@ def amesh_with_gis(message):
     os.remove(f_name)
 
 
-# @respond_to_with_space('^version')
-def version(message):
+def version(client: BaseClient):
     """versionを表示する"""
 
-    user = message.user['name']
+    user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
     str_ver = "バージョン情報\n```"\
         "Version {}\n"\
         "Copyright (C) 2020 hato-bot Development team\n"\
         "https://github.com/nakkaa/hato-bot ```".format(VERSION)
-    message.send(str_ver)
+    client.post(str_ver)
