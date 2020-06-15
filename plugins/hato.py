@@ -86,21 +86,21 @@ def labotter_in(user_id: str):
         client.post(msg)
     return labotter_in_ret
 
-# @respond_to_with_space('^rida$')
 
-
-def labotter_rida(message):
+def labotter_rida(user_id: str):
     """らぼりだ！"""
 
     msg = "らぼりだに失敗したっぽ!"
-    user_id = message.user['id']
     flag, end_time, datetime_second, sum_second = labo_rida(user_id)
     diff_time = datetime.timedelta(seconds=datetime_second)
     sum_time = datetime.timedelta(seconds=sum_second)
     if flag:
         msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(
             end_time, diff_time, sum_time)
-    message.send(msg)
+
+    def labotter_rida_ret(client: BaseClient):
+        client.post(msg)
+    return labotter_rida_ret
 
 
 # @respond_to_with_space('^text list$')
