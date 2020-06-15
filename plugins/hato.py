@@ -74,19 +74,21 @@ def earth_quake(client: BaseClient):
     client.post(msg)
 
 
-# @respond_to_with_space('^in$')
-def labotter_in(message):
+def labotter_in(user_id: str):
     """らぼいん！"""
 
     msg = "らぼいんに失敗したっぽ!(既に入っているかもしれないっぽ)"
-    user_id = message.user['id']
     flag, start_time = labo_in(user_id)
     if flag:
         msg = "らぼいんしたっぽ! \nいん時刻: {}".format(start_time)
-    message.send(msg)
 
+    def labotter_in_ret(client: BaseClient):
+        client.post(msg)
+    return labotter_in_ret
 
 # @respond_to_with_space('^rida$')
+
+
 def labotter_rida(message):
     """らぼりだ！"""
 
