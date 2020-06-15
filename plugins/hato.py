@@ -62,18 +62,16 @@ def default_action(client: BaseClient):
     client.post(conf.DEFAULT_REPLY)
 
 
-def earth_quake(data: Optional[Any]) -> Callable[[BaseClient], None]:
+def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
     msg = "地震情報を取得できなかったっぽ!"
+    data = get_quake_list()
     if data is not None:
         msg = "地震情報を取得したっぽ!\n"
         msg = msg + generate_quake_info_for_slack(data, 3)
 
-    return (
-        lambda client:
-            client.post(msg)
-    )
+    client.post(msg)
 
 
 # @respond_to_with_space('^in$')
