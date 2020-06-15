@@ -11,7 +11,7 @@ from slackeventsapi import SlackEventAdapter
 import slackbot_settings as conf
 import plugins.hato as hato
 from library.clientclass import SlackClient, BaseClient
-from typing import Callable
+from typing import Callable, List
 
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
@@ -27,12 +27,12 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
     logging.WARNING)
 
 
-def analyze_message(message: str) -> Callable[[BaseClient], None]:
-    print(message)
-    if re.match(hato.respond_to_with_space('^help'), message):
-        return hato.help_message
-    else:
-        return hato.no_action
+def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
+    if len(messages) > 0:
+        if messages[0]['type'] == 'text' and messages[0]['text'] == 'help':
+            return hato.help_message
+
+    return hato.no_action
 
 
 @slack_events_adapter.on("app_mention")
@@ -41,12 +41,22 @@ def on_app_mention(event_data):
     appにメンションが送られたらここが呼ばれる
     """
 
-    message = event_data["event"]["text"]
     channel = event_data["event"]["channel"]
     user = event_data["event"]["user"]
+    blocks = event_data['event']['blocks']
+    authed_users = event_data['authed_users']
 
-    analyze_message(message.replace('<@'+user+'>', '').strip()
-                    )(SlackClient(channel, user))
+    for block in blocks:
+        if block['type'] == 'rich_text':
+            block_elements = block['elements']
+            for block_element in block_elements:
+                if block_element['type'] == 'rich_text_section':
+                    block_element_elements = block_element['elements']
+                    if len(block_element_elements) > 0 and \
+                            block_element_elements[0]['type'] == 'user' and \
+                    block_element_elements[0]['user_id'] in authed_users:
+                        analyze_message(block_element_elements[1:]
+                                        )(SlackClient(channel, user))
 
     print(event_data)
 
