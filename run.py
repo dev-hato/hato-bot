@@ -35,9 +35,19 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
         if message.startswith('eq') or message.startswith('地震'):
             return hato.earth_quake
         if message.startswith('in'):
-            return hato.labotter_in(user_id)
+            return hato.labotter_in
         if message.startswith('rida'):
-            return hato.labotter_rida(user_id)
+            return hato.labotter_rida
+        if message.startswith('text list'):
+            return hato.get_text_list
+        if message.startswith('text add '):
+            return hato.add_text(message[len('text add '):])
+        if message.startswith('text show '):
+            return hato.show_text(message[len('text show '):])
+        if message.startswith('text delete '):
+            return hato.delete_text(message[len('text delete '):])
+        if message.startswith('text random') or message.startswith('text'):
+            return hato.show_random_text
 
     return hato.default_action
 
@@ -61,7 +71,7 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                        block_element_elements[0]['user_id'] in authed_users:
+                    block_element_elements[0]['user_id'] in authed_users:
                         analyze_message(block_element_elements[1:], user
                                         )(SlackClient(channel, block_element_elements[0]['user_id']))
 
