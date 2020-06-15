@@ -52,6 +52,8 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
             return hato.show_random_text
         if message.startswith('天気'):
             return hato.weather((message[len('天気'):]).stripe())
+        if message.startswith('version'):
+            return hato.version
 
     return hato.default_action
 
