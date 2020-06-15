@@ -32,7 +32,7 @@ def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
         if messages[0]['text'].strip().startswith('help'):
             return hato.help_message
 
-    return hato.no_action
+    return hato.default_action
 
 
 @slack_events_adapter.on("app_mention")
