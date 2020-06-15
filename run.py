@@ -48,7 +48,7 @@ def on_app_mention(event_data):
     analyze_message(message.replace('<@'+user+'>', '').strip()
                     )(SlackClient(channel, user))
 
-    print(message)
+    print(event_data)
 
 
 slack_events_adapter.start(host='0.0.0.0', port=conf.PORT)
