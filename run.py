@@ -27,13 +27,15 @@ logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
     logging.WARNING)
 
 
-def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
+def analyze_message(messages: List[any], user: str) -> Callable[[BaseClient], None]:
     if len(messages) > 0 and messages[0]['type'] == 'text':
         message = messages[0]['text'].strip()
         if message.startswith('help'):
             return hato.help_message
         if message.startswith('eq') or message.startswith('地震'):
             return hato.earth_quake
+        if message.startswith('in'):
+            return hato.labo_in(user)
 
     return hato.default_action
 
@@ -45,6 +47,7 @@ def on_app_mention(event_data):
     """
 
     channel = event_data["event"]["channel"]
+    user = event_data['ebent']['user']
     blocks = event_data['event']['blocks']
     authed_users = event_data['authed_users']
 
@@ -56,8 +59,8 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                        block_element_elements[0]['user_id'] in authed_users:
-                        analyze_message(block_element_elements[1:]
+                    block_element_elements[0]['user_id'] in authed_users:
+                        analyze_message(block_element_elements[1:],user
                                         )(SlackClient(channel, block_element_elements[0]['user_id']))
 
     print(event_data)
