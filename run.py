@@ -54,6 +54,8 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
             return hato.weather((message[len('天気'):]).strip())
         if message.startswith('>< '):
             return hato.totuzensi(message[len('>< '):])
+        if message == 'amesh':
+            return hato.amesh
         if message.startswith('version'):
             return hato.version
 
