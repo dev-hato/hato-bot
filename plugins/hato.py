@@ -74,23 +74,23 @@ def earth_quake(client: BaseClient):
     client.post(msg)
 
 
-def labotter_in(user_id: str):
+def labotter_in(client: BaseClient):
     """らぼいん！"""
 
     msg = "らぼいんに失敗したっぽ!(既に入っているかもしれないっぽ)"
+    user_id = client.get_send_user()
     flag, start_time = labo_in(user_id)
     if flag:
         msg = "らぼいんしたっぽ! \nいん時刻: {}".format(start_time)
 
-    def labotter_in_ret(client: BaseClient):
-        client.post(msg)
-    return labotter_in_ret
+    client.post(msg)
 
 
-def labotter_rida(user_id: str):
+def labotter_rida(client: BaseClient):
     """らぼりだ！"""
 
     msg = "らぼりだに失敗したっぽ!"
+    user_id = client.get_send_user()
     flag, end_time, datetime_second, sum_second = labo_rida(user_id)
     diff_time = datetime.timedelta(seconds=datetime_second)
     sum_time = datetime.timedelta(seconds=sum_second)
@@ -98,64 +98,65 @@ def labotter_rida(user_id: str):
         msg = "らぼりだしたっぽ! お疲れ様っぽ!\nりだ時刻: {} \n拘束時間: {}\n累計時間: {}".format(
             end_time, diff_time, sum_time)
 
-    def labotter_rida_ret(client: BaseClient):
-        client.post(msg)
-    return labotter_rida_ret
+    client.post(msg)
 
 
-# @respond_to_with_space('^text list$')
-def get_text_list(message):
+def get_text_list(client: BaseClient):
     """パワーワードのリストを表示"""
 
-    user = message.user['name']
+    user = client.get_send_user_name()
     logger.debug("%s called 'text list'", user)
     msg = get_vocabularys()
-    message.send(msg)
+
+    client.post(msg)
 
 
-# @respond_to_with_space('^text add .+')
-def add_text(message):
+def add_text(message: str):
     """パワーワードの追加"""
 
-    user = message.user['name']
-    logger.debug("%s called 'text add'", user)
-    text = message.body['text']
-    _, _, word = split_command(text, 2)
-    add_vocabulary(word)
-    message.send("覚えたっぽ!")
+    def ret(client: BaseClient):
+        text = message
+        _, _, word = split_command(text, 2)
+        add_vocabulary(word)
+        user = client.get_send_user_name()
+        logger.debug("%s called 'text add'", user)
+        client.post('覚えたっぽ!')
+
+    return ret
 
 
-# @respond_to_with_space('^text show .+')
-def show_text(message):
+def show_text(message: str):
     """指定した番号のパワーワードを表示する"""
 
-    user = message.user['name']
-    logger.debug("%s called 'text show'", user)
-    text = message.body['text']
-    _, _, power_word_id = split_command(text, 2)
-    msg = show_vocabulary(int(power_word_id))
-    message.send(msg)
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        logger.debug("%s called 'text show'", user)
+        text = message
+        _, _, power_word_id = split_command(text, 2)
+        msg = show_vocabulary(int(power_word_id))
+        client.post(msg)
+    return ret
 
 
-# @respond_to_with_space('^text$|^text random$')
-def show_random_text(message):
+def show_random_text(client: BaseClient):
     """パワーワードの一覧からランダムで1つを表示する"""
-    user = message.user['name']
+    user = client.get_send_user_name()
     logger.debug("%s called 'text random'", user)
     msg = show_random_vocabulary()
-    message.send(msg)
+    client.post(msg)
 
 
-# @respond_to_with_space('^text delete .+')
-def delete_text(message):
+def delete_text(message: str):
     """指定した番号のパワーワードを削除する"""
 
-    user = message.user['name']
-    logger.debug("%s called 'text delete'", user)
-    text = message.body['text']
-    _, _, power_word_id = split_command(text, 2)
-    msg = delete_vocabulary(int(power_word_id))
-    message.send(msg)
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        logger.debug("%s called 'text delete'", user)
+        text = message
+        _, _, power_word_id = split_command(text, 2)
+        msg = delete_vocabulary(int(power_word_id))
+        client.post(msg)
+    return ret
 
 
 # @respond_to_with_space('^天気 .+')
