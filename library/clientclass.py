@@ -65,7 +65,7 @@ class SlackClient(BaseClient):
         """ファイルを投稿する"""
         self.client.files_upload(
             channels=self.slack_channel,
-            content=content,
+            file=content,
             filename=filename
         )
 
