@@ -43,6 +43,7 @@ def generator(msg: str) -> str:
     を作る
     """
     msg_list = msg.split('\n')
+    print(msg_list[0])
     msg_length_list = text_length_list(msg_list)
     max_line_length = max(msg_length_list)
     half_max_line_length = max_line_length // 2
