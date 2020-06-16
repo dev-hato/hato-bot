@@ -53,14 +53,13 @@ def generator(msg: str) -> str:
 
     generating += '＿\n'
 
-    for line_length, message in zip(msg_length_list, msg):
+    for line_length, message in zip(msg_length_list, msg_list):
         half_length = (max_line_length - line_length) // 2
         generating += '＞'
 
         for _ in range(half_length + 2):
             generating += ' '
 
-        print(message)
         generating += message
 
         for _ in range(max_line_length - half_length - line_length + 2):
