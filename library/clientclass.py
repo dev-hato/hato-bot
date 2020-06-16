@@ -66,8 +66,7 @@ class SlackClient(BaseClient):
         self.client.files_upload(
             channels=self.slack_channel,
             content=content,
-            filename=filename,
-            filetype='jpg'
+            filename=filename
         )
 
     def get_send_user(self):
