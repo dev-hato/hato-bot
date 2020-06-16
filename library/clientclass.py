@@ -33,7 +33,7 @@ class BaseClient(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def upload(self, file, message):
+    def upload(self, content, filename):
         """ファイルを投稿する"""
         pass
 
@@ -61,11 +61,11 @@ class SlackClient(BaseClient):
             text=message
         )
 
-    def upload(self, file, message):
+    def upload(self, content, filename):
         """ファイルを投稿する"""
         self.client.files_upload(
-            file=file,
-            content=message
+            content=content,
+            filename=filename
         )
 
     def get_send_user(self):
