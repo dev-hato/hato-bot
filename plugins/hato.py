@@ -203,8 +203,7 @@ def amesh(client: BaseClient):
     if req.status_code == 200:
         with open(f_name, 'wb') as weather_map_file:
             weather_map_file.write(req.content)
-    print(req.status_code)
-    client.upload(content=f_name, filename="amesh.png")
+            client.upload(content=f_name, filename="amesh.png")
 
     if os.path.exists(f_name):
         os.remove(f_name)
