@@ -30,7 +30,7 @@ def __init__():
         logging.WARNING)
 
 
-def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
+def analyze_message(messages: List[dict]) -> Callable[[BaseClient], None]:
     """コマンド解析"""
 
     if len(messages) > 0 and messages[0]['type'] == 'text':
