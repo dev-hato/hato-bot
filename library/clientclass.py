@@ -37,7 +37,8 @@ class BaseClient(metaclass=ABCMeta):
         """ファイルを投稿する"""
         raise NotImplementedError()
 
-    def get_type(self) -> str:
+    @staticmethod
+    def get_type() -> str:
         """インスタンスの種類を返す"""
         return 'test'
 
@@ -58,7 +59,9 @@ class SlackClient(BaseClient):
         """Slackにポストする"""
         self.client.chat_postMessage(
             channel=self.slack_channel,
-            text=message
+            text=message,
+            blocks=[{'type': 'section', 'text': {
+                'type': 'plain_text', 'text': message}}]
         )
 
     def upload(self, file, filename):
@@ -76,6 +79,7 @@ class SlackClient(BaseClient):
     def get_send_user_name(self):
         return self.send_user_name
 
-    def get_type(self):
+    @staticmethod
+    def get_type():
         """slack"""
         return 'slack'
