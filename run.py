@@ -12,6 +12,7 @@ import slackbot_settings as conf
 import plugins.hato as hato
 from library.clientclass import SlackClient, BaseClient
 from typing import Callable, List
+from concurrent.futures import ThreadPoolExecutor
 
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
@@ -62,6 +63,9 @@ def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient],
     return hato.default_action
 
 
+TPE = ThreadPoolExecutor(max_workers=3)
+
+
 @slack_events_adapter.on("app_mention")
 def on_app_mention(event_data):
     """
@@ -81,9 +85,9 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                        block_element_elements[0]['user_id'] in authed_users:
-                        analyze_message(block_element_elements[1:], user
-                                        )(SlackClient(channel, block_element_elements[0]['user_id']))
+                    block_element_elements[0]['user_id'] in authed_users:
+                        TPE.submit(analyze_message(block_element_elements[1:], user
+                                                   )(SlackClient(channel, block_element_elements[0]['user_id'])))
 
     print(event_data)
 
