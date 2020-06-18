@@ -6,13 +6,13 @@ BotのMain関数
 import sys
 import logging
 import logging.config
-import re
+from typing import Callable, List
+from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
 import slackbot_settings as conf
 import plugins.hato as hato
 from library.clientclass import SlackClient, BaseClient
-from typing import Callable, List
-from concurrent.futures import ThreadPoolExecutor
+
 
 slack_events_adapter = SlackEventAdapter(
     conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
@@ -30,7 +30,9 @@ def __init__():
         logging.WARNING)
 
 
-def analyze_message(messages: List[any], user_id: str) -> Callable[[BaseClient], None]:
+def analyze_message(messages: List[any]) -> Callable[[BaseClient], None]:
+    """コマンド解析"""
+
     if len(messages) > 0 and messages[0]['type'] == 'text':
         message = messages[0]['text'].strip()
         if message.startswith('help'):
@@ -75,7 +77,6 @@ def on_app_mention(event_data):
     """
 
     channel = event_data["event"]["channel"]
-    user = event_data['event']['user']
     blocks = event_data['event']['blocks']
     authed_users = event_data['authed_users']
 
@@ -87,9 +88,9 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                        block_element_elements[0]['user_id'] in authed_users:
-                        TPE.submit(analyze_message(block_element_elements[1:], user
-                                                   ), SlackClient(channel, block_element_elements[0]['user_id']))
+                    block_element_elements[0]['user_id'] in authed_users:
+                        TPE.submit(analyze_message(block_element_elements[1:]), SlackClient(
+                            channel, block_element_elements[0]['user_id']))
 
     print(event_data)
 
