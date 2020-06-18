@@ -59,9 +59,7 @@ class SlackClient(BaseClient):
         """Slackにポストする"""
         self.client.chat_postMessage(
             channel=self.slack_channel,
-            text=message,
-            blocks=[{'type': 'section', 'text': {
-                'type': 'plain_text', 'text': message}}]
+            text=message
         )
 
     def upload(self, file, filename):
