@@ -209,25 +209,25 @@ def amesh(client: BaseClient):
         os.remove(f_name)
 
 
-# @respond_to('^amesh .+ .+')
-def amesh_with_gis(message):
+def amesh_with_gis(place: str):
     """位置を指定したameshを表示する"""
 
-    user = message.user['name']
-    text = message.body['text']
-    logger.debug("%s called 'hato amesh '", user)
-    message.send('雨雲状況をお知らせするっぽ！')
-    _, lat, lon = split_command(text, 2)
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        logger.debug("%s called 'hato amesh '", user)
+        client.post('雨雲状況をお知らせするっぽ！')
+        lat, lon = split_command(place, 2)
 
-    url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
-    req = requests.get(url, stream=True)
-    f_name = "amesh.jpg"
-    if req.status_code == 200:
-        with open(f_name, 'wb') as weather_map_file:
-            weather_map_file.write(req.content)
+        url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
+        req = requests.get(url, stream=True)
+        f_name = "amesh.jpg"
+        if req.status_code == 200:
+            with open(f_name, 'wb') as weather_map_file:
+                weather_map_file.write(req.content)
+                client.upload(file=f_name, filename="amesh.png")
 
-    message.channel.upload_file("amesh", f_name)
-    os.remove(f_name)
+        os.remove(f_name)
+    return ret
 
 
 def version(client: BaseClient):
