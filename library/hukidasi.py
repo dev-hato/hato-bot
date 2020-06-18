@@ -55,7 +55,7 @@ def generator(msg: str) -> str:
 
     for line_length, message in zip(msg_length_list, msg_list):
         half_length = (max_line_length - line_length) // 2
-        generating += '＞'
+        generating += ' ＞'
 
         for _ in range(half_length + 2):
             generating += ' '
