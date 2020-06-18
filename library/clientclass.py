@@ -16,26 +16,26 @@ class BaseClient(metaclass=ABCMeta):
     @abstractmethod
     def post(self, message: str):
         """投稿する"""
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def get_send_user(self) -> str:
         """
         発火させたユーザーを返す
         """
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def get_send_user_name(self) -> str:
         """
         発火させたユーザーの名前を返す
         """
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        pass
+        raise NotImplementedError()
 
     def get_type(self) -> str:
         """インスタンスの種類を返す"""
