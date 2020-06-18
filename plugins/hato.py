@@ -16,7 +16,6 @@ from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
-from typing import Optional, Any, Callable
 
 logger = getLogger(__name__)
 VERSION = "1.1.0"
@@ -59,6 +58,7 @@ def help_message(client: BaseClient):
 
 
 def default_action(client: BaseClient):
+    """どのコマンドにもマッチしなかった"""
     client.post(conf.DEFAULT_REPLY)
 
 
