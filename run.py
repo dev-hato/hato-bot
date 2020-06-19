@@ -9,11 +9,11 @@ import logging.config
 from slackbot.bot import Bot
 
 
-def main():
+def main(        ):
     """
     Botを起動します
     """
-    log_format_config = {
+    log_format_config        = {
         'format': '[%(asctime)s] %(message)s',
         'datefmt': '%Y-%m-%d %H:%M:%S',
         'level': logging.DEBUG,
