@@ -45,8 +45,12 @@ jobs:
         id: format
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
-          git diff
         continue-on-error: true
+      # 差分があったときは差分を出力する
+      - name: Show diff
+        if: steps.format.outcome == 'failure'
+        run: |
+          git diff
       # 差分があったときは、コミットを作りpushする
       - name: Push
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
