@@ -217,5 +217,5 @@ jobs:
               body: "Lint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
             })
       - name: Exit
-        if: github.event.pull_request.head.repo.full_name != github.repository && steps.lint.outputs.result != ''
+        if: github.event.pull_request.head.repo.full_name != github.repository && !contains(steps.lint.outputs.result, 'Your code has been rated at 10.00/10')
         run: return 1
