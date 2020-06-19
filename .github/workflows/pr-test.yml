@@ -196,7 +196,7 @@ jobs:
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::$result"
           true
-        continue-on-error: true
+        continue-on-error: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
       # lint結果をコメントに残す
       - name: Lint Comment
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != ''
