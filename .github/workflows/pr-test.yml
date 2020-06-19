@@ -46,19 +46,18 @@ jobs:
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
         continue-on-error: true
-      # fork先からのPRで差分があったときは、差分を出力する
-      - name: Push
-        if: github.event.pull_request.head.repo.full_name != github.repository && steps.format.outcome == 'failure'
+      # 差分を出力する
+      - name: Show diff
+        if: steps.format.outcome == 'failure'
         run: |
           git add -u
           git diff
-      # 元のリポジトリで差分があったときは、コミットを作りpushする
+      # 差分があったときは、コミットを作りpushする
       - name: Push
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
-          git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-format-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
