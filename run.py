@@ -9,7 +9,7 @@ import logging.config
 from slackbot.bot import Bot
 
 
-def main():
+def main(            ):
     """
     Botを起動します
     """
