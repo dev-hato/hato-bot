@@ -21,8 +21,7 @@ logger = getLogger(__name__)
 VERSION = "1.0.4"
 
 
-def respond_to_with_space(matchstr: str, flags: int = 0) -> \
-        Callable[[Callable[[str], None]], Callable[[str], None]]:
+def respond_to_with_space(matchstr: str, flags: int = 0) -> Callable[[Callable[[str], None]], Callable[[str], None]]:
     """スペースを削除する"""
 
     space = ' '
