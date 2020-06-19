@@ -77,7 +77,7 @@ jobs:
             })
       - name: Exit
         if: steps.format.outcome == 'failure'
-        run: return 1
+        run: exit 1
 
   # unittestを行う
   # testが落ちたらチェックが落ちる
@@ -218,4 +218,4 @@ jobs:
             })
       - name: Exit
         if: github.event.pull_request.head.repo.full_name != github.repository && !contains(steps.lint.outputs.result, 'Your code has been rated at 10.00/10')
-        run: return 1
+        run: exit 1
