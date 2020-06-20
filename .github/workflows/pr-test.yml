@@ -46,9 +46,14 @@ jobs:
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
         continue-on-error: true
+      # 差分があったときは差分を出力する
+      - name: Show diff
+        if: steps.format.outcome == 'failure'
+        run: |
+          git diff
       # 差分があったときは、コミットを作りpushする
       - name: Push
-        if: steps.format.outcome == 'failure'
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
@@ -58,7 +63,7 @@ jobs:
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@0.9.0
-        if: steps.format.outcome == 'failure'
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -72,7 +77,7 @@ jobs:
             })
       - name: Exit
         if: steps.format.outcome == 'failure'
-        run: return 1
+        run: exit 1
 
   # unittestを行う
   # testが落ちたらチェックが落ちる
@@ -190,6 +195,7 @@ jobs:
         id: lint
         run: |
           result=$(pipenv run pylint --rcfile=./.pylintrc $(find . -iname "*.py") 2>&1) || true
+          echo "$result"
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
@@ -198,7 +204,7 @@ jobs:
         continue-on-error: true
       # lint結果をコメントに残す
       - name: Lint Comment
-        if: steps.lint.outputs.result != ''
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != ''
         uses: actions/github-script@0.9.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -210,3 +216,6 @@ jobs:
               repo: context.repo.repo,
               body: "Lint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
             })
+      - name: Exit
+        if: github.event.pull_request.head.repo.full_name != github.repository && !contains(steps.lint.outputs.result, 'Your code has been rated at 10.00/10')
+        run: exit 1
