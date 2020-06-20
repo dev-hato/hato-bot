@@ -4,18 +4,7 @@ hato.pyのテスト
 
 import unittest
 
-from plugins.hato import split_command, respond_to_with_space
-
-
-class TestRespondToWithSpace(unittest.TestCase):
-    """
-    スペースが含まれているときのテスト
-    """
-
-    def test_normal(self):
-        """ 通常パターン """
-        self.assertEqual(respond_to_with_space(r'^amesh kyoko$'),
-                         r'^\s*amesh\s*kyoko$')
+from plugins.hato import split_command
 
 
 class TestSplitCommand(unittest.TestCase):
