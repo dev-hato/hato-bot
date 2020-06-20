@@ -21,13 +21,6 @@ logger = getLogger(__name__)
 VERSION = "1.1.0"
 
 
-def respond_to_with_space(matchstr: str) -> str:
-    """スペースを削除する"""
-
-    space = ' '
-    return matchstr.replace('^', f'^{space}').replace(space, r'\s*')
-
-
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
     """コマンドを分離する"""
 
