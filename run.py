@@ -30,7 +30,7 @@ def __init__():
         logging.WARNING)
 
 
-def analyze_message(messages: List[dict]) -> Callable[[BaseClient], None]:
+def analyze_slack_message(messages: List[dict]) -> Callable[[BaseClient], None]:
     """コマンド解析"""
 
     if len(messages) > 0 and messages[0]['type'] == 'text':
@@ -88,8 +88,8 @@ def on_app_mention(event_data):
                     block_element_elements = block_element['elements']
                     if len(block_element_elements) > 0 and \
                             block_element_elements[0]['type'] == 'user' and \
-                        block_element_elements[0]['user_id'] in authed_users:
-                        TPE.submit(analyze_message(block_element_elements[1:]), SlackClient(
+                    block_element_elements[0]['user_id'] in authed_users:
+                        TPE.submit(analyze_slack_message(block_element_elements[1:]), SlackClient(
                             channel, block_element_elements[0]['user_id']))
 
     print(event_data)
