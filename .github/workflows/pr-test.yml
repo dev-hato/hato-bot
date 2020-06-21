@@ -67,13 +67,23 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.pulls.create({
+            const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}"
+            }
+            github.pulls.list({
+              state: "open",
+              ...common_params
+            }).then(res => {
+              if (res.data.length === 0) {
+                github.pulls.create({
+                  title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+                  body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
+                  ...common_params
+                })
+              }
             })
       - name: Exit
         if: steps.format.outcome == 'failure'
