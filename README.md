@@ -1,7 +1,10 @@
 # 鳩bot - 愛嬌のあるSlack Bot
 
 ![badge](https://github.com/nakkaa/hato-bot/workflows/pr-test/badge.svg)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=nakkaa/hato-bot)](https://dependabot.com)  
+[
+    ![Dependabot Status](
+        https://api.dependabot.com/badges/status?host=github&repo=nakkaa/hato-bot)
+](https://dependabot.com)  
   
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
