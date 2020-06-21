@@ -105,7 +105,7 @@ jobs:
               for(const data of res.data){
                 github.pulls.update({
                   pull_number: data.number,
-                  state: "close",
+                  state: "closed",
                   ...common_params
                 })
               }
