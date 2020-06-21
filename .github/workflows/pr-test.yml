@@ -82,12 +82,13 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const ref = "heads/fix-format-${{github.event.pull_request.head.ref}}"
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             github.pulls.list({
-              head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
+              head: "refs/" + ref,
               base: "${{github.event.pull_request.head.ref}}",
               state: "open",
               ...common_params
@@ -97,6 +98,11 @@ jobs:
                   pull_number: data.number,
                   state: "closed",
                   ...common_params
+                }).then(res2 => {
+                  github.git.deleteRef({
+                    ref: ref,
+                    ...common_params
+                  })
                 })
               }
             })
