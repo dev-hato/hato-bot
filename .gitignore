@@ -4,4 +4,4 @@ __pycache__/
 .vscode/
 setup/pgsql-data
 .mypy_cache/
-.Pipfile.lock
+Pipfile.lock
