@@ -67,26 +67,24 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const prs = github.pulls.list({
+            github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: "open",
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}"
+            }).then(res => {
+              if (res.data.length === 0) {
+                github.pulls.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+                  body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
+                  head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
+                  base: "${{github.event.pull_request.head.ref}}"
+                })
+              }
             })
-            prs.then((res)=>{
-              console.log(res)
-            })
-            if(!prs) {
-              github.pulls.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-                body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
-                head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
-                base: "${{github.event.pull_request.head.ref}}"
-              })
-            }
       - name: Exit
         if: steps.format.outcome == 'failure'
         run: exit 1
