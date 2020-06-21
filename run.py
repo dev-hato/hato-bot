@@ -9,14 +9,17 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
+from flask import Flask
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
 from library.clientclass import SlackClient
 
+app = Flask(__name__)
+
 
 slack_events_adapter = SlackEventAdapter(
-    conf.SLACK_SIGNING_SECRET, endpoint="/slack/events")
+    signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app)
 
 
 def __init__():
@@ -69,4 +72,5 @@ def on_app_mention(event_data):
     print(event_data)
 
 
-slack_events_adapter.start(host='0.0.0.0', port=conf.PORT)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=conf.PORT)
