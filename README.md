@@ -1,6 +1,7 @@
 # 鳩bot - 愛嬌のあるSlack Bot
 
-![badge](https://github.com/nakkaa/hato-bot/workflows/pr-test/badge.svg) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=nakkaa/hato-bot)](https://dependabot.com)  
+![badge](https://github.com/nakkaa/hato-bot/workflows/pr-test/badge.svg)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=nakkaa/hato-bot)](https://dependabot.com)  
   
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
@@ -18,7 +19,9 @@
 
 鳩botを動かす方法は主に2種類あります。  
 簡単でおすすめなHerokuで動かす方法と自分のPC上で動かす方法です。  
-前者については、[Herokuで動かす手順](https://github.com/nakkaa/hato-bot/wiki/Heroku%E3%81%A7%E5%8B%95%E3%81%8B%E3%81%99%E6%89%8B%E9%A0%86) を参照してください。  
+前者については、
+[Herokuで動かす手順](https://github.com/nakkaa/hato-bot/wiki/Heroku%E3%81%A7%E5%8B%95%E3%81%8B%E3%81%99%E6%89%8B%E9%A0%86)
+を参照してください。  
 ここでは後者の自分のPC上で動かす方法を説明します。
 
 ### 必要なもの
