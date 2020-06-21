@@ -1,1 +1,2 @@
-siblings_only: false
+no-duplicate-header:
+  siblings_only: false
