@@ -15,6 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
           fetch-depth: 0
       - name: pipenv cache
         uses: actions/cache@v1
@@ -130,6 +132,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -169,6 +173,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -207,6 +213,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          submodules: 'recursive'
           fetch-depth: 0
       - name: pipenv cache
         uses: actions/cache@v1

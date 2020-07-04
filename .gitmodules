@@ -1,0 +1,3 @@
+[submodule "library/sudden_death"]
+	path = library/sudden_death
+	url = git@github.com:nakkaa/sudden-death.git
