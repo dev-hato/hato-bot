@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          submodule: true
+          submodules: 'recursive'
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -132,7 +132,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodule: true
+          submodules: 'recursive'
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -173,7 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodule: true
+          submodules: 'recursive'
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -212,7 +212,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodule: true
+          submodules: 'recursive'
           fetch-depth: 0
       - name: pipenv cache
         uses: actions/cache@v1
