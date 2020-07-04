@@ -2,6 +2,7 @@ import unittest
 import textwrap
 from library.hukidasi import generator
 
+
 class TestHukidashiGenerator(unittest.TestCase):
     """
     突然の死を生成するテスト
@@ -34,4 +35,3 @@ class TestHukidashiGenerator(unittest.TestCase):
         ＞      そして、      ＜
         ＞  鳩は唐揚げになる  ＜
         ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣'''))
-
