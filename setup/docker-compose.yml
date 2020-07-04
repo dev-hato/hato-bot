@@ -15,5 +15,7 @@ services:
       context: ../
     env_file:
       - ../.env
+    volumes:
+      - ../:/usr/src/app
     depends_on:
       - postgres
