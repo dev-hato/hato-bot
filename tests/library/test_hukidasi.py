@@ -29,6 +29,9 @@ class TestHukidashiGenerator(unittest.TestCase):
         """
         複数行のテキストに対して突然の死が生成される
         """
-        self.assertEqual(generator('そして、\n鳩は唐揚げになる'), '''\
-        ''')
+        self.assertEqual(generator('そして、\n鳩は唐揚げになる'), textwrap.dedent('''\
+        ＿人人人人人人人人人人＿
+        ＞      そして、      ＜
+        ＞  鳩は唐揚げになる  ＜
+        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣'''))
 
