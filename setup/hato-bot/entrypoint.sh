@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# PostgreSQL起動待機
+# PostgreSQLの起動を待機する
 RETRIES=10
 until psql $DATABASE_URL -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
   echo "Waiting for postgres server, $((RETRIES-=1)) remaining attempts..."
