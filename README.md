@@ -61,6 +61,13 @@
     cd ..
     ```
 
+5. コードの変更は再起動で適用できます
+
+    ```sh
+    cd ./setup
+    docker-compose restart
+    ```
+
 ## 補足
 
 - コードをformatする場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
