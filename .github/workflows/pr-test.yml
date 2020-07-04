@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          submodule: true
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -130,6 +131,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodule: true
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -169,6 +172,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodule: true
       - name: pipenv cache
         uses: actions/cache@v1
         with:
@@ -207,6 +212,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          submodule: true
           fetch-depth: 0
       - name: pipenv cache
         uses: actions/cache@v1
