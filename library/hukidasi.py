@@ -4,9 +4,6 @@
 吹き出し用にtextを装飾する
 """
 
-from typing import List
-import unicodedata
-
 # Sudden Death(元にしたコードのライセンスは以下の通り)
 # MIT License
 # Copyright (c) 2016 koluku
