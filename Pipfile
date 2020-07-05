@@ -16,3 +16,4 @@ mypy = "*"
 psycopg2-binary = "*"
 pyperclip = "==1.8.0"
 click = "==7.1.2"
+sudden-death = {git = "https://github.com/nakkaa/sudden-death", ref = "master"}
