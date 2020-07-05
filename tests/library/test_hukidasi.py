@@ -1,3 +1,7 @@
+"""
+hukidashiライブラリのテスト
+"""
+
 import unittest
 import textwrap
 from library.hukidasi import generator
