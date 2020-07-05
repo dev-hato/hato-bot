@@ -8,7 +8,7 @@
 # MIT License
 # Copyright (c) 2016 koluku
 # https://github.com/koluku/sudden-death/blob/master/LICENSE
-from .sudden_death.sd import generator as sd_generator
+from sudden_death import generator as sd_generator
 
 
 def generator(msg: str) -> str:
