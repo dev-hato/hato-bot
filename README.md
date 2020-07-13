@@ -53,6 +53,7 @@
     DATABASE_URL=postgres://postgres:password@postgres:5432/
     YAHOO_API_TOKEN=xxxxxxxxx
     ```
+
 4. docker-composeで全てを起動します。
 
     ```sh
