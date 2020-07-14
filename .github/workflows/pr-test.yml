@@ -257,23 +257,23 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.listComments({
+            const comments = github.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
-            }).then(
-              res=> res.filter(
-                comment=>comment.user.id==41898282
-              ).map(
-                comment=>comment.id
-              ).foreach(
-                comment_id =>
-                  github.issues.deleteComment({
-                    comment_id: comment_id,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo
-                  })
-              )
+            })
+            console.log(comments)
+            comments.filter(
+              comment=>comment.user.id==41898282
+            ).map(
+              comment=>comment.id
+            ).foreach(
+              comment_id =>
+                github.issues.deleteComment({
+                  comment_id: comment_id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
+                })
             )
     
             const result = `${{steps.lint.outputs.result}}`
