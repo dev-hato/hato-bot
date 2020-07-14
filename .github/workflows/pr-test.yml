@@ -268,7 +268,7 @@ jobs:
             ).foreach(
               comment_id =>
                 github.issues.deleteComment({
-                  comment_id: comment_id
+                  comment_id: comment_id,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                 })
