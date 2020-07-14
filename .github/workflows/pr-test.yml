@@ -266,7 +266,7 @@ jobs:
                 comment=>comment.user.id==41898282
               ).map(
                 comment=>comment.id
-              ).foreach(
+              ).forEach(
                 comment_id =>
                   github.issues.deleteComment({
                     comment_id: comment_id,
