@@ -14,7 +14,6 @@ name: push-code
 # Start the job on all push #
 #############################
 on:
-  push:
   pull_request:
 
 ###############
