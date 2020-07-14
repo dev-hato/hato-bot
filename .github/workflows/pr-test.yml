@@ -270,7 +270,7 @@ jobs:
                 github.issues.deleteComment({
                   comment_id: comment_id,
                   owner: context.repo.owner,
-                  repo: context.repo.repo,
+                  repo: context.repo.repo
                 })
             )
     
