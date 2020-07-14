@@ -278,3 +278,4 @@ jobs:
         uses: reviewdog/action-hadolint@v1
         with:
           level: warning
+          filter_mode: nofilter
