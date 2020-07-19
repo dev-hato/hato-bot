@@ -4,5 +4,4 @@ build:
 release:
   image: web
 run:
-  web:
   image: web
