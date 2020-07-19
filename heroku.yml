@@ -2,11 +2,7 @@ build:
   docker:
     web: Dockerfile
 release:
-  command:
-    - pipenv run python create_env.py
   image: web
 run:
   web:
-    command:
-      - pipenv run python run.py
-    image: web
+  image: web
