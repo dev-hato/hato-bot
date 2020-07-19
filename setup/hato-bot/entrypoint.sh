@@ -7,9 +7,6 @@ until psql $DATABASE_URL -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; d
   sleep 1
 done
 
-ls -la
-tree
-
 pipenv run python create_env.py
 
 pipenv run python run.py
