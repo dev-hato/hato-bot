@@ -6,4 +6,8 @@ release:
     - python create_env.py
   image: web
 run:
-  web: python run.py
+  web: 
+    command:
+      - python run.py
+    image: web
+
