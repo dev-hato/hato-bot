@@ -3,11 +3,10 @@ build:
     web: Dockerfile
 release:
   command:
-    - python create_env.py
+    - pipenv run python create_env.py
   image: web
 run:
-  web: 
+  web:
     command:
-      - python run.py
+      - pipenv run python run.py
     image: web
-
