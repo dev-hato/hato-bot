@@ -3,8 +3,6 @@ build:
     web: Dockerfile
 release:
   command:
-    - ls -la
-    - tree
     - python create_env.py
   image: web
 run:
