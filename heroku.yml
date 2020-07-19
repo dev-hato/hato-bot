@@ -1,0 +1,9 @@
+build:
+  docker:
+    web: setup/hato-bot/Dockerfile
+release:
+  command:
+    - python create_env.py
+  image: web
+run:
+  web: python run.py
