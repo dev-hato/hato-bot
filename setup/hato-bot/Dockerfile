@@ -7,5 +7,6 @@ RUN pip install pipenv==2020.6.2 --no-cache-dir && \
     pipenv install
 
 RUN which pipenv
+RUN pipenv --venv
 
 CMD ["sh", "./setup/hato-bot/entrypoint.sh"]
