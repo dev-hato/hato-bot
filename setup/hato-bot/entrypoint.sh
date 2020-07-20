@@ -10,6 +10,7 @@ done
 # pip install pipenv==2020.6.2 --no-cache-dir && pipenv install
 
 which pipenv
+pipenv --venv
 
 pipenv run python create_env.py
 
