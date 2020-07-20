@@ -7,7 +7,7 @@ until psql $DATABASE_URL -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; d
   sleep 1
 done
 
-pip install pipenv==2020.6.2 --no-cache-dir && pipenv install
+# pip install pipenv==2020.6.2 --no-cache-dir && pipenv install
 
 pipenv run python create_env.py
 
