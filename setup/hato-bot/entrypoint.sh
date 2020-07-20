@@ -9,6 +9,8 @@ done
 
 # pip install pipenv==2020.6.2 --no-cache-dir && pipenv install
 
+PIPENV_VENV_IN_PROJECT=1
+
 which pipenv
 pipenv --venv
 
