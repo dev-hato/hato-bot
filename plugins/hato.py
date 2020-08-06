@@ -205,7 +205,7 @@ def amesh(place: str):
             with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
                 client.upload(file=weather_map_file.name,
-                              filename=os.path.extsep.join(["amesh", imghdr.what(weather_map_file.name) or ""]))
+                              filename=os.path.extsep.join(['amesh', imghdr.what(weather_map_file.name) or '']))
 
     return ret
 
