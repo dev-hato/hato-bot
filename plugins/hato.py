@@ -189,7 +189,7 @@ def amesh(place: str):
     def ret(client: BaseClient):
         user = client.get_send_user_name()
         logger.debug("%s called 'hato amesh '", user)
-        msg = '雨雲状況をお知らせするっぽ！'
+        msg: str = '雨雲状況をお知らせするっぽ！'
 
         if place:
             lat, lon = split_command(place, 2)
