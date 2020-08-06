@@ -198,14 +198,14 @@ def amesh(place: str):
             lat = '35.698856'
             lon = '139.73091159273'
 
-        client.post(msg)
+        client.post(msg or '')
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
         req = requests.get(url, stream=True)
         if req.status_code == 200:
             with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
                 client.upload(file=weather_map_file.name,
-                              filename=os.path.extsep.join(["amesh", imghdr.what(weather_map_file.name)]))
+                              filename=os.path.extsep.join(["amesh", imghdr.what(weather_map_file.name) or ""]))
 
     return ret
 
