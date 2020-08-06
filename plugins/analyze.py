@@ -23,7 +23,7 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
                   'text': lambda m: hato.show_random_text,
                   '天気': lambda m: hato.weather((m[len('天気'):]).strip()),
                   '>< ': lambda m: hato.totuzensi(m[len('>< '):]),
-                  'amesh ': lambda m: hato.amesh((m[len('amesh '):]).strip()),
+                  'amesh': lambda m: hato.amesh((m[len('amesh'):]).strip()),
                   'version': lambda m: hato.version,
                   }
 
