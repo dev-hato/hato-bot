@@ -5,6 +5,8 @@
 import os
 import re
 from logging import getLogger
+from tempfile import NamedTemporaryFile
+
 import datetime
 from typing import List
 import requests
@@ -190,14 +192,10 @@ def amesh(client: BaseClient):
 
     url = weather_map_url(conf.YAHOO_API_TOKEN, '35.698856', '139.73091159273')
     req = requests.get(url, stream=True)
-    f_name = "amesh.jpg"
     if req.status_code == 200:
-        with open(f_name, 'wb') as weather_map_file:
+        with NamedTemporaryFile() as weather_map_file:
             weather_map_file.write(req.content)
-            client.upload(file=f_name, filename="amesh.png")
-
-    if os.path.exists(f_name):
-        os.remove(f_name)
+            client.upload(file=weather_map_file.name, filename="amesh.png")
 
 
 def amesh_with_gis(place: str):
