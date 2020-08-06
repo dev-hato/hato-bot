@@ -198,7 +198,9 @@ def amesh(place: str):
             lat = '35.698856'
             lon = '139.73091159273'
 
-        client.post(msg or '')
+        if msg:
+            client.post(msg)
+
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
         req = requests.get(url, stream=True)
         if req.status_code == 200:
