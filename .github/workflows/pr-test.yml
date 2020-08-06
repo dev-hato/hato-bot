@@ -28,14 +28,14 @@ jobs:
           pip install pipenv
           pipenv lock
       - name: pip cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
       - name: pipenv cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ~/.cache/pipenv
@@ -173,14 +173,14 @@ jobs:
           pip install pipenv
           pipenv lock
       - name: pip cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
       - name: pipenv cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ~/.cache/pipenv
@@ -218,14 +218,14 @@ jobs:
           pip install pipenv
           pipenv lock
       - name: pip cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
       - name: pipenv cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ~/.cache/pipenv
@@ -262,14 +262,14 @@ jobs:
           pip install pipenv
           pipenv lock
       - name: pip cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/Pipfile.lock') }}
       - name: pipenv cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ~/.cache/pipenv
