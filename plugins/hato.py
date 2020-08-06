@@ -209,13 +209,11 @@ def amesh_with_gis(place: str):
 
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
         req = requests.get(url, stream=True)
-        f_name = "amesh.jpg"
         if req.status_code == 200:
-            with open(f_name, 'wb') as weather_map_file:
+            with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
-                client.upload(file=f_name, filename="amesh.png")
+                client.upload(file=weather_map_file.name, filename="amesh.png")
 
-        os.remove(f_name)
     return ret
 
 
