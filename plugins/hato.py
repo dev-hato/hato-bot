@@ -9,6 +9,9 @@ from tempfile import NamedTemporaryFile
 import imghdr
 
 import requests
+
+import datetime
+from typing import List
 import slackbot_settings as conf
 from library.weather import get_city_id_from_city_name, get_weather
 from library.labotter import labo_in, labo_rida
