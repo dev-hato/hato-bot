@@ -7,11 +7,9 @@ import os
 import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-
-import requests
-
 import datetime
 from typing import List
+import requests
 import slackbot_settings as conf
 from library.weather import get_city_id_from_city_name, get_weather
 from library.labotter import labo_in, labo_rida
