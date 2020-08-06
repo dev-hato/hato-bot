@@ -6,9 +6,8 @@ import os
 import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
+import imghdr
 
-import datetime
-from typing import List
 import requests
 import slackbot_settings as conf
 from library.weather import get_city_id_from_city_name, get_weather
@@ -195,6 +194,7 @@ def amesh(client: BaseClient):
     if req.status_code == 200:
         with NamedTemporaryFile() as weather_map_file:
             weather_map_file.write(req.content)
+            logger.info('amesh type: '+imghdr.what(weather_map_file.name))
             client.upload(file=weather_map_file.name, filename="amesh.png")
 
 
