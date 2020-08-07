@@ -79,16 +79,22 @@ jobs:
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}"
             }
-            github.pulls.list({
+            const pulls_list_params = {
               state: "open",
               ...common_params
-            }).then(res => {
+            }
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
               if (res.data.length === 0) {
-                github.pulls.create({
+                const pulls_create_params = {
                   title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
                   body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
                   ...common_params
-                })
+                }
+                console.log("call pulls.create:")
+                console.log(pulls_create_params)
+                github.pulls.create(pulls_create_params)
               }
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
@@ -103,22 +109,34 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            github.pulls.list({
-              head: "refs/" + ref,
+            const common_params2 = {
               base: "${{github.event.pull_request.head.ref}}",
-              state: "open",
               ...common_params
-            }).then(res => {
+            }
+            const pulls_list_params = {
+              head: "refs/" + ref,
+              state: "open",
+              ...common_params2
+            }
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
               for(const data of res.data){
-                github.pulls.update({
+                const pulls_update_params = {
                   pull_number: data.number,
                   state: "closed",
-                  ...common_params
-                }).then(res2 => {
-                  github.git.deleteRef({
+                  ...common_params2
+                }
+                console.log("call pulls.update:")
+                console.log(pulls_update_params)
+                github.pulls.update(pulls_update_params).then(res2 => {
+                  const git_deleteRef_params = {
                     ref: ref,
                     ...common_params
-                  })
+                  }
+                  console.log("call git.deleteRef:")
+                  console.log(git_deleteRef_params)
+                  github.git.deleteRef(git_deleteRef_params)
                 })
               }
             })
@@ -273,32 +291,42 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.listComments({
+            const issues_listComments_params = {
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
-            }).then(response =>
+            }
+            console.log("call issues.listComments:")
+            console.log(issues_listComments_params)
+            github.issues.listComments(issues_listComments_params).then(response =>
               response.data.filter(
                 comment=>comment.user.id==41898282
               ).map(
                 comment=>comment.id
               ).forEach(
-                comment_id =>
-                  github.issues.deleteComment({
+                comment_id => {
+                  const issues_deleteComment_params = {
                     comment_id: comment_id,
                     owner: context.repo.owner,
                     repo: context.repo.repo
-                  })
+                  }
+                  console.log("call issues.deleteComment:")
+                  console.log(issues_deleteComment_params)
+                  github.issues.deleteComment(issues_deleteComment_params)
+                }
               )
             )
 
             const result = `${{steps.lint.outputs.result}}`
-            github.issues.createComment({
+            const issues_createComment_params = {
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "Lint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
-            })
+            }
+            console.log("call issues.createComment:")
+            console.log(issues_createComment_params)
+            github.issues.createComment(issues_createComment_params)
       - name: Exit
         if: github.event.pull_request.head.repo.full_name != github.repository && !contains(steps.lint.outputs.result, 'Your code has been rated at 10.00/10')
         run: exit 1
