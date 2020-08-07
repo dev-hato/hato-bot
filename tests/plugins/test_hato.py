@@ -3,6 +3,7 @@ hato.pyのテスト
 """
 import os
 import unittest
+from typing import List, Dict
 
 import requests_mock
 
@@ -51,7 +52,7 @@ class TestAmesh(unittest.TestCase):
     ameshが正しく動作しているかテストする
     """
 
-    def amesh_test(self, place, coordinate, output, content=None):
+    def amesh_test(self, place: str, coordinate: List[str], output: Dict[str, str], content=None):
         """
         ameshコマンドが実行できるかテスト
         :param place: コマンドの引数
@@ -69,7 +70,7 @@ class TestAmesh(unittest.TestCase):
             self.assertEqual(client1.get_filename(), output['filename'])
             self.assertEqual(req.status_code, 200)
 
-    def amesh_upload_png_test(self, place, coordinate, msg):
+    def amesh_upload_png_test(self, place: str, coordinate: List[str], msg: str):
         """
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
         :param place: コマンドの引数
