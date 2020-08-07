@@ -104,9 +104,7 @@ class TestAmesh(unittest.TestCase):
         """
         形式不明な画像データを取得した場合、「amesh」というファイル名でアップロードする
         """
-        self.amesh_test('',
-                        ['35.698856', '139.73091159273'],
-                        {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
+        self.amesh_test('', ['35.698856', '139.73091159273'], {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
 
     def test_weather_map_url(self):
         """
