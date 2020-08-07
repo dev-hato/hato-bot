@@ -90,8 +90,9 @@ class TestAmesh(unittest.TestCase):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        self.amesh_upload_png_test('12.345 123.456',
-                                   ['12.345', '123.456'],
+        coordinate = ['12.345', '123.456']
+        self.amesh_upload_png_test(' '.join(coordinate),
+                                   coordinate,
                                    '雨雲状況をお知らせするっぽ！')
 
     def test_amesh_upload_unknown_picture(self):
