@@ -2,9 +2,11 @@
 
 """hatobotのチャット部分"""
 
+import imghdr
 import os
 import re
 from logging import getLogger
+from tempfile import NamedTemporaryFile
 import datetime
 from typing import List
 import requests
@@ -181,43 +183,38 @@ def weather_map_url(appid: str, lat: str, lon: str) -> str:
     ).format(appid, lat, lon)
 
 
-def amesh(client: BaseClient):
-    """東京の天気を表示する"""
-
-    user = client.get_send_user_name()
-    logger.debug("%s called 'hato amesh'", user)
-    client.post('東京の雨雲状況をお知らせするっぽ！')
-
-    url = weather_map_url(conf.YAHOO_API_TOKEN, '35.698856', '139.73091159273')
-    req = requests.get(url, stream=True)
-    f_name = "amesh.jpg"
-    if req.status_code == 200:
-        with open(f_name, 'wb') as weather_map_file:
-            weather_map_file.write(req.content)
-            client.upload(file=f_name, filename="amesh.png")
-
-    if os.path.exists(f_name):
-        os.remove(f_name)
-
-
-def amesh_with_gis(place: str):
-    """位置を指定したameshを表示する"""
+def amesh(place: str):
+    """天気を表示する"""
 
     def ret(client: BaseClient):
         user = client.get_send_user_name()
         logger.debug("%s called 'hato amesh '", user)
-        client.post('雨雲状況をお知らせするっぽ！')
-        lat, lon = split_command(place, 2)
+        msg: str = '雨雲状況をお知らせするっぽ！'
 
+        if place:
+            lat, lon = split_command(place, 2)
+        else:
+            msg = '東京の' + msg
+            lat = '35.698856'
+            lon = '139.73091159273'
+
+        client.post(msg)
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
         req = requests.get(url, stream=True)
-        f_name = "amesh.jpg"
         if req.status_code == 200:
-            with open(f_name, 'wb') as weather_map_file:
+            with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
-                client.upload(file=f_name, filename="amesh.png")
+                filename = ['amesh']
+                ext = imghdr.what(weather_map_file.name)
 
-        os.remove(f_name)
+                if ext:
+                    filename.append(ext)
+
+                client.upload(file=weather_map_file.name,
+                              filename=os.path.extsep.join(filename))
+
+        return req
+
     return ret
 
 
