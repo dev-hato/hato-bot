@@ -12,6 +12,7 @@ class TestClient(BaseClient):
 
     def __init__(self):
         self.post_message = ""
+        self.filename = ""
 
     def post(self, message: str):
         self.post_message = message
@@ -30,4 +31,5 @@ class TestClient(BaseClient):
         return "abc123"
 
     def upload(self, file, filename):
+        self.filename = filename
         return
