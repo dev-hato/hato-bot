@@ -116,8 +116,8 @@ class TestAmesh(unittest.TestCase):
         lat = '35.698856'
         lon = '139.73091159273'
         url = (
-            'https://map.yahooapis.jp/map/V1/static?' +
-            'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
+                'https://map.yahooapis.jp/map/V1/static?' +
+                'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
         ).format(appid, lat, lon)
         self.assertEqual(weather_map_url(appid, lat, lon), url)
 
