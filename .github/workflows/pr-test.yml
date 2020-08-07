@@ -109,14 +109,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            const common_params2 = {
-              base: "${{github.event.pull_request.head.ref}}",
-              ...common_params
-            }
             const pulls_list_params = {
               head: "refs/" + ref,
+              base: "${{github.event.pull_request.head.ref}}",
               state: "open",
-              ...common_params2
+              ...common_params
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
@@ -125,7 +122,7 @@ jobs:
                 const pulls_update_params = {
                   pull_number: data.number,
                   state: "closed",
-                  ...common_params2
+                  ...common_params
                 }
                 console.log("call pulls.update:")
                 console.log(pulls_update_params)
