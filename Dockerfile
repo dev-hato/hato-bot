@@ -1,6 +1,6 @@
 FROM python:3.8.2
 
-ENV PIPENV_VENV_IN_PROJECT=1
+ENV WORKON_HOME=/usr/src/venv
 
 WORKDIR /usr/src/app
 COPY . .
