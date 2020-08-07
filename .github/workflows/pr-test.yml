@@ -86,7 +86,7 @@ jobs:
             console.log("call pulls.list:")
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(res => {
-              if (res.data.length === 0) {
+              if (res.data.filter(data => data.user.id === 41898282).length === 0) {
                 const pulls_create_params = {
                   title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
                   body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
@@ -119,22 +119,24 @@ jobs:
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(res => {
               for(const data of res.data){
-                const pulls_update_params = {
-                  pull_number: data.number,
-                  state: "closed",
-                  ...common_params
-                }
-                console.log("call pulls.update:")
-                console.log(pulls_update_params)
-                github.pulls.update(pulls_update_params).then(res2 => {
-                  const git_deleteRef_params = {
-                    ref: ref,
+                if(data.user.id === 41898282) {
+                  const pulls_update_params = {
+                    pull_number: data.number,
+                    state: "closed",
                     ...common_params
                   }
-                  console.log("call git.deleteRef:")
-                  console.log(git_deleteRef_params)
-                  github.git.deleteRef(git_deleteRef_params)
-                })
+                  console.log("call pulls.update:")
+                  console.log(pulls_update_params)
+                  github.pulls.update(pulls_update_params).then(res2 => {
+                    const git_deleteRef_params = {
+                      ref: ref,
+                      ...common_params
+                    }
+                    console.log("call git.deleteRef:")
+                    console.log(git_deleteRef_params)
+                    github.git.deleteRef(git_deleteRef_params)
+                  })
+                }
               }
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
