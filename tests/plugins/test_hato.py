@@ -84,18 +84,14 @@ class TestAmesh(unittest.TestCase):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        self.amesh_upload_png_test('',
-                                   ['35.698856', '139.73091159273'],
-                                   '東京の雨雲状況をお知らせするっぽ！')
+        self.amesh_upload_png_test('', ['35.698856', '139.73091159273'], '東京の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
         coordinate = ['12.345', '123.456']
-        self.amesh_upload_png_test(' '.join(coordinate),
-                                   coordinate,
-                                   '雨雲状況をお知らせするっぽ！')
+        self.amesh_upload_png_test(' '.join(coordinate), coordinate, '雨雲状況をお知らせするっぽ！')
 
     def test_amesh_upload_unknown_picture(self):
         """
