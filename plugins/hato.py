@@ -206,9 +206,13 @@ def amesh(place: str):
         if req.status_code == 200:
             with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
-                ext = imghdr.what(weather_map_file.name) or ''
-                client.upload(file=weather_map_file.name,
-                              filename=os.path.extsep.join(['amesh', ext]))
+                filename = ['amesh']
+                ext = imghdr.what(weather_map_file.name)
+
+                if ext:
+                    filename.append(ext)
+
+                client.upload(file=weather_map_file.name, filename=os.path.extsep.join(filename))
 
         return req
 
