@@ -104,9 +104,7 @@ class TestAmesh(unittest.TestCase):
         """
         形式不明な画像データを取得した場合、「amesh」というファイル名でアップロードする
         """
-        self.amesh_test('',
-                        ['35.698856', '139.73091159273'],
-                        {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
+        self.amesh_test('', ['35.698856', '139.73091159273'], {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
 
     def test_weather_map_url(self):
         """
@@ -116,8 +114,8 @@ class TestAmesh(unittest.TestCase):
         lat = '35.698856'
         lon = '139.73091159273'
         url = (
-            'https://map.yahooapis.jp/map/V1/static?' +
-            'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
+                'https://map.yahooapis.jp/map/V1/static?' +
+                'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
         ).format(appid, lat, lon)
         self.assertEqual(weather_map_url(appid, lat, lon), url)
 

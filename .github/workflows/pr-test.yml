@@ -91,6 +91,25 @@ jobs:
                 })
               }
             })
+      - name: Test
+        uses: actions/github-script@0.9.0
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const ref = "heads/fix-format-${{github.event.pull_request.head.ref}}"
+            const common_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }
+            github.pulls.list({
+              head: "refs/" + ref,
+              base: "${{github.event.pull_request.head.ref}}",
+              state: "open",
+              ...common_params
+            }).then(res => {
+              console.log(res.data)
+            })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@0.9.0
