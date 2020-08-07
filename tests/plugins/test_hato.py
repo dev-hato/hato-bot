@@ -66,7 +66,7 @@ class TestAmesh(unittest.TestCase):
                        content=content)
             req = amesh(place)(client1)
             self.assertEqual(client1.get_post_message(), output['msg'])
-            self.assertEqual(client1.filename, output['filename'])
+            self.assertEqual(client1.get_filename(), output['filename'])
             self.assertEqual(req.status_code, 200)
 
     def amesh_upload_png_test(self, place, coordinate, msg):

@@ -32,3 +32,7 @@ class TestClient(BaseClient):
 
     def upload(self, file, filename):
         self.filename = filename
+
+    def get_filename(self):
+        """アップロードする画像のファイル名を返す"""
+        return self.filename
