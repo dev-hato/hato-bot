@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+requests-mock = "*"
 
 [packages]
 python-dotenv = "==0.14.0"
