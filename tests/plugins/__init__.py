@@ -1,3 +1,7 @@
+"""
+plugin関連のテスト
+"""
+
 from library.clientclass import BaseClient
 
 
