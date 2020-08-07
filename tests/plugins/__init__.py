@@ -32,4 +32,3 @@ class TestClient(BaseClient):
 
     def upload(self, file, filename):
         self.filename = filename
-        return
