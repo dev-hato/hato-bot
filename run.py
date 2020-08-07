@@ -72,6 +72,8 @@ def on_app_mention(event_data):
     print(event_data)
 
 # curl -XPOST -d '{"message": "鳩", "channel": "C0189D2B8F7", "user": "U018B02SXFD"}' -H "Content-Type: application/json" http://localhost:3000/
+
+
 @app.route("/", methods=["GET", "POST"])
 def http_app():
     msg = request.json['message']
@@ -79,6 +81,7 @@ def http_app():
     user = request.json['user']
     analyze.analyze_message(msg)(SlackClient(channel, user))
     return "success"
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=conf.PORT)
