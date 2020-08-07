@@ -51,21 +51,20 @@ class TestAmesh(unittest.TestCase):
     ameshが正しく動作しているかテストする
     """
 
-    def amesh_test(self, place, coordinate, msg, filename, content=None):
+    def amesh_test(self, place, coordinate, output, content=None):
         """
         ameshコマンドが実行できるかテスト
         :param place: コマンドの引数
         :param coordinate: [緯度, 経度]
-        :param msg: Slackに投稿されて欲しいメッセージ
-        :param filename: Slackに投稿される画像のファイル名
+        :param output: msg: Slackに投稿されて欲しいメッセージ, filename: Slackに投稿される画像のファイル名
         :param content: req.contentで返すデータ
         """
         with requests_mock.Mocker() as mocker:
             client1 = TestClient()
             mocker.get(weather_map_url(conf.YAHOO_API_TOKEN, *coordinate), content=content)
             req = amesh(place)(client1)
-            self.assertEqual(client1.get_post_message(), msg)
-            self.assertEqual(client1.filename, filename)
+            self.assertEqual(client1.get_post_message(), output['msg'])
+            self.assertEqual(client1.filename, output['filename'])
             self.assertEqual(req.status_code, 200)
 
     def amesh_upload_png_test(self, place, coordinate, msg):
@@ -76,7 +75,7 @@ class TestAmesh(unittest.TestCase):
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            self.amesh_test(place, coordinate, msg, 'amesh.png', picture_file.read())
+            self.amesh_test(place, coordinate, {'msg': msg, 'filename': 'amesh.png'}, picture_file.read())
 
     def test_amesh_with_no_params(self):
         """
@@ -101,8 +100,7 @@ class TestAmesh(unittest.TestCase):
         """
         self.amesh_test('',
                         ['35.698856', '139.73091159273'],
-                        '東京の雨雲状況をお知らせするっぽ！',
-                        'amesh')
+                        {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
 
     def test_weather_map_url(self):
         """
