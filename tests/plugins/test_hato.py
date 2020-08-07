@@ -1,7 +1,7 @@
 """
 hato.pyのテスト
 """
-
+import os
 import unittest
 
 import requests_mock
@@ -51,34 +51,65 @@ class TestAmesh(unittest.TestCase):
     ameshが正しく動作しているかテストする
     """
 
-    def amesh_test(self, place, lat, lon, msg):
+    def amesh_test(self, place, lat, lon, msg, filename, request_mock_params=None):
         """
         ameshコマンドが実行できるかテスト
+        :param place: コマンドの引数
+        :param lat: 緯度
+        :param lon: 経度
+        :param msg: Slackに投稿されて欲しいメッセージ
+        :param filename: Slackに投稿される画像のファイル名
+        :param request_mock_params: request.getのmockの引数
         """
+        if request_mock_params is None:
+            request_mock_params = {}
+
         with requests_mock.Mocker() as mocker:
             client1 = TestClient()
-            mocker.get(weather_map_url(conf.YAHOO_API_TOKEN, lat, lon))
+            mocker.get(weather_map_url(conf.YAHOO_API_TOKEN, lat, lon), **request_mock_params)
             req = amesh(place)(client1)
             self.assertEqual(client1.get_post_message(), msg)
+            self.assertEqual(client1.filename, filename)
             self.assertEqual(req.status_code, 200)
+
+    def amesh_upload_png_test(self, place, lat, lon, msg):
+        """
+        ameshコマンドを実行し、png画像をuploadできるかテスト
+        :param place: コマンドの引数
+        :param lat: 緯度
+        :param lon: 経度
+        :param msg: Slackに投稿されて欲しいメッセージ
+        """
+        with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
+            self.amesh_test(place, lat, lon, msg, 'amesh.png', {'content': picture_file.read()})
 
     def test_amesh_with_no_params(self):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('',
-                        '35.698856',
-                        '139.73091159273',
-                        '東京の雨雲状況をお知らせするっぽ！')
+        self.amesh_upload_png_test('',
+                                   '35.698856',
+                                   '139.73091159273',
+                                   '東京の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('12.345 123.456',
-                        '12.345',
-                        '123.456',
-                        '雨雲状況をお知らせするっぽ！')
+        self.amesh_upload_png_test('12.345 123.456',
+                                   '12.345',
+                                   '123.456',
+                                   '雨雲状況をお知らせするっぽ！')
+
+    def test_amesh_upload_unknown_picture(self):
+        """
+        形式不明な画像データを取得した場合、「amesh」というファイル名でアップロードする
+        """
+        self.amesh_test('',
+                        '35.698856',
+                        '139.73091159273',
+                        '東京の雨雲状況をお知らせするっぽ！',
+                        'amesh')
 
     def test_weather_map_url(self):
         """
