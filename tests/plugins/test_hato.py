@@ -66,13 +66,15 @@ class TestAmesh(unittest.TestCase):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('', '35.698856', '139.73091159273', '東京の雨雲状況をお知らせするっぽ！')
+        self.amesh_test('', '35.698856', '139.73091159273',
+                        '東京の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('12.345 123.456', '12.345', '123.456', '雨雲状況をお知らせするっぽ！')
+        self.amesh_test('12.345 123.456', '12.345',
+                        '123.456', '雨雲状況をお知らせするっぽ！')
 
     def test_weather_map_url(self):
         """
@@ -83,9 +85,9 @@ class TestAmesh(unittest.TestCase):
         lon = '139.73091159273'
         self.assertEqual(weather_map_url(appid, lat, lon),
                          (
-                                 'https://map.yahooapis.jp/map/V1/static?' +
-                                 'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
-                         ).format(appid, lat, lon))
+            'https://map.yahooapis.jp/map/V1/static?' +
+            'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
+        ).format(appid, lat, lon))
 
 
 if __name__ == '__main__':
