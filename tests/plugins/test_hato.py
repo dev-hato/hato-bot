@@ -75,7 +75,10 @@ class TestAmesh(unittest.TestCase):
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            self.amesh_test(place, coordinate, {'msg': msg, 'filename': 'amesh.png'}, picture_file.read())
+            self.amesh_test(place,
+                            coordinate,
+                            {'msg': msg, 'filename': 'amesh.png'},
+                            picture_file.read())
 
     def test_amesh_with_no_params(self):
         """
