@@ -66,15 +66,19 @@ class TestAmesh(unittest.TestCase):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('', '35.698856', '139.73091159273',
+        self.amesh_test('',
+                        '35.698856',
+                        '139.73091159273',
                         '東京の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        self.amesh_test('12.345 123.456', '12.345',
-                        '123.456', '雨雲状況をお知らせするっぽ！')
+        self.amesh_test('12.345 123.456',
+                        '12.345',
+                        '123.456',
+                        '雨雲状況をお知らせするっぽ！')
 
     def test_weather_map_url(self):
         """
