@@ -212,7 +212,8 @@ def amesh(place: str):
                 if ext:
                     filename.append(ext)
 
-                client.upload(file=weather_map_file.name, filename=os.path.extsep.join(filename))
+                client.upload(file=weather_map_file.name,
+                              filename=os.path.extsep.join(filename))
 
         return req
 
