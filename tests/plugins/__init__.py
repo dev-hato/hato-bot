@@ -30,7 +30,7 @@ class TestClient(BaseClient):
     def get_send_user() -> str:
         return "abc123"
 
-    def upload(self, file, filename):
+    def upload(self, file: str, filename: str):
         self.filename = filename
 
     def get_filename(self) -> str:
