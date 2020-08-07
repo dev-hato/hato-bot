@@ -76,7 +76,9 @@ def on_app_mention(event_data):
 def http_app():
     """
     localでテストできます
-    curl -XPOST -d '{"message": "鳩", "channel": "C0189D2B8F7", "user": "U018B02SXFD"}' -H "Content-Type: application/json" http://localhost:3000/
+
+    curl -XPOST -d '{"message": "鳩", "channel": "C0189D2B8F7", "user": "U018B02SXFD"}' \
+        -H "Content-Type: application/json" http://localhost:3000/
     """
     msg = request.json['message']
     channel = request.json['channel']
