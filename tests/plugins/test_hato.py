@@ -3,12 +3,13 @@ hato.pyのテスト
 """
 import os
 import unittest
-from typing import List, Dict
+from typing import List
 
 import requests_mock
 
 import slackbot_settings as conf
 from plugins.hato import split_command, amesh, weather_map_url
+from tests.library.test_amesh import set_mock
 from tests.plugins import TestClient
 
 
@@ -52,61 +53,106 @@ class TestAmesh(unittest.TestCase):
     ameshが正しく動作しているかテストする
     """
 
-    def amesh_test(self, place: str, coordinate: List[str], output: Dict[str, str], content=None):
+    def get_amesh_test(self,
+                       mocker: requests_mock.Mocker,
+                       place: str,
+                       coordinate: List[str],
+                       content=None):
         """
-        ameshコマンドが実行できるかテスト
+        ameshを取得できるかテスト
+        :param mocker requestsのMock
         :param place: コマンドの引数
         :param coordinate: [緯度, 経度]
-        :param output: msg: Slackに投稿されて欲しいメッセージ, filename: Slackに投稿される画像のファイル名
         :param content: req.contentで返すデータ
         """
-        with requests_mock.Mocker() as mocker:
-            client1 = TestClient()
-            mocker.get(weather_map_url(conf.YAHOO_API_TOKEN,
-                                       *coordinate),
-                       content=content)
-            req = amesh(place)(client1)
-            self.assertEqual(client1.get_post_message(), output['msg'])
-            self.assertEqual(client1.get_filename(), output['filename'])
-            self.assertEqual(req.status_code, 200)
+        client1 = TestClient()
+        mocker.get(weather_map_url(conf.YAHOO_API_TOKEN,
+                                   *coordinate),
+                   content=content)
+        req = amesh(place)(client1)
+        self.assertEqual(req.status_code, 200)
+        return client1
 
-    def amesh_upload_png_test(self, place: str, coordinate: List[str], msg: str):
+    def amesh_upload_png_test(self,
+                              mocker: requests_mock.Mocker,
+                              place: str,
+                              coordinate: List[str],
+                              msg: str):
         """
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
+        :param mocker requestsのMock
         :param place: コマンドの引数
         :param coordinate: [緯度, 経度]
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            self.amesh_test(place,
-                            coordinate,
-                            {'msg': msg, 'filename': 'amesh.png'},
-                            picture_file.read())
+            client1 = self.get_amesh_test(mocker,
+                                          place,
+                                          coordinate,
+                                          picture_file.read())
+            self.assertEqual(client1.get_post_message(), msg)
+            self.assertEqual(client1.get_filename(), 'amesh.png')
 
     def test_amesh_with_no_params(self):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        self.amesh_upload_png_test('',
-                                   ['35.698856', '139.73091159273'],
-                                   '東京の雨雲状況をお知らせするっぽ！')
+        with requests_mock.Mocker() as mocker:
+            content = {
+                'Feature': [
+                    {
+                        'Id': '13112',
+                        'Gid': '',
+                        'Name': '東京都世田谷区',
+                        'Geometry': {
+                            'Type': 'point',
+                            'Coordinates': '139.65324950,35.64657460',
+                            'BoundingBox': '139.58242700,35.59004000 139.68655700,35.68297400'
+                        },
+                        'Category': [],
+                        'Description': '',
+                        'Style': [],
+                        'Property': {
+                            'Uid': '9b7486bd58ee135ffec334df2975f4f37690b3cf',
+                            'CassetteId': 'b22fee69b0dcaf2c2fe2d6a27906dafc',
+                            'Yomi': 'トウキョウトセタガヤク',
+                            'Country': {'Code': 'JP', 'Name': '日本'},
+                            'Address': '東京都世田谷区',
+                            'GovernmentCode': '13112',
+                            'AddressMatchingLevel': '2',
+                            'AddressType': '特別区'
+                        }
+                    }
+                ]
+            }
+            set_mock('東京', mocker, content)
+            self.amesh_upload_png_test(mocker,
+                                       '',
+                                       ['35.64657460', '139.65324950'],
+                                       '東京都世田谷区の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        coordinate = ['12.345', '123.456']
-        self.amesh_upload_png_test(' '.join(coordinate),
-                                   coordinate,
-                                   '雨雲状況をお知らせするっぽ！')
+        with requests_mock.Mocker() as mocker:
+            coordinate = ['12.345', '123.456']
+            self.amesh_upload_png_test(mocker,
+                                       ' '.join(coordinate),
+                                       coordinate,
+                                       '雨雲状況をお知らせするっぽ！')
 
     def test_amesh_upload_unknown_picture(self):
         """
         形式不明な画像データを取得した場合、「amesh」というファイル名でアップロードする
         """
-        self.amesh_test('',
-                        ['35.698856', '139.73091159273'],
-                        {'msg': '東京の雨雲状況をお知らせするっぽ！', 'filename': 'amesh'})
+        with requests_mock.Mocker() as mocker:
+            coordinate = ['12.345', '123.456']
+            client1 = self.get_amesh_test(mocker,
+                                          ' '.join(coordinate),
+                                          coordinate)
+            self.assertEqual(client1.get_post_message(), '雨雲状況をお知らせするっぽ！')
+            self.assertEqual(client1.get_filename(), 'amesh')
 
     def test_weather_map_url(self):
         """
