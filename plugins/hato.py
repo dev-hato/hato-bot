@@ -162,7 +162,7 @@ def amesh(place: str):
                                'lon': lon,
                                'z': '12',
                                'height': '640',
-                               'weight': '800',
+                               'width': '800',
                                'overlay': 'type:rainfall|datelabel:off'
                            },
                            stream=True)
