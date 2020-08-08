@@ -8,7 +8,6 @@ import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
-
 import requests
 import slackbot_settings as conf
 from library.amesh import get_geo_data
