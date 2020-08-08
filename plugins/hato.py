@@ -3,6 +3,7 @@
 """hatobotのチャット部分"""
 
 import imghdr
+import json
 import os
 import re
 from logging import getLogger
@@ -142,13 +143,36 @@ def amesh(place: str):
         user = client.get_send_user_name()
         logger.debug("%s called 'hato amesh '", user)
         msg: str = '雨雲状況をお知らせするっぽ！'
+        lat = None
+        lon = None
 
         if place:
-            lat, lon = split_command(place, 2)
+            place_list = split_command(place, 2)
+            if len(place_list) == 2:
+                lat, lon = place_list
+            else:
+                geo_data = json.loads(requests.get('https://map.yahooapis.jp/geocode/V1/geoCoder',
+                                                   {
+                                                       'appid': conf.YAHOO_API_TOKEN,
+                                                       'query': place_list[0],
+                                                       'output': 'json'
+                                                   }).content)
+                if 'Feature' in geo_data:
+                    for feature in geo_data['Feature']:
+                        if 'Name' in feature and feature['Name'] and 'Geometry' in feature and feature['Geometry']:
+                            geometry = feature['Geometry']
+                            if 'Coordinates' in geometry and geometry['Coordinates']:
+                                msg = feature['Name'] + 'の' + msg
+                                lon, lat = geometry['Coordinates'].split(',', maxsplit=2)
+                                break
         else:
             msg = '東京の' + msg
             lat = '35.698856'
             lon = '139.73091159273'
+
+        if lat is None or lon is None:
+            client.post('雨雲状況を取得できなかったっぽ......')
+            return None
 
         client.post(msg)
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
