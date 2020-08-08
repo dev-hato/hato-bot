@@ -10,6 +10,7 @@ from tempfile import NamedTemporaryFile
 from typing import List
 import requests
 import slackbot_settings as conf
+from library.amesh import get_geo_data
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
@@ -33,7 +34,9 @@ def help_message(client: BaseClient):
     logger.debug("%s app called 'hato help'", client.get_type())
     str_help = '\n使い方\n'\
         '```'\
-        'amesh ... ameshを表示する。\n'\
+        'amesh ... 東京のameshを表示する。\n'\
+        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n'\
+        'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n'\
         'eq ... 最新の地震情報を3件表示する。\n'\
         'text list ... パワーワード一覧を表示する。 \n'\
         'text random ... パワーワードをひとつ、ランダムで表示する。 \n'\
@@ -142,13 +145,22 @@ def amesh(place: str):
         user = client.get_send_user_name()
         logger.debug("%s called 'hato amesh '", user)
         msg: str = '雨雲状況をお知らせするっぽ！'
+        lat = None
+        lon = None
+        place_list = split_command(place, 2)
 
-        if place:
-            lat, lon = split_command(place, 2)
+        if len(place_list) == 2:
+            lat, lon = place_list
         else:
-            msg = '東京の' + msg
-            lat = '35.698856'
-            lon = '139.73091159273'
+            geo_data = get_geo_data(place_list[0] or '東京')
+            if geo_data is not None:
+                msg = geo_data['place'] + 'の' + msg
+                lat = geo_data['lat']
+                lon = geo_data['lon']
+
+        if lat is None or lon is None:
+            client.post('雨雲状況を取得できなかったっぽ......')
+            return None
 
         client.post(msg)
         url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
