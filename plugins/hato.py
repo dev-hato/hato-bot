@@ -11,7 +11,6 @@ import datetime
 from typing import List
 import requests
 import slackbot_settings as conf
-from library.weather import get_city_id_from_city_name, get_weather
 from library.labotter import labo_in, labo_rida
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
@@ -36,7 +35,6 @@ def help_message(client: BaseClient):
     logger.debug("%s app called 'hato help'", client.get_type())
     str_help = '\n使い方\n'\
         '```'\
-        '天気 [text] ... 地名の天気予報を表示する。\n'\
         'amesh ... ameshを表示する。\n'\
         'eq ... 最新の地震情報を3件表示する。\n'\
         'text list ... パワーワード一覧を表示する。 \n'\
@@ -145,21 +143,6 @@ def delete_text(power_word_id: str):
         logger.debug("%s called 'text delete'", user)
         msg = delete_vocabulary(int(power_word_id))
         client.post(msg)
-    return ret
-
-
-def weather(place: str):
-    """指定した都市の天気を表示する"""
-
-    def ret(client: BaseClient):
-        user = client.get_send_user_name()
-        logger.debug("%s called 'hato 天気'", user)
-        city_id = get_city_id_from_city_name(place)
-        if city_id is None:
-            client.post('該当する情報が見つからなかったっぽ！')
-        else:
-            weather_info = get_weather(city_id)
-            client.post('```' + weather_info + '```')
     return ret
 
 
