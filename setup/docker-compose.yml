@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:12.1
+    image: postgres:12.1-alpine
     environment:
       POSTGRES_PASSWORD: password
     volumes:
