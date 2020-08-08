@@ -25,9 +25,9 @@ def set_mock(place: str, mocker: requests_mock.Mocker, content=None):
         'query': place,
         'output': 'json'
     }
+    query = '&'.join([f'{k}={v}' for k, v in params.items()])
     mocker.get(
-        'https://map.yahooapis.jp/geocode/V1/geoCoder?' +
-        ('&'.join([f'{k}={v}' for k, v in params.items()])),
+        'https://map.yahooapis.jp/geocode/V1/geoCoder?' + query,
         content=json.dumps(content).encode()
     )
 
