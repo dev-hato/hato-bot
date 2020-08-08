@@ -34,7 +34,9 @@ def help_message(client: BaseClient):
     logger.debug("%s app called 'hato help'", client.get_type())
     str_help = '\n使い方\n'\
         '```'\
-        'amesh ... ameshを表示する。\n'\
+        'amesh ... 東京のameshを表示する。\n'\
+        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n'\
+        'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n'\
         'eq ... 最新の地震情報を3件表示する。\n'\
         'text list ... パワーワード一覧を表示する。 \n'\
         'text random ... パワーワードをひとつ、ランダムで表示する。 \n'\
