@@ -15,15 +15,14 @@ def wait_db() -> None:
 
     for i in range(max_attempt):
         try:
-            with Database() as db:
-                db.execute_sql('SELECT 1')
+            with Database() as _db:
+                _db.execute_sql('SELECT 1')
                 break
-        except psycopg2.OperationalError as e:
+        except psycopg2.OperationalError as _e:
             if i == max_attempt - 1:
-                raise e
+                raise _e
 
             sleep(1)
-            pass
 
     print('postgres is running!')
 
