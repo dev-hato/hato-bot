@@ -76,7 +76,8 @@ class TestAmesh(unittest.TestCase):
             'overlay': 'type:rainfall|datelabel:off'
         }
         query = '&'.join([f'{k}={v}' for k, v in params.items()])
-        mocker.get('https://map.yahooapis.jp/map/V1/static?' + query, content=content)
+        mocker.get('https://map.yahooapis.jp/map/V1/static?' +
+                   query, content=content)
         req = amesh(place)(client1)
         self.assertEqual(req.status_code, 200)
         return client1
