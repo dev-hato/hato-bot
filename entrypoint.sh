@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e -o pipefail
+
 # PostgreSQLの起動を待機する
 pipenv run python wait_db.py
 
