@@ -8,7 +8,7 @@ from typing import List
 import requests_mock
 
 import slackbot_settings as conf
-from plugins.hato import split_command, amesh, weather_map_url
+from plugins.hato import split_command, amesh
 from tests.library.test_amesh import set_mock
 from tests.plugins import TestClient
 
@@ -66,9 +66,17 @@ class TestAmesh(unittest.TestCase):
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
-        mocker.get(weather_map_url(conf.YAHOO_API_TOKEN,
-                                   *coordinate),
-                   content=content)
+        params = {
+            'appid': conf.YAHOO_API_TOKEN,
+            'lat': coordinate[0],
+            'lon': coordinate[1],
+            'z': 12,
+            'height': 640,
+            'width': 800,
+            'overlay': 'type:rainfall|datelabel:off'
+        }
+        query = '&'.join([f'{k}={v}' for k, v in params.items()])
+        mocker.get('https://map.yahooapis.jp/map/V1/static?' + query, content=content)
         req = amesh(place)(client1)
         self.assertEqual(req.status_code, 200)
         return client1
@@ -136,19 +144,6 @@ class TestAmesh(unittest.TestCase):
                                           coordinate)
             self.assertEqual(client1.get_post_message(), '雨雲状況をお知らせするっぽ！')
             self.assertEqual(client1.get_filename(), 'amesh')
-
-    def test_weather_map_url(self):
-        """
-        weather_map_urlを正しく作れるかテスト
-        """
-        appid = 'hoge'
-        lat = '35.698856'
-        lon = '139.73091159273'
-        url = (
-            'https://map.yahooapis.jp/map/V1/static?' +
-            'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
-        ).format(appid, lat, lon)
-        self.assertEqual(weather_map_url(appid, lat, lon), url)
 
 
 if __name__ == '__main__':

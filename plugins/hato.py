@@ -130,14 +130,6 @@ def totuzensi(message: str):
     return ret
 
 
-def weather_map_url(appid: str, lat: str, lon: str) -> str:
-    """weather_map_urlを作る"""
-    return (
-        'https://map.yahooapis.jp/map/V1/static?' +
-        'appid={}&lat={}&lon={}&z=12&height=640&width=800&overlay=type:rainfall|datelabel:off'
-    ).format(appid, lat, lon)
-
-
 def amesh(place: str):
     """天気を表示する"""
 
@@ -163,8 +155,17 @@ def amesh(place: str):
             return None
 
         client.post(msg)
-        url = weather_map_url(conf.YAHOO_API_TOKEN, lat, lon)
-        req = requests.get(url, stream=True)
+        req = requests.get('https://map.yahooapis.jp/map/V1/static',
+                           {
+                               'appid': conf.YAHOO_API_TOKEN,
+                               'lat': lat,
+                               'lon': lon,
+                               'z': '12',
+                               'height': '640',
+                               'width': '800',
+                               'overlay': 'type:rainfall|datelabel:off'
+                           },
+                           stream=True)
         if req.status_code == 200:
             with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
