@@ -31,8 +31,8 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
                 if 'Geometry' in feature and feature['Geometry']:
                     geometry = feature['Geometry']
                     if 'Coordinates' in geometry and geometry['Coordinates']:
-                        lon, lat = geometry['Coordinates'].split(
-                            ',', maxsplit=2)
+                        coordinates = geometry['Coordinates']
+                        lon, lat = coordinates.split(',', maxsplit=2)
                         return {'place': feature['Name'], 'lat': lat, 'lon': lon}
 
     return None
