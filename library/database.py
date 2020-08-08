@@ -13,9 +13,9 @@ class Database:
     def __init__(self):
         try:
             self.conn = psycopg2.connect(conf.DB_URL, sslmode='require')
-        except psycopg2.Error as e:
+        except psycopg2.Error as _e:
             print('Can not connect to database.')
-            raise e
+            raise _e
 
     def __enter__(self):
         return self
