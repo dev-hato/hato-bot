@@ -101,26 +101,9 @@ class TestAmesh(unittest.TestCase):
             content = {
                 'Feature': [
                     {
-                        'Id': '13112',
-                        'Gid': '',
                         'Name': '東京都世田谷区',
                         'Geometry': {
-                            'Type': 'point',
-                            'Coordinates': '139.65324950,35.64657460',
-                            'BoundingBox': '139.58242700,35.59004000 139.68655700,35.68297400'
-                        },
-                        'Category': [],
-                        'Description': '',
-                        'Style': [],
-                        'Property': {
-                            'Uid': '9b7486bd58ee135ffec334df2975f4f37690b3cf',
-                            'CassetteId': 'b22fee69b0dcaf2c2fe2d6a27906dafc',
-                            'Yomi': 'トウキョウトセタガヤク',
-                            'Country': {'Code': 'JP', 'Name': '日本'},
-                            'Address': '東京都世田谷区',
-                            'GovernmentCode': '13112',
-                            'AddressMatchingLevel': '2',
-                            'AddressType': '特別区'
+                            'Coordinates': '139.65324950,35.64657460'
                         }
                     }
                 ]
