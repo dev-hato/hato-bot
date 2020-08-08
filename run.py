@@ -9,7 +9,7 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask
+from flask import Flask, request
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
@@ -70,6 +70,21 @@ def on_app_mention(event_data):
                             channel, block_element_elements[0]['user_id']))
 
     print(event_data)
+
+
+@app.route("/", methods=["GET", "POST"])
+def http_app():
+    """
+    localでテストできます
+
+    curl -XPOST -d '{"message": "鳩", "channel": "C0189D2B8F7", "user": "U018B02SXFD"}' \
+        -H "Content-Type: application/json" http://localhost:3000/
+    """
+    msg = request.json['message']
+    channel = request.json['channel']
+    user = request.json['user']
+    analyze.analyze_message(msg)(SlackClient(channel, user))
+    return "success"
 
 
 if __name__ == "__main__":
