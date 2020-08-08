@@ -145,21 +145,16 @@ def amesh(place: str):
         msg: str = '雨雲状況をお知らせするっぽ！'
         lat = None
         lon = None
+        place_list = split_command(place, 2)
 
-        if place:
-            place_list = split_command(place, 2)
-            if len(place_list) == 2:
-                lat, lon = place_list
-            else:
-                geo_data = get_geo_data(place_list[0])
-                if geo_data is not None:
-                    msg = geo_data['place'] + 'の' + msg
-                    lat = geo_data['lat']
-                    lon = geo_data['lon']
+        if len(place_list) == 2:
+            lat, lon = place_list
         else:
-            msg = '東京の' + msg
-            lat = '35.698856'
-            lon = '139.73091159273'
+            geo_data = get_geo_data(place_list[0] or '東京')
+            if geo_data is not None:
+                msg = geo_data['place'] + 'の' + msg
+                lat = geo_data['lat']
+                lon = geo_data['lon']
 
         if lat is None or lon is None:
             client.post('雨雲状況を取得できなかったっぽ......')
