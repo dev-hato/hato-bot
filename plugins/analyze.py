@@ -21,7 +21,6 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
                   'text delete ': lambda m: hato.delete_text(m[len('text delete '):]),
                   'text random': lambda m: hato.show_random_text,
                   'text': lambda m: hato.show_random_text,
-                  '天気': lambda m: hato.weather((m[len('天気'):]).strip()),
                   '>< ': lambda m: hato.totuzensi(m[len('>< '):]),
                   'amesh': lambda m: hato.amesh((m[len('amesh'):]).strip()),
                   'version': lambda m: hato.version,
