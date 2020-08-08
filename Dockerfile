@@ -9,6 +9,6 @@ RUN apk add --no-cache git bash postgresql-libs jpeg-dev zlib-dev && \
     apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
     pip install pipenv==2020.6.2 --no-cache-dir && \
     pipenv install && \
-    apk --purge del .build-deps git
+    apk --purge del git jpeg-dev zlib-dev .build-deps gcc musl-dev postgresql-dev
 
 CMD ["bash", "./entrypoint.sh"]
