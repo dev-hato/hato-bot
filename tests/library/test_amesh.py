@@ -46,26 +46,9 @@ class TestGetGeoData(unittest.TestCase):
             content = {
                 'Feature': [
                     {
-                        'Id': '20201',
-                        'Gid': '',
                         'Name': result['place'],
                         'Geometry': {
-                            'Type': 'point',
-                            'Coordinates': ','.join([result['lon'], result['lat']]),
-                            'BoundingBox': '137.91001700,36.46045600 138.31907300,36.83584800'
-                        },
-                        'Category': [],
-                        'Description': '',
-                        'Style': [],
-                        'Property': {
-                            'Uid': 'b6fda7805e602cfa221a1cf027772fdc928b0870',
-                            'CassetteId': 'b22fee69b0dcaf2c2fe2d6a27906dafc',
-                            'Yomi': 'ナガノケンナガノシ',
-                            'Country': {'Code': 'JP', 'Name': '日本'},
-                            'Address': '長野県長野市',
-                            'GovernmentCode': '20201',
-                            'AddressMatchingLevel': '2',
-                            'AddressType': '市'
+                            'Coordinates': ','.join([result['lon'], result['lat']])
                         }
                     }
                 ]
