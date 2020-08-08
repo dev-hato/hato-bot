@@ -8,7 +8,7 @@ import os
 import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List
+from typing import List, Dict, Optional
 import requests
 import slackbot_settings as conf
 from library.vocabularydb import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
@@ -136,6 +136,31 @@ def weather_map_url(appid: str, lat: str, lon: str) -> str:
     ).format(appid, lat, lon)
 
 
+def get_geo_data(place: str) -> Optional[Dict[str, str]]:
+    """
+    地名や住所から座標を取得する
+    :param place: 地名・住所
+    :return: place: 地名, lat: 緯度, lon: 経度
+    """
+    geo_data = json.loads(requests.get('https://map.yahooapis.jp/geocode/V1/geoCoder',
+                                       {
+                                           'appid': conf.YAHOO_API_TOKEN,
+                                           'query': place,
+                                           'output': 'json'
+                                       }).content)
+
+    if 'Feature' in geo_data:
+        for feature in geo_data['Feature']:
+            if 'Name' in feature and feature['Name']:
+                if 'Geometry' in feature and feature['Geometry']:
+                    geometry = feature['Geometry']
+                    if 'Coordinates' in geometry and geometry['Coordinates']:
+                        lon, lat = geometry['Coordinates'].split(',', maxsplit=2)
+                        return {'place': feature['Name'], 'lat': lat, 'lon': lon}
+
+    return None
+
+
 def amesh(place: str):
     """天気を表示する"""
 
@@ -151,20 +176,11 @@ def amesh(place: str):
             if len(place_list) == 2:
                 lat, lon = place_list
             else:
-                geo_data = json.loads(requests.get('https://map.yahooapis.jp/geocode/V1/geoCoder',
-                                                   {
-                                                       'appid': conf.YAHOO_API_TOKEN,
-                                                       'query': place_list[0],
-                                                       'output': 'json'
-                                                   }).content)
-                if 'Feature' in geo_data:
-                    for feature in geo_data['Feature']:
-                        if 'Name' in feature and feature['Name'] and 'Geometry' in feature and feature['Geometry']:
-                            geometry = feature['Geometry']
-                            if 'Coordinates' in geometry and geometry['Coordinates']:
-                                msg = feature['Name'] + 'の' + msg
-                                lon, lat = geometry['Coordinates'].split(',', maxsplit=2)
-                                break
+                geo_data = get_geo_data(place_list[0])
+                if geo_data is not None:
+                    msg = geo_data['place'] + 'の' + msg
+                    lat = geo_data['lat']
+                    lon = geo_data['lon']
         else:
             msg = '東京の' + msg
             lat = '35.698856'
