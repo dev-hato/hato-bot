@@ -27,12 +27,12 @@ jobs:
         continue-on-error: true
       - name: Debug
         run: |
-          echo "github.event.pull_request.head.repo.full_name: ${{github.event.pull_request.head.repo.full_name}}"
+          echo "github.event.push.full_name: ${{github.event.push.full_name}}"
           echo "github.repository: ${{github.repository}}"
           echo "steps.get_diff.outputs.result: ${{steps.get_diff.outputs.result}}"
       - name: Create PullRequest
         uses: actions/github-script@0.9.0
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.get_diff.outputs.result != ''
+        if: github.event.push.full_name == github.repository && steps.get_diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
