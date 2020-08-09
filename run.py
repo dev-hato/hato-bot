@@ -89,5 +89,9 @@ def http_app():
     return "success"
 
 
-if __name__ == "__main__":
+def main():
     app.run(host='0.0.0.0', port=conf.PORT)
+
+
+if __name__ == "__main__":
+    main()
