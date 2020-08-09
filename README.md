@@ -66,6 +66,12 @@
     docker-compose restart
     ```
 
+### コマンドの実行方法
+
+```sh
+pipenv run python post_command.py "{hato-botのコマンド}"
+```
+
 ## 補足
 
 - コードをformatする場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
