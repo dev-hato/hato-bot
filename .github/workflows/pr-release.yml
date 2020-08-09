@@ -1,0 +1,52 @@
+name: pr-release
+
+on:
+  push:
+
+jobs:
+  # リリース用のPRを作成するjob
+  pr-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get diff
+        id: get_diff
+        run: |
+          diff=$(git diff develop master)
+          echo "::set-output name=diff::${diff}"
+      - name: Create PullRequest
+        uses: actions/github-script@0.9.0
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.get_diff.outputs.diff != ''
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const common_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "refs/heads/master",
+              base: "develop"
+            }
+            const pulls_list_params = {
+              state: "open",
+              ...common_params
+            }
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
+              if (res.data.filter(data => data.user.id === 41898282).length === 0) {
+                const pulls_create_params = {
+                  title: "リリース",
+                  body: "鳩は社会という大海原へと旅立つ",
+                  ...common_params
+                }
+                console.log("call pulls.create:")
+                console.log(pulls_create_params)
+                github.pulls.create(pulls_create_params)
+              }
+            })
