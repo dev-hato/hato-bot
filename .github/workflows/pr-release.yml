@@ -14,10 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: 'master'
-      - uses: actions/checkout@v2
-        with:
-          ref: 'develop'
+          fetch-depth: 0
       - name: Get diff
         id: get_diff
         run: |
