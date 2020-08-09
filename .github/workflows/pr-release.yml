@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodule: 'recursive'
-          ref: 'develop'
       - name: Get diff
         id: get_diff
         run: |
+          git pull
           diff=$(git diff develop master)
           echo "::set-output name=diff::${diff}"
       - name: Create PullRequest
