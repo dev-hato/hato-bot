@@ -90,6 +90,8 @@ def http_app():
 
 
 def main():
+    """メイン関数"""
+
     app.run(host='0.0.0.0', port=conf.PORT)
 
 
