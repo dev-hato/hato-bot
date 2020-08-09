@@ -109,11 +109,14 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
+            const common_params2 = {
+              base: "${{github.event.pull_request.head.ref}}",
+              ...common_params
+            }
             const pulls_list_params = {
               head: "refs/" + ref,
-              base: "${{github.event.pull_request.head.ref}}",
               state: "open",
-              ...common_params
+              ...common_params2
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
@@ -123,7 +126,7 @@ jobs:
                   const pulls_update_params = {
                     pull_number: data.number,
                     state: "closed",
-                    ...common_params
+                    ...common_params2
                   }
                   console.log("call pulls.update:")
                   console.log(pulls_update_params)
@@ -150,18 +153,24 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            github.pulls.list({
+            const pulls_list_params = {
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}",
               state: "open",
               ...common_params
-            }).then(res => {
+            }
+            console.log('call pulls.list:')
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
               for(const data of res.data){
-                github.pulls.update({
+                const pulls_update_params = {
                   pull_number: data.number,
                   state: "closed",
                   ...common_params
-                })
+                }
+                console.log('call pulls.update:')
+                console.log(pulls_update_params)
+                github.pulls.update(pulls_update_params)
               }
             })
       - name: Exit
