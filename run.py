@@ -77,6 +77,12 @@ def http_app():
     """
     localでテストできます
 
+    <コマンド例>
+    curl -XPOST -d '{"message": "鳩", "channel": "C0123A4B5C6", "user": "U012A34BCDE"}' \
+        -H "Content-Type: application/json" http://localhost:3000/
+
+    or
+
     pipenv run python post_command.py "鳩"
     """
     msg = request.json['message']

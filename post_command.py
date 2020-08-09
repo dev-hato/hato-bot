@@ -15,7 +15,7 @@ def main():
     parser.add_argument('message', type=str)
     args = parser.parse_args()
     requests.post('http://localhost:3000/',
-                  json={'message': args.message, 'channel': 'C0189D2B8F7', 'user': 'U018B02SXFD'})
+                  json={'message': args.message, 'channel': 'C0123A4B5C6', 'user': 'U012A34BCDE'})
 
 
 if __name__ == "__main__":
