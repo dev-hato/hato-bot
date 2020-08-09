@@ -27,7 +27,7 @@ jobs:
         continue-on-error: true
       - name: Debug
         run: |
-          echo "github.event.push.full_name: ${{github.event.push.full_name}}"
+          echo "github.event.push: ${{github.event.push}}"
           echo "github.repository: ${{github.repository}}"
           echo "steps.get_diff.outputs.result: ${{steps.get_diff.outputs.result}}"
       - name: Create PullRequest
