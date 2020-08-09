@@ -69,7 +69,7 @@
 ### コマンドの実行方法
 
 ```sh
-pipenv run python post_message.py "{hato-botのコマンド}"
+pipenv run python post_command.py "{hato-botのコマンド}"
 ```
 
 ## 補足
