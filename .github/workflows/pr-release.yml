@@ -46,6 +46,7 @@ jobs:
                 const pulls_create_params = {
                   title: "リリース",
                   body: "鳩は社会という大海原へと旅立つ",
+                  draft: true,
                   ...common_params
                 }
                 console.log("call pulls.create:")
