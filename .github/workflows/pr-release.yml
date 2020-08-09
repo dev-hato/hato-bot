@@ -19,6 +19,7 @@ jobs:
         id: get_diff
         run: |
           git diff origin/develop origin/master
+        continue-on-error: true
       - name: Create PullRequest
         uses: actions/github-script@0.9.0
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.get_diff.outcome == 'failure'
