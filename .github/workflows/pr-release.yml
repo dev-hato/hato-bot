@@ -32,8 +32,8 @@ jobs:
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "refs/heads/master",
-              base: "develop"
+              head: "develop",
+              base: "refs/heads/master"
             }
             const pulls_list_params = {
               state: "open",
