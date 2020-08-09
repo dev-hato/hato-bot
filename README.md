@@ -66,6 +66,14 @@
     docker-compose restart
     ```
 
+### コマンドの実行方法
+Slackからhato-botのコマンドを実行するにはSlackにEvent URLを登録する必要がありますが、自分のPC上で動かす場合、Event URLを発行するのは難しいです。
+そのため、代替手段として以下のコマンドでhato-botのコマンドを実行します。
+
+```sh
+$ pipenv run python post_message.py "{hato-botのコマンド}"
+```
+
 ## 補足
 
 - コードをformatする場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
