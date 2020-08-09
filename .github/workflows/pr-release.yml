@@ -47,7 +47,7 @@ jobs:
               if (res.data.filter(data => data.user.id === 41898282).length === 0) {
                 const pulls_create_params = {
                   title: "リリース",
-                  body: "鳩は社会という大海原へと旅立つ",
+                  body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
                   draft: true,
                   ...common_params
                 }
