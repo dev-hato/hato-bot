@@ -384,6 +384,9 @@ jobs:
           PIPENV_VENV_IN_PROJECT: 1
       - name: Move the dependencies
         run: mv .venv /home/runner/work/_temp/_github_workflow
+        # https://github.com/github/super-linter/issues/157#issuecomment-648850330
+        # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
+        # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
         env:
