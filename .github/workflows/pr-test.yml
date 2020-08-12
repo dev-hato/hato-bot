@@ -4,9 +4,6 @@ name: pr-test
 on:
   pull_request:
 
-env:
-  WORKON_HOME: /tmp/.venv
-
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
@@ -14,6 +11,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
+    env:
+      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -153,6 +152,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.7]
+    env:
+      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -198,6 +199,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.7]
+    env:
+      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -241,6 +244,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
+    env:
+      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -383,18 +388,19 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
+        env:
+          PIPENV_VENV_IN_PROJECT: 1
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Move the dependencies
-        run: cp -r ${{ env.WORKON_HOME }} /home/runner/work/_temp/_github_workflow/
+        run: mv .venv /home/runner/work/_temp/_github_workflow
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
