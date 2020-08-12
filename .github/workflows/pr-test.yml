@@ -390,6 +390,9 @@ jobs:
       - name: Move the dependencies
         run: cp -r ${{ env.WORKON_HOME }} /home/runner/work/_temp/_github_workflow/
 
+      - name: reset env.WORKON_HOME
+        run: echo "::set-env name=WORKON_HOME::"
+
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
         env:
