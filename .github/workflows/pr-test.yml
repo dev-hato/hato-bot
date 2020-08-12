@@ -4,6 +4,9 @@ name: pr-test
 on:
   pull_request:
 
+env:
+  WORKON_HOME: /usr/src/venv
+
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
@@ -38,7 +41,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
@@ -175,7 +178,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
@@ -220,7 +223,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
@@ -264,7 +267,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
@@ -373,21 +376,19 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
-        env:
-          PIPENV_VENV_IN_PROJECT: 1
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Move the dependencies
-        run: mv .venv /home/runner/work/_temp/_github_workflow
+        run: cp -r ${{ WORKON_HOME }} /home/runner/work/_temp/_github_workflow
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
