@@ -12,7 +12,7 @@ import requests
 import slackbot_settings as conf
 from library.amesh import get_geo_data
 from library.vocabularydb \
-import　get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
+    import　get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
