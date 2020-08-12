@@ -344,19 +344,50 @@ jobs:
 
   pr-super-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
           fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pip
+      - name: Install pip
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv lock
+      - name: pipenv cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ~/.cache/pipenv
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: Install dependencies
+        run: |
+          pipenv install --dev
+        env:
+          PIPENV_VENV_IN_PROJECT: 1
+      - name: Move the dependencies
+        run: mv .venv /home/runner/work/_temp/_github_workflow
       - name: Lint files
-        uses: docker://github/super-linter:v2.1.0
+        uses: docker://github/super-linter:v3.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_PYTHON: false
-          VALIDATE_YAML: true
-          VALIDATE_JSON: true
-          VALIDATE_MD: true
-          VALIDATE_DOCKER: true
-          VALIDATE_ENV: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONPATH: "/github/workspace/:\
+            /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
