@@ -139,37 +139,6 @@ jobs:
                 }
               }
             })
-      # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
-      - name: Close PullRequest
-        uses: actions/github-script@0.9.0
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure'
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const common_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pulls_list_params = {
-              head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}",
-              state: "open",
-              ...common_params
-            }
-            console.log('call pulls.list:')
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(res => {
-              for(const data of res.data){
-                const pulls_update_params = {
-                  pull_number: data.number,
-                  state: "closed",
-                  ...common_params
-                }
-                console.log('call pulls.update:')
-                console.log(pulls_update_params)
-                github.pulls.update(pulls_update_params)
-              }
-            })
       - name: Exit
         if: steps.format.outcome == 'failure'
         run: exit 1
