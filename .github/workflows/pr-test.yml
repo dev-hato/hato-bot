@@ -381,7 +381,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ${{ env.WORKON_HOME }}
+          path: ~/.cache/pipenv
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
