@@ -381,7 +381,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: /tmp/.venv
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
@@ -389,13 +389,13 @@ jobs:
         run: |
           pipenv install --dev
         env:
-          PIPENV_VENV_IN_PROJECT: 1
+          WORKON_HOME: /tmp/.venv
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Move the dependencies
-        run: cp -r .venv /home/runner/work/_temp/_github_workflow
+        run: mv /tmp/.venv /home/runner/work/_temp/_github_workflow
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
