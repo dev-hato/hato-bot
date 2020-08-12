@@ -389,4 +389,4 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: true
           PYTHONPATH: "/github/workspace/:\
-            /github/workflow/.venv/lib/python3.6/site-packages"
+            /github/workflow/.venv/lib/python3.8/site-packages"
