@@ -5,7 +5,7 @@ on:
   pull_request:
 
 env:
-  WORKON_HOME: /usr/src/venv
+  WORKON_HOME: /tmp/venv
 
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
