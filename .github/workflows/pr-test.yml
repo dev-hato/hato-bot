@@ -390,4 +390,4 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYTHONPATH: "/github/workspace/:\
-            /github/workflow/.venv/lib/python3.8/site-packages"
+            /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
