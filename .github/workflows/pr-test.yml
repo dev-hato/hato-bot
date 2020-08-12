@@ -388,5 +388,6 @@ jobs:
         uses: docker://github/super-linter:v3.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python3.8/site-packages"
