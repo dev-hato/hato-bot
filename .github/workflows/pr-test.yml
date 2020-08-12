@@ -391,7 +391,7 @@ jobs:
         run: cp -r ${{ env.WORKON_HOME }} /home/runner/work/_temp/_github_workflow/
 
       - name: reset env.WORKON_HOME
-        run: echo "::set-env name=WORKON_HOME::"
+        run: echo "::set-env name=WORKON_HOME::/github/workflow/.venv"
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
