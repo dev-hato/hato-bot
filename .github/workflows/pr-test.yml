@@ -402,5 +402,6 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
