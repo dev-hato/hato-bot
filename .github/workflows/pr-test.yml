@@ -395,7 +395,7 @@ jobs:
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Move the dependencies
-        run: mv .venv /home/runner/work/_temp/_github_workflow
+        run: cp -r .venv /home/runner/work/_temp/_github_workflow
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
