@@ -4,6 +4,9 @@ name: pr-test
 on:
   pull_request:
 
+env:
+  WORKON_HOME: /tmp/.venv
+
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
@@ -11,8 +14,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-    env:
-      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -152,8 +153,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.7]
-    env:
-      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -199,8 +198,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.7]
-    env:
-      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -244,8 +241,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-    env:
-      WORKON_HOME: /tmp/.venv
 
     steps:
       - uses: actions/checkout@v2
@@ -381,21 +376,22 @@ jobs:
         uses: actions/cache@v2
         with:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ~/.cache/pipenv
+          path: ${{ env.WORKON_HOME }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
             ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
-        env:
-          PIPENV_VENV_IN_PROJECT: 1
+
+      - name: Set venv_path
+        run: echo '::set-env name=venv_path::{find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*}'
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここにmvすることで、super-linterのなかに.venvを配置できる
       - name: Move the dependencies
-        run: mv .venv /home/runner/work/_temp/_github_workflow
+        run: mv ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
       - name: Lint files
         uses: docker://github/super-linter:v3.6.0
