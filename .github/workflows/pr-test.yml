@@ -386,8 +386,8 @@ jobs:
 
       - name: Set venv_path
         run: |
-          echo find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*"
-          echo '::set-env name=venv_path::{find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*"}'
+          find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*"
+          echo '::set-env name=venv_path::$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")'
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
