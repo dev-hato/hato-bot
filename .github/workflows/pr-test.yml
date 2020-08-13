@@ -384,6 +384,19 @@ jobs:
         run: |
           pipenv install --dev
 
+        # pipenvの仕様で、project直下の.venvの場合は .venv/lib/... にインストールされるが、
+        # WORKON_HOMEを設定してインストール先をずらした場合は .venv/hato-bot-(hash)/lib/... にインストールされる。
+        # 参考URL: https://bit.ly/2CnKOtJ
+        #
+        # ${GITHUB_REPOSITORY##*/}
+        # GITHUB_REPOSITORYは dev-hato/hato-bot のように入るので、シェル芸で hato-bot のみ取り出している。
+        # 他に持っていっても使えるようにした。
+        # 参考URL: https://bit.ly/2PP4IRt
+        #
+        # log出力のためにfindコマンド単体も置いている
+        #
+        # set-envコマンドを使ってenvにsetしている
+        # 参考URL: https://bit.ly/2Y1oQEG
       - name: Set venv_path
         run: |
           find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*"
@@ -391,7 +404,8 @@ jobs:
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
-        # ここにmvすることで、super-linterのなかに.venvを配置できる
+        # ここに cp -r することで、super-linterのなかに.venvを配置できる
+        # また、元ディレクトリにも残っているので、キャッシュが作られる
       - name: Move the dependencies
         run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
