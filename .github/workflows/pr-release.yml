@@ -31,15 +31,21 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            // リリース担当者
+            const release_users = ["nakkaa"]
+            
             const common_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo: context.repo.repo
+            }
+            const pull_params = {
               head: "develop",
-              base: "refs/heads/master"
+              base: "refs/heads/master",
+              ...common_params
             }
             const pulls_list_params = {
               state: "open",
-              ...common_params
+              ...pull_params
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
@@ -49,10 +55,33 @@ jobs:
                   title: "リリース",
                   body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
                   draft: true,
-                  ...common_params
+                  ...pull_params
                 }
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params)
+            })
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
+              for(const data of res.data) {
+                if(data.user.id === 41898282) {
+                  const pulls_request_reviewers_params = {
+                    pull_number: data.number,
+                    reviewers: release_users,
+                    ...common_params
+                  }
+                  console.log("call pulls.requestReviewers:")
+                  console.log(pulls_request_reviewers_params)
+                  github.pulls.requestReviewers(pulls_request_reviewers_params)
+                  const issues_add_assignees_params = {
+                    issue_number: data.number,
+                    assignees: release_users,
+                    ...common_params
+                  }
+                  console.log("call issues.addAssignees:")
+                  console.log(issues_add_assignees_params)
+                  github.issues.addAssignees(issues_add_assignees_params)
+                }
               }
             })
