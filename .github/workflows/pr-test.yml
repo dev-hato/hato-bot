@@ -399,8 +399,9 @@ jobs:
         # 参考URL: https://bit.ly/2Y1oQEG
       - name: Set venv_path
         run: |
-          find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*"
-          echo '::set-env name=venv_path::$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")'
+          venv_path=$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")
+          echo "${venv_path}"
+          echo "::set-env name=venv_path::${venv_path}"
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
