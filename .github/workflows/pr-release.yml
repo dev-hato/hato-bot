@@ -34,7 +34,7 @@ jobs:
           script: |
             // リリース担当者
             const release_users = ["nakkaa"]
-            
+
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
@@ -61,6 +61,7 @@ jobs:
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params)
+              }
             })
             console.log("call pulls.list:")
             console.log(pulls_list_params)
