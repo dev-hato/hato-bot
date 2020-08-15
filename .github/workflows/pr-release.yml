@@ -33,54 +33,33 @@ jobs:
           script: |
             const common_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "develop",
-              base: "refs/heads/master"
-            }
-            const pulls_list_params = {
-              state: "open",
-              ...common_params
-            }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(res => {
-              if (res.data.filter(data => data.user.id === 41898282).length === 0) {
-                const pulls_create_params = {
-                  title: "リリース",
-                  body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
-                  draft: true,
-                  ...common_params
-                }
-                console.log("call pulls.create:")
-                console.log(pulls_create_params)
-                github.pulls.create(pulls_create_params)
-              }
-            })
-      - name: Add Assignees and Reviwers to PullRequest
-        uses: actions/github-script@0.9.0
-        if: steps.get_diff.outputs.result != ''
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            // リリース担当者
-            const release_users = ["nakkaa"]
-
-            const common_params = {
-              owner: context.repo.owner,
               repo: context.repo.repo
             }
-            const pulls_list_params = {
+            const pull_params = {
               head: "develop",
               base: "refs/heads/master",
               ...common_params
             }
+            const pulls_list_params = {
+              state: "open",
+              ...pull_params
+            }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(res => {
-              for(const data of res.data) {
-                if(data.user.id === 41898282) {
+            github.pulls.list(pulls_list_params).then(list_res => {
+              if (list_res.data.filter(data => data.user.id === 41898282).length === 0) {
+                const pulls_create_params = {
+                  title: "リリース",
+                  body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
+                  draft: true,
+                  ...pull_params
+                }
+                console.log("call pulls.create:")
+                console.log(pulls_create_params)
+                github.pulls.create(pulls_create_params).then(create_res => {
+                  const release_users = ["nakkaa"]
                   const pulls_create_review_request_params = {
-                    pull_number: data.number,
+                    pull_number: create_res.data.number,
                     reviewers: release_users,
                     ...common_params
                   }
@@ -88,13 +67,13 @@ jobs:
                   console.log(pulls_create_review_request_params)
                   github.pulls.createReviewRequest(pulls_create_review_request_params)
                   const issues_add_assignees_params = {
-                    issue_number: data.number,
+                    issue_number: create_res.data.number,
                     assignees: release_users,
                     ...common_params
                   }
                   console.log("call issues.addAssignees:")
                   console.log(issues_add_assignees_params)
                   github.issues.addAssignees(issues_add_assignees_params)
-                }
+                })
               }
             })
