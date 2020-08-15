@@ -82,7 +82,8 @@ jobs:
             }
             const pull_params = {
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}"
+              base: "${{github.event.pull_request.head.ref}}",
+              ...common_params
             }
             const pulls_list_params = {
               state: "open",
