@@ -83,7 +83,7 @@ def http_app():
 
     or
 
-    pipenv run python post_command.py "鳩"
+    pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
     """
     msg = request.json['message']
     channel = request.json['channel']
