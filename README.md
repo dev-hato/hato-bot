@@ -81,7 +81,9 @@
 - 鳩botに対しコマンドを実行したい時は `post_command.py` を使うと便利です。
 
     ```sh
-    pipenv run python post_command.py --channel {投稿先のチャンネルのchannel id} --user {自分のuser_id} "{hato-botのコマンド}"
+    pipenv run python post_command.py --channel {投稿先のチャンネルのchannel id} \
+                                      --user {自分のuser_id} \
+                                      "{hato-botのコマンド}"
     ```
 
 - または[ngrok](https://ngrok.com/)を使うこともできます。
