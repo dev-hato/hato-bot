@@ -78,13 +78,16 @@ jobs:
           script: |
             const common_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo: context.repo.repo
+            }
+            const pull_params = {
               head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}"
+              base: "${{github.event.pull_request.head.ref}}",
+              ...common_params
             }
             const pulls_list_params = {
               state: "open",
-              ...common_params
+              ...pull_params
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
@@ -93,11 +96,27 @@ jobs:
                 const pulls_create_params = {
                   title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
                   body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
-                  ...common_params
+                  ...pull_params
                 }
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params)
+              }
+            })
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
+              for(const data of res.data) {
+                if(data.user.id === 41898282) {
+                  const issues_add_assignees_params = {
+                    issue_number: data.number,
+                    assignees: ["${{github.event.pull_request.user.login}}"],
+                    ...common_params
+                  }
+                  console.log("call issues.addAssignees:")
+                  console.log(issues_add_assignees_params)
+                  github.issues.addAssignees(issues_add_assignees_params)
+                }
               }
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
