@@ -1,7 +1,9 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:12.1-alpine
+    build:
+      dockerfile: ./Dockerfile_psql
+      context: ./
     environment:
       POSTGRES_PASSWORD: password
     volumes:
