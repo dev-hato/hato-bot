@@ -89,8 +89,8 @@ def http_app():
     channel = request.json['channel']
     user = request.json['user']
     client = SlackClient(channel, user)
-    client.post(f'コマンド: {msg}')
-    analyze.analyze_message(msg)(client)
+    client.post(         f'コマンド: {msg}')
+    analyze.analyze_message(msg       )(client)
     return "success"
 
 
