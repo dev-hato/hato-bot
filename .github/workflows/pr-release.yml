@@ -31,21 +31,15 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            // リリース担当者
-            const release_users = ["nakkaa"]
-
             const common_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pull_params = {
+              repo: context.repo.repo,
               head: "develop",
-              base: "refs/heads/master",
-              ...common_params
+              base: "refs/heads/master"
             }
             const pulls_list_params = {
               state: "open",
-              ...pull_params
+              ...common_params
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
@@ -55,13 +49,31 @@ jobs:
                   title: "リリース",
                   body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
                   draft: true,
-                  ...pull_params
+                  ...common_params
                 }
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params)
               }
             })
+      - name: Add Assignees and Reviwers to PullRequest
+        uses: actions/github-script@0.9.0
+        if: steps.get_diff.outputs.result != ''
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            // リリース担当者
+            const release_users = ["nakkaa"]
+
+            const common_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }
+            const pulls_list_params = {
+              head: "develop",
+              base: "refs/heads/master",
+              ...common_params
+            }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(res => {
