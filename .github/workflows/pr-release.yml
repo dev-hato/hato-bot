@@ -68,7 +68,6 @@ jobs:
             github.pulls.list(pulls_list_params).then(res => {
               for(const data of res.data) {
                 if(data.user.id === 41898282) {
-                  console.log(github.pulls)
                   const pulls_create_review_request_params = {
                     pull_number: data.number,
                     reviewers: release_users,
