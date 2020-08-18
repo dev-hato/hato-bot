@@ -441,7 +441,7 @@ jobs:
       - name: Set .env
         run: |
           cp .env.example .env
-      - name: Build and run docker image
+      - name: Build docker image
         run: |
           cd setup
-          docker-compose up -d
+          docker-compose build --no-cache
