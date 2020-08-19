@@ -1,0 +1,15 @@
+name: push-master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  pr-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: force-push
+        run: git push -f origin develop
