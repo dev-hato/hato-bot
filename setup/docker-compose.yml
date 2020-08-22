@@ -2,8 +2,8 @@ version: "3.7"
 services:
   postgres:
     build:
-      dockerfile: ./Dockerfile_psql
-      context: ./
+      dockerfile: ./Dockerfile
+      context: ./pgsql
     environment:
       POSTGRES_PASSWORD: password
     volumes:
