@@ -11,7 +11,7 @@ from library.database import Database
 def wait_db() -> None:
     """DBが起動するまで待機する"""
 
-    max_attempt = 10
+    max_attempt = 30
 
     for i in range(max_attempt):
         try:
