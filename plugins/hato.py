@@ -49,6 +49,7 @@ def help_message(client: BaseClient):
         'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n'\
         '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
         'version ... バージョン情報を表示する。\n'\
+        '新機能 ... 新機能を表示する。\n'\
         '\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n'
     client.post(str_help)
 
@@ -205,3 +206,31 @@ def version(client: BaseClient):
         "Copyright (C) 2020 hato-bot Development team\n"\
         "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
+
+
+def new_functions(client: BaseClient):
+    """新機能を表示する"""
+
+    version_section = re.compile(r'^#{2} *[^#]')
+    current_version_section = re.compile(r'^#{2} *v' + (VERSION.replace('.', r'\.')))
+    kind_section = re.compile(r'^#{3} *[^#]')
+    added_section = re.compile(r'^#{3} *Added')
+    state = 0
+    added_list = []
+
+    with open('CHANGELOG.md') as changelog_file:
+        for row in changelog_file:
+            row = row.strip()
+            if current_version_section.match(row):
+                state = 1
+            elif state == 1 and added_section.match(row):
+                state = 2
+            elif state == 2 and row.startswith('*'):
+                added_list.append(row)
+            elif (state != 0 and version_section.match(row)) or (state == 2 and kind_section.match(row)):
+                break
+
+    if len(added_list) == 0:
+        client.post(f'v{VERSION}の新機能はないっぽ......')
+    else:
+        client.post(os.linesep.join([f'v{VERSION}の新機能をお知らせするっぽ！', '```'] + added_list + ['```']))
