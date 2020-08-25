@@ -9,6 +9,9 @@ from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
 import requests
+from git import Repo
+from git.exc import InvalidGitRepositoryError
+
 import slackbot_settings as conf
 from library.amesh import get_geo_data
 from library.vocabularydb \
@@ -190,7 +193,15 @@ def version(client: BaseClient):
     user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
     str_ver = "バージョン情報\n```"\
-        "Version {}\n"\
+        f"Version {VERSION}"
+
+    try:
+        repo = Repo()
+        str_ver += f" (Commit {repo.head.commit.hexsha})"
+    except InvalidGitRepositoryError:
+        pass
+
+    str_ver += "\n"\
         "Copyright (C) 2020 hato-bot Development team\n"\
-        "https://github.com/dev-hato/hato-bot ```".format(VERSION)
+        "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
