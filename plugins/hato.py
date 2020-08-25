@@ -197,7 +197,7 @@ def version(client: BaseClient):
 
     try:
         repo = Repo()
-        str_ver += f" (Commit {repo.head.commit.hexsha})"
+        str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
     except InvalidGitRepositoryError:
         pass
 
