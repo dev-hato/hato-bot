@@ -228,7 +228,8 @@ def new_functions(client: BaseClient):
                 state = 2
             elif state == 2 and row.startswith('*'):
                 added_list.append(row)
-            elif (state != 0 and version_section.match(row)) or (state == 2 and kind_section.match(row)):
+            elif (state != 0 and version_section.match(row)) \
+                    or (state == 2 and kind_section.match(row)):
                 break
 
     if len(added_list) == 0:
