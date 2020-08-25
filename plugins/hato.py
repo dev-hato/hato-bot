@@ -212,7 +212,8 @@ def new_functions(client: BaseClient):
     """新機能を表示する"""
 
     version_section = re.compile(r'^#{2} *[^#]')
-    current_version_section = re.compile(r'^#{2} *v' + (VERSION.replace('.', r'\.')))
+    current_version_section = re.compile(
+        r'^#{2} *v' + (VERSION.replace('.', r'\.')))
     kind_section = re.compile(r'^#{3} *[^#]')
     added_section = re.compile(r'^#{3} *Added')
     state = 0
@@ -233,4 +234,5 @@ def new_functions(client: BaseClient):
     if len(added_list) == 0:
         client.post(f'v{VERSION}の新機能はないっぽ......')
     else:
-        client.post(os.linesep.join([f'v{VERSION}の新機能をお知らせするっぽ！', '```'] + added_list + ['```']))
+        client.post(os.linesep.join(
+            [f'v{VERSION}の新機能をお知らせするっぽ！', '```'] + added_list + ['```']))
