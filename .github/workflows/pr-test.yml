@@ -29,9 +29,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pip
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
@@ -40,11 +40,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -178,9 +178,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pip
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
@@ -189,11 +189,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -223,9 +223,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pip
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
@@ -234,11 +234,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -267,9 +267,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pip
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
@@ -278,11 +278,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -376,9 +376,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pip
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
@@ -387,11 +387,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
       - name: Install dependencies
         run: |
           pipenv install --dev
