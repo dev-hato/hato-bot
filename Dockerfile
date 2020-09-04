@@ -12,7 +12,7 @@ COPY . .
 # Pythonライブラリのインストール時に必要なパッケージ (グループ名: .build-deps, Pythonライブラリインストール後にアンインストール)
 # * jpeg-dev, zlib-dev: Pillowのインストールの際に必要
 # * gcc, musl-dev, postgresql-dev: psycopg2のインストールの際に必要
-RUN apk add --no-cache -t .used-packages postgresql-libs=12.3-r2 git=2.24.3-r0 && \
+RUN apk add --no-cache -t .used-packages postgresql-libs=12.3-r2 git2.26.2-r0 && \
     apk add --no-cache -t .build-deps jpeg-dev=8-r6 zlib-dev=1.2.11-r3 gcc=9.3.0-r0 musl-dev=1.1.24-r2 postgresql-dev=12.2-r0 && \
     pip install pipenv==2020.6.2 --no-cache-dir && \
     pipenv install && \
