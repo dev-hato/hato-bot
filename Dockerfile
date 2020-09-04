@@ -1,4 +1,4 @@
-FROM python:3.8.2-alpine
+FROM python:3.8.5-alpine
 
 ENV WORKON_HOME=/usr/src/venv
 
