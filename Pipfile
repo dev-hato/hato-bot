@@ -17,6 +17,6 @@ click = "==7.1.2"
 sudden-death = {git = "https://github.com/nakkaa/sudden-death", ref = "master"}
 mypy = "==0.782"
 psycopg2-binary = "==2.8.5"
-slackeventsapi = "==2.2.0"
+slackeventsapi = "==2.2.1"
 slackclient = "==2.7.2"
 gitpython = "==3.1.8"
