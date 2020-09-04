@@ -71,7 +71,7 @@ jobs:
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-format-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@0.9.0
+        uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -114,7 +114,7 @@ jobs:
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@0.9.0
+        uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -301,7 +301,7 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != ''
-        uses: actions/github-script@0.9.0
+        uses: actions/github-script@v3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
