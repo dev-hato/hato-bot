@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 0
           repository: dev-hato/sudden-death
           path: sudden_death
+          ssh-key: secrets.SUDDEN_DEATH_CI_PRIVATE_KEY
       - name: Set .env
         run: |
           worklows_path=.github/workflows
