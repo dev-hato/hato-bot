@@ -1,0 +1,12 @@
+name: test
+
+# pull_requestで何かあった時に起動する
+on:
+  pull_request:
+
+jobs:
+  pr-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Hello, world!"
