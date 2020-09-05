@@ -23,7 +23,7 @@ jobs:
       - name: Copy CI
         run: |
           worklows_path=.github/workflows
-          for f in $(ls hato-bot/${worklows_path} | grep -v hato-bot)
+          for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml")
           do
             cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
           done
