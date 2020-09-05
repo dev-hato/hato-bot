@@ -37,5 +37,5 @@ jobs:
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
-          GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/copy-pr-test
+          git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/copy-pr-test
           
