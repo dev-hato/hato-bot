@@ -10,8 +10,8 @@ env:
   WORKON_HOME: /tmp/.venv
 
 jobs:
-  # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
-  pr-format:
+  # Pipfileに差分があれば、Pipfile.lockを更新する
+  pr-check-pipfile:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -86,7 +86,7 @@ jobs:
                 })
               }
             })
-      # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
+      # 既にPipfile修正のPRがある状態で、手動でPipfileを修正した場合、Pipfile修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
