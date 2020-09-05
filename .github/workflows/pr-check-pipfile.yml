@@ -45,12 +45,11 @@ jobs:
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/pipfile-${PYTHON_VERSION//\./_}-${{github.event.pull_request.head.ref}}
+          echo "::set-env name=PYTHON_VERSION::${PYTHON_VERSION//\./_}"
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
-        env:
-          PYTHON_VERSION: ${{ matrix.python-version }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -59,7 +58,7 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "refs/heads/pipfile-${PYTHON_VERSION//\./_}-${{github.event.pull_request.head.ref}}",
+              head: "refs/heads/pipfile-" + process.env.PYTHON_VERSION + "-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}",
               ...common_params
             }
@@ -94,12 +93,10 @@ jobs:
       - name: Close PullRequest
         uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
-        env:
-          PYTHON_VERSION: ${{ matrix.python-version }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const ref = "heads/pipfile-${PYTHON_VERSION//\./_}-${{github.event.pull_request.head.ref}}"
+            const ref = "heads/pipfile-" + process.env.PYTHON_VERSION + "-${{github.event.pull_request.head.ref}}"
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
