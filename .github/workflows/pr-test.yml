@@ -1,8 +1,9 @@
 name: pr-test
 
-# pull_requestで何かあった時に起動する
+# pull_requestで何かあったり、pushされたりした時に起動する
 on:
   pull_request:
+  push:
 
 env:
   WORKON_HOME: /tmp/.venv
