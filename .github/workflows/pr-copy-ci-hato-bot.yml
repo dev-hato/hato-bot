@@ -27,16 +27,13 @@ jobs:
           cd sudden-death
           git_diff=$(git diff)
           echo "::set-output name=diff::${git_diff}"
-      - name: Set private key
-        if: steps.show_diff.outputs.diff != ''
-        run: |
-          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
       - name: Push
         if: steps.show_diff.outputs.diff != ''
         env:
           GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
-          pwd
+          cd sudden-death
+          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -u
