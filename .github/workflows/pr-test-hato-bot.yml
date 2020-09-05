@@ -69,6 +69,8 @@ jobs:
         run: |
           cp .env.example .env
       - name: Build docker image
-        run: |
-          cd setup
-          docker-compose build --no-cache
+        env:
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+        working-directory: ./setup
+        run: docker-compose build --no-cache
