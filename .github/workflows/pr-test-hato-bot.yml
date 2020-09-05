@@ -46,18 +46,6 @@ jobs:
         run: |
           pipenv run python -m unittest
 
-  hadolint:
-    name: runner / hadolint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v1
-      - name: hadolint
-        uses: reviewdog/action-hadolint@v1
-        with:
-          level: warning
-          filter_mode: nofilter
-
   pr-docker:
     runs-on: ubuntu-latest
 
