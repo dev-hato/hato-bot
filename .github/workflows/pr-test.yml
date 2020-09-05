@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-          with:
+        with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
           fetch-depth: 0
