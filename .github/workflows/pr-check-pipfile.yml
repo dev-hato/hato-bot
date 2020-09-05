@@ -92,7 +92,7 @@ jobs:
       # 既にPipfile修正のPRがある状態で、手動でPipfileを修正した場合、Pipfile修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome == ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
