@@ -26,7 +26,9 @@ jobs:
         run: |
           cd sudden-death
           git add .github/workflows/pr-test.yml
-          echo "::set-output name=diff::$(git diff)"
+          git_diff=$(git diff)
+          echo "${git_diff}"
+          echo "::set-output name=diff::${git_diff}"
       - name: Set private key
         if: steps.git_add.outputs.diff != ''
         run: |
