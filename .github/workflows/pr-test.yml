@@ -158,52 +158,6 @@ jobs:
         if: steps.format.outcome == 'failure'
         run: exit 1
 
-  # unittestを行う
-  # testが落ちたらチェックが落ちる
-  pr-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.7]
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-      - name: Install pip
-        run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
-          pipenv lock
-      - name: pipenv cache
-        uses: actions/cache@v2
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
-      - name: Install dependencies
-        run: |
-          pipenv install --dev
-      - name: Set .env
-        run: |
-          cp .env.example .env
-      - name: Test
-        run: |
-          pipenv run python -m unittest
-
   # 型ヒントのチェックを行う
   pr-type-hint:
     runs-on: ubuntu-latest
@@ -345,18 +299,6 @@ jobs:
         if: github.event.pull_request.head.repo.full_name != github.repository && !contains(steps.lint.outputs.result, 'Your code has been rated at 10.00/10')
         run: exit 1
 
-  hadolint:
-    name: runner / hadolint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v1
-      - name: hadolint
-        uses: reviewdog/action-hadolint@v1
-        with:
-          level: warning
-          filter_mode: nofilter
-
   pr-super-lint:
     runs-on: ubuntu-latest
     strategy:
@@ -430,18 +372,3 @@ jobs:
           WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
-  
-  pr-docker:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set .env	
-        run: |	
-          cp .env.example .env
-      - name: Build docker image
-        run: |
-          cd setup
-          docker-compose build --no-cache
