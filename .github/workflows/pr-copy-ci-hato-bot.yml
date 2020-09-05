@@ -21,16 +21,23 @@ jobs:
         run: |
           worklows_path=.github/workflows
           cp hato-bot/${worklows_path}/pr-test.yml sudden-death/${worklows_path}/
-      - name: Set private key
-        run: |
-          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > ~/deploy_key.pem
-      - name: Push
-        env:
-          GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
+      - name: Git add
+        id: git_add
         run: |
           cd sudden-death
+          git add .github/workflows/pr-test.yml
+          echo "::set-output name=diff::$(git diff)"
+      - name: Set private key
+        if: steps.git_add.outputs.diff != ''
+        run: |
+          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
+      - name: Push
+        if: steps.git_add.outputs.diff != ''
+        env:
+          GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
+        run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
-          git add .github/workflows/pr-test.yml
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           git push -f origin HEAD:refs/heads/copy-pr-test
+          
