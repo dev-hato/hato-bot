@@ -1,4 +1,4 @@
-name: pr-release
+name: pr-release-hato-bot
 
 on:
   push:
