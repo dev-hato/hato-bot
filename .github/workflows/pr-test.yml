@@ -199,7 +199,10 @@ jobs:
           pipenv install --dev
       - name: Set .env
         run: |
-          cp .env.example .env
+          if [ -e .env.example ]
+          then
+            cp .env.example .env
+          fi
       - name: Test
         run: |
           pipenv run python -m unittest
@@ -438,10 +441,23 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Set .env	
-        run: |	
-          cp .env.example .env
+      - name: Check exist setup directory
+        run: |
+          if [ -d setup ]
+          then
+            echo "::set-output name=is_exist_setup::true"
+          else
+            echo "::set-output name=is_exist_setup::false"
+          fi
+      - name: Set .env
+        if: steps.lint.outputs.is_exist_setup == 'true'
+        run: |
+          if [ -e .env.example ]
+          then
+            cp .env.example .env
+          fi
       - name: Build docker image
+        if: steps.lint.outputs.is_exist_setup == 'true'
         run: |
           cd setup
           docker-compose build --no-cache
