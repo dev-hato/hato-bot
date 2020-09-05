@@ -1,9 +1,13 @@
 name: pr-copy-ci-hato-bot
 
 on:
-  pull_request:
+  push:
+    branches:
+      - develop
+      - master
 
 jobs:
+  # CIの差分をsudden-deathにpushする
   pr-copy-ci:
     runs-on: ubuntu-latest
 
@@ -25,17 +29,16 @@ jobs:
         id: show_diff
         run: |
           cd sudden-death
-          git_diff=$(git diff)
-          echo "::set-output name=diff::${git_diff}"
+          echo "::set-output name=diff::$(git diff)"
       - name: Push
         if: steps.show_diff.outputs.diff != ''
         run: |
           cd sudden-death
-          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
-          chmod 600 deploy_key.pem
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
+          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
+          chmod 600 deploy_key.pem
           GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/copy-pr-test
           
