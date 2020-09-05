@@ -29,14 +29,13 @@ jobs:
           echo "::set-output name=diff::${git_diff}"
       - name: Push
         if: steps.show_diff.outputs.diff != ''
-        env:
-          GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           cd sudden-death
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
+          chmod 600 deploy_key.pem
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
-          git push -f origin HEAD:refs/heads/copy-pr-test
+          GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f origin HEAD:refs/heads/copy-pr-test
           
