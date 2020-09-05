@@ -15,7 +15,6 @@ jobs:
         with:
           fetch-depth: 0
           repository: dev-hato/sudden-death
-          path: sudden_death
       - name: pwd
         run: |
           pwd
