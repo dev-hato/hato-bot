@@ -38,7 +38,7 @@ jobs:
       - name: Push
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
         env:
-          PYTHON_VERSION: matrix.python-version
+          PYTHON_VERSION: ${{ matrix.python-version }}
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
@@ -50,7 +50,7 @@ jobs:
         uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
         env:
-          PYTHON_VERSION: matrix.python-version
+          PYTHON_VERSION: ${{ matrix.python-version }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -95,7 +95,7 @@ jobs:
         uses: actions/github-script@v3
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
         env:
-          PYTHON_VERSION: matrix.python-version
+          PYTHON_VERSION: ${{ matrix.python-version }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
