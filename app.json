@@ -1,8 +1,8 @@
 {
   "name": "hato-bot",
   "description": "愛嬌のあるslack用bot",
-  "website": "https://github.com/nakkaa/hato-bot",
-  "repository": "https://github.com/nakkaa/hato-bot",
+  "website": "https://github.com/dev-hato/hato-bot",
+  "repository": "https://github.com/dev-hato/hato-bot",
   "env": {
     "SLACK_API_TOKEN": {
       "description": "Set your slack API Token.",
