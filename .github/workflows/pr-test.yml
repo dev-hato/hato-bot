@@ -25,17 +25,9 @@ jobs:
         uses: actions/setup-python@v2.1.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-      - name: Install pip
+      - name: Install pipenv
         run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
+          curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
           pipenv lock
       - name: pipenv cache
         uses: actions/cache@v2
@@ -173,17 +165,9 @@ jobs:
         uses: actions/setup-python@v2.1.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-      - name: Install pip
+      - name: Install pipenv
         run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
+          curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
           pipenv lock
       - name: pipenv cache
         uses: actions/cache@v2
@@ -217,17 +201,9 @@ jobs:
         uses: actions/setup-python@v2.1.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-      - name: Install pip
+      - name: Install pipenv
         run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
+          curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
           pipenv lock
       - name: pipenv cache
         uses: actions/cache@v2
@@ -314,17 +290,9 @@ jobs:
         uses: actions/setup-python@v2.1.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pip
-      - name: Install pip
+      - name: Install pipenv
         run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
+          curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
           pipenv lock
       - name: pipenv cache
         uses: actions/cache@v2
