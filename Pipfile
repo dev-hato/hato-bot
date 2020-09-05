@@ -9,7 +9,7 @@ autopep8 = "*"
 requests-mock = "*"
 
 [packages]
-python-dotenv = "==0.14.0"
+python-dotenv = "==0.13.0"
 requests = "==2.24.0"
 Pillow = ">=7.1.2"
 pyperclip = "==1.8.0"
