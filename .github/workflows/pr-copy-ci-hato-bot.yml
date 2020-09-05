@@ -1,0 +1,31 @@
+name: pr-copy-ci-hato-bot
+
+on:
+  pull_request:
+
+jobs:
+  pr-copy-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          repository: dev-hato/sudden_death
+          ssh-key: secrets.SUDDEN_DEATH_CI_PRIVATE_KEY
+          path: sudden_death
+      - name: Set .env
+        run: |
+          worklows_path=.github/workflows
+          cp ${worklows_path}/pr-test.yml sudden_death/${worklows_path}/
+      - name: Set .env
+        run: |
+          cd sudden_death
+          git config user.name "hatohakaraage"
+          git config user.email "hatohakaraage@example.com"
+          git add .github/workflows/pr-test.yml
+          git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
+          git push -f origin HEAD:refs/heads/copy-pr-test
