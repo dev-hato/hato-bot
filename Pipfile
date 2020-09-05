@@ -13,7 +13,7 @@ python-dotenv = "==0.13.0"
 requests = "==2.24.0"
 Pillow = ">=7.1.2"
 pyperclip = "==1.8.0"
-click = "==7.1.2"
+click = "==7.1.1"
 sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
 mypy = "==0.782"
 psycopg2-binary = "==2.8.5"
