@@ -9,7 +9,7 @@ env:
 
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
-  pr-format:
+  pr-formatttt:
     runs-on: ubuntu-latest
     strategy:
       matrix:
