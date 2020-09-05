@@ -19,6 +19,7 @@ jobs:
           with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
+          fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.1.2
         with:
