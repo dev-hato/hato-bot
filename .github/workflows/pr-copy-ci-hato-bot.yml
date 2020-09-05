@@ -23,7 +23,7 @@ jobs:
           cp hato-bot/${worklows_path}/pr-test.yml sudden-death/${worklows_path}/
       - name: Set private key
         run: |
-          echo ${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}} > ~/deploy_key.pem
+          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > ~/deploy_key.pem
       - name: Push
         env:
           GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
