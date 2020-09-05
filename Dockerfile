@@ -3,7 +3,8 @@ FROM python:3.8.5-alpine
 ENV WORKON_HOME=/usr/src/venv
 
 WORKDIR /usr/src/app
-COPY . .
+
+COPY Pipfile.lock-3.8 Pipfile.lock
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
@@ -17,5 +18,7 @@ RUN apk add --no-cache -t .used-packages postgresql-libs=12.3-r2 git=2.26.2-r0 &
     pip install pipenv==2020.6.2 --no-cache-dir && \
     pipenv install && \
     apk --purge del .build-deps
+
+COPY . .
 
 CMD ["pipenv", "run", "python", "entrypoint.py"]
