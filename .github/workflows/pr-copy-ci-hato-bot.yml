@@ -26,7 +26,6 @@ jobs:
         run: |
           cd sudden-death
           git_diff=$(git diff)
-          echo "${git_diff}"
           echo "::set-output name=diff::${git_diff}"
       - name: Set private key
         if: steps.show_diff.outputs.diff != ''
@@ -37,9 +36,10 @@ jobs:
         env:
           GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
+          pwd
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
-          git add .github/workflows/pr-test.yml
+          git add -u
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           git push -f origin HEAD:refs/heads/copy-pr-test
           
