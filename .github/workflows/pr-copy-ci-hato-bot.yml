@@ -15,7 +15,6 @@ jobs:
         with:
           fetch-depth: 0
           repository: dev-hato/sudden_death
-          ssh-key: secrets.SUDDEN_DEATH_CI_PRIVATE_KEY
           path: sudden_death
       - name: Set .env
         run: |
