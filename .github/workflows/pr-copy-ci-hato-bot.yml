@@ -16,12 +16,19 @@ jobs:
           fetch-depth: 0
           repository: dev-hato/sudden-death
           path: sudden_death
-          ssh-key: secrets.SUDDEN_DEATH_CI_PRIVATE_KEY
-      - name: Set .env
+      - name: pwd
+        run: |
+          pwd
+      - name: Copy pr-test.yml
         run: |
           worklows_path=.github/workflows
           cp ${worklows_path}/pr-test.yml sudden_death/${worklows_path}/
-      - name: Set .env
+      - name: Set private key
+        run: |
+          echo ${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}} > ~/deploy_key.pem
+      - name: Push
+        env:
+          GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           cd sudden_death
           git config user.name "hatohakaraage"
