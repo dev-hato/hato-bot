@@ -73,7 +73,7 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "refs/heads/fix-format-${{github.event.pull_request.head.ref}}",
+              head: "${{github.event.pull_request.head.repo.owner.login}}:fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}",
               ...common_params
             }
@@ -84,7 +84,7 @@ jobs:
             console.log("call pulls.list:")
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.filter(data => data.user.id === 41898282).length === 0) {
+              if (list_res.data.length === 0) {
                 const pulls_create_params = {
                   title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
                   body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
@@ -111,13 +111,13 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const ref = "heads/fix-format-${{github.event.pull_request.head.ref}}"
+            const head_name = "fix-format-${{github.event.pull_request.head.ref}}"
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pulls_list_params = {
-              head: "refs/" + ref,
+              head: "${{github.event.pull_request.head.repo.owner.login}}:" + head_name,
               base: "${{github.event.pull_request.head.ref}}",
               state: "open",
               ...common_params
@@ -126,24 +126,22 @@ jobs:
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(res => {
               for(const data of res.data){
-                if(data.user.id === 41898282) {
-                  const pulls_update_params = {
-                    pull_number: data.number,
-                    state: "closed",
+                const pulls_update_params = {
+                  pull_number: data.number,
+                  state: "closed",
+                  ...common_params
+                }
+                console.log("call pulls.update:")
+                console.log(pulls_update_params)
+                github.pulls.update(pulls_update_params).then(res2 => {
+                  const git_deleteRef_params = {
+                    ref: "heads/" + head_name,
                     ...common_params
                   }
-                  console.log("call pulls.update:")
-                  console.log(pulls_update_params)
-                  github.pulls.update(pulls_update_params).then(res2 => {
-                    const git_deleteRef_params = {
-                      ref: ref,
-                      ...common_params
-                    }
-                    console.log("call git.deleteRef:")
-                    console.log(git_deleteRef_params)
-                    github.git.deleteRef(git_deleteRef_params)
-                  })
-                }
+                  console.log("call git.deleteRef:")
+                  console.log(git_deleteRef_params)
+                  github.git.deleteRef(git_deleteRef_params)
+                })
               }
             })
       - name: Exit
