@@ -73,7 +73,7 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "${{github.event.pull_request.head.repo.owner.login}}:fix-format-${{github.event.pull_request.head.ref}}",
+              head: "dev-hato:fix-format-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}",
               ...common_params
             }
@@ -117,7 +117,7 @@ jobs:
               repo: context.repo.repo
             }
             const pulls_list_params = {
-              head: "${{github.event.pull_request.head.repo.owner.login}}:" + head_name,
+              head: "dev-hato:" + head_name,
               base: "${{github.event.pull_request.head.ref}}",
               state: "open",
               ...common_params
