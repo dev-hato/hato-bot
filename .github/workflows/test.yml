@@ -1,0 +1,30 @@
+name: test
+
+# pull_requestで何かあった時に起動する
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close PullRequest
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const common_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }
+            const pulls_list_params = {
+              head: "dev-hato:fix-format-check-pipfile_lock",
+              base: "check-pipfile_lock",
+              ...common_params
+            }
+            console.log("call pulls.list:")
+            console.log(pulls_list_params)
+            github.pulls.list(pulls_list_params).then(res => {
+              console.log(res)
+            })
