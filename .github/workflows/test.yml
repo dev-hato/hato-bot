@@ -26,5 +26,7 @@ jobs:
             console.log("call pulls.list:")
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(res => {
-              console.log(res)
+              for(const data of res.data) {
+                console.log(data)
+              }
             })
