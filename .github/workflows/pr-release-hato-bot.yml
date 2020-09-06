@@ -36,7 +36,7 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "${{github.event.pull_request.head.repo.owner.login}}:develop",
+              head: "dev-hato:develop",
               base: "master",
               ...common_params
             }
