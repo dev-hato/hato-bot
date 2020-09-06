@@ -60,7 +60,7 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "refs/heads/pipfile-" + process.env.PYTHON_VERSION.replace('.', '_') + "-${{github.event.pull_request.head.ref}}",
+              head: "${{github.event.pull_request.head.repo.owner.login}}:pipfile-" + process.env.PYTHON_VERSION.replace('.', '_') + "-${{github.event.pull_request.head.ref}}",
               base: "${{github.event.pull_request.head.ref}}",
               ...common_params
             }
