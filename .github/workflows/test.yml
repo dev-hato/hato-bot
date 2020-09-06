@@ -14,6 +14,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            console.log("${{github.event.pull_request.head.repo.owner.login}}")
             const ref = "heads/fix-format-check-pipfile_lockkkk"
             const common_params = {
               owner: context.repo.owner,
