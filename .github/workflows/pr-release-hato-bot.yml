@@ -36,8 +36,8 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "develop",
-              base: "refs/heads/master",
+              head: "dev-hato:develop",
+              base: "master",
               ...common_params
             }
             const pulls_list_params = {
@@ -47,7 +47,7 @@ jobs:
             console.log("call pulls.list:")
             console.log(pulls_list_params)
             github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.filter(data => data.user.id === 41898282).length === 0) {
+              if (list_res.data.length === 0) {
                 const pulls_create_params = {
                   title: "リリース",
                   body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
