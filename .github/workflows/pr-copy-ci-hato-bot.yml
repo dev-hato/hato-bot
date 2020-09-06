@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          repository: ${{github.event.pull_request.head.repo.owner.login}}/sudden-death
+          repository: dev-hato/sudden-death
           path: sudden-death
       - name: Copy CI
         run: |
@@ -42,4 +42,5 @@ jobs:
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
-          GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:${{github.event.pull_request.head.repo.owner.login}}/sudden-death.git" HEAD:refs/heads/pr-copy-ci
+          GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/pr-copy-ci
+          
