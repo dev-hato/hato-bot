@@ -19,26 +19,28 @@ app = Flask(__name__)
 
 
 slack_events_adapter = SlackEventAdapter(
-    signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app)
+    signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app
+)
 
 
 def __init__():
     log_format_config = {
-        'format': '[%(asctime)s] %(message)s',
-        'datefmt': '%Y-%m-%d %H:%M:%S',
-        'level': logging.DEBUG,
-        'stream': sys.stdout,
+        "format": "[%(asctime)s] %(message)s",
+        "datefmt": "%Y-%m-%d %H:%M:%S",
+        "level": logging.DEBUG,
+        "stream": sys.stdout,
     }
     logging.basicConfig(**log_format_config)
-    logging.getLogger('requests.packages.urllib3.connectionpool').setLevel(
-        logging.WARNING)
+    logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+        logging.WARNING
+    )
 
 
 def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]:
     """Slackコマンド解析"""
 
-    if len(messages) > 0 and messages[0]['type'] == 'text':
-        message = messages[0]['text'].strip()
+    if len(messages) > 0 and messages[0]["type"] == "text":
+        message = messages[0]["text"].strip()
         return analyze.analyze_message(message)
 
     return hato.default_action
@@ -54,20 +56,24 @@ def on_app_mention(event_data):
     """
 
     channel = event_data["event"]["channel"]
-    blocks = event_data['event']['blocks']
-    authed_users = event_data['authed_users']
+    blocks = event_data["event"]["blocks"]
+    authed_users = event_data["authed_users"]
 
     for block in blocks:
-        if block['type'] == 'rich_text':
-            block_elements = block['elements']
+        if block["type"] == "rich_text":
+            block_elements = block["elements"]
             for block_element in block_elements:
-                if block_element['type'] == 'rich_text_section':
-                    block_element_elements = block_element['elements']
-                    if len(block_element_elements) > 0 and \
-                            block_element_elements[0]['type'] == 'user' and \
-                            block_element_elements[0]['user_id'] in authed_users:
-                        TPE.submit(analyze_slack_message(block_element_elements[1:]), SlackClient(
-                            channel, block_element_elements[0]['user_id']))
+                if block_element["type"] == "rich_text_section":
+                    block_element_elements = block_element["elements"]
+                    if (
+                        len(block_element_elements) > 0
+                        and block_element_elements[0]["type"] == "user"
+                        and block_element_elements[0]["user_id"] in authed_users
+                    ):
+                        TPE.submit(
+                            analyze_slack_message(block_element_elements[1:]),
+                            SlackClient(channel, block_element_elements[0]["user_id"]),
+                        )
 
     print(event_data)
 
@@ -85,11 +91,11 @@ def http_app():
 
     pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
     """
-    msg = request.json['message']
-    channel = request.json['channel']
-    user = request.json['user']
+    msg = request.json["message"]
+    channel = request.json["channel"]
+    user = request.json["user"]
     client = SlackClient(channel, user)
-    client.post(f'コマンド: {msg}')
+    client.post(f"コマンド: {msg}")
     analyze.analyze_message(msg)(client)
     return "success"
 
@@ -97,7 +103,7 @@ def http_app():
 def main():
     """メイン関数"""
 
-    app.run(host='0.0.0.0', port=conf.PORT)
+    app.run(host="0.0.0.0", port=conf.PORT)
 
 
 if __name__ == "__main__":

@@ -14,8 +14,13 @@ from git.exc import InvalidGitRepositoryError
 
 import slackbot_settings as conf
 from library.amesh import get_geo_data
-from library.vocabularydb \
-    import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
+from library.vocabularydb import (
+    get_vocabularys,
+    add_vocabulary,
+    show_vocabulary,
+    delete_vocabulary,
+    show_random_vocabulary,
+)
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
@@ -28,7 +33,7 @@ VERSION = "2.0.1"
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
     """コマンドを分離する"""
 
-    return re.split(r'\s+', command.strip().strip('　'), maxsplit)
+    return re.split(r"\s+", command.strip().strip("　"), maxsplit)
 
 
 def help_message(client: BaseClient):
@@ -36,20 +41,22 @@ def help_message(client: BaseClient):
 
     logger.debug("%s called 'hato help'", client.get_send_user())
     logger.debug("%s app called 'hato help'", client.get_type())
-    str_help = '\n使い方\n'\
-        '```'\
-        'amesh ... 東京のameshを表示する。\n'\
-        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n'\
-        'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n'\
-        'eq ... 最新の地震情報を3件表示する。\n'\
-        'text list ... パワーワード一覧を表示する。 \n'\
-        'text random ... パワーワードをひとつ、ランダムで表示する。 \n'\
-        'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n'\
-        'text add [text] ... パワーワードに[text]を登録する。 \n'\
-        'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n'\
-        '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
-        'version ... バージョン情報を表示する。\n'\
-        '\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n'
+    str_help = (
+        "\n使い方\n"
+        "```"
+        "amesh ... 東京のameshを表示する。\n"
+        "amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n"
+        "amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n"
+        "eq ... 最新の地震情報を3件表示する。\n"
+        "text list ... パワーワード一覧を表示する。 \n"
+        "text random ... パワーワードをひとつ、ランダムで表示する。 \n"
+        "text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n"
+        "text add [text] ... パワーワードに[text]を登録する。 \n"
+        "text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n"
+        ">< [text] ... 文字列[text]を吹き出しで表示する。\n"
+        "version ... バージョン情報を表示する。\n"
+        "\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n"
+    )
     client.post(str_help)
 
 
@@ -87,7 +94,7 @@ def add_text(word: str):
         add_vocabulary(word)
         user = client.get_send_user_name()
         logger.debug("%s called 'text add'", user)
-        client.post('覚えたっぽ!')
+        client.post("覚えたっぽ!")
 
     return ret
 
@@ -100,6 +107,7 @@ def show_text(power_word_id: str):
         logger.debug("%s called 'text show'", user)
         msg = show_vocabulary(int(power_word_id))
         client.post(msg)
+
     return ret
 
 
@@ -119,6 +127,7 @@ def delete_text(power_word_id: str):
         logger.debug("%s called 'text delete'", user)
         msg = delete_vocabulary(int(power_word_id))
         client.post(msg)
+
     return ret
 
 
@@ -130,7 +139,8 @@ def totuzensi(message: str):
         word = hato_ha_karaage(message)
         logger.debug("%s called 'hato >< %s'", user, word)
         msg = generator(word)
-        client.post('```' + msg + '```')
+        client.post("```" + msg + "```")
+
     return ret
 
 
@@ -140,7 +150,7 @@ def amesh(place: str):
     def ret(client: BaseClient):
         user = client.get_send_user_name()
         logger.debug("%s called 'hato amesh '", user)
-        msg: str = '雨雲状況をお知らせするっぽ！'
+        msg: str = "雨雲状況をお知らせするっぽ！"
         lat = None
         lon = None
         place_list = split_command(place, 2)
@@ -148,39 +158,42 @@ def amesh(place: str):
         if len(place_list) == 2:
             lat, lon = place_list
         else:
-            geo_data = get_geo_data(place_list[0] or '東京')
+            geo_data = get_geo_data(place_list[0] or "東京")
             if geo_data is not None:
-                msg = geo_data['place'] + 'の' + msg
-                lat = geo_data['lat']
-                lon = geo_data['lon']
+                msg = geo_data["place"] + "の" + msg
+                lat = geo_data["lat"]
+                lon = geo_data["lon"]
 
         if lat is None or lon is None:
-            client.post('雨雲状況を取得できなかったっぽ......')
+            client.post("雨雲状況を取得できなかったっぽ......")
             return None
 
         client.post(msg)
-        req = requests.get('https://map.yahooapis.jp/map/V1/static',
-                           {
-                               'appid': conf.YAHOO_API_TOKEN,
-                               'lat': lat,
-                               'lon': lon,
-                               'z': '12',
-                               'height': '640',
-                               'width': '800',
-                               'overlay': 'type:rainfall|datelabel:off'
-                           },
-                           stream=True)
+        req = requests.get(
+            "https://map.yahooapis.jp/map/V1/static",
+            {
+                "appid": conf.YAHOO_API_TOKEN,
+                "lat": lat,
+                "lon": lon,
+                "z": "12",
+                "height": "640",
+                "width": "800",
+                "overlay": "type:rainfall|datelabel:off",
+            },
+            stream=True,
+        )
         if req.status_code == 200:
             with NamedTemporaryFile() as weather_map_file:
                 weather_map_file.write(req.content)
-                filename = ['amesh']
+                filename = ["amesh"]
                 ext = imghdr.what(weather_map_file.name)
 
                 if ext:
                     filename.append(ext)
 
-                client.upload(file=weather_map_file.name,
-                              filename=os.path.extsep.join(filename))
+                client.upload(
+                    file=weather_map_file.name, filename=os.path.extsep.join(filename)
+                )
 
         return req
 
@@ -192,8 +205,7 @@ def version(client: BaseClient):
 
     user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
-    str_ver = "バージョン情報\n```"\
-        f"Version {VERSION}"
+    str_ver = "バージョン情報\n```" f"Version {VERSION}"
 
     try:
         repo = Repo()
@@ -201,7 +213,9 @@ def version(client: BaseClient):
     except InvalidGitRepositoryError:
         pass
 
-    str_ver += "\n"\
-        "Copyright (C) 2020 hato-bot Development team\n"\
+    str_ver += (
+        "\n"
+        "Copyright (C) 2020 hato-bot Development team\n"
         "https://github.com/dev-hato/hato-bot ```"
+    )
     client.post(str_ver)
