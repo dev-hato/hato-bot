@@ -34,10 +34,11 @@ jobs:
       - name: Show diff
         id: diff
         run: |
-          git diff
+          result=`git diff`
+          echo "::set-output name=result::$result"
       # 差分があったときは、コミットを作りpushする
       - name: Push
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
         run: |
@@ -49,7 +50,7 @@ jobs:
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome != ''
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
         with:
@@ -94,7 +95,7 @@ jobs:
       # 既にPipfile修正のPRがある状態で、手動でPipfileを修正した場合、Pipfile修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outcome == ''
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == ''
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
         with:
@@ -134,5 +135,5 @@ jobs:
               }
             })
       - name: Exit
-        if: steps.diff.outcome != ''
+        if: steps.diff.outputs.result != ''
         run: exit 1
