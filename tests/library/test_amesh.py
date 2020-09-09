@@ -20,15 +20,11 @@ def set_mock(place: str, mocker: requests_mock.Mocker, content=None):
     if content is None:
         content = {}
 
-    params = {
-        'appid': conf.YAHOO_API_TOKEN,
-        'query': place,
-        'output': 'json'
-    }
-    query = '&'.join([f'{k}={v}' for k, v in params.items()])
+    params = {"appid": conf.YAHOO_API_TOKEN, "query": place, "output": "json"}
+    query = "&".join([f"{k}={v}" for k, v in params.items()])
     mocker.get(
-        'https://map.yahooapis.jp/geocode/V1/geoCoder?' + query,
-        content=json.dumps(content).encode()
+        "https://map.yahooapis.jp/geocode/V1/geoCoder?" + query,
+        content=json.dumps(content).encode(),
     )
 
 
@@ -40,16 +36,15 @@ class TestGetGeoData(unittest.TestCase):
     def test_valid_place(self):
         """ 正しい地名を指定した場合 """
         with requests_mock.Mocker() as mocker:
-            place = '長野'
-            result = {'place': '長野県長野市',
-                      'lat': '36.64858580', 'lon': '138.19477310'}
+            place = "長野"
+            result = {"place": "長野県長野市", "lat": "36.64858580", "lon": "138.19477310"}
             content = {
-                'Feature': [
+                "Feature": [
                     {
-                        'Name': result['place'],
-                        'Geometry': {
-                            'Coordinates': ','.join([result['lon'], result['lat']])
-                        }
+                        "Name": result["place"],
+                        "Geometry": {
+                            "Coordinates": ",".join([result["lon"], result["lat"]])
+                        },
                     }
                 ]
             }
@@ -59,10 +54,10 @@ class TestGetGeoData(unittest.TestCase):
     def test_invalid_place(self):
         """ 正しくない地名を指定した場合 """
         with requests_mock.Mocker() as mocker:
-            place = 'hoge'
+            place = "hoge"
             set_mock(place, mocker)
             self.assertIsNone(get_geo_data(place))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

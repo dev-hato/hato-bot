@@ -40,7 +40,7 @@ class BaseClient(metaclass=ABCMeta):
     @staticmethod
     def get_type() -> str:
         """インスタンスの種類を返す"""
-        return 'test'
+        return "test"
 
 
 class SlackClient(BaseClient):
@@ -52,22 +52,16 @@ class SlackClient(BaseClient):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
         self.send_user = send_user
-        self.send_user_name = self.client.users_info(user=send_user)[
-            'user']['name']
+        self.send_user_name = self.client.users_info(user=send_user)["user"]["name"]
 
     def post(self, message):
         """Slackにポストする"""
-        self.client.chat_postMessage(
-            channel=self.slack_channel,
-            text=message
-        )
+        self.client.chat_postMessage(channel=self.slack_channel, text=message)
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
         self.client.files_upload(
-            channels=self.slack_channel,
-            file=file,
-            filename=filename
+            channels=self.slack_channel, file=file, filename=filename
         )
 
     def get_send_user(self):
@@ -80,4 +74,4 @@ class SlackClient(BaseClient):
     @staticmethod
     def get_type():
         """slack"""
-        return 'slack'
+        return "slack"
