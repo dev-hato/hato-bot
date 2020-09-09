@@ -1,4 +1,4 @@
-eame: pr-check-pipfile
+name: pr-check-pipfile
 
 # pull_requestで何かあった時に起動する
 on:
