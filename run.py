@@ -72,7 +72,8 @@ def on_app_mention(event_data):
                     ):
                         TPE.submit(
                             analyze_slack_message(block_element_elements[1:]),
-                            SlackClient(channel, block_element_elements[0]["user_id"]),
+                            SlackClient(
+                                channel, block_element_elements[0]["user_id"]),
                         )
 
     print(event_data)

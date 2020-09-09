@@ -25,7 +25,8 @@ class TestAnaryzeMessage(unittest.TestCase):
         analyze_message(">< aaa")(client1)
         client2 = TestClient()
         hato.totuzensi("aaa")(client2)
-        self.assertEqual(client1.get_post_message(), client2.get_post_message())
+        self.assertEqual(client1.get_post_message(),
+                         client2.get_post_message())
         # self.assertEqual(analyze_message('>< aaa'), hato.totuzensi('aaa'))
         # 本当はこうしたいが、関数オブジェクトが違っているので落ちてしまう。
         # なので実行結果で見るしかない

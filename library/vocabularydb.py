@@ -26,7 +26,8 @@ class VocabularyDatabase(Database):
 
         with self.conn.cursor() as cursor:
             try:
-                cursor.execute("SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
+                cursor.execute(
+                    "SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
                 results = cursor.fetchone()
             except psycopg2.Error:
                 print("Can not execute sql(select_random).")
@@ -38,7 +39,8 @@ class VocabularyDatabase(Database):
 
         with self.conn.cursor() as cursor:
             try:
-                cursor.execute("INSERT INTO vocabulary(word) VALUES(%s);", (word,))
+                cursor.execute(
+                    "INSERT INTO vocabulary(word) VALUES(%s);", (word,))
                 self.conn.commit()
             except psycopg2.Error:
                 print("Can not execute sql(add).")
@@ -48,7 +50,8 @@ class VocabularyDatabase(Database):
 
         with self.conn.cursor() as cursor:
             try:
-                cursor.execute("DELETE FROM vocabulary WHERE no = %s;", (word_id,))
+                cursor.execute(
+                    "DELETE FROM vocabulary WHERE no = %s;", (word_id,))
                 self.conn.commit()
             except psycopg2.Error:
                 print("Can not execute sql(delete).")

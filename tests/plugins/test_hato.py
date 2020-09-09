@@ -44,7 +44,8 @@ class TestSplitCommand(unittest.TestCase):
 
     def test_maxsplit(self):
         """ 空白が間に2つ以上ある場合 """
-        self.assertEqual(split_command(" text add テスト", 1), ["text", "add テスト"])
+        self.assertEqual(split_command(
+            " text add テスト", 1), ["text", "add テスト"])
 
 
 class TestAmesh(unittest.TestCase):
@@ -77,7 +78,8 @@ class TestAmesh(unittest.TestCase):
             "overlay": "type:rainfall|datelabel:off",
         }
         query = "&".join([f"{k}={v}" for k, v in params.items()])
-        mocker.get("https://map.yahooapis.jp/map/V1/static?" + query, content=content)
+        mocker.get("https://map.yahooapis.jp/map/V1/static?" +
+                   query, content=content)
         req = amesh(place)(client1)
         self.assertEqual(req.status_code, 200)
         return client1
@@ -116,7 +118,8 @@ class TestAmesh(unittest.TestCase):
             }
             set_mock("東京", mocker, content)
             self.amesh_upload_png_test(
-                mocker, "", ["35.64657460", "139.65324950"], "東京都世田谷区の雨雲状況をお知らせするっぽ！"
+                mocker, "", ["35.64657460",
+                             "139.65324950"], "東京都世田谷区の雨雲状況をお知らせするっぽ！"
             )
 
     def test_amesh_with_params(self):
@@ -135,7 +138,8 @@ class TestAmesh(unittest.TestCase):
         """
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
-            client1 = self.get_amesh_test(mocker, " ".join(coordinate), coordinate)
+            client1 = self.get_amesh_test(
+                mocker, " ".join(coordinate), coordinate)
             self.assertEqual(client1.get_post_message(), "雨雲状況をお知らせするっぽ！")
             self.assertEqual(client1.get_filename(), "amesh")
 

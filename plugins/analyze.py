@@ -15,13 +15,13 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "eq": lambda m: hato.earth_quake,
         "地震": lambda m: hato.earth_quake,
         "text list": lambda m: hato.get_text_list,
-        "text add ": lambda m: hato.add_text(m[len("text add ") :]),
-        "text show ": lambda m: hato.show_text(m[len("text show ") :]),
-        "text delete ": lambda m: hato.delete_text(m[len("text delete ") :]),
+        "text add ": lambda m: hato.add_text(m[len("text add "):]),
+        "text show ": lambda m: hato.show_text(m[len("text show "):]),
+        "text delete ": lambda m: hato.delete_text(m[len("text delete "):]),
         "text random": lambda m: hato.show_random_text,
         "text": lambda m: hato.show_random_text,
-        ">< ": lambda m: hato.totuzensi(m[len(">< ") :]),
-        "amesh": lambda m: hato.amesh((m[len("amesh") :]).strip()),
+        ">< ": lambda m: hato.totuzensi(m[len(">< "):]),
+        "amesh": lambda m: hato.amesh((m[len("amesh"):]).strip()),
         "version": lambda m: hato.version,
     }
 
