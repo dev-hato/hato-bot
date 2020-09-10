@@ -19,7 +19,7 @@
 
 ### Added
 
-* 新しいSlack API(Event API)に対応しました。(この対応により、Slack API Tokenの取得方法が変更になります）  (#127)
+* 新しいSlack API(Event API)に対応しました。(この対応により、Slack API Tokenの取得方法が変更になります）(#127)
 * `amesh [地名]` で地名の雨雲情報を取得できる様になりました。(#97)
 
 ### Changed
