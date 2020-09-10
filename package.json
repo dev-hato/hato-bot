@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "textlint": "^11.7.6",
+    "textlint-filter-rule-allowlist": "^2.0.1",
     "textlint-rule-preset-ja-technical-writing": "^4.0.1"
   }
 }

@@ -1,5 +1,11 @@
 {
-  "filters": {},
+  "filters": {
+    "allowlist": {
+      "allow": [
+        "Yahoo!"
+      ]
+    }
+  },
   "rules": {
     "preset-ja-technical-writing": true
   }
