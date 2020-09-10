@@ -2,7 +2,9 @@
   "filters": {
     "allowlist": {
       "allow": [
-        "Yahoo!"
+        "Yahoo!",
+        "pg8000",
+        "/#[0-9]+/"
       ]
     },
     "comments": true
