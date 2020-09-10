@@ -23,7 +23,6 @@
     "ja-unnatural-alphabet": true,
     "ng-word": true,
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
-    "period-in-list-item": true,
     "prefer-tari-tari": true,
     "preset-ja-spacing": true,
     "preset-ja-technical-writing": true,
