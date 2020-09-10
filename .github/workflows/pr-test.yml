@@ -340,8 +340,8 @@ jobs:
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
 
-  # PRが来たらMarkdownにtextlintをかけてみて、差分があればコメントやPRを行う
-  pr-textlint:
+  # textlintをかけ、結果をPRにコメントとして表示する。
+  pr-textlint-lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -426,6 +426,39 @@ jobs:
             console.log("call issues.createComment:")
             console.log(issues_createComment_params)
             github.issues.createComment(issues_createComment_params)
+
+  # PRが来たらtextlintをかけてみて、差分があればPRを作って、エラーで落ちるjob
+  pr-textlint-format:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
+          fetch-depth: 0
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: yarn cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          restore-keys: |
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-
+      - name: Install dependencies
+        run: |
+          yarn install -D
       # textlintでformatする
       - name: Format files
         id: format
@@ -434,12 +467,12 @@ jobs:
         continue-on-error: true
       # 差分があったときは差分を出力する
       - name: Show diff
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
+        if: steps.format.outcome == 'failure'
         run: |
           git diff
       # 差分があったときは、コミットを作りpushする
       - name: Push
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
+        if: steps.format.outcome == 'failure'
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
@@ -449,7 +482,7 @@ jobs:
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
+        if: steps.format.outcome == 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -492,7 +525,7 @@ jobs:
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure'
+        if: steps.format.outcome != 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -530,5 +563,5 @@ jobs:
               }
             })
       - name: Exit
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outcome == 'failure'
+        if: steps.format.outcome == 'failure'
         run: exit 1
