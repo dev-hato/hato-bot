@@ -4,7 +4,7 @@
   
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-鳩botでは主に以下のことができます。
+鳩botでは主に以下のことができます.
 
 - 雨雲情報 ... `amesh [text]` で指定した地名・住所[text]の雨雲情報を画像で表示します。
 - 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
