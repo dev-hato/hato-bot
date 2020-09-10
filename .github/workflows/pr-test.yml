@@ -426,6 +426,9 @@ jobs:
             console.log("call issues.createComment:")
             console.log(issues_createComment_params)
             github.issues.createComment(issues_createComment_params)
+      - name: Exit
+        if: github.event.pull_request.head.repo.full_name != github.repository && steps.lint.outcome == 'failure'
+        run: exit 1
 
   # PRが来たらtextlintをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-textlint-format:
