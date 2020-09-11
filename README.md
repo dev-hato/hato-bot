@@ -31,8 +31,8 @@
 すぐに鳩botを動かしたい場合はHerokuを使うと簡単です。
 
 1. Slack API TokenとYahoo API Tokenを取得する。
-1. [Herokuへデプロイする](./doc/03_Deploy_to_Heroku.md)
-1. [Slack Event URLを設定する](./doc/04_Setting_to_Event_URL.md)
+1. [Herokuへデプロイする。](./doc/03_Deploy_to_Heroku.md)
+1. [Slack Event URLを設定する。](./doc/04_Setting_to_Event_URL.md)
 
 ### 自分のPC上で動かす
 
