@@ -24,4 +24,4 @@
 1. `Bot User OAuth Access Token` の値をメモします。
 
 1. 左側にある `Basic Information` をクリックし、遷移後のページにある `Signing Secret` の値をメモします。
-    (マスクされているので `show` を押して生の値を確認します)
+    (マスクされているので `show` を押して生の値を確認します。)
