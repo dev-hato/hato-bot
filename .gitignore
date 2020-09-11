@@ -5,3 +5,4 @@ __pycache__/
 setup/pgsql-data
 .mypy_cache/
 Pipfile.lock
+node_modules/
