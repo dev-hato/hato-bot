@@ -207,7 +207,8 @@ class TestAltitude(unittest.TestCase):
                                          '',
                                          coordinates,
                                          altitude_content)
-            self.assertEqual(client1.get_post_message(), f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！')
+            self.assertEqual(client1.get_post_message(),
+                             f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！')
 
     def test_altitude_with_params(self):
         """
@@ -229,7 +230,8 @@ class TestAltitude(unittest.TestCase):
                                          ' '.join(coordinates),
                                          coordinates,
                                          altitude_content)
-            self.assertEqual(client1.get_post_message(), f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！')
+            self.assertEqual(client1.get_post_message(),
+                             f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！')
 
 
 if __name__ == '__main__':
