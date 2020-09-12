@@ -155,7 +155,11 @@ class TestAltitude(unittest.TestCase):
     標高が正しく動作しているかテストする
     """
 
-    def altitude_test(self, mocker: requests_mock.Mocker, place: str, coordinates: List[str], content=None):
+    def altitude_test(self,
+                      mocker: requests_mock.Mocker,
+                      place: str,
+                      coordinates: List[str],
+                      content=None):
         """
         altitudeコマンドを実行し、正しくメッセージが投稿されるかテスト
         :param mocker requestsのMock
