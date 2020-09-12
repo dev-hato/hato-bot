@@ -9,18 +9,19 @@ import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
+
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError
 
 import slackbot_settings as conf
-from library.vocabularydb \
-    import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
+from library.clientclass import BaseClient
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.geo import get_geo_data
-from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
-from library.clientclass import BaseClient
+from library.hukidasi import generator
+from library.vocabularydb \
+    import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 
 logger = getLogger(__name__)
 VERSION = "2.0.1"
@@ -37,20 +38,20 @@ def help_message(client: BaseClient):
 
     logger.debug("%s called 'hato help'", client.get_send_user())
     logger.debug("%s app called 'hato help'", client.get_type())
-    str_help = '\n使い方\n'\
-        '```'\
-        'amesh ... 東京のameshを表示する。\n'\
-        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n'\
-        'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n'\
-        'eq ... 最新の地震情報を3件表示する。\n'\
-        'text list ... パワーワード一覧を表示する。 \n'\
-        'text random ... パワーワードをひとつ、ランダムで表示する。 \n'\
-        'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n'\
-        'text add [text] ... パワーワードに[text]を登録する。 \n'\
-        'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n'\
-        '>< [text] ... 文字列[text]を吹き出しで表示する。\n'\
-        'version ... バージョン情報を表示する。\n'\
-        '\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n'
+    str_help = '\n使い方\n' \
+               '```' \
+               'amesh ... 東京のameshを表示する。\n' \
+               'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n' \
+               'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n' \
+               'eq ... 最新の地震情報を3件表示する。\n' \
+               'text list ... パワーワード一覧を表示する。 \n' \
+               'text random ... パワーワードをひとつ、ランダムで表示する。 \n' \
+               'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n' \
+               'text add [text] ... パワーワードに[text]を登録する。 \n' \
+               'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n' \
+               '>< [text] ... 文字列[text]を吹き出しで表示する。\n' \
+               'version ... バージョン情報を表示する。\n' \
+               '\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n'
     client.post(str_help)
 
 
@@ -101,6 +102,7 @@ def show_text(power_word_id: str):
         logger.debug("%s called 'text show'", user)
         msg = show_vocabulary(int(power_word_id))
         client.post(msg)
+
     return ret
 
 
@@ -120,6 +122,7 @@ def delete_text(power_word_id: str):
         logger.debug("%s called 'text delete'", user)
         msg = delete_vocabulary(int(power_word_id))
         client.post(msg)
+
     return ret
 
 
@@ -132,6 +135,7 @@ def totuzensi(message: str):
         logger.debug("%s called 'hato >< %s'", user, word)
         msg = generator(word)
         client.post('```' + msg + '```')
+
     return ret
 
 
@@ -221,8 +225,9 @@ def altitude(place: str):
                 if 'Feature' in data_list:
                     for data in data_list['Feature']:
                         if 'Property' in data and 'Altitude' in data['Property']:
-                            altitude_ = '{:,}'.format(data['Property']['Altitude'])
-                            client.post(f'{place_name}の標高は{altitude_}mっぽ！')
+                            altitude_ = data['Property']['Altitude']
+                            altitude_str = '{:,}'.format(altitude_)
+                            client.post(f'{place_name}の標高は{altitude_str}mっぽ！')
                             return res
 
         client.post('標高を取得できなかったっぽ......')
@@ -236,8 +241,8 @@ def version(client: BaseClient):
 
     user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
-    str_ver = "バージョン情報\n```"\
-        f"Version {VERSION}"
+    str_ver = "バージョン情報\n```" \
+              f"Version {VERSION}"
 
     try:
         repo = Repo()
@@ -245,7 +250,7 @@ def version(client: BaseClient):
     except InvalidGitRepositoryError:
         pass
 
-    str_ver += "\n"\
-        "Copyright (C) 2020 hato-bot Development team\n"\
-        "https://github.com/dev-hato/hato-bot ```"
+    str_ver += "\n" \
+               "Copyright (C) 2020 hato-bot Development team\n" \
+               "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
