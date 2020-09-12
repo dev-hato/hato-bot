@@ -221,7 +221,8 @@ def altitude(place: str):
                 if 'Feature' in data_list:
                     for data in data_list['Feature']:
                         if 'Property' in data and 'Altitude' in data['Property']:
-                            altitude_ = '{:,}'.format(data['Property']['Altitude'])
+                            altitude_ = '{:,}'.format(
+                                data['Property']['Altitude'])
                             client.post(f'{place_name}の標高は{altitude_}mっぽ！')
                             return res
 
