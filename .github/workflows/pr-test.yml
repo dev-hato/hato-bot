@@ -363,11 +363,11 @@ jobs:
       - name: yarn cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-
       - name: Install dependencies
         run: |
           yarn install -D
@@ -454,11 +454,11 @@ jobs:
       - name: yarn cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-${{ hashFiles('**/yarn.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-
       - name: Install dependencies
         run: |
           yarn install -D
