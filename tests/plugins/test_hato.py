@@ -155,13 +155,12 @@ class TestAltitude(unittest.TestCase):
     標高が正しく動作しているかテストする
     """
 
-    def altitude_test(self, mocker: requests_mock.Mocker, place: str, coordinates: List[str], msg: str, content=None):
+    def altitude_test(self, mocker: requests_mock.Mocker, place: str, coordinates: List[str], content=None):
         """
         altitudeコマンドを実行し、正しくメッセージが投稿されるかテスト
         :param mocker requestsのMock
         :param place: コマンドの引数
         :param coordinates: [緯度, 経度]
-        :param msg: Slackに投稿されて欲しいメッセージ
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
@@ -175,7 +174,7 @@ class TestAltitude(unittest.TestCase):
                    content=json.dumps(content).encode())
         req = altitude(place)(client1)
         self.assertEqual(req.status_code, 200)
-        self.assertEqual(client1.get_post_message(), msg)
+        return client1
 
     def test_altitude_with_no_params(self):
         """
@@ -204,11 +203,11 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            self.altitude_test(mocker,
-                               '',
-                               coordinates,
-                               f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！',
-                               altitude_content)
+            client1 = self.altitude_test(mocker,
+                                         '',
+                                         coordinates,
+                                         altitude_content)
+            self.assertEqual(client1.get_post_message(), f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！')
 
     def test_altitude_with_params(self):
         """
@@ -226,11 +225,11 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            self.altitude_test(mocker,
-                               ' '.join(coordinates),
-                               coordinates,
-                               f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！',
-                               altitude_content)
+            client1 = self.altitude_test(mocker,
+                                         ' '.join(coordinates),
+                                         coordinates,
+                                         altitude_content)
+            self.assertEqual(client1.get_post_message(), f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！')
 
 
 if __name__ == '__main__':
