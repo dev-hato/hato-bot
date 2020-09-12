@@ -165,9 +165,14 @@ class TestAltitude(unittest.TestCase):
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
-        params = {'appid': conf.YAHOO_API_TOKEN, 'coordinates': ','.join(reversed(coordinates)), 'output': 'json'}
+        params = {
+            'appid': conf.YAHOO_API_TOKEN,
+            'coordinates': ','.join(reversed(coordinates)),
+            'output': 'json'
+        }
         query = '&'.join([f'{k}={v}' for k, v in params.items()])
-        mocker.get('https://map.yahooapis.jp/alt/V1/getAltitude?' + query, content=json.dumps(content).encode())
+        mocker.get('https://map.yahooapis.jp/alt/V1/getAltitude?' + query,
+                   content=json.dumps(content).encode())
         req = altitude(place)(client1)
         self.assertEqual(req.status_code, 200)
         self.assertEqual(client1.get_post_message(), msg)
@@ -199,7 +204,11 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            self.altitude_test(mocker, '', coordinates, f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！', altitude_content)
+            self.altitude_test(mocker,
+                               '',
+                               coordinates,
+                               f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！',
+                               altitude_content)
 
     def test_altitude_with_params(self):
         """
