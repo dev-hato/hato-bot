@@ -1,6 +1,7 @@
 """
 hato.pyのテスト
 """
+import json
 import os
 import unittest
 from typing import List
@@ -8,8 +9,8 @@ from typing import List
 import requests_mock
 
 import slackbot_settings as conf
-from plugins.hato import split_command, amesh
-from tests.library.test_amesh import set_mock
+from plugins.hato import split_command, amesh, altitude
+from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 
 
@@ -147,6 +148,89 @@ class TestAmesh(unittest.TestCase):
                                           coordinate)
             self.assertEqual(client1.get_post_message(), '雨雲状況をお知らせするっぽ！')
             self.assertEqual(client1.get_filename(), 'amesh')
+
+
+class TestAltitude(unittest.TestCase):
+    """
+    標高が正しく動作しているかテストする
+    """
+
+    def altitude_test(self, mocker: requests_mock.Mocker, place: str, coordinates: List[str], msg: str, content=None):
+        """
+        altitudeコマンドを実行し、正しくメッセージが投稿されるかテスト
+        :param mocker requestsのMock
+        :param place: コマンドの引数
+        :param coordinates: [緯度, 経度]
+        :param msg: Slackに投稿されて欲しいメッセージ
+        :param content: req.contentで返すデータ
+        """
+        client1 = TestClient()
+        params = {
+            'appid': conf.YAHOO_API_TOKEN,
+            'coordinates': ','.join(reversed(coordinates)),
+            'output': 'json'
+        }
+        query = '&'.join([f'{k}={v}' for k, v in params.items()])
+        mocker.get('https://map.yahooapis.jp/alt/V1/getAltitude?' + query,
+                   content=json.dumps(content).encode())
+        req = altitude(place)(client1)
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(client1.get_post_message(), msg)
+
+    def test_altitude_with_no_params(self):
+        """
+        引数なしでaltitudeコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            coordinates = ['35.64657460', '139.65324950']
+            geo_content = {
+                'Feature': [
+                    {
+                        'Name': '東京都世田谷区',
+                        'Geometry': {
+                            'Coordinates': ','.join(reversed(coordinates))
+                        }
+                    }
+                ]
+            }
+            set_mock('東京', mocker, geo_content)
+            altitude_setagaya = 35.4
+            altitude_content = {
+                "Feature": [
+                    {
+                        "Property": {
+                            "Altitude": altitude_setagaya
+                        }
+                    }
+                ]
+            }
+            self.altitude_test(mocker,
+                               '',
+                               coordinates,
+                               f'東京都世田谷区の標高は{altitude_setagaya}mっぽ！',
+                               altitude_content)
+
+    def test_altitude_with_params(self):
+        """
+        引数ありでaltitudeコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            coordinates = ['12.345', '123.456']
+            altitude_ = 122
+            altitude_content = {
+                "Feature": [
+                    {
+                        "Property": {
+                            "Altitude": altitude_
+                        }
+                    }
+                ]
+            }
+            self.altitude_test(mocker,
+                               ' '.join(coordinates),
+                               coordinates,
+                               f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！',
+                               altitude_content)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 """hatobotのチャット部分"""
 
 import imghdr
+import json
 import os
 import re
 from logging import getLogger
@@ -13,10 +14,10 @@ from git import Repo
 from git.exc import InvalidGitRepositoryError
 
 import slackbot_settings as conf
-from library.amesh import get_geo_data
 from library.vocabularydb \
     import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
+from library.geo import get_geo_data
 from library.hukidasi import generator
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
@@ -183,6 +184,49 @@ def amesh(place: str):
                               filename=os.path.extsep.join(filename))
 
         return req
+
+    return ret
+
+
+def altitude(place: str):
+    """標高を表示する"""
+
+    def ret(client: BaseClient):
+        user = client.get_send_user_name()
+        logger.debug("%s called 'hato altitude '", user)
+        coordinates = None
+        place_name = None
+        place_list = split_command(place, 2)
+
+        if len(place_list) == 2:
+            lat, lon = place_list
+            coordinates = [lon, lat]
+            place_name = ', '.join(place_list)
+        else:
+            geo_data = get_geo_data(place_list[0] or '東京')
+            if geo_data is not None:
+                place_name = geo_data['place']
+                coordinates = [geo_data['lon'], geo_data['lat']]
+
+        if coordinates is not None:
+            res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
+                               {
+                                   'appid': conf.YAHOO_API_TOKEN,
+                                   'coordinates': ','.join(coordinates),
+                                   'output': 'json'
+                               },
+                               stream=True)
+            if res.status_code == 200:
+                data_list = json.loads(res.content)
+                if 'Feature' in data_list:
+                    for data in data_list['Feature']:
+                        if 'Property' in data and 'Altitude' in data['Property']:
+                            altitude_ = '{:,}'.format(data['Property']['Altitude'])
+                            client.post(f'{place_name}の標高は{altitude_}mっぽ！')
+                            return res
+
+        client.post('標高を取得できなかったっぽ......')
+        return None
 
     return ret
 
