@@ -1,0 +1,64 @@
+name: pr-test-hato-bot
+
+# pull_requestで何かあった時に起動する
+on:
+  pull_request:
+
+env:
+  WORKON_HOME: /tmp/.venv
+
+jobs:
+  # unittestを行う
+  # testが落ちたらチェックが落ちる
+  pr-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.7]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2.1.2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+      - name: pipfile mv
+        run: mv Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
+      - name: pipenv cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          path: ${{ env.WORKON_HOME }}
+          restore-keys: |
+            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+      - name: Install dependencies
+        run: |
+          pipenv install --dev
+      - name: Set .env
+        run: |
+          cp .env.example .env
+      - name: Test
+        run: |
+          pipenv run python -m unittest
+
+  pr-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set .env
+        run: |
+          cp .env.example .env
+      - name: Build docker image
+        env:
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+        working-directory: ./setup
+        run: docker-compose build --no-cache

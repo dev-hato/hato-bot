@@ -19,7 +19,7 @@
 
 ### Added
 
-* 新しいSlack API(Event API)に対応しました。(この対応により、Slack API Tokenの取得方法が変更になります。)  (#127)
+* 新しいSlack API(Event API)に対応しました。(この対応により、Slack API Tokenの取得方法が変更になります)  (#127)
 * `amesh [地名]` で地名の雨雲情報を取得できる様になりました。(#97)
 
 ### Changed
@@ -71,7 +71,7 @@
 
 ### Fixed
 
-* Deploy to Herokuした時にDBが作成されない問題を修正しました。
+* Deploy to HerokuしたときにDBが作成されない問題を修正しました。
 
 ## v1.0.1 - 2020-05-11
 
@@ -96,7 +96,7 @@
 
 ### Fixed
 
-* `text list` した時に登録されている単語がない場合、その旨を返すように修正しました。
+* `text list` したときに登録されている単語がない場合、その旨を返すように修正しました。
 
 ## v0.3.1 - 2020-01-26
 
@@ -124,13 +124,13 @@
 
 ### Added
 
-* READMEに Deploy to Herokuボタンを追加しました。
+* READMEにDeploy to Herokuボタンを追加しました。
 * Changelogを追加しました。
 * `.env` ファイルで環境変数を設定できるようにしました。
 
 ### Changed
 
-* amesh時にbotがメッセージを返すタイミングを早くしました。(体感時間を短縮するため。)
+* amesh時にbotがメッセージを返すタイミングを早くしました。(体感時間を短縮するため)
 
 ### Fixed
 
