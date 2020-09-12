@@ -9,7 +9,6 @@ import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
-
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError
@@ -102,7 +101,6 @@ def show_text(power_word_id: str):
         logger.debug("%s called 'text show'", user)
         msg = show_vocabulary(int(power_word_id))
         client.post(msg)
-
     return ret
 
 
@@ -122,7 +120,6 @@ def delete_text(power_word_id: str):
         logger.debug("%s called 'text delete'", user)
         msg = delete_vocabulary(int(power_word_id))
         client.post(msg)
-
     return ret
 
 
@@ -135,7 +132,6 @@ def totuzensi(message: str):
         logger.debug("%s called 'hato >< %s'", user, word)
         msg = generator(word)
         client.post('```' + msg + '```')
-
     return ret
 
 
