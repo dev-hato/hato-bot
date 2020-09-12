@@ -28,12 +28,11 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
         geo_data = json.loads(res.content)
         if 'Feature' in geo_data:
             for feature in geo_data['Feature']:
-                if 'Name' in feature and feature['Name']:
-                    if 'Geometry' in feature and feature['Geometry']:
-                        geometry = feature['Geometry']
-                        if 'Coordinates' in geometry and geometry['Coordinates']:
-                            coordinates = geometry['Coordinates']
-                            lon, lat = coordinates.split(',', maxsplit=2)
-                            return {'place': feature['Name'], 'lat': lat, 'lon': lon}
+                if 'Name' in feature and feature['Name'] and 'Geometry' in feature and feature['Geometry']:
+                    geometry = feature['Geometry']
+                    if 'Coordinates' in geometry and geometry['Coordinates']:
+                        coordinates = geometry['Coordinates']
+                        lon, lat = coordinates.split(',', maxsplit=2)
+                        return {'place': feature['Name'], 'lat': lat, 'lon': lon}
 
     return None
