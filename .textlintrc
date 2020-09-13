@@ -6,7 +6,8 @@
         "pg8000",
         "/#[0-9]+/",
         "。](",
-        "https://github.com/dev-hato/hato-bot/releases/latest"
+        "https://github.com/dev-hato/hato-bot/releases/latest",
+        "https://heroku.com/deploy"
       ]
     }
   },
