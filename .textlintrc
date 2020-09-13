@@ -14,7 +14,9 @@
     "footnote-order": true,
     "general-novel-style-ja": {
         // 各段落の先頭に許可する文字 (false: チェックしない)
-        "chars_leading_paragraph": false
+        "chars_leading_paragraph": false,
+        // アラビア数字の桁数は2桁まで (false: チェックしない)
+        "max_arabic_numeral_digits": false
     },
     "ja-hiragana-fukushi": true,
     "ja-hiragana-hojodoushi": true,
