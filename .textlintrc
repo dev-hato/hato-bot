@@ -7,8 +7,7 @@
         "/#[0-9]+/",
         "。]("
       ]
-    },
-    "comments": true
+    }
   },
   "rules": {
     "@textlint-ja/no-insert-dropping-sa": true,
