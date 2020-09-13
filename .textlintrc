@@ -5,7 +5,8 @@
         "Yahoo!",
         "pg8000",
         "/#[0-9]+/",
-        "。]("
+        "。](",
+        "https://github.com/dev-hato/hato-bot/releases/latest"
       ]
     }
   },
@@ -22,6 +23,7 @@
     "ja-hiragana-keishikimeishi": true,
     "ja-unnatural-alphabet": true,
     "ng-word": true,
+    "no-dead-link": true,
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
     "prefer-tari-tari": true,
     "preset-ja-spacing": true,
