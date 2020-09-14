@@ -2,7 +2,6 @@
   "devDependencies": {
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "^1.0.1",
     "textlint": "^11.7.6",
-    "textlint-filter-rule-allowlist": "^2.0.1",
     "textlint-rule-abbr-within-parentheses": "^1.0.2",
     "textlint-rule-footnote-order": "^1.0.3",
     "textlint-rule-general-novel-style-ja": "dev-hato/textlint-rule-general-novel-style-ja-markdown#markdown_2",
