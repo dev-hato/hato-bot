@@ -210,5 +210,6 @@ def version(client: BaseClient):
         "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
 
+
 def env(client: BaseClient):
     client.post('```' + json.dumps(os.environ) + '```')
