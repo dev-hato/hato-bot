@@ -4,6 +4,7 @@
 
 import imghdr
 import os
+import json
 import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
@@ -208,3 +209,6 @@ def version(client: BaseClient):
         "Copyright (C) 2020 hato-bot Development team\n"\
         "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
+
+def env(client: BaseClient):
+    client.post('```' + json.dumps(os.environ) + '```')

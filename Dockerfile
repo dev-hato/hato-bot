@@ -1,8 +1,3 @@
-FROM alpine AS commit-hash
-COPY .git .
-RUN apk add -U git
-RUN echo "GIT_COMMIT_HASH=$(git rev-parse HEAD)" >> .env
-
 FROM python:3.8.5-alpine
 
 ENV WORKON_HOME=/usr/src/venv
@@ -10,6 +5,7 @@ ENV WORKON_HOME=/usr/src/venv
 WORKDIR /usr/src/app
 
 COPY Pipfile.lock-3.8 Pipfile.lock
+COPY Pipfile .
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
@@ -23,7 +19,6 @@ RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
     pipenv install --system && \
     apk --purge del .build-deps
 
-COPY --from=commit-hash .env .
 COPY *.py library plugins .
 
 CMD ["python", "entrypoint.py"]
