@@ -44,7 +44,7 @@ def help_message(client: BaseClient):
                'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n' \
                '標高 ... 東京の標高を表示する。\n' \
                '標高 [text] ... 指定した地名・住所[text]の標高を表示する。\n' \
-               '標高 [int] [int] ... 指定した座標([int], [int])の標高を表示する。\n' \
+               '標高 [double] [double] ... 指定した座標([double], [double])の標高を表示する。\n' \
                'eq ... 最新の地震情報を3件表示する。\n' \
                'text list ... パワーワード一覧を表示する。 \n' \
                'text random ... パワーワードをひとつ、ランダムで表示する。 \n' \
