@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 
 slack_events_adapter = SlackEventAdapter(
-    signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app)
+      signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app)
 
 
 def __init__():
