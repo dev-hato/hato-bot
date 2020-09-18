@@ -209,8 +209,8 @@ def altitude(place: str):
         else:
             geo_data = get_geo_data(place_list[0] or '東京')
             if geo_data is not None:
-                place_name = geo_data['place']
                 coordinates = [geo_data['lon'], geo_data['lat']]
+                place_name = geo_data['place']
 
         if coordinates is not None:
             res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
