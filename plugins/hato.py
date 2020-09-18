@@ -202,9 +202,10 @@ def altitude(place: str):
         place_list = split_command(place, 2)
 
         if len(place_list) == 2:
-            lat, lon = place_list
-            coordinates = [lon, lat]
-            place_name = ', '.join(place_list)
+            # float型でない場合、ここで変換に失敗して例外を投げる
+            coordinates = [str(float(p)) for p in reversed(place_list)]
+
+            place_name = ', '.join(reversed(coordinates))
         else:
             geo_data = get_geo_data(place_list[0] or '東京')
             if geo_data is not None:
