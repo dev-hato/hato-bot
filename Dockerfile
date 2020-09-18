@@ -4,6 +4,7 @@ ENV WORKON_HOME=/usr/src/venv
 
 WORKDIR /usr/src/app
 
+COPY Pipfile Pipfile
 COPY Pipfile.lock-3.8 Pipfile.lock
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
