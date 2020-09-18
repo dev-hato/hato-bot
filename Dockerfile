@@ -1,7 +1,9 @@
+# バージョン情報に表示する commit hash を埋め込む
 FROM alpine AS commit-hash
 COPY .git .
+COPY slackbot_settings.py .
 RUN apk add -U git
-RUN echo "GIT_COMMIT_HASH=$(git rev-parse HEAD)" >> .env
+RUN sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
 FROM python:3.8.5-alpine
 
@@ -24,7 +26,7 @@ RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
     pipenv install --system && \
     apk --purge del .build-deps
 
-COPY --from=commit-hash .env .
-COPY *.py library plugins .
+COPY *.py library plugins ./
+COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 CMD ["python", "entrypoint.py"]
