@@ -247,11 +247,14 @@ def version(client: BaseClient):
     str_ver = "バージョン情報\n```" \
               f"Version {VERSION}"
 
-    try:
-        repo = Repo()
-        str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
-    except InvalidGitRepositoryError:
-        pass
+    if conf.GIT_COMMIT_HASH:
+        str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
+    else:
+        try:
+            repo = Repo()
+            str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
+        except InvalidGitRepositoryError:
+            pass
 
     str_ver += "\n" \
                "Copyright (C) 2020 hato-bot Development team\n" \
