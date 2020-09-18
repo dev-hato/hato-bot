@@ -25,7 +25,9 @@ RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
     apk --purge del .build-deps && \
     rm -rf ~/.cache
 
-COPY *.py library plugins ./
+COPY *.py ./
+COPY library library
+COPY plugins plugins
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 CMD ["python", "entrypoint.py"]
