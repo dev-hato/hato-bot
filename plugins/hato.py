@@ -202,8 +202,11 @@ def altitude(place: str):
         place_list = split_command(place, 2)
 
         if len(place_list) == 2:
-            # float型でない場合、ここで変換に失敗して例外を投げる
-            coordinates = [str(float(p)) for p in reversed(place_list)]
+            try:
+                coordinates = [str(float(p)) for p in reversed(place_list)]
+            except ValueError:
+                client.post('引数が正しくないっぽ......')
+                return None
 
             place_name = ', '.join(reversed(coordinates))
         else:
