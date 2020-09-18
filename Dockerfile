@@ -1,6 +1,6 @@
 # バージョン情報に表示する commit hash を埋め込む
 FROM alpine:3.12 AS commit-hash
-COPY .git slackbot_settings.py ./
+COPY . .
 RUN apk add --no-cache -U git=2.26.2-r0
 RUN sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
