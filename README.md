@@ -106,7 +106,7 @@
     amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。
     標高 ... 東京の標高を表示する。
     標高 [text] ... 指定した地名・住所[text]の標高を表示する。
-    標高 [double] [double] ... 指定した座標([double], [double])の標高を表示する。
+    標高 [float] [float] ... 指定した座標([float], [float])の標高を表示する。
     eq ... 最新の地震情報を3件表示する。
     text list ... パワーワード一覧を表示する。
     text random ... パワーワードをひとつ、ランダムで表示する。
