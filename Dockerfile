@@ -30,4 +30,5 @@ COPY library library
 COPY plugins plugins
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
+ENV GIT_PYTHON_REFRESH=quiet
 CMD ["python", "entrypoint.py"]
