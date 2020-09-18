@@ -1,6 +1,6 @@
 name: pr-check-pipfile
 
-# pull_requestで何かあった時に起動する
+# PipfileかPipfile-lock-*に差分があるPRに反応して起動する
 on:
   pull_request:
     paths:
@@ -10,7 +10,7 @@ env:
   WORKON_HOME: /tmp/.venv
 
 jobs:
-  # Pipfileに差分があれば、Pipfile.lockを更新する
+  # PipfileかPipfile-lock-*に差分があれば、Pipfileからlockファイルを作り出す
   pr-check-pipfile:
     runs-on: ubuntu-latest
     strategy:
