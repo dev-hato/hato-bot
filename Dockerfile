@@ -28,6 +28,7 @@ RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
 COPY *.py ./
 COPY library library
 COPY plugins plugins
+COPY setup setup
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
