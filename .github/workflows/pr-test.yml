@@ -242,7 +242,7 @@ jobs:
             console.log(issues_listComments_params)
             github.issues.listComments(issues_listComments_params).then(response =>
               response.data.filter(
-                comment=>comment.user.id==41898282
+                comment=>comment.user.id==41898282 && comment.body.startsWith('Lint結果')
               ).map(
                 comment=>comment.id
               ).forEach(
