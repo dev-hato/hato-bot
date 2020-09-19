@@ -16,7 +16,7 @@ pyperclip = "==1.8.0"
 click = "==7.1.2"
 sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
 mypy = "==0.782"
-psycopg2-binary = "==2.8.5"
+psycopg2-binary = "==2.8.6"
 slackeventsapi = "==2.2.1"
 slackclient = "==2.8.1"
 gitpython = "==3.1.8"
