@@ -23,7 +23,7 @@ jobs:
       - name: Copy CI
         run: |
           worklows_path=.github/workflows
-          for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml")
+          for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml") hato-bot/.textlintrc hato-bot/package.json hato-bot/yarn.lock
           do
             cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
           done
@@ -43,4 +43,4 @@ jobs:
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
           GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/pr-copy-ci
-          
+
