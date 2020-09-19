@@ -27,6 +27,10 @@ jobs:
           do
             cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
           done
+          for f in .textlintrc package.json yarn.lock
+          do
+            cp hato-bot/${f} sudden-death/
+          done
       - name: Show diff
         id: show_diff
         run: |
