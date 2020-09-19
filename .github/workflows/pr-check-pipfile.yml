@@ -20,6 +20,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
+          fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.1.2
         with:
@@ -74,7 +78,7 @@ jobs:
             github.pulls.list(pulls_list_params).then(list_res => {
               if (list_res.data.length === 0) {
                 const pulls_create_params = {
-                  title: "pipfileが更新されたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+                  title: "pipfile (" + process.env.PYTHON_VERSION + ") が更新されたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
                   body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
                   ...pull_params
                 }
