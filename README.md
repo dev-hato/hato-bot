@@ -22,7 +22,7 @@
 
 鳩botを使うには以下が必要です。
 
-- Heroku アカウント(またはDockerが動作するPC)
+- Herokuアカウント(またはDockerが動作するPC)
 - Slack API Token ([Slack API Tokenの取得手順](./doc/01_Get_Slack_API_Token.md))
 - Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/02_Get_Yahoo_API_Token.md))
 
@@ -78,7 +78,7 @@
 
 #### コマンドの実行方法
 
-- 鳩botに対しコマンドを実行したい時は `post_command.py` を使うと便利です。
+- 鳩botに対しコマンドを実行したいときは `post_command.py` を使うと便利です。
 
     ```sh
     pipenv run python post_command.py --channel {投稿先のチャンネルのchannel id} \
@@ -96,7 +96,7 @@
 
 - コードを整形する場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
 
-## 鳩bot コマンド一覧
+## 鳩botコマンド一覧
 
 - 鳩botで使用可能なコマンドは次の通りです。
 
@@ -104,6 +104,9 @@
     amesh ... 東京のameshを表示する。
     amesh [text] ... 指定した地名・住所[text]のameshを表示する。
     amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。
+    標高 ... 東京の標高を表示する。
+    標高 [text] ... 指定した地名・住所[text]の標高を表示する。
+    標高 [float] [float] ... 指定した座標([float], [float])の標高を表示する。
     eq ... 最新の地震情報を3件表示する。
     text list ... パワーワード一覧を表示する。
     text random ... パワーワードをひとつ、ランダムで表示する。
@@ -129,4 +132,4 @@
 
 Botで利用しているサービスのクレジットを記載します。
 
-- [Web Services by Yahoo! JAPAN](https://developer.yahoo.co.jp/about)
+- [Web Services by Yahoo! JAPAN](https://developer.yahoo.co.jp/sitemap/)
