@@ -42,7 +42,7 @@ jobs:
           cd sudden-death
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
-          git add -u
+          git add -A
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
