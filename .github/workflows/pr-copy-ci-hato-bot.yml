@@ -23,10 +23,12 @@ jobs:
       - name: Copy CI
         run: |
           worklows_path=.github/workflows
+          rm $(find sudden-death/${worklows_path} -type f | grep -v "sudden-death.yml")
           for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml")
           do
             cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
           done
+          rm .textlintrc package.json yarn.lock
           for f in .textlintrc package.json yarn.lock
           do
             cp hato-bot/${f} sudden-death/
