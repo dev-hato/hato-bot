@@ -30,7 +30,6 @@ jobs:
           done
           for f in .textlintrc package.json yarn.lock
           do
-            rm -f sudden-death/${f}
             cp hato-bot/${f} sudden-death/
           done
       - name: Show diff
