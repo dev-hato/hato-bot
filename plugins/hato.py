@@ -41,7 +41,7 @@ def help_message(client: BaseClient):
                '```' \
                'amesh ... 東京のameshを表示する。\n' \
                'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n' \
-               'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n' \
+               'amesh [float] [float] ... 指定した座標([float], [float])のameshを表示する。\n' \
                '標高 ... 東京の標高を表示する。\n' \
                '標高 [text] ... 指定した地名・住所[text]の標高を表示する。\n' \
                '標高 [float] [float] ... 指定した座標([float], [float])の標高を表示する。\n' \
