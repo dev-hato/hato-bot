@@ -23,12 +23,12 @@ jobs:
       - name: Copy CI
         run: |
           worklows_path=.github/workflows
-          rm $(find sudden-death/${worklows_path} -type f | grep -v "sudden-death.yml")
+          rm -f $(find sudden-death/${worklows_path} -type f | grep -v "sudden-death.yml")
           for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml")
           do
             cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
           done
-          rm .textlintrc package.json yarn.lock
+          rm -f .textlintrc package.json yarn.lock
           for f in .textlintrc package.json yarn.lock
           do
             cp hato-bot/${f} sudden-death/
@@ -49,4 +49,4 @@ jobs:
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
           GIT_SSH_COMMAND="ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null" git push -f "git@github.com:dev-hato/sudden-death.git" HEAD:refs/heads/pr-copy-ci
-          
+
