@@ -37,24 +37,29 @@ def help_message(client: BaseClient):
 
     logger.debug("%s called 'hato help'", client.get_send_user())
     logger.debug("%s app called 'hato help'", client.get_type())
-    str_help = '\n使い方\n' \
-               '```' \
-               'amesh ... 東京のameshを表示する。\n' \
-               'amesh [text] ... 指定した地名・住所[text]のameshを表示する。\n' \
-               'amesh [int] [int] ... 指定した座標([int], [int])のameshを表示する。\n' \
-               '標高 ... 東京の標高を表示する。\n' \
-               '標高 [text] ... 指定した地名・住所[text]の標高を表示する。\n' \
-               '標高 [float] [float] ... 指定した座標([float], [float])の標高を表示する。\n' \
-               'eq ... 最新の地震情報を3件表示する。\n' \
-               'text list ... パワーワード一覧を表示する。 \n' \
-               'text random ... パワーワードをひとつ、ランダムで表示する。 \n' \
-               'text show [int] ... 指定した番号[int]のパワーワードを表示する。 \n' \
-               'text add [text] ... パワーワードに[text]を登録する。 \n' \
-               'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 \n' \
-               '>< [text] ... 文字列[text]を吹き出しで表示する。\n' \
-               'version ... バージョン情報を表示する。\n' \
-               '\n詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!```\n'
-    client.post(str_help)
+    str_help = [
+        '',
+        '使い方',
+        '```',
+        'amesh ... 東京のameshを表示する。',
+        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。',
+        'amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。',
+        '標高 ... 東京の標高を表示する。',
+        '標高 [text] ... 指定した地名・住所[text]の標高を表示する。',
+        '標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。',
+        'eq ... 最新の地震情報を3件表示する。',
+        'text list ... パワーワード一覧を表示する。 ',
+        'text random ... パワーワードをひとつ、ランダムで表示する。 ',
+        'text show [int] ... 指定した番号[int]のパワーワードを表示する。 ',
+        'text add [text] ... パワーワードに[text]を登録する。 ',
+        'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 ',
+        '>< [text] ... 文字列[text]を吹き出しで表示する。',
+        'version ... バージョン情報を表示する。',
+        '',
+        '詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!',
+        '```'
+    ]
+    client.post(os.linesep.join(str_help))
 
 
 def default_action(client: BaseClient):
