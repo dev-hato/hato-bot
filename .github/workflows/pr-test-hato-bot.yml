@@ -30,9 +30,9 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-          version=v$(grep -oE "pipenv[^ ]+" ${file_name} | grep -oE "[0-9.]+")
+            version=v$(grep -oE "pipenv[^ ]+" ${file_name} | grep -oE "[0-9.]+")
           else
-          version=master
+            version=master
           fi
           echo https://raw.githubusercontent.com/pypa/pipenv/${version}/get-pipenv.py
 
