@@ -27,15 +27,16 @@ jobs:
       - name: Install pipenv
         run: |
           file_name=Dockerfile
+          package_name=pipenv
 
           if [ -f ${file_name} ]
           then
-            version=v$(grep -oE "pipenv[^ ]+" ${file_name} | grep -oE "[0-9.]+")
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
           else
-            version=master
+            package_name_with_version=${package_name}
           fi
 
-          curl https://raw.githubusercontent.com/pypa/pipenv/${version}/get-pipenv.py | python
+          pip install ${package_name_with_version}
       - name: pipenv version
         run: pipenv --version
       - name: pipfile cp
