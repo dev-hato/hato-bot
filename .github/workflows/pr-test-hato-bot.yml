@@ -34,6 +34,7 @@ jobs:
           else
           version=master
           fi
+          echo https://raw.githubusercontent.com/pypa/pipenv/${version}/get-pipenv.py
 
           curl https://raw.githubusercontent.com/pypa/pipenv/${version}/get-pipenv.py | python
       - name: pipenv version
