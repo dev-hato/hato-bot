@@ -13,7 +13,7 @@ from flask import Flask, request
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
-from library.clientclass import SlackClient
+from library.clientclass import SlackClient, ApiClient
 
 app = Flask(__name__)
 
@@ -92,6 +92,23 @@ def http_app():
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
     return "success"
+
+
+@app.route("/api", methods=["GET", "POST"])
+def api_app():
+    """
+    api形式でテストできます
+    Slackへの投稿は行われません
+
+    <コマンド例>
+    curl -XPOST -d '{"message": "鳩"}' \
+        -H "Content-Type: application/json" http://localhost:3000/api
+    """
+    msg = request.json['message']
+    client = ApiClient()
+    client.post(f'コマンド: {msg}')
+    analyze.analyze_message(msg)(client)
+    return client.response
 
 
 def main():

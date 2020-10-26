@@ -3,6 +3,7 @@
 """
 clientに使うclass
 """
+import os
 from abc import ABCMeta, abstractmethod
 from slack import WebClient
 import slackbot_settings as conf
@@ -81,3 +82,33 @@ class SlackClient(BaseClient):
     def get_type():
         """slack"""
         return 'slack'
+
+
+class ApiClient(BaseClient):
+    """
+    API形式のClient
+    Slackに対する操作は行わない
+    """
+
+    def __init__(self):
+        self.response = ''
+
+    def post(self, message):
+        """ポストする"""
+        self.response = os.linesep.join([self.response, message])
+
+    def upload(self, file, filename):
+        """ファイルを投稿する"""
+        self.response = os.linesep.join([self.response, f'upload: {filename}'])
+
+    def get_send_user(self):
+        """botを呼び出したユーザーを返す"""
+        return 'test_user_id'
+
+    def get_send_user_name(self):
+        return 'test_user'
+
+    @staticmethod
+    def get_type():
+        """api"""
+        return 'api'
