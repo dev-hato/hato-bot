@@ -64,6 +64,7 @@ jobs:
         run: docker-compose build --no-cache
       # dockerコンテナ立ち上げから2分以内に疎通できるようになるかチェックする
       - name: Run docker
+        working-directory: ./setup
         run: |
           docker-compose up -d
           start_unixtime=$(date +%s)
