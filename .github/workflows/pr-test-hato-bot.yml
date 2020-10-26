@@ -73,10 +73,12 @@ jobs:
           do
             if curl -XPOST -d '{"message": "help"}' -H "Content-Type: application/json" http://localhost:3000/api
             then
+              docker-compose logs
               exit 0
             fi
 
             sleep 1
           done
 
+          docker-compose logs
           exit 1
