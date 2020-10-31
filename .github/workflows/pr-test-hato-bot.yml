@@ -70,11 +70,11 @@ jobs:
       - name: Test
         working-directory: ./setup
         run: |
+          cmd="curl -XPOST -d '{\"message\": \"help\"}' -H \"Content-Type: application/json\" http://localhost:3000/api"
           start_unixtime=$(date +%s)
 
           while [ $(echo "$(date +%s) - ${start_unixtime}" | bc) -lt 120 ] && [ -z "$(docker-compose ps | grep Exit)" ]
           do
-            cmd="curl -XPOST -d '{\"message\": \"help\"}' -H \"Content-Type: application/json\" http://localhost:3000/api"
             if [ "$(eval "${cmd} -w '%{http_code}' -o /dev/null -s")" = 200 ] && eval "${cmd}"
             then
               docker-compose logs
