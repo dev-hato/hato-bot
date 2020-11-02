@@ -54,6 +54,7 @@ def help_message(client: BaseClient):
         'text add [text] ... パワーワードに[text]を登録する。 ',
         'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 ',
         '>< [text] ... 文字列[text]を吹き出しで表示する。',
+        'にゃーん ... 「よしよし」と返す。',
         'version ... バージョン情報を表示する。',
         '',
         '詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!',
@@ -265,3 +266,11 @@ def version(client: BaseClient):
                "Copyright (C) 2020 hato-bot Development team\n" \
                "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
+
+
+def yoshiyoshi(client: BaseClient):
+    """「にゃーん」を見つけたら、「よしよし」と返す"""
+
+    logger.debug("%s called 'hato yoshiyoshi'", client.get_send_user())
+    logger.debug("%s app called 'hato yoshiyoshi'", client.get_type())
+    client.post('よしよし')
