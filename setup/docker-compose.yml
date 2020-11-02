@@ -1,4 +1,7 @@
 version: "3.7"
+volumes:
+  pgsql-data:
+    driver: "local"
 services:
   postgres:
     build:
@@ -7,7 +10,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
     volumes:
-      - ./pgsql-data:/var/lib/postgresql/data
+      - pgsql-data:/var/lib/postgresql/data
       - ./pgsql-init:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
