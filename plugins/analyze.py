@@ -23,6 +23,7 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
                   'amesh': lambda m: hato.amesh((m[len('amesh'):]).strip()),
                   '標高': lambda m: hato.altitude((m[len('標高'):]).strip()),
                   'version': lambda m: hato.version,
+                  'にゃーん': lambda m: hato.yoshiyoshi,
                   }
 
     for key, method in conditions.items():
