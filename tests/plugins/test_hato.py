@@ -9,7 +9,7 @@ from typing import List
 import requests_mock
 
 import slackbot_settings as conf
-from plugins.hato import split_command, amesh, altitude
+from plugins.hato import split_command, amesh, altitude, yoshiyoshi
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 
@@ -236,6 +236,18 @@ class TestAltitude(unittest.TestCase):
                                          altitude_content)
             self.assertEqual(client1.get_post_message(),
                              f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！')
+
+
+class TestYoshiyoshi(unittest.TestCase):
+    """
+    yoshiyoshiのテスト
+    """
+
+    def test_yoshiyoshi(self):
+        """ 正常系のテストケース """
+        client1 = TestClient()
+        yoshiyoshi(client1)
+        self.assertEqual(client1.get_post_message(), 'よしよし')
 
 
 if __name__ == '__main__':
