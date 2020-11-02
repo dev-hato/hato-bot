@@ -21,7 +21,9 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
                   'text': lambda m: hato.show_random_text,
                   '>< ': lambda m: hato.totuzensi(m[len('>< '):]),
                   'amesh': lambda m: hato.amesh((m[len('amesh'):]).strip()),
+                  '標高': lambda m: hato.altitude((m[len('標高'):]).strip()),
                   'version': lambda m: hato.version,
+                  'にゃーん': lambda m: hato.yoshiyoshi,
                   }
 
     for key, method in conditions.items():
