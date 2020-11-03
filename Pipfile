@@ -9,13 +9,14 @@ autopep8 = "*"
 requests-mock = "*"
 
 [packages]
-python-dotenv = "==0.14.0"
+python-dotenv = "==0.15.0"
 requests = "==2.24.0"
 Pillow = ">=7.1.2"
-pyperclip = "==1.8.0"
+pyperclip = "==1.8.1"
 click = "==7.1.2"
-sudden-death = {git = "https://github.com/nakkaa/sudden-death", ref = "master"}
-mypy = "==0.782"
-psycopg2-binary = "==2.8.5"
-slackeventsapi = "==2.2.0"
-slackclient = "==2.7.2"
+sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
+mypy = "==0.790"
+psycopg2-binary = "==2.8.6"
+slackeventsapi = "==2.2.1"
+slackclient = "==2.9.3"
+gitpython = "==3.1.11"
