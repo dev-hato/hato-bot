@@ -23,7 +23,7 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 
 logger = getLogger(__name__)
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
