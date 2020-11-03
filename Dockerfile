@@ -20,7 +20,7 @@ COPY Pipfile.lock-3.8 Pipfile.lock
 # * git: Pythonライブラリのインストールの際に必要
 RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
     apk add --no-cache -t .build-deps jpeg-dev=9d-r0 zlib-dev=1.2.11-r3 gcc=9.3.0-r2 musl-dev=1.1.24-r9 postgresql-dev=12.4-r0 git=2.26.2-r0 && \
-    pip install pipenv==2020.6.2 --no-cache-dir && \
+    pip install pipenv==2020.8.13 --no-cache-dir && \
     pipenv install --system && \
     pip uninstall -y pipenv virtualenv && \
     apk --purge del .build-deps && \
