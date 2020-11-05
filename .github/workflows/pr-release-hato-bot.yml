@@ -2,8 +2,6 @@ name: pr-release-hato-bot
 
 on:
   push:
-    branches:
-      - develop
 
 jobs:
   # リリース用のPRを作成するjob
@@ -57,7 +55,7 @@ jobs:
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params).then(create_res => {
-                  const release_users = ["nakkaa"]
+                  const release_users = ["massongit"]
                   const pulls_request_reviews_params = {
                     pull_number: create_res.data.number,
                     reviewers: release_users,
