@@ -28,8 +28,8 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "dev-hato:master",
-              base: "develop",
+              head: "dev-hato:add_pr-master-to-develop_3",
+              base: "add_pr-master-to-develop_2",
               ...common_params
             }
             const pulls_list_params = {
@@ -41,7 +41,7 @@ jobs:
             github.pulls.list(pulls_list_params).then(list_res => {
               if (list_res.data.length === 0) {
                 const pulls_create_params = {
-                  title: "master -> develop",
+                  title: "add_pr-master-to-develop_3 -> add_pr-master-to-develop_2",
                   body: "鳩に加えられた変更は元のブランチに反映される",
                   ...pull_params
                 }
