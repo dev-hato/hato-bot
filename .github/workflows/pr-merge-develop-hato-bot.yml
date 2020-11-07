@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  # masterの差分をdevelopにマージするPRを作成するjob
+  # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
   # masterとdevelopの間でコミットログに差異が出ないようにする
   pr-master-to-develop:
     runs-on: ubuntu-latest
