@@ -3,7 +3,7 @@ name: pr-master-to-develop-hato-bot
 on:
   push:
     branches:
-      - master
+      - add_pr-master-to-develop_3
 
 jobs:
   # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
