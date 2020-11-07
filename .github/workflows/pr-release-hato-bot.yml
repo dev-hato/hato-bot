@@ -58,14 +58,14 @@ jobs:
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params).then(create_res => {
                   const release_users = ["nakkaa"]
-                  const pulls_create_review_request_params = {
+                  const pulls_request_reviews_params = {
                     pull_number: create_res.data.number,
                     reviewers: release_users,
                     ...common_params
                   }
-                  console.log("call pulls.createReviewRequest:")
-                  console.log(pulls_create_review_request_params)
-                  github.pulls.createReviewRequest(pulls_create_review_request_params)
+                  console.log("call pulls.requestReviewers:")
+                  console.log(pulls_request_reviews_params)
+                  github.pulls.requestReviewers(pulls_request_reviews_params)
                   const issues_add_assignees_params = {
                     issue_number: create_res.data.number,
                     assignees: release_users,
