@@ -18,17 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Get diff
-        id: get_diff
-        run: |
-          result=$(git diff origin/master origin/develop)
-          echo "${result}"
-          result="${result//$'\n'/'%0A'}"
-          result="${result//$'\r'/'%0D'}"
-          echo "::set-output name=result::${result}"
       - name: Create PullRequest
         uses: actions/github-script@v3
-        if: steps.get_diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
