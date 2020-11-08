@@ -42,7 +42,7 @@ jobs:
               if (list_res.data.length === 0) {
                 const pulls_create_params = {
                   title: "master -> develop",
-                  body: "鳩に加えられた変更は元のブランチに反映される",
+                  body: "鳩に加えられた変更は元のブランチに反映される\ndevelopに新たなコミットがpushされる前にマージしてね！",
                   ...pull_params
                 }
                 console.log("call pulls.create:")
