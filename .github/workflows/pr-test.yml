@@ -315,8 +315,8 @@ jobs:
         #
         # log出力のためにfindコマンド単体も置いている
         #
-        # set-envコマンドを使ってenvにsetしている
-        # 参考URL: https://bit.ly/2Y1oQEG
+        # 環境ファイルを使ってenvにsetしている
+        # 参考URL: https://bit.ly/2KJhjqk
       - name: Set venv_path
         run: |
           venv_path=$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")
