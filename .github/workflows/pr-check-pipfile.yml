@@ -3,8 +3,6 @@ name: pr-check-pipfile
 # PipfileかPipfile-lock-*に差分があるPRに反応して起動する
 on:
   pull_request:
-    paths:
-      - "Pipfile*"
 
 env:
   WORKON_HOME: /tmp/.venv
