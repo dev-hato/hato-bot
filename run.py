@@ -94,7 +94,7 @@ def http_app():
     return "success"
 
 
-@app.route("/api", methods=["GET", "POST"])
+@app.route("/healthcheck", methods=["GET", "POST"])
 def api_app():
     """
     api形式でテストできます
