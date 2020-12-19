@@ -106,7 +106,7 @@ class ApiClient(BaseClient):
         return 'api_user_id'
 
     def get_send_user_name(self):
-        return 'test_user'
+        return 'api_user'
 
     @staticmethod
     def get_type():
