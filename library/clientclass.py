@@ -103,7 +103,7 @@ class ApiClient(BaseClient):
 
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""
-        return 'test_user_id'
+        return 'api_user_id'
 
     def get_send_user_name(self):
         return 'test_user'
