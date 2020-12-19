@@ -29,7 +29,20 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: pipenv lock
         run: pipenv lock
       - name: pipfile mv
