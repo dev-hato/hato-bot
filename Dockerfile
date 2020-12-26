@@ -9,7 +9,6 @@ FROM python:3.8.6-alpine3.12
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
-COPY Pipfile.lock-3.8 Pipfile.lock
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
