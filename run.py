@@ -95,14 +95,14 @@ def http_app():
 
 
 @app.route("/healthcheck", methods=["GET", "POST"])
-def api_app():
+def healthcheck_app():
     """
-    api形式でテストできます
+    api形式で動作確認を行えます
     Slackへの投稿は行われません
 
     <コマンド例>
     curl -XPOST -d '{"message": "鳩"}' \
-        -H "Content-Type: application/json" http://localhost:3000/api
+        -H "Content-Type: application/json" http://localhost:3000/healthcheck
     """
     msg = escape(request.json['message'])
     client = ApiClient()
