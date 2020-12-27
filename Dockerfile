@@ -9,7 +9,6 @@ FROM python:3.8.6-alpine3.12
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
-COPY Pipfile.lock-3.8 Pipfile.lock
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
@@ -18,10 +17,10 @@ COPY Pipfile.lock-3.8 Pipfile.lock
 # * jpeg-dev, zlib-dev: Pillowのインストールの際に必要
 # * gcc, musl-dev, postgresql-dev: psycopg2のインストールの際に必要
 # * git: Pythonライブラリのインストールの際に必要
-RUN apk add --no-cache -t .used-packages postgresql-libs=12.4-r0 && \
-    apk add --no-cache -t .build-deps jpeg-dev=9d-r0 zlib-dev=1.2.11-r3 gcc=9.3.0-r2 musl-dev=1.1.24-r9 postgresql-dev=12.4-r0 git=2.26.2-r0 && \
+RUN apk add --no-cache -t .used-packages postgresql-libs=12.5-r0 && \
+    apk add --no-cache -t .build-deps jpeg-dev=9d-r0 zlib-dev=1.2.11-r3 gcc=9.3.0-r2 musl-dev=1.1.24-r10 postgresql-dev=12.5-r0 git=2.26.2-r0 && \
     pip install pipenv==2020.8.13 --no-cache-dir && \
-    pipenv install --system && \
+    pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apk --purge del .build-deps && \
     rm -rf ~/.cache

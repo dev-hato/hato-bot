@@ -25,18 +25,29 @@ jobs:
         uses: actions/setup-python@v2.1.4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - name: pipfile cp
-        run: cp Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
+      - name: Install pipenv
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -163,18 +174,29 @@ jobs:
         uses: actions/setup-python@v2.1.4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - name: pipfile cp
-        run: cp Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
+      - name: Install pipenv
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -199,18 +221,29 @@ jobs:
         uses: actions/setup-python@v2.1.4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - name: pipfile cp
-        run: cp Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
+      - name: Install pipenv
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -288,18 +321,29 @@ jobs:
         uses: actions/setup-python@v2.1.4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - name: pipfile cp
-        run: cp Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
       - name: pipenv cache
         uses: actions/cache@v2
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
+            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
+      - name: Install pipenv
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -315,13 +359,13 @@ jobs:
         #
         # log出力のためにfindコマンド単体も置いている
         #
-        # set-envコマンドを使ってenvにsetしている
-        # 参考URL: https://bit.ly/2Y1oQEG
+        # 環境ファイルを使ってenvにsetしている
+        # 参考URL: https://bit.ly/2KJhjqk
       - name: Set venv_path
         run: |
           venv_path=$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")
           echo "${venv_path}"
-          echo "::set-env name=venv_path::${venv_path}"
+          echo "venv_path=${venv_path}" >> $GITHUB_ENV
 
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"

@@ -26,7 +26,10 @@
     "preset-ja-spacing": true,
     "preset-ja-technical-writing": {
       "ja-no-successive-word": {
-        "allow": ["人人"]
+        "allow": [
+            "人人",
+            "よし"
+        ]
       }
     },
     "preset-jtf-style": {
