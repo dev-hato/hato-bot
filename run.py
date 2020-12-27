@@ -9,7 +9,7 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask, request
+from flask import Flask, request, escape
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
@@ -104,7 +104,7 @@ def api_app():
     curl -XPOST -d '{"message": "鳩"}' \
         -H "Content-Type: application/json" http://localhost:3000/api
     """
-    msg = request.json['message']
+    msg = escape(request.json['message'])
     client = ApiClient()
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
