@@ -9,11 +9,11 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask, request
+from flask import Flask, request, escape
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
-from library.clientclass import SlackClient
+from library.clientclass import SlackClient, ApiClient
 
 app = Flask(__name__)
 
@@ -53,9 +53,9 @@ def on_app_mention(event_data):
     appにメンションが送られたらここが呼ばれる
     """
 
-    channel = event_data["event"]["channel"]
-    blocks = event_data['event']['blocks']
-    authed_users = event_data['authed_users']
+    channel = escape(event_data["event"]["channel"])
+    blocks = escape(event_data['event']['blocks'])
+    authed_users = escape(event_data['authed_users'])
 
     for block in blocks:
         if block['type'] == 'rich_text':
@@ -69,7 +69,10 @@ def on_app_mention(event_data):
                         TPE.submit(analyze_slack_message(block_element_elements[1:]), SlackClient(
                             channel, block_element_elements[0]['user_id']))
 
-    print(event_data)
+    print(f'event_data: {event_data}')
+    print(f'channel: {channel}')
+    print(f'blocks: {blocks}')
+    print(f'authed_users: {authed_users}')
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -85,13 +88,30 @@ def http_app():
 
     pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
     """
-    msg = request.json['message']
-    channel = request.json['channel']
-    user = request.json['user']
+    msg = escape(request.json['message'])
+    channel = escape(request.json['channel'])
+    user = escape(request.json['user'])
     client = SlackClient(channel, user)
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
     return "success"
+
+
+@app.route("/healthcheck", methods=["GET", "POST"])
+def healthcheck_app():
+    """
+    api形式で動作確認を行えます
+    Slackへの投稿は行われません
+
+    <コマンド例>
+    curl -XPOST -d '{"message": "鳩"}' \
+        -H "Content-Type: application/json" http://localhost:3000/healthcheck
+    """
+    msg = escape(request.json['message'])
+    client = ApiClient()
+    client.post(f'コマンド: {msg}')
+    analyze.analyze_message(msg)(client)
+    return client.response
 
 
 def main():

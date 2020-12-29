@@ -73,3 +73,27 @@ jobs:
           COMPOSE_DOCKER_CLI_BUILD: 1
         working-directory: ./setup
         run: docker-compose build --no-cache
+      - name: Start docker
+        working-directory: ./setup
+        run: |
+          docker-compose up -d
+      # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
+      - name: Test
+        working-directory: ./setup
+        run: |
+          cmd="curl -XPOST -d '{\"message\": \"help\"}' -H \"Content-Type: application/json\" http://localhost:3000/healthcheck"
+          start_unixtime=$(date +%s)
+
+          while [ $(echo "$(date +%s) - ${start_unixtime}" | bc) -lt 120 ] && [ -z "$(docker-compose ps | grep Exit)" ]
+          do
+            if [ "$(eval "${cmd} -w '%{http_code}' -o /dev/null -s")" = 200 ] && eval "${cmd}"
+            then
+              docker-compose logs
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          docker-compose logs
+          exit 1
