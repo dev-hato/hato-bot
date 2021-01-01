@@ -4,7 +4,7 @@ COPY . .
 RUN apk add --no-cache -U git
 RUN sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.8.6-alpine3.12
+FROM python:3.9.1-alpine3.12
 
 WORKDIR /usr/src/app
 
