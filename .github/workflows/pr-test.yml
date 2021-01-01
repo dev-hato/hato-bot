@@ -22,7 +22,7 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.1
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
@@ -171,7 +171,7 @@ jobs:
         with:
           submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.1
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
@@ -218,7 +218,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.1
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
@@ -318,7 +318,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.1
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
