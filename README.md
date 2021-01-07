@@ -97,6 +97,7 @@
 - コードを整形する場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
 
 ## 鳩botコマンド一覧
+hatoは鳩です。なので鳩なのです。
 
 - 鳩botで使用可能なコマンドは次の通りです。
 
