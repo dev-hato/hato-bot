@@ -21,6 +21,7 @@ jobs:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.2.1
         with:
