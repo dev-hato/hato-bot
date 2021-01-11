@@ -22,6 +22,7 @@ jobs:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.4
         with:
