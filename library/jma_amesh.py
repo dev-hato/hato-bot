@@ -12,7 +12,7 @@ import json
 import math
 from typing import Optional, List
 import requests
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 @dataclass
@@ -137,4 +137,6 @@ def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Image:
         jma_image, jma_image_alpha, jma_image_mask)
     osm_image = get_osm_image(
         lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles)
+    converter = ImageEnhance.Brightness(osm_image)
+    osm_image = converter.enhance(0.6)
     return Image.alpha_composite(osm_image, jma_image_trans)
