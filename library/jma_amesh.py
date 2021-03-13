@@ -14,6 +14,7 @@ from typing import Optional, List
 import requests
 from PIL import Image
 
+
 @dataclass
 class WebMercatorTile:
     """Webメルカトル座標上のタイル"""
@@ -56,7 +57,8 @@ def geocoord2tiles(lat: float, lng: float, zoom: int, around_tiles: int) -> List
             tile_x = centre_tile.tile_x + i
             tile_y = centre_tile.tile_y + j
             if 0 <= tile_x < tile_max and 0 <= tile_y < tile_max:
-                res.append(WebMercatorTile(tile_x=tile_x, tile_y=tile_y, zoom_level=zoom))
+                res.append(WebMercatorTile(tile_x=tile_x,
+                                           tile_y=tile_y, zoom_level=zoom))
     return res
 
 
@@ -71,12 +73,12 @@ def get_timejson() -> Optional[List[TimeJsonElement]]:
 
 
 def get_tile_image(
-        url_template: Template,
-        lat: float,
-        lng: float,
-        zoom: int,
-        around_tiles: int
-    ) -> Image:
+    url_template: Template,
+    lat: float,
+    lng: float,
+    zoom: int,
+    around_tiles: int
+) -> Image:
     """緯度，経度を含むWebメルカトルタイル及びその半径aマスのタイルを，タイルサーバから画像を取得し結合する"""
     urls = []
     for tile in geocoord2tiles(lat=lat, lng=lng, around_tiles=around_tiles, zoom=zoom):
