@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
