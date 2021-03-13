@@ -12,7 +12,7 @@ requests-mock = "*"
 python-dotenv = "==0.15.0"
 requests = "==2.25.1"
 Pillow = ">=7.1.2"
-pyperclip = "==1.8.1"
+pyperclip = "==1.8.2"
 click = "==7.1.2"
 sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
 mypy = "==0.812"
