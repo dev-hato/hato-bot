@@ -4,29 +4,27 @@
 jma_amesh
 """
 
-import json
-from typing import Optional, Dict, List
 from dataclasses import dataclass
 from io import BytesIO
-from PIL import Image, ImageOps
-from string import Template
-import requests
-import math
-import threading
 import random
-
-# import slackbot_settings as conf
-
+from string import Template
+import json
+import math
+from typing import Optional, List
+import requests
+from PIL import Image
 
 @dataclass
-class GsiTile:
-    x: int = 0
-    y: int = 0
+class WebMercatorTile:
+    """Webメルカトル座標上のタイル"""
+    tile_x: int = 0
+    tile_y: int = 0
     zoom_level: int = 10
 
 
 @dataclass
 class TimeJsonElement:
+    """targetTimesの要素"""
     basetime: str
     validtime: str
     elements: List[str]
@@ -40,13 +38,14 @@ def geocoord2webcoord(lat: float, lng: float, zoom: int) -> [float, float]:
     ]
 
 
-def geocoord2tile(lat: float, lng: float, zoom: int) -> GsiTile:
+def geocoord2tile(lat: float, lng: float, zoom: int) -> WebMercatorTile:
     """緯度，経度を含むWebメルカトルタイルに変換する"""
     centre_webcoord = geocoord2webcoord(lat, lng, zoom)
-    return GsiTile(x=int(centre_webcoord[1]), y=int(centre_webcoord[0]), zoom_level=zoom)
+    return WebMercatorTile(
+        tile_x=int(centre_webcoord[1]), tile_y=int(centre_webcoord[0]), zoom_level=zoom)
 
 
-def geocoord2tiles(lat: float, lng: float, zoom: int, around_tiles: int) -> List[GsiTile]:
+def geocoord2tiles(lat: float, lng: float, zoom: int, around_tiles: int) -> List[WebMercatorTile]:
     """緯度，経度を含むWebメルカトルタイル及びその半径aマスのタイルを取得する"""
     res = []
     centre_tile = geocoord2tile(lat=lat, lng=lng, zoom=zoom)
@@ -54,10 +53,10 @@ def geocoord2tiles(lat: float, lng: float, zoom: int, around_tiles: int) -> List
     tile_max = 1 << zoom
     for i in range(-around_tiles, around_tiles + 1):
         for j in range(-around_tiles, around_tiles + 1):
-            x = centre_tile.x + i
-            y = centre_tile.y + j
-            if 0 <= x and x < tile_max and 0 <= y and y < tile_max:
-                res.append(GsiTile(x=x, y=y, zoom_level=zoom))
+            tile_x = centre_tile.tile_x + i
+            tile_y = centre_tile.tile_y + j
+            if 0 <= tile_x < tile_max and 0 <= tile_y < tile_max:
+                res.append(WebMercatorTile(tile_x=tile_x, tile_y=tile_y, zoom_level=zoom))
     return res
 
 
@@ -71,15 +70,21 @@ def get_timejson() -> Optional[List[TimeJsonElement]]:
     return None
 
 
-def get_tile_image(url_template: Template, lat: float, lng: float, zoom: int, around_tiles: int) -> Image:
+def get_tile_image(
+        url_template: Template,
+        lat: float,
+        lng: float,
+        zoom: int,
+        around_tiles: int
+    ) -> Image:
     """緯度，経度を含むWebメルカトルタイル及びその半径aマスのタイルを，タイルサーバから画像を取得し結合する"""
     urls = []
     for tile in geocoord2tiles(lat=lat, lng=lng, around_tiles=around_tiles, zoom=zoom):
         urls.append(
             url_template.substitute({
                 'zoom': zoom,
-                'x': tile.x,
-                'y': tile.y
+                'x': tile.tile_x,
+                'y': tile.tile_y
             })
         )
     res = []
@@ -100,17 +105,17 @@ def get_latest_jma_image(lat: float, lng: float, zoom: int, around_tiles: int) -
 
     return get_tile_image(
         url_template=Template(
-            f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{latest_time}/none/{latest_time}/surf/hrpns/${{zoom}}/${{x}}/${{y}}.png'),
+            f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{latest_time}/none/{latest_time}/surf/hrpns/${{zoom}}/${{x}}/${{y}}.png'),  # pylint: disable=C0301
         lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles
     )
 
 
 def get_osm_image(lat: float, lng: float, zoom: int, around_tiles: int) -> Image:
     """OpenStreatMap画像を取得する"""
-    s = random.choice(['a', 'b', 'c'])
+    osm_server = random.choice(['a', 'b', 'c'])
     return get_tile_image(
         url_template=Template(
-            f'https://{s}.tile.openstreetmap.org/${{zoom}}/${{x}}/${{y}}.png'),
+            f'https://{osm_server}.tile.openstreetmap.org/${{zoom}}/${{x}}/${{y}}.png'),
         lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles
     )
 
