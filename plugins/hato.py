@@ -170,7 +170,8 @@ def amesh(place: str):
 
         client.post(msg)
         with NamedTemporaryFile() as weather_map_file:
-            jma_amesh(lat=float(lat), lng=float(lon), zoom=10, around_tiles=2).save(weather_map_file, format='PNG')
+            jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
+                      around_tiles=2).save(weather_map_file, format='PNG')
 
             filename = ['amesh']
             ext = imghdr.what(weather_map_file.name)
@@ -179,7 +180,7 @@ def amesh(place: str):
                 filename.append(ext)
 
             client.upload(file=weather_map_file.name,
-                            filename=os.path.extsep.join(filename))
+                          filename=os.path.extsep.join(filename))
 
         return None
 
