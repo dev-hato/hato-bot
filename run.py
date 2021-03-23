@@ -9,12 +9,12 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
+from flask import Flask, escape, request
+from slackeventsapi import SlackEventAdapter
 import plugins.analyze as analyze
 import plugins.hato as hato
 import slackbot_settings as conf
-from flask import Flask, request, escape
-from library.clientclass import SlackClient, ApiClient
-from slackeventsapi import SlackEventAdapter
+from library.clientclass import ApiClient, SlackClient
 
 app = Flask(__name__)
 
