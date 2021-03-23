@@ -3,12 +3,12 @@ hato.pyのテスト
 """
 import json
 import os
-import unittest
 from typing import List
+import unittest
 
+from plugins.hato import altitude, amesh, split_command, yoshiyoshi
 import requests_mock
 import slackbot_settings as conf
-from plugins.hato import altitude, amesh, split_command, yoshiyoshi
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 

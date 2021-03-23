@@ -3,18 +3,18 @@
 """
 BotのMain関数
 """
+from concurrent.futures import ThreadPoolExecutor
 import logging
 import logging.config
 import sys
-from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
 from flask import Flask, escape, request
-from slackeventsapi import SlackEventAdapter
+from library.clientclass import ApiClient, SlackClient
 import plugins.analyze as analyze
 import plugins.hato as hato
 import slackbot_settings as conf
-from library.clientclass import ApiClient, SlackClient
+from slackeventsapi import SlackEventAdapter
 
 app = Flask(__name__)
 

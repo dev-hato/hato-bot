@@ -4,9 +4,9 @@ amesh.pyのテスト
 import json
 import unittest
 
+from library.geo import get_geo_data
 import requests_mock
 import slackbot_settings as conf
-from library.geo import get_geo_data
 
 
 def set_mock(place: str, mocker: requests_mock.Mocker, content=None):

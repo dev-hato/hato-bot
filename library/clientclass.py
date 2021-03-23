@@ -3,8 +3,8 @@
 """
 clientに使うclass
 """
-import os
 from abc import ABCMeta, abstractmethod
+import os
 
 from slack import WebClient
 import slackbot_settings as conf

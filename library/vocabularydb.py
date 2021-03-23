@@ -2,8 +2,8 @@
 パワーワード機能
 """
 
-import psycopg2
 from library.database import Database
+import psycopg2
 
 
 class VocabularyDatabase(Database):
