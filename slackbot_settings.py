@@ -8,7 +8,7 @@ import os
 import ssl
 import urllib.parse
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 # .envファイルがあれば読み込む。存在しなければ環境変数から読み込む。
 load_dotenv(find_dotenv())

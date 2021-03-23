@@ -9,18 +9,23 @@ import re
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
+
 import requests
+import slackbot_settings as conf
 from git import Repo
 from git.exc import InvalidGitRepositoryError
-
-import slackbot_settings as conf
-from library.vocabularydb \
-    import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
+from library.clientclass import BaseClient
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
-from library.hukidasi import generator
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
-from library.clientclass import BaseClient
+from library.hukidasi import generator
+from library.vocabularydb import (
+    add_vocabulary,
+    delete_vocabulary,
+    get_vocabularys,
+    show_random_vocabulary,
+    show_vocabulary,
+)
 
 logger = getLogger(__name__)
 VERSION = "2.0.2"

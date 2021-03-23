@@ -4,7 +4,6 @@ DBが起動するまで待機する
 from time import sleep
 
 import psycopg2
-
 from library.database import Database
 
 

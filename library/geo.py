@@ -5,10 +5,9 @@ amesh
 """
 
 import json
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 import requests
-
 import slackbot_settings as conf
 
 
