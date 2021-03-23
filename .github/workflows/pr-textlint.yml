@@ -134,5 +134,13 @@ jobs:
         run: |
           yarn textlint --fix $(find . -type f -name "*.md" -not -path "./node_modules/*")
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@0.0.1
+      # 差分があったときは差分を出力する
+      - name: Show diff
+        id: show_diff
+        run: |
+          echo "::set-output name=diff::$(git diff)"
+      - uses: dev-hato/actions-diff-pr-management@0.0.2
+        if: steps.show_diff.outputs.diff != ''
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
       
