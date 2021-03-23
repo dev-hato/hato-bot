@@ -134,5 +134,5 @@ jobs:
         run: |
           yarn textlint --fix $(find . -type f -name "*.md" -not -path "./node_modules/*")
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@1
+      - uses: dev-hato/actions-diff-pr-management@0.0.1
       
