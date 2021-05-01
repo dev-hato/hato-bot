@@ -47,7 +47,7 @@ jobs:
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/yarn-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -92,7 +92,7 @@ jobs:
             })
       # 既にpackage.json, yarn.lock修正のPRがある状態で、手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
