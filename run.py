@@ -54,7 +54,7 @@ def on_app_mention(event_data):
     blocks = escape(event_data['event']['blocks'])
     authed_users = escape(event_data['authed_users'])
 
-    with ThreadPoolExecutor(max_workers=3) as TPE:
+    with ThreadPoolExecutor(max_workers=3) as tpe:
         for block in blocks:
             if block['type'] == 'rich_text':
                 block_elements = block['elements']
