@@ -27,14 +27,15 @@
     check-more-types "2.24.0"
     lazy-ass "1.6.0"
 
-"@textlint-ja/textlint-rule-no-insert-dropping-sa@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@textlint-ja/textlint-rule-no-insert-dropping-sa/-/textlint-rule-no-insert-dropping-sa-1.0.2.tgz#8bfa0407b65dbfb04d2f47544407358aa2dc9feb"
-  integrity sha512-znlllxSyAeBWhyNBCJaZLvVDyQgFQp159LKU0EKN69qMxLiXy8ZDEjOEAWqPV36a9JXgL6msg5D87110k5PKGg==
+"@textlint-ja/textlint-rule-no-insert-dropping-sa@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@textlint-ja/textlint-rule-no-insert-dropping-sa/-/textlint-rule-no-insert-dropping-sa-2.0.0.tgz#73b1fd56dad9270fb1e15965c1ebf7930b8d4e47"
+  integrity sha512-XmK1S2eZRvAOFunOpUELwNcxlJWw4bXHYbiYkGOXXGueiUXNG/Zgz5hcvX2jyf89SimH44usjuMGwuHytqmNxA==
   dependencies:
     array-find-index "^1.0.2"
-    kuromojin "^2.1.1"
+    kuromojin "^3.0.0"
     morpheme-match-all "^2.0.5"
+    textlint-tester "^5.3.4"
 
 "@textlint-rule/textlint-rule-no-invalid-control-character@^1.2.0":
   version "1.2.0"
@@ -2482,6 +2483,15 @@ textlint-tester@5.0.1:
     "@textlint/feature-flag" "^3.0.5"
     "@textlint/kernel" "^3.0.0"
     textlint "^11.0.1"
+
+textlint-tester@^5.3.4:
+  version "5.3.4"
+  resolved "https://registry.yarnpkg.com/textlint-tester/-/textlint-tester-5.3.4.tgz#18a637e49e42ea20428e49835ef398f5afe5b655"
+  integrity sha512-u2OpIs8RI/eeeBGgBqM1eFKrXp0xv+sA9tKPiVON2C9RA59o/bsRlA7SP4kG78qygUi2W8TxBh+OMEA9/xflVg==
+  dependencies:
+    "@textlint/feature-flag" "^3.3.4"
+    "@textlint/kernel" "^3.4.4"
+    textlint "^11.9.0"
 
 textlint-util-to-string@^2.1.1:
   version "2.1.1"
