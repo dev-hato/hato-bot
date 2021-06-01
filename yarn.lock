@@ -56,7 +56,7 @@
   resolved "https://registry.yarnpkg.com/@textlint/ast-node-types/-/ast-node-types-12.0.0.tgz#23bd683f9fc04209ae28bff72954c8aa67c6b1ca"
   integrity sha512-qUjmlpz1vR3AStBA9RPDCVT0/pGtePvBJ5Vb/0PzTrnr04iFktG6P6B1VOmgTh8J9Kl/FonQFo3A9M1Q3UH+JA==
 
-"@textlint/ast-node-types@^4.2.1", "@textlint/ast-node-types@^4.2.4", "@textlint/ast-node-types@^4.2.5", "@textlint/ast-node-types@^4.4.2":
+"@textlint/ast-node-types@^4.2.4", "@textlint/ast-node-types@^4.2.5", "@textlint/ast-node-types@^4.4.2":
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@textlint/ast-node-types/-/ast-node-types-4.4.2.tgz#d3fda5c9086baba04bc75440039ccf18415c8446"
   integrity sha512-m5brKbI7UY/Q8sbIZ7z1KB8ls04nRILshz5fPQ4EZ04jL19qrrUHJR8A6nK3vJ/GelkDWl4I0VDYSAjLEFQV8g==
@@ -207,13 +207,6 @@
   integrity sha512-brtexdqu7yvFLstYvVlotMZz5T7SwKfnFnV9Sm+uhg/d3Ddea9exzpiWWcXfRAhfOBd12mmEGM6gwAuSwzrhqg==
   dependencies:
     "@textlint/text-to-ast" "^12.0.0"
-
-"@textlint/types@^1.1.2":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@textlint/types/-/types-1.5.4.tgz#4ebd6b052bb329810949516412ad2b285b04dc02"
-  integrity sha512-bhSrOjW8AFSa/xf6lYZ2akE0j+4O/WEAA2S/R8RrjNMkA5Az2j57mxPNpqMhEeyHDkpzN/coIlqUwgYvcJHv1A==
-  dependencies:
-    "@textlint/ast-node-types" "^4.4.2"
 
 "@textlint/types@^1.5.5":
   version "1.5.5"
@@ -2247,17 +2240,7 @@ textlint-rule-helper@^1.1.2, textlint-rule-helper@^1.1.5:
   dependencies:
     unist-util-visit "^1.1.0"
 
-textlint-rule-helper@^2.0.0, textlint-rule-helper@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/textlint-rule-helper/-/textlint-rule-helper-2.1.1.tgz#d572588685359134bc779939b217e61f087dab0f"
-  integrity sha512-6fxgHzoJVkjl3LaC1b2Egi+5wbhG4i0pU0knJmQujVhxIJ3D3AcQQZPs457xKAi5xKz1WayYeTeJ5jrD/hnO7g==
-  dependencies:
-    "@textlint/ast-node-types" "^4.2.1"
-    "@textlint/types" "^1.1.2"
-    structured-source "^3.0.2"
-    unist-util-visit "^1.1.0"
-
-textlint-rule-helper@^2.2.0:
+textlint-rule-helper@^2.0.0, textlint-rule-helper@^2.1.1, textlint-rule-helper@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/textlint-rule-helper/-/textlint-rule-helper-2.2.0.tgz#30522ba904a03849d57ea3e5ebd5920027cd8da3"
   integrity sha512-9S5CsgQuQwPjM2wvr4JGdpkLf+pR9gOjedSQFa/Dkrbh+D9MXt1LIR4Jvx1RujKtt2nq42prmEX2q3xOxyUcIQ==
@@ -2594,10 +2577,10 @@ textlint-rule-preset-ja-technical-writing@^6.0.0:
     textlint-rule-preset-jtf-style "^2.3.8"
     textlint-rule-sentence-length "^2.2.0"
 
-textlint-rule-preset-jtf-style@^2.3.8:
-  version "2.3.8"
-  resolved "https://registry.yarnpkg.com/textlint-rule-preset-jtf-style/-/textlint-rule-preset-jtf-style-2.3.8.tgz#0fa50f0a41e347e04552b1ca5e588a5a06df02dd"
-  integrity sha512-zysw3LxrnPyaJz25H6Qs715E91RpKSQ/4hjXg23UNAtTPii1a+RMHlbWlcpuxzF17Km0/X6iVQFFTvzMBhAxkg==
+textlint-rule-preset-jtf-style@^2.3.12, textlint-rule-preset-jtf-style@^2.3.8:
+  version "2.3.12"
+  resolved "https://registry.yarnpkg.com/textlint-rule-preset-jtf-style/-/textlint-rule-preset-jtf-style-2.3.12.tgz#17a114c24eb83c093ecb7c352eb4447441581e40"
+  integrity sha512-Te2pQWku6hpLknWh8rpFjAiOZpSZa3yMaBEbmdstFf8C9ejX6+LXI0gn7vlb7nBbDWnLV+pgVoYXWtqk2W5Jig==
   dependencies:
     analyze-desumasu-dearu "^2.1.2"
     japanese-numerals-to-number "^1.0.2"
@@ -2606,7 +2589,7 @@ textlint-rule-preset-jtf-style@^2.3.8:
     regexp.prototype.flags "^1.1.1"
     regx "^1.0.4"
     sorted-joyo-kanji "^0.2.0"
-    textlint-rule-helper "^2.0.0"
+    textlint-rule-helper "^2.2.0"
     textlint-rule-prh "^5.2.1"
 
 textlint-rule-prh@^5.2.1, textlint-rule-prh@^5.3.0:
