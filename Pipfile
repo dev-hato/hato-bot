@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "==2.8.2"
+pylint = "==2.8.3"
 autopep8 = "==1.5.7"
 requests-mock = "*"
 
@@ -19,4 +19,4 @@ mypy = "==0.812"
 psycopg2-binary = "==2.8.6"
 slackeventsapi = "==2.2.1"
 slackclient = "==2.9.3"
-gitpython = "==3.1.14"
+gitpython = "==3.1.17"
