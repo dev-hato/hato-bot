@@ -100,7 +100,12 @@ def get_tile_image(
     return dst_image
 
 
-def get_latest_jma_image(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
+def get_latest_jma_image(
+    lat: float,
+    lng: float,
+    zoom: int,
+    around_tiles: int
+) -> Optional[Image.Image]:
     """気象庁雨雲レーダー画像を取得する"""
     timejson = get_timejson()
     if timejson is None:

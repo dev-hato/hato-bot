@@ -68,8 +68,8 @@ class TestAmesh(unittest.TestCase):
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
-        jma_image_url = re.compile(r'www.jma.go.jp/bosai/jmatile/data/nowc/.+\.png')
-        osm_image_url = re.compile(r'tile.openstreatmap.org/.+\.png')
+        jma_image_url = re.compile(r'www.jma.go.jp/bosai/jmatile/data/nowc/.+png')
+        osm_image_url = re.compile(r'tile.openstreatmap.org/.+png')
         jma_json_url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json'
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
@@ -93,10 +93,9 @@ class TestAmesh(unittest.TestCase):
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
             with open(os.path.join(os.path.dirname(__file__), 'test.json'), mode='rb') as json_file:
                 client1 = self.get_amesh_test(mocker,
-                                            place,
-                                            coordinate,
-                                            picture_file.read(),
-                                            json_file.read())
+                                              place,
+                                              picture_file.read(),
+                                              json_file.read())
                 self.assertEqual(client1.get_post_message(), msg)
                 self.assertEqual(client1.get_filename(), 'amesh.png')
 
