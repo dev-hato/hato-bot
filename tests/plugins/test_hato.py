@@ -3,6 +3,7 @@ hato.pyのテスト
 """
 import json
 import os
+import re
 import unittest
 from typing import List
 
@@ -58,7 +59,8 @@ class TestAmesh(unittest.TestCase):
                        mocker: requests_mock.Mocker,
                        place: str,
                        coordinate: List[str],
-                       content=None):
+                       image_content=None,
+                       json_content=None):
         """
         ameshを取得できるかテスト
         :param mocker requestsのMock
@@ -67,20 +69,12 @@ class TestAmesh(unittest.TestCase):
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
-        params = {
-            'appid': conf.YAHOO_API_TOKEN,
-            'lat': coordinate[0],
-            'lon': coordinate[1],
-            'z': 12,
-            'height': 640,
-            'width': 800,
-            'overlay': 'type:rainfall|datelabel:off'
-        }
-        query = '&'.join([f'{k}={v}' for k, v in params.items()])
-        mocker.get(
-            'https://map.yahooapis.jp/map/V1/static?' + query,
-            content=content
-        )
+        jma_image_url = re.compile('www.jma.go.jp/bosai/jmatile/data/nowc/.+\.png')
+        osm_image_url = re.compile('tile.openstreatmap.org/.+\.png')
+        jma_json_url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json'
+        mocker.get(jma_image_url, content=image_content)
+        mocker.get(osm_image_url, content=image_content)
+        mocker.get(jma_json_url, content=json_content)
         req = amesh(place)(client1)
         self.assertEqual(req.status_code, 200)
         return client1
@@ -98,12 +92,14 @@ class TestAmesh(unittest.TestCase):
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            client1 = self.get_amesh_test(mocker,
-                                          place,
-                                          coordinate,
-                                          picture_file.read())
-            self.assertEqual(client1.get_post_message(), msg)
-            self.assertEqual(client1.get_filename(), 'amesh.png')
+            with open(os.path.join(os.path.dirname(__file__), 'test.json', mode='rb')) as json_file:
+                client1 = self.get_amesh_test(mocker,
+                                            place,
+                                            coordinate,
+                                            picture_file.read(),
+                                            json_file.read())
+                self.assertEqual(client1.get_post_message(), msg)
+                self.assertEqual(client1.get_filename(), 'amesh.png')
 
     def test_amesh_with_no_params(self):
         """
