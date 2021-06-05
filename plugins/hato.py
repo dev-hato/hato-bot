@@ -167,9 +167,9 @@ def amesh(place: str):
         if lat is None or lon is None:
             client.post('雨雲状況を取得できなかったっぽ......')
             return None
-    
+
         amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
-                    around_tiles=2)
+                              around_tiles=2)
         if amesh_img is None:
             client.post('雨雲状況を取得できなかったっぽ......')
             return None
