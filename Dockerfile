@@ -13,6 +13,7 @@ COPY Pipfile Pipfile
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
 # * libjpeg-turbo: Pillowを使用する際に必要
+#
 # Pythonライブラリのインストール時に必要なパッケージ (グループ名: .build-deps, Pythonライブラリインストール後にアンインストール)
 # * jpeg-dev, zlib-dev: Pillowのインストールの際に必要
 # * gcc, musl-dev, postgresql-dev: psycopg2のインストールの際に必要
