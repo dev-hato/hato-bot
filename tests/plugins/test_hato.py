@@ -130,18 +130,6 @@ class TestAmesh(unittest.TestCase):
                                        ' '.join(coordinate),
                                        '雨雲状況をお知らせするっぽ！')
 
-    def test_amesh_upload_unknown_picture(self):
-        """
-        形式不明な画像データを取得した場合、「amesh」というファイル名でアップロードする
-        """
-        with requests_mock.Mocker() as mocker:
-            coordinate = ['12.345', '123.456']
-            client1 = self.get_amesh_test(mocker,
-                                          ' '.join(coordinate),
-                                          coordinate)
-            self.assertEqual(client1.get_post_message(), '雨雲状況をお知らせするっぽ！')
-            self.assertEqual(client1.get_filename(), 'amesh')
-
 
 class TestAltitude(unittest.TestCase):
     """
