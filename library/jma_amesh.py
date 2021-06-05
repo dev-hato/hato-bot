@@ -10,7 +10,7 @@ import random
 from string import Template
 import json
 import math
-from typing import Optional, List
+from typing import Optional, List, Tuple
 import requests
 from PIL import Image, ImageEnhance
 
@@ -31,12 +31,12 @@ class TimeJsonElement:
     elements: List[str]
 
 
-def geocoord2webcoord(lat: float, lng: float, zoom: int) -> [float, float]:
+def geocoord2webcoord(lat: float, lng: float, zoom: int) -> Tuple[float, float]:
     """緯度，経度をWebメルカトル座標に変換する"""
-    return [
+    return (
         (1 << zoom) * (.5 - math.log(math.tan(math.pi/4 + lat*math.pi/180/2)) / (2*math.pi)),
         (1 << zoom) * (lng + 180) / 360
-    ]
+    )
 
 
 def geocoord2tile(lat: float, lng: float, zoom: int) -> WebMercatorTile:
@@ -100,8 +100,11 @@ def get_tile_image(
     return dst_image
 
 
-def get_latest_jma_image(lat: float, lng: float, zoom: int, around_tiles: int) -> Image:
+def get_latest_jma_image(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
     """気象庁雨雲レーダー画像を取得する"""
+    timejson = get_timejson()
+    if timejson is None:
+        return None
     latest_time = max([i.basetime for i in get_timejson()
                        if i.basetime == i.validtime])
 
@@ -122,13 +125,15 @@ def get_osm_image(lat: float, lng: float, zoom: int, around_tiles: int) -> Image
     )
 
 
-def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Image:
+def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
     """
     気象庁雨雲レーダーとOpenStreatMap画像を取得して結合する
     Usage: jma_amesh(lat=37, lng=139, zoom=8, around_tiles=2).save('res2.png')
     """
     jma_image = get_latest_jma_image(
         lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles)
+    if jma_image is None:
+        return None
     jma_image_alpha = jma_image.copy()
     jma_image_alpha.putalpha(0)
     jma_image_mask = jma_image.copy().getchannel('A')
