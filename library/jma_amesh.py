@@ -105,8 +105,7 @@ def get_latest_jma_image(lat: float, lng: float, zoom: int, around_tiles: int) -
     timejson = get_timejson()
     if timejson is None:
         return None
-    latest_time = max([i.basetime for i in get_timejson()
-                       if i.basetime == i.validtime])
+    latest_time = max([i.basetime for i in timejson if i.basetime == i.validtime])
 
     return get_tile_image(
         url_template=Template(
