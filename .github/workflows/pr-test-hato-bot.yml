@@ -14,18 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.7]
+        python-version: [3.9, 3.8]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}

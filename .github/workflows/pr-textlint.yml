@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -19,14 +19,14 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-textlint.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -51,7 +51,7 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != ''
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -101,7 +101,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -111,14 +111,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-textlint.yml') }}-${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -150,7 +150,7 @@ jobs:
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: steps.show_diff.outputs.diff != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -180,20 +180,22 @@ jobs:
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params).then(create_res => {
-                  const issues_add_assignees_params = {
-                    issue_number: create_res.data.number,
-                    assignees: ["${{github.event.pull_request.user.login}}"],
-                    ...common_params
+                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
+                    const issues_add_assignees_params = {
+                      issue_number: create_res.data.number,
+                      assignees: ["${{github.event.pull_request.user.login}}"],
+                      ...common_params
+                    }
+                    console.log("call issues.addAssignees:")
+                    console.log(issues_add_assignees_params)
+                    github.issues.addAssignees(issues_add_assignees_params)
                   }
-                  console.log("call issues.addAssignees:")
-                  console.log(issues_add_assignees_params)
-                  github.issues.addAssignees(issues_add_assignees_params)
                 })
               }
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: steps.show_diff.outputs.diff == ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

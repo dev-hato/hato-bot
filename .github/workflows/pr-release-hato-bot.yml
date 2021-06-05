@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -26,7 +26,7 @@ jobs:
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: steps.get_diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -66,14 +66,16 @@ jobs:
                   console.log("call pulls.requestReviewers:")
                   console.log(pulls_request_reviews_params)
                   github.pulls.requestReviewers(pulls_request_reviews_params)
-                  const issues_add_assignees_params = {
-                    issue_number: create_res.data.number,
-                    assignees: release_users,
-                    ...common_params
+                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
+                    const issues_add_assignees_params = {
+                      issue_number: create_res.data.number,
+                      assignees: release_users,
+                      ...common_params
+                    }
+                    console.log("call issues.addAssignees:")
+                    console.log(issues_add_assignees_params)
+                    github.issues.addAssignees(issues_add_assignees_params)
                   }
-                  console.log("call issues.addAssignees:")
-                  console.log(issues_add_assignees_params)
-                  github.issues.addAssignees(issues_add_assignees_params)
                 })
               }
             })

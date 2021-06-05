@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,11 +23,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
@@ -75,7 +75,7 @@ jobs:
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-format-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -105,20 +105,22 @@ jobs:
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params).then(create_res => {
-                  const issues_add_assignees_params = {
-                    issue_number: create_res.data.number,
-                    assignees: ["${{github.event.pull_request.user.login}}"],
-                    ...common_params
+                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
+                    const issues_add_assignees_params = {
+                      issue_number: create_res.data.number,
+                      assignees: ["${{github.event.pull_request.user.login}}"],
+                      ...common_params
+                    }
+                    console.log("call issues.addAssignees:")
+                    console.log(issues_add_assignees_params)
+                    github.issues.addAssignees(issues_add_assignees_params)
                   }
-                  console.log("call issues.addAssignees:")
-                  console.log(issues_add_assignees_params)
-                  github.issues.addAssignees(issues_add_assignees_params)
                 })
               }
             })
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -165,18 +167,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.7]
+        python-version: [3.9, 3.8]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
@@ -211,7 +213,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -219,11 +221,11 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
@@ -263,7 +265,7 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != ''
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -311,7 +313,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -319,11 +321,11 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
@@ -376,10 +378,12 @@ jobs:
         run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
       - name: Lint files
-        uses: docker://github/super-linter:v3.10.0
+        uses: docker://github/super-linter:v3.15.5
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
+          VALIDATE_JSCPD: false
+          VALIDATE_PYTHON_ISORT: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\

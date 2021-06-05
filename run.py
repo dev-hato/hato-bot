@@ -44,9 +44,6 @@ def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]
     return hato.default_action
 
 
-TPE = ThreadPoolExecutor(max_workers=3)
-
-
 @slack_events_adapter.on("app_mention")
 def on_app_mention(event_data):
     """
@@ -57,17 +54,19 @@ def on_app_mention(event_data):
     blocks = escape(event_data['event']['blocks'])
     authed_users = escape(event_data['authed_users'])
 
-    for block in blocks:
-        if block['type'] == 'rich_text':
-            block_elements = block['elements']
-            for block_element in block_elements:
-                if block_element['type'] == 'rich_text_section':
-                    block_element_elements = block_element['elements']
-                    if len(block_element_elements) > 0 and \
-                            block_element_elements[0]['type'] == 'user' and \
-                            block_element_elements[0]['user_id'] in authed_users:
-                        TPE.submit(analyze_slack_message(block_element_elements[1:]), SlackClient(
-                            channel, block_element_elements[0]['user_id']))
+    with ThreadPoolExecutor(max_workers=3) as tpe:
+        for block in blocks:
+            if block['type'] == 'rich_text':
+                block_elements = block['elements']
+                for block_element in block_elements:
+                    if block_element['type'] == 'rich_text_section':
+                        block_element_elements = block_element['elements']
+                        if len(block_element_elements) > 0 and \
+                                block_element_elements[0]['type'] == 'user' and \
+                                block_element_elements[0]['user_id'] in authed_users:
+                            tpe.submit(analyze_slack_message(block_element_elements[1:]),
+                                       SlackClient(channel,
+                                                   block_element_elements[0]['user_id']))
 
     print(f'event_data: {event_data}')
     print(f'channel: {channel}')

@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
       fail-fast: false
 
     steps:
@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -47,7 +47,7 @@ jobs:
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/yarn-${{github.event.pull_request.head.ref}}
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -77,20 +77,22 @@ jobs:
                 console.log("call pulls.create:")
                 console.log(pulls_create_params)
                 github.pulls.create(pulls_create_params).then(create_res => {
-                  const issues_add_assignees_params = {
-                    issue_number: create_res.data.number,
-                    assignees: ["${{github.event.pull_request.user.login}}"],
-                    ...common_params
+                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
+                    const issues_add_assignees_params = {
+                      issue_number: create_res.data.number,
+                      assignees: ["${{github.event.pull_request.user.login}}"],
+                      ...common_params
+                    }
+                    console.log("call issues.addAssignees:")
+                    console.log(issues_add_assignees_params)
+                    github.issues.addAssignees(issues_add_assignees_params)
                   }
-                  console.log("call issues.addAssignees:")
-                  console.log(issues_add_assignees_params)
-                  github.issues.addAssignees(issues_add_assignees_params)
                 })
               }
             })
       # 既にpackage.json, yarn.lock修正のPRがある状態で、手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
