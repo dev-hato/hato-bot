@@ -76,14 +76,13 @@ class TestAmesh(unittest.TestCase):
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
         mocker.get(jma_json_url, content=json_content)
-        req = amesh(place)(client1)
-        self.assertEqual(req.status_code, 200)
+        res = amesh(place)(client1)
+        self.assertEqual(res, True)
         return client1
 
     def amesh_upload_png_test(self,
                               mocker: requests_mock.Mocker,
                               place: str,
-                              coordinate: List[str],
                               msg: str):
         """
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
@@ -119,7 +118,6 @@ class TestAmesh(unittest.TestCase):
             set_mock('東京', mocker, content)
             self.amesh_upload_png_test(mocker,
                                        '',
-                                       ['35.64657460', '139.65324950'],
                                        '東京都世田谷区の雨雲状況をお知らせするっぽ！')
 
     def test_amesh_with_params(self):
@@ -130,7 +128,6 @@ class TestAmesh(unittest.TestCase):
             coordinate = ['12.345', '123.456']
             self.amesh_upload_png_test(mocker,
                                        ' '.join(coordinate),
-                                       coordinate,
                                        '雨雲状況をお知らせするっぽ！')
 
     def test_amesh_upload_unknown_picture(self):

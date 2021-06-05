@@ -186,6 +186,7 @@ def amesh(place: str):
 
             client.upload(file=weather_map_file.name,
                           filename=os.path.extsep.join(filename))
+            return True
 
         return None
 
