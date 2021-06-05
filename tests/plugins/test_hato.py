@@ -68,7 +68,8 @@ class TestAmesh(unittest.TestCase):
         :param content: req.contentで返すデータ
         """
         client1 = TestClient()
-        jma_image_url = re.compile(r'www.jma.go.jp/bosai/jmatile/data/nowc/.+png')
+        jma_image_url = re.compile(
+            r'www.jma.go.jp/bosai/jmatile/data/nowc/.+png')
         osm_image_url = re.compile(r'tile.openstreatmap.org/.+png')
         jma_json_url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json'
         mocker.get(jma_image_url, content=image_content)
