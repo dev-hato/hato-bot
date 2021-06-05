@@ -21,7 +21,7 @@ from library.hukidasi import generator
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
-
+from library.jma_amesh import jma_amesh
 logger = getLogger(__name__)
 VERSION = "2.0.2"
 
@@ -168,31 +168,27 @@ def amesh(place: str):
             client.post('雨雲状況を取得できなかったっぽ......')
             return None
 
+        amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
+                              around_tiles=2)
+        if amesh_img is None:
+            client.post('雨雲状況を取得できなかったっぽ......')
+            return None
+
         client.post(msg)
-        req = requests.get('https://map.yahooapis.jp/map/V1/static',
-                           {
-                               'appid': conf.YAHOO_API_TOKEN,
-                               'lat': lat,
-                               'lon': lon,
-                               'z': '12',
-                               'height': '640',
-                               'width': '800',
-                               'overlay': 'type:rainfall|datelabel:off'
-                           },
-                           stream=True)
-        if req.status_code == 200:
-            with NamedTemporaryFile() as weather_map_file:
-                weather_map_file.write(req.content)
-                filename = ['amesh']
-                ext = imghdr.what(weather_map_file.name)
+        with NamedTemporaryFile() as weather_map_file:
+            amesh_img.save(weather_map_file, format='PNG')
 
-                if ext:
-                    filename.append(ext)
+            filename = ['amesh']
+            ext = imghdr.what(weather_map_file.name)
 
-                client.upload(file=weather_map_file.name,
-                              filename=os.path.extsep.join(filename))
+            if ext:
+                filename.append(ext)
 
-        return req
+            client.upload(file=weather_map_file.name,
+                          filename=os.path.extsep.join(filename))
+            return True
+
+        return None
 
     return ret
 
