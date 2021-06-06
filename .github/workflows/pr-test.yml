@@ -3,6 +3,7 @@ name: pr-test
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
+  pull_request_target:
 
 env:
   WORKON_HOME: /tmp/.venv
@@ -11,6 +12,7 @@ jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         python-version: [3.9]
@@ -165,12 +167,19 @@ jobs:
   # 型ヒントのチェックを行う
   pr-type-hint:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         python-version: [3.9, 3.8]
 
     steps:
       - uses: actions/checkout@v2
+        if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]')
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: "recursive"
+      - uses: actions/checkout@v2
+        if: (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
         with:
           submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
@@ -211,12 +220,20 @@ jobs:
   # ここではチェックは落ちない
   pr-lint:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
+        if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]')
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: "recursive"
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        if: (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
         with:
           submodules: "recursive"
           fetch-depth: 0
@@ -311,12 +328,20 @@ jobs:
 
   pr-super-lint:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
+        if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]')
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: "recursive"
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        if: (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
         with:
           submodules: "recursive"
           fetch-depth: 0

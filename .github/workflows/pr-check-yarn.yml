@@ -6,11 +6,16 @@ on:
     paths:
       - "package.json"
       - "yarn.lock"
+  pull_request_target:
+    paths:
+      - "package.json"
+      - "yarn.lock"
 
 jobs:
   # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
   pr-check-yarn:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         node-version: [14.x]

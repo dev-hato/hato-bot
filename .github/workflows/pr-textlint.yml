@@ -3,17 +3,27 @@ name: pr-textlint
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
+  pull_request_target:
 
 jobs:
   # textlintをかけ、結果をPRにコメントとして表示する。
   lint:
     runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
+        if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]')
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        if: (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
@@ -98,13 +108,21 @@ jobs:
   # PRが来たらtextlintをかけてみて、差分があればPRを作って、エラーで落ちるjob
   format:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: ((github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') || (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')) && github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
         node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
+        if: (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]')
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        if: (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
