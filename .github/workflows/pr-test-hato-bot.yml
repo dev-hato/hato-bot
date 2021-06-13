@@ -14,28 +14,39 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.7]
+        python-version: [3.9, 3.8]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - name: pipfile cp
-        run: cp Pipfile.lock-${{ matrix.python-version }} Pipfile.lock
       - name: pipenv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-pipenv-
+            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
+            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
+      - name: Install pipenv
+        run: |
+          file_name=Dockerfile
+          package_name=pipenv
+
+          if [ -f ${file_name} ]
+          then
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+          else
+            package_name_with_version=${package_name}
+          fi
+
+          pip install ${package_name_with_version}
+      - name: pipenv version
+        run: pipenv --version
       - name: Install dependencies
         run: |
           pipenv install --dev
@@ -62,3 +73,27 @@ jobs:
           COMPOSE_DOCKER_CLI_BUILD: 1
         working-directory: ./setup
         run: docker-compose build --no-cache
+      - name: Start docker
+        working-directory: ./setup
+        run: |
+          docker-compose up -d
+      # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
+      - name: Test
+        working-directory: ./setup
+        run: |
+          cmd="curl -XPOST -d '{\"message\": \"help\"}' -H \"Content-Type: application/json\" http://localhost:3000/healthcheck"
+          start_unixtime=$(date +%s)
+
+          while [ $(echo "$(date +%s) - ${start_unixtime}" | bc) -lt 120 ] && [ -z "$(docker-compose ps | grep Exit)" ]
+          do
+            if [ "$(eval "${cmd} -w '%{http_code}' -o /dev/null -s")" = 200 ] && eval "${cmd}"
+            then
+              docker-compose logs
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          docker-compose logs
+          exit 1

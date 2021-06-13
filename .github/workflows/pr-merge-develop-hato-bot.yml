@@ -1,13 +1,14 @@
-name: pr-release-hato-bot
+name: pr-master-to-develop-hato-bot
 
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
-  # リリース用のPRを作成するjob
-  pr-release:
+  # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
+  # masterとdevelopの間でコミットログに差異が出ないようにする
+  pr-master-to-develop:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,17 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Get diff
-        id: get_diff
-        run: |
-          result=$(git diff origin/develop origin/master)
-          echo "${result}"
-          result="${result//$'\n'/'%0A'}"
-          result="${result//$'\r'/'%0D'}"
-          echo "::set-output name=result::${result}"
       - name: Create PullRequest
         uses: actions/github-script@v4.0.2
-        if: steps.get_diff.outputs.result != ''
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -36,8 +28,8 @@ jobs:
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "dev-hato:develop",
-              base: "master",
+              head: "dev-hato:master",
+              base: "develop",
               ...common_params
             }
             const pulls_list_params = {
@@ -49,9 +41,8 @@ jobs:
             github.pulls.list(pulls_list_params).then(list_res => {
               if (list_res.data.length === 0) {
                 const pulls_create_params = {
-                  title: "リリース",
-                  body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
-                  draft: true,
+                  title: "master -> develop",
+                  body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",
                   ...pull_params
                 }
                 console.log("call pulls.create:")
@@ -66,16 +57,14 @@ jobs:
                   console.log("call pulls.requestReviewers:")
                   console.log(pulls_request_reviews_params)
                   github.pulls.requestReviewers(pulls_request_reviews_params)
-                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
-                    const issues_add_assignees_params = {
-                      issue_number: create_res.data.number,
-                      assignees: release_users,
-                      ...common_params
-                    }
-                    console.log("call issues.addAssignees:")
-                    console.log(issues_add_assignees_params)
-                    github.issues.addAssignees(issues_add_assignees_params)
+                  const issues_add_assignees_params = {
+                    issue_number: create_res.data.number,
+                    assignees: release_users,
+                    ...common_params
                   }
+                  console.log("call issues.addAssignees:")
+                  console.log(issues_add_assignees_params)
+                  github.issues.addAssignees(issues_add_assignees_params)
                 })
               }
             })
