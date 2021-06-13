@@ -34,4 +34,4 @@ YAHOO_API_TOKEN = str(os.environ['YAHOO_API_TOKEN'])
 DEFAULT_REPLY = "使い方がわからない時は `help` とメンションするっぽ!"
 PLUGINS = ['plugins']
 
-GIT_COMMIT_HASH = str(os.environ.get('GIT_COMMIT_HASH'))
+GIT_COMMIT_HASH = os.environ.get('GIT_COMMIT_HASH')
