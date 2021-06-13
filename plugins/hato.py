@@ -11,7 +11,7 @@ from tempfile import NamedTemporaryFile
 from typing import List
 import requests
 from git import Repo
-from git.exc import InvalidGitRepositoryError
+from git.exc import InvalidGitRepositoryError, GitCommandNotFound
 
 import slackbot_settings as conf
 from library.vocabularydb \
@@ -249,13 +249,13 @@ def version(client: BaseClient):
     str_ver = "バージョン情報\n```" \
               f"Version {VERSION}"
 
-    if conf.GIT_COMMIT_HASH:
+    if conf.GIT_COMMIT_HASH is not None and conf.GIT_COMMIT_HASH != 'None':
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
     else:
         try:
             repo = Repo()
             str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
-        except InvalidGitRepositoryError:
+        except (InvalidGitRepositoryError, GitCommandNotFound):
             pass
 
     str_ver += "\n" \
