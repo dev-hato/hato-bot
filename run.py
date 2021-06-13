@@ -9,7 +9,7 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask, request, escape
+from flask import Flask, request
 import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
@@ -50,9 +50,9 @@ def on_app_mention(event_data):
     appにメンションが送られたらここが呼ばれる
     """
 
-    channel = escape(event_data["event"]["channel"])
-    blocks = escape(event_data['event']['blocks'])
-    authed_users = escape(event_data['authed_users'])
+    channel = event_data["event"]["channel"]
+    blocks = event_data['event']['blocks']
+    authed_users = event_data['authed_users']
 
     with ThreadPoolExecutor(max_workers=3) as tpe:
         for block in blocks:
@@ -87,9 +87,9 @@ def http_app():
 
     pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
     """
-    msg = escape(request.json['message'])
-    channel = escape(request.json['channel'])
-    user = escape(request.json['user'])
+    msg = request.json['message']
+    channel = request.json['channel']
+    user = request.json['user']
     client = SlackClient(channel, user)
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
@@ -106,7 +106,7 @@ def healthcheck_app():
     curl -XPOST -d '{"message": "鳩"}' \
         -H "Content-Type: application/json" http://localhost:3000/healthcheck
     """
-    msg = escape(request.json['message'])
+    msg = request.json['message']
     client = ApiClient()
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
