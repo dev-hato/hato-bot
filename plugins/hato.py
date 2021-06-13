@@ -249,7 +249,7 @@ def version(client: BaseClient):
     str_ver = "バージョン情報\n```" \
               f"Version {VERSION}"
 
-    if conf.GIT_COMMIT_HASH is not None and conf.GIT_COMMIT_HASH != 'None':
+    if conf.GIT_COMMIT_HASH:
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
     else:
         try:
