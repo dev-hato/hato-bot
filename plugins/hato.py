@@ -11,7 +11,7 @@ from tempfile import NamedTemporaryFile
 from typing import List
 import requests
 from git import Repo
-from git.exc import InvalidGitRepositoryError, GitCommandNotFound
+from git.exc import InvalidGitRepositoryError
 
 import slackbot_settings as conf
 from library.vocabularydb \
@@ -255,7 +255,7 @@ def version(client: BaseClient):
         try:
             repo = Repo()
             str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
-        except (InvalidGitRepositoryError, GitCommandNotFound):
+        except InvalidGitRepositoryError:
             pass
 
     str_ver += "\n" \
