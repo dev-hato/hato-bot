@@ -65,13 +65,15 @@ def on_app_mention(event_data):
     db = Database()
 
     with db.conn.cursor() as cursor:
-        cursor.execute('SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1', (client_msg_id,))
+        cursor.execute(
+            'SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1', (client_msg_id,))
 
         if cursor.fetchone():
             print('skip')
             return
 
-        cursor.execute('INSERT INTO slack_client_msg_id(client_msg_id) VALUES(%s)', (client_msg_id,))
+        cursor.execute(
+            'INSERT INTO slack_client_msg_id(client_msg_id) VALUES(%s)', (client_msg_id,))
         db.conn.commit()
 
     with ThreadPoolExecutor(max_workers=3) as tpe:
