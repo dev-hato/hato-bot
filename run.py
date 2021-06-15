@@ -14,6 +14,7 @@ import slackbot_settings as conf
 import plugins.hato as hato
 import plugins.analyze as analyze
 from library.clientclass import SlackClient, ApiClient
+from library.database import Database
 
 app = Flask(__name__)
 
@@ -53,6 +54,25 @@ def on_app_mention(event_data):
     channel = event_data["event"]["channel"]
     blocks = event_data['event']['blocks']
     authed_users = event_data['authed_users']
+    client_msg_id = event_data['event']['client_msg_id']
+
+    print(f'event_data: {event_data}')
+    print(f'channel: {channel}')
+    print(f'blocks: {blocks}')
+    print(f'authed_users: {authed_users}')
+    print(f'client_msg_id: {client_msg_id}')
+
+    db = Database()
+
+    with db.conn.cursor() as cursor:
+        cursor.execute('SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s', (client_msg_id,))
+
+        if cursor.fetchone():
+            print('skip')
+            return
+
+        cursor.execute('INSERT INTO slack_client_msg_id(client_msg_id) VALUES(%s)', (client_msg_id,))
+        db.conn.commit()
 
     with ThreadPoolExecutor(max_workers=3) as tpe:
         for block in blocks:
@@ -67,11 +87,6 @@ def on_app_mention(event_data):
                             tpe.submit(analyze_slack_message(block_element_elements[1:]),
                                        SlackClient(channel,
                                                    block_element_elements[0]['user_id']))
-
-    print(f'event_data: {event_data}')
-    print(f'channel: {channel}')
-    print(f'blocks: {blocks}')
-    print(f'authed_users: {authed_users}')
 
 
 @app.route("/", methods=["GET", "POST"])
