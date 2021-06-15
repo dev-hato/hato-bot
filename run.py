@@ -64,7 +64,8 @@ def on_app_mention(event_data):
 
     with Database() as _db, _db.conn.cursor() as cursor:
         cursor.execute(
-            'SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1', (client_msg_id,))
+            'SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1',
+            (client_msg_id,))
 
         if cursor.fetchone():
             print('skip')
