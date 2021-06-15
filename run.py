@@ -72,7 +72,7 @@ def on_app_mention(event_data):
             return
 
         cursor.execute(
-            "DELETE FROM slack_client_msg_id WHERE '00:10:00' < CURRENT_TIMESTAMP - created_at",
+            "DELETE FROM slack_client_msg_id WHERE created_at < CURRENT_TIMESTAMP - '00:10:00'",
             (client_msg_id,))
         cursor.execute(
             'INSERT INTO slack_client_msg_id(client_msg_id, created_at) '
