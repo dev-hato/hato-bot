@@ -72,9 +72,11 @@ def on_app_mention(event_data):
             return
 
         cursor.execute(
-            "DELETE FROM slack_client_msg_id WHERE '00:10:00' < CURRENT_TIMESTAMP - created_at", (client_msg_id,))
+            "DELETE FROM slack_client_msg_id WHERE '00:10:00' < CURRENT_TIMESTAMP - created_at",
+            (client_msg_id,))
         cursor.execute(
-            'INSERT INTO slack_client_msg_id(client_msg_id,created_at) VALUES(%s, CURRENT_TIMESTAMP)', (client_msg_id,))
+            'INSERT INTO slack_client_msg_id(client_msg_id,created_at) VALUES(%s, CURRENT_TIMESTAMP)',
+            (client_msg_id,))
         _db.conn.commit()
 
     with ThreadPoolExecutor(max_workers=3) as tpe:
