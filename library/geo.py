@@ -16,7 +16,7 @@ import slackbot_settings as conf
 def get_geo_data(place: str) -> Optional[Dict[str, str]]:
     """
     地名や住所から座標を取得する
-    :param place: 地名・住所
+    :param place: 地名・住所・郵便番号
     :return: place: 地名, lat: 緯度, lon: 経度
     """
     is_zip_code = re.match(r'[0-9]{3}-[0-9]{4}', place)
