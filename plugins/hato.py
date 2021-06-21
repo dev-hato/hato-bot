@@ -165,7 +165,7 @@ def amesh(place: str):
                 lon = geo_data['lon']
 
         if lat is None or lon is None:
-            client.post('雨雲状況を取得できなかったっぽ......')
+            client.post('座標を特定できなかったっぽ......')
             return None
 
         amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
@@ -217,23 +217,27 @@ def altitude(place: str):
                 coordinates = [geo_data['lon'], geo_data['lat']]
                 place_name = geo_data['place']
 
-        if coordinates is not None:
-            res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
-                               {
-                                   'appid': conf.YAHOO_API_TOKEN,
-                                   'coordinates': ','.join(coordinates),
-                                   'output': 'json'
-                               },
-                               stream=True)
-            if res.status_code == 200:
-                data_list = json.loads(res.content)
-                if 'Feature' in data_list:
-                    for data in data_list['Feature']:
-                        if 'Property' in data and 'Altitude' in data['Property']:
-                            altitude_ = data['Property']['Altitude']
-                            altitude_str = '{:,}'.format(altitude_)
-                            client.post(f'{place_name}の標高は{altitude_str}mっぽ！')
-                            return res
+        if coordinates is None:
+            client.post('座標を特定できなかったっぽ......')
+            return None
+
+        res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
+                           {
+                               'appid': conf.YAHOO_API_TOKEN,
+                               'coordinates': ','.join(coordinates),
+                               'output': 'json'
+                           },
+                           stream=True)
+
+        if res.status_code == 200:
+            data_list = json.loads(res.content)
+            if 'Feature' in data_list:
+                for data in data_list['Feature']:
+                    if 'Property' in data and 'Altitude' in data['Property']:
+                        altitude_ = data['Property']['Altitude']
+                        altitude_str = '{:,}'.format(altitude_)
+                        client.post(f'{place_name}の標高は{altitude_str}mっぽ！')
+                        return res
 
         client.post('標高を取得できなかったっぽ......')
         return None
