@@ -38,19 +38,21 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
             for feature in geo_data['Feature']:
                 if 'Geometry' in feature and feature['Geometry']:
                     geometry = feature['Geometry']
+                    res = {}
+
+                    if is_zip_code and 'Property' in feature \
+                            and 'Address' in feature['Property'] and feature['Property']['Address']:
+                        res['place'] = feature['Property']['Address']
+                    elif not is_zip_code and 'Name' in feature and feature['Name']:
+                        res['place'] = feature['Name']
+                    else:
+                        return None
+
                     if 'Coordinates' in geometry and geometry['Coordinates']:
                         coordinates = geometry['Coordinates']
                         lon, lat = coordinates.split(',', maxsplit=2)
-                        res = {'lat': lat, 'lon': lon}
-
-                        if is_zip_code and 'Property' in feature \
-                                and 'Address' in feature['Property'] and feature['Property']['Address']:
-                            res['place'] = feature['Property']['Address']
-                        elif not is_zip_code and 'Name' in feature and feature['Name']:
-                            res['place'] = feature['Name']
-                        else:
-                            return None
-
+                        res['lat'] = lat
+                        res['lon'] = lon
                         return res
 
     return None
