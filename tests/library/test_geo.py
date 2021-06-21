@@ -10,11 +10,12 @@ import slackbot_settings as conf
 from library.geo import get_geo_data
 
 
-def set_mock(place: str, mocker: requests_mock.Mocker, content=None):
+def set_mock(place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None):
     """
     Mockを設定する
-    :param place: 地名・住所
+    :param place: 地名・住所・郵便番号
     :param mocker: requestsのMocker
+    :param is_zip_code: 郵便番号かどうか
     :param content: req.contentの内容
     """
     if content is None:
@@ -26,8 +27,14 @@ def set_mock(place: str, mocker: requests_mock.Mocker, content=None):
         'output': 'json'
     }
     query = '&'.join([f'{k}={v}' for k, v in params.items()])
+
+    if is_zip_code:
+        url = 'https://map.yahooapis.jp/search/zip/V1/zipCodeSearch'
+    else:
+        url = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
+
     mocker.get(
-        'https://map.yahooapis.jp/geocode/V1/geoCoder?' + query,
+        url + '?' + query,
         content=json.dumps(content).encode()
     )
 
@@ -53,7 +60,7 @@ class TestGetGeoData(unittest.TestCase):
                     }
                 ]
             }
-            set_mock(place, mocker, content)
+            set_mock(place, mocker, False, content)
             self.assertEqual(get_geo_data(place), result)
 
     def test_valid_zip_code(self):
@@ -74,14 +81,14 @@ class TestGetGeoData(unittest.TestCase):
                     }
                 ]
             }
-            set_mock(place, mocker, content)
+            set_mock(place, mocker, True, content)
             self.assertEqual(get_geo_data(place), result)
 
     def test_invalid_place(self):
         """ 正しくない地名を指定した場合 """
         with requests_mock.Mocker() as mocker:
             place = 'hoge'
-            set_mock(place, mocker)
+            set_mock(place, mocker, False)
             self.assertIsNone(get_geo_data(place))
 
 
