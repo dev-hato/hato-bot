@@ -56,6 +56,27 @@ class TestGetGeoData(unittest.TestCase):
             set_mock(place, mocker, content)
             self.assertEqual(get_geo_data(place), result)
 
+    def test_valid_zip_code(self):
+        """ 正しい郵便番号を指定した場合 """
+        with requests_mock.Mocker() as mocker:
+            place = '380-8512'
+            result = {'place': '長野県長野市大字鶴賀緑町１６１３番地',
+                      'lat': '36.64858859', 'lon': '138.19424819'}
+            content = {
+                'Feature': [
+                    {
+                        'Geometry': {
+                            'Coordinates': ','.join([result['lon'], result['lat']])
+                        },
+                        'Property': {
+                            'Address': result['place']
+                        }
+                    }
+                ]
+            }
+            set_mock(place, mocker, content)
+            self.assertEqual(get_geo_data(place), result)
+
     def test_invalid_place(self):
         """ 正しくない地名を指定した場合 """
         with requests_mock.Mocker() as mocker:
