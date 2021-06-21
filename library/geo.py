@@ -5,6 +5,7 @@ amesh
 """
 
 import json
+import re
 from typing import Optional, Dict
 
 import requests
@@ -18,7 +19,12 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
     :param place: 地名・住所
     :return: place: 地名, lat: 緯度, lon: 経度
     """
-    res = requests.get('https://map.yahooapis.jp/geocode/V1/geoCoder',
+    if re.match(r'[0-9]{3}-[0-9]{4}', place):
+        url = 'https://map.yahooapis.jp/search/zip/V1/zipCodeSearch'
+    else:
+        url = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
+
+    res = requests.get(url,
                        {
                            'appid': conf.YAHOO_API_TOKEN,
                            'query': place,
