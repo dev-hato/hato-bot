@@ -1,11 +1,19 @@
+# coding: utf-8
+
+"""
+textlintを使って文章校正を行う
+"""
+
 import os
 import subprocess
 from typing import Optional
 
 
 def get_textlint_result(text: str) -> Optional[str]:
+    """textlintを使って文章校正を行う"""
     process = subprocess.run(['node_modules/.bin/textlint', '--stdin'],
-                             input=text, encoding='UTF-8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                             input=text, encoding='UTF-8', check=True,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     if process.stderr is not None:
         return process.stderr
@@ -23,6 +31,6 @@ def get_textlint_result(text: str) -> Optional[str]:
     res = os.linesep.join(res).strip()
 
     if res:
-        return '```'+res+'```'
+        return '```' + res + '```'
 
     return None
