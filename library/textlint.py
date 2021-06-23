@@ -2,6 +2,7 @@ import os
 import subprocess
 from typing import Optional
 
+
 def get_textlint_result(text: str) -> Optional[str]:
     process = subprocess.run(['node_modules/.bin/textlint', '--stdin'],
                              input=text, encoding='UTF-8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
