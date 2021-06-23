@@ -22,6 +22,7 @@ from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
+from library.textlint import get_textlint_result
 logger = getLogger(__name__)
 VERSION = "2.1.1"
 
@@ -48,6 +49,7 @@ def help_message(client: BaseClient):
         '標高 [text] ... 指定した地名・住所[text]の標高を表示する。',
         '標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。',
         'eq ... 最新の地震情報を3件表示する。',
+        'textlint [text] ... 文字列[text]を校正する。',
         'text list ... パワーワード一覧を表示する。 ',
         'text random ... パワーワードをひとつ、ランダムで表示する。 ',
         'text show [int] ... 指定した番号[int]のパワーワードを表示する。 ',
@@ -78,6 +80,21 @@ def earth_quake(client: BaseClient):
         msg = msg + generate_quake_info_for_slack(data, 3)
 
     client.post(msg)
+
+
+def textlint(text: str):
+    """文章を校正する"""
+
+    def ret(client: BaseClient):
+        msg = "完璧な文章っぽ!"
+        res = get_textlint_result(text)
+
+        if res:
+            msg = "文章の修正点をリストアップしたっぽ!\n" + res
+
+        client.post(msg)
+
+    return ret
 
 
 def get_text_list(client: BaseClient):

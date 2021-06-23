@@ -9,19 +9,24 @@ FROM python:3.9.5-alpine3.12
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
+COPY package.json package.json
+COPY yarn.lock yarn.lock
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * postgresql-libs: psycopg2を使用する際に必要
 # * libjpeg-turbo: Pillowを使用する際に必要
+# * nodejs: textlintを使用する際に必要
 #
 # Pythonライブラリのインストール時に必要なパッケージ (グループ名: .build-deps, Pythonライブラリインストール後にアンインストール)
 # * jpeg-dev, zlib-dev: Pillowのインストールの際に必要
 # * gcc, musl-dev, postgresql-dev: psycopg2のインストールの際に必要
 # * git: Pythonライブラリのインストールの際に必要
-RUN apk add --no-cache -t .used-packages postgresql-libs libjpeg-turbo && \
-    apk add --no-cache -t .build-deps jpeg-dev zlib-dev gcc musl-dev postgresql-dev git && \
+# * yarn: textlintのインストールの際に必要
+RUN apk add --no-cache -t .used-packages postgresql-libs libjpeg-turbo nodejs && \
+    apk add --no-cache -t .build-deps jpeg-dev zlib-dev gcc musl-dev postgresql-dev git yarn && \
     pip install pipenv==2020.8.13 --no-cache-dir && \
     pipenv install --system --skip-lock && \
+    yarn install && \
     pip uninstall -y pipenv virtualenv && \
     apk --purge del .build-deps && \
     rm -rf ~/.cache
@@ -30,6 +35,7 @@ COPY *.py ./
 COPY library library
 COPY plugins plugins
 COPY setup setup
+COPY .textlintrc .textlintrc
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
