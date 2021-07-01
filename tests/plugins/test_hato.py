@@ -116,7 +116,7 @@ class TestAmesh(unittest.TestCase):
                     }
                 ]
             }
-            set_mock('東京', mocker, content)
+            set_mock('東京', mocker, False, content)
             self.amesh_upload_png_test(mocker,
                                        '',
                                        '東京都世田谷区の雨雲状況をお知らせするっぽ！')
@@ -178,7 +178,7 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            set_mock('東京', mocker, geo_content)
+            set_mock('東京', mocker, False, geo_content)
             altitude_setagaya = 35.4
             altitude_content = {
                 "Feature": [
