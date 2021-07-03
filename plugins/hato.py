@@ -168,13 +168,13 @@ def amesh(place: str):
             client.post('座標を特定できなかったっぽ......')
             return None
 
+        client.post(msg)
         amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
                               around_tiles=2)
         if amesh_img is None:
             client.post('雨雲状況を取得できなかったっぽ......')
             return None
 
-        client.post(msg)
         with NamedTemporaryFile() as weather_map_file:
             amesh_img.save(weather_map_file, format='PNG')
 
