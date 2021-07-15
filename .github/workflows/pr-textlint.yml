@@ -141,7 +141,7 @@ jobs:
           echo "::set-output name=diff::$(git diff)"
       # 差分があったときは、コミットを作りpushする
       - name: Push
-        if:${{ steps.show_diff.outputs.diff != '' }}
+        if: ${{ steps.show_diff.outputs.diff != '' }}
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
