@@ -254,7 +254,8 @@ jobs:
       - name: Lint files
         id: lint
         run: |
-          result="$(pipenv run pylint --rcfile=.github/linters/.python-lint $(find . -iname "*.py") 2>&1)" || true
+          files="$(find . -iname "*.py")"
+          result="$(pipenv run pylint --rcfile=.github/linters/.python-lint "${files}" 2>&1)" || true
           echo "$result"
           result="${result//'%'/'%25'}"
           result="${result//$'\n'/'%0A'}"
