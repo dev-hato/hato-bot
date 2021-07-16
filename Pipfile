@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "==2.9.3"
 autopep8 = "==1.5.7"
 requests-mock = "==1.9.3"
 
