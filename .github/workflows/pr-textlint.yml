@@ -254,9 +254,12 @@ jobs:
         run: |
           worklows_path=.github/workflows
           find sudden-death/${worklows_path} -type f -not -name "*sudden-death.yml" -exec rm -f {} \;
-          for f in "hato-bot/${worklows_path}/"!(hato-bot.yml)
+          for f in "hato-bot/${worklows_path}/"*
           do
-            cp "hato-bot/${worklows_path}/${f}" "sudden-death/${worklows_path}/"
+            if [[ ! "${f}" =~ ".*hato-bot\.yml$"  ]]
+            then
+              echo cp "hato-bot/${worklows_path}/${f}" "sudden-death/${worklows_path}/"
+            fi
           done
           for f in .textlintrc package.json yarn.lock
           do
