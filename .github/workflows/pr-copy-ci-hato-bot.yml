@@ -24,9 +24,9 @@ jobs:
         run: |
           worklows_path=.github/workflows
           find sudden-death/${worklows_path} -type f -not -name "*sudden-death.yml" -exec rm -f {} \;
-          for f in $(ls hato-bot/${worklows_path} | grep -v "hato-bot.yml")
+          for f in "hato-bot/${worklows_path}/"!(hato-bot.yml)
           do
-            cp hato-bot/${worklows_path}/${f} sudden-death/${worklows_path}/
+            cp "hato-bot/${worklows_path}/${f}" "sudden-death/${worklows_path}/"
           done
           for f in .textlintrc package.json yarn.lock
           do
@@ -38,7 +38,7 @@ jobs:
           cd sudden-death
           echo "::set-output name=diff::$(git diff)"
       - name: Push
-        if: steps.show_diff.outputs.diff != ''
+        if: ${{ steps.show_diff.outputs.diff != '' }}
         run: |
           cd sudden-death
           git config user.name "hatohakaraage"

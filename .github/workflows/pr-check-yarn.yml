@@ -34,11 +34,11 @@ jobs:
       - name: Show diff
         id: diff
         run: |
-          result=`git diff`
+          result=$(git diff)
           echo "::set-output name=result::$result"
       # 差分があったときは、コミットを作りpushする
       - name: Push
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
@@ -48,7 +48,7 @@ jobs:
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v4.0.2
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != ''
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -93,7 +93,7 @@ jobs:
       # 既にpackage.json, yarn.lock修正のPRがある状態で、手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v4.0.2
-        if: github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == ''
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -131,5 +131,5 @@ jobs:
               }
             })
       - name: Exit
-        if: steps.diff.outputs.result != ''
+        if: ${{ steps.diff.outputs.result != '' }}
         run: exit 1

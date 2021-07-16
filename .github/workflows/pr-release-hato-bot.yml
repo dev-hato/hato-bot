@@ -27,7 +27,7 @@ jobs:
           echo "::set-output name=result::${result}"
       - name: Create PullRequest
         uses: actions/github-script@v4.0.2
-        if: steps.get_diff.outputs.result != ''
+        if: ${{ steps.get_diff.outputs.result != '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
