@@ -9,8 +9,12 @@ def create_table() -> None:
     """テーブルを作成する"""
 
     with Database() as _db, open('setup/pgsql-init/02_init.sql') as init_sql:
+        sql = ''
         for line in init_sql.readlines():
-            _db.execute_sql(line)
+            sql += line
+            if ';' in line:
+                _db.execute_sql(sql)
+                sql = ''
 
 
 def main():
