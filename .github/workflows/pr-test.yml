@@ -163,81 +163,31 @@ jobs:
         run: exit 1
 
   pr-super-lint:
+    # Set the agent to run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
 
+    ##################
+    # Load all steps #
+    ##################
     steps:
-      - uses: actions/checkout@v2
+      ##########################
+      # Checkout the code base #
+      ##########################
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
           submodules: "recursive"
+          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: pipenv cache
-        uses: actions/cache@v2.1.6
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
-      - name: Install pipenv
-        run: |
-          file_name=Dockerfile
-          package_name=pipenv
 
-          if [ -f ${file_name} ]
-          then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
-          else
-            package_name_with_version=${package_name}
-          fi
-
-          pip install ${package_name_with_version}
-      - name: pipenv version
-        run: pipenv --version
-      - name: Install dependencies
-        run: |
-          pipenv install --dev
-
-        # pipenvの仕様で、project直下の.venvの場合は .venv/lib/... にインストールされるが、
-        # WORKON_HOMEを設定してインストール先をずらした場合は .venv/hato-bot-(hash)/lib/... にインストールされる。
-        # 参考URL: https://bit.ly/2CnKOtJ
-        #
-        # ${GITHUB_REPOSITORY##*/}
-        # GITHUB_REPOSITORYは dev-hato/hato-bot のように入るので、シェル芸で hato-bot のみ取り出している。
-        # 他に持っていっても使えるようにした。
-        # 参考URL: https://bit.ly/2PP4IRt
-        #
-        # log出力のためにfindコマンド単体も置いている
-        #
-        # 環境ファイルを使ってenvにsetしている
-        # 参考URL: https://bit.ly/2KJhjqk
-      - name: Set venv_path
-        run: |
-          venv_path=$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")
-          echo "${venv_path}"
-          echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
-
-        # https://github.com/github/super-linter/issues/157#issuecomment-648850330
-        # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
-        # ここに cp -r することで、super-linterのなかに.venvを配置できる
-        # また、元ディレクトリにも残っているので、キャッシュが作られる
-      - name: Move the dependencies
-        run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
-
-      - name: Lint files
-        uses: docker://github/super-linter:v4.6.0
+      ################################
+      # Run Linter against code base #
+      ################################
+      - name: Lint Code Base
+        uses: github/super-linter@v4.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_JSCPD: false
           VALIDATE_PYTHON_ISORT: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WORKON_HOME: ""
-          PYTHONPATH: "/github/workspace/:\
-            /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
