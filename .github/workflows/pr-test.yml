@@ -162,51 +162,6 @@ jobs:
         if: ${{ steps.format.outcome == 'failure' }}
         run: exit 1
 
-  # 型ヒントのチェックを行う
-  pr-type-hint:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9, 3.8]
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: pipenv cache
-        uses: actions/cache@v2.1.6
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-
-      - name: Install pipenv
-        run: |
-          file_name=Dockerfile
-          package_name=pipenv
-
-          if [ -f ${file_name} ]
-          then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
-          else
-            package_name_with_version=${package_name}
-          fi
-
-          pip install ${package_name_with_version}
-      - name: pipenv version
-        run: pipenv --version
-      - name: Install dependencies
-        run: |
-          pipenv install --dev
-      - name: Check type hints
-        run: |
-          pipenv run mypy .
-
   pr-super-lint:
     runs-on: ubuntu-latest
     strategy:
@@ -276,7 +231,7 @@ jobs:
         run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
       - name: Lint files
-        uses: docker://github/super-linter:v3.15.5
+        uses: docker://github/super-linter:v4.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
@@ -286,12 +241,3 @@ jobs:
           WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
-
-  pr-actionlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run actionlint
-        run: |
-          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
-          ./actionlint -color
