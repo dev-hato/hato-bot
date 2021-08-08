@@ -14,6 +14,7 @@ Pillow = ">=7.1.2"
 pyperclip = "==1.8.2"
 click = "==7.1.2"
 sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
+mypy = "==0.910"
 psycopg2-binary = "==2.9.1"
 slackeventsapi = "==2.2.1"
 slackclient = "==2.9.3"
