@@ -93,9 +93,11 @@
     ```
 
 #### コミットする前に行うこと
+
 誤ってクレデンシャルをコミットしないよう、以下のhookを設定します。
 
 1. 以下のスクリプトを `.git/hooks/pre-commit` として保存します。
+
     ```sh
     #!/bin/bash
     source `dirname ${0}`/_local-hook-exec
@@ -115,7 +117,9 @@
     fi
     EOF
     ```
+
 1. `.git/hooks/pre-commit` に実行権限を付与します。
+
     ```sh
     chmod +x .git/hooks/pre-commit
     ```
