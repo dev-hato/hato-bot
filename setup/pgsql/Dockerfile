@@ -1,4 +1,4 @@
-FROM postgres:13.3-alpine
+FROM postgres:13.4-alpine
 
 # 実行時に必要なパッケージ (グループ名: .used-packages)
 # * openssl: PostgreSQLとSSL通信する時に必要。
