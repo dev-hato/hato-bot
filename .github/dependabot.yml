@@ -3,35 +3,25 @@ updates:
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: "monthly"
-    timezone: "Asia/Tokyo"
-    time: "12:00"
+    interval: "daily"
   open-pull-requests-limit: 1
 - package-ecosystem: docker
   directory: "/"
   schedule:
-    interval: "monthly"
-    timezone: "Asia/Tokyo"
-    time: "12:00"
+    interval: "daily"
   open-pull-requests-limit: 1
 - package-ecosystem: docker
   directory: "/setup/pgsql"
   schedule:
-    interval: "monthly"
-    timezone: "Asia/Tokyo"
-    time: "12:00"
+    interval: "daily"
   open-pull-requests-limit: 1
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
-    interval: "monthly"
-    timezone: "Asia/Tokyo"
-    time: "12:00"
+    interval: "daily"
   open-pull-requests-limit: 1
 - package-ecosystem: npm
   directory: "/"
   schedule:
-    interval: "monthly"
-    timezone: "Asia/Tokyo"
-    time: "12:00"
+    interval: "daily"
   open-pull-requests-limit: 1
