@@ -141,27 +141,32 @@ jobs:
           echo "::set-output name=diff::$(git diff)"
       # 差分があったときは、コミットを作りpushする
       - name: Push
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' }}
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/fix-text-${{github.event.pull_request.head.ref}}
+          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-text-${HEAD_REF}"
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v4.1
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const HEAD_REF = process.env["HEAD_REF"]
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "dev-hato:fix-text-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}",
+              head: "dev-hato:fix-text-" + HEAD_REF,
+              base: HEAD_REF,
               ...common_params
             }
             const pulls_list_params = {
@@ -196,18 +201,21 @@ jobs:
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v4.1
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff == '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const head_name = "fix-text-${{github.event.pull_request.head.ref}}"
+            const HEAD_REF = process.env["HEAD_REF"]
+            const head_name = "fix-text-" + HEAD_REF
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pulls_list_params = {
               head: "dev-hato:" + head_name,
-              base: "${{github.event.pull_request.head.ref}}",
+              base: HEAD_REF,
               state: "open",
               ...common_params
             }
