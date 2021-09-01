@@ -38,27 +38,32 @@ jobs:
           echo "::set-output name=result::$result"
       # 差分があったときは、コミットを作りpushする
       - name: Push
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
         run: |
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:refs/heads/yarn-${{github.event.pull_request.head.ref}}
+          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/yarn-${HEAD_REF}"
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v4.1
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const HEAD_REF = process.env["HEAD_REF"]
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pull_params = {
-              head: "${{github.event.pull_request.head.repo.owner.login}}:yarn-${{github.event.pull_request.head.ref}}",
-              base: "${{github.event.pull_request.head.ref}}",
+              head: "${{github.event.pull_request.head.repo.owner.login}}:yarn-" + HEAD_REF,
+              base: HEAD_REF,
               ...common_params
             }
             const pulls_list_params = {
@@ -93,18 +98,21 @@ jobs:
       # 既にpackage.json, yarn.lock修正のPRがある状態で、手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v4.1
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const head_name = "yarn-${{github.event.pull_request.head.ref}}"
+            const HEAD_REF = process.env["HEAD_REF"]
+            const head_name = "yarn-" + HEAD_REF
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
             const pulls_list_params = {
               head: "${{github.event.pull_request.head.repo.owner.login}}:" + head_name,
-              base: "${{github.event.pull_request.head.ref}}",
+              base: HEAD_REF,
               state: "open",
               ...common_params
             }
