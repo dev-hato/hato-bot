@@ -31,13 +31,12 @@ jobs:
           done
       - name: Show diff
         id: show_diff
-        run: |
-          cd sudden-death
-          echo "::set-output name=diff::$(git diff)"
+        working-directory: sudden-death
+        run: echo "::set-output name=diff::$(git diff)"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
+        working-directory: sudden-death
         run: |
-          cd sudden-death
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -A
