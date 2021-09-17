@@ -32,13 +32,12 @@ jobs:
           sed -i -e "s/$(grep '^click' sudden-death/Pipfile)/$(grep '^click' hato-bot/Pipfile)/g" sudden-death/Pipfile
       - name: Show diff
         id: show_diff
-        run: |
-          cd sudden-death
-          echo "::set-output name=diff::$(git diff)"
+        working-directory: sudden-death
+        run: echo "::set-output name=diff::$(git diff)"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
+        working-directory: sudden-death
         run: |
-          cd sudden-death
           git config user.name "hatohakaraage"
           git config user.email "hatohakaraage@example.com"
           git add -A
