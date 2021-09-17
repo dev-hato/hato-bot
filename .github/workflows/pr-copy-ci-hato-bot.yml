@@ -29,6 +29,7 @@ jobs:
           do
             cp hato-bot/${f} sudden-death/
           done
+          sed -i -e "s/$(grep '^click' sudden-death/Pipfile)/$(grep '^click' hato-bot/Pipfile)/g" sudden-death/Pipfile
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
