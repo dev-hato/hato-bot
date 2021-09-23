@@ -38,33 +38,34 @@ jobs:
             }
             console.log("call pulls.list:")
             console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.length === 0) {
-                const pulls_create_params = {
-                  title: "master -> develop",
-                  body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",
-                  ...pull_params
-                }
-                console.log("call pulls.create:")
-                console.log(pulls_create_params)
-                github.pulls.create(pulls_create_params).then(create_res => {
-                  const release_users = ["nakkaa"]
-                  const pulls_request_reviews_params = {
-                    pull_number: create_res.data.number,
-                    reviewers: release_users,
-                    ...common_params
-                  }
-                  console.log("call pulls.requestReviewers:")
-                  console.log(pulls_request_reviews_params)
-                  github.pulls.requestReviewers(pulls_request_reviews_params)
-                  const issues_add_assignees_params = {
-                    issue_number: create_res.data.number,
-                    assignees: release_users,
-                    ...common_params
-                  }
-                  console.log("call issues.addAssignees:")
-                  console.log(issues_add_assignees_params)
-                  github.issues.addAssignees(issues_add_assignees_params)
-                })
-              }
-            })
+            const list_res = await github.pulls.list(pulls_list_params)
+
+            if (0 < list_res.data.length) {
+              return
+            }
+
+            const pulls_create_params = {
+              title: "master -> develop",
+              body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",
+              ...pull_params
+            }
+            console.log("call pulls.create:")
+            console.log(pulls_create_params)
+            const create_res = await github.pulls.create(pulls_create_params)
+            const release_users = ["nakkaa"]
+            const pulls_request_reviews_params = {
+              pull_number: create_res.data.number,
+              reviewers: release_users,
+              ...common_params
+            }
+            console.log("call pulls.requestReviewers:")
+            console.log(pulls_request_reviews_params)
+            await github.pulls.requestReviewers(pulls_request_reviews_params)
+            const issues_add_assignees_params = {
+              issue_number: create_res.data.number,
+              assignees: release_users,
+              ...common_params
+            }
+            console.log("call issues.addAssignees:")
+            console.log(issues_add_assignees_params)
+            await github.issues.addAssignees(issues_add_assignees_params)
