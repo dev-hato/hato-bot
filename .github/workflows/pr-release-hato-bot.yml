@@ -25,9 +25,26 @@ jobs:
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
-      - name: Create PullRequest
+      - name: Get pull requests
         uses: actions/github-script@v4.1
         if: ${{ steps.get_diff.outputs.result != '' }}
+        id: get_pull_requests
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const pulls_list_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev-hato:develop",
+              base: "master",
+              state: "open"
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
+            return pulls.length
+      - name: Create PullRequest
+        uses: actions/github-script@v4.1
+        if: ${{ steps.get_diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -35,27 +52,13 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            const pull_params = {
+            const pulls_create_params = {
               head: "dev-hato:develop",
               base: "master",
-              ...common_params
-            }
-            const pulls_list_params = {
-              state: "open",
-              ...pull_params
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
-
-            if (0 < pulls.length) {
-              return
-            }
-
-            const pulls_create_params = {
               title: "リリース",
               body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
               draft: true,
-              ...pull_params
+              ...common_params
             }
             console.log("call pulls.create:", pulls_create_params)
             const create_pull_res = (await github.pulls.create(pulls_create_params)).data

@@ -75,50 +75,58 @@ jobs:
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-format-${HEAD_REF}"
+      - name: Get pull requests
+        uses: actions/github-script@v4.1
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' }}
+        id: get_pull_requests
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const HEAD_REF = process.env["HEAD_REF"]
+            const pulls_list_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev-hato:fix-format-" + HEAD_REF,
+              base: HEAD_REF,
+              state: "open"
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
+            return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v4.1
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' && steps.get_pull_requests.outputs.result == 0 }}
+        id: create_pull_request
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
-            const common_params = {
+            const pulls_create_params = {
               owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pull_params = {
+              repo: context.repo.repo,
               head: "dev-hato:fix-format-" + HEAD_REF,
               base: HEAD_REF,
-              ...common_params
-            }
-            const pulls_list_params = {
-              state: "open",
-              ...pull_params
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
-
-            if (0 < pulls.length) {
-              return
-            }
-
-            const pulls_create_params = {
               title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
-              ...pull_params
+              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
             }
             console.log("call pulls.create:", pulls_create_params)
             const create_pull_res = (await github.pulls.create(pulls_create_params)).data
-
-            if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
-              return
-            }
-
+            return create_pull_res.number
+      - name: Assign a user
+        uses: actions/github-script@v4.1
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
             const issues_add_assignees_params = {
-              issue_number: create_pull_res.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{steps.create_pull_request.outputs.result}},
               assignees: ["${{github.event.pull_request.user.login}}"],
               ...common_params
             }
