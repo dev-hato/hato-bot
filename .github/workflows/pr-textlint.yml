@@ -60,8 +60,7 @@ jobs:
               owner: context.repo.owner,
              repo: context.repo.repo
             }
-            console.log("call issues.listComments:")
-            console.log(issues_listComments_params)
+            console.log("call issues.listComments:", issues_listComments_params)
             const response = await github.issues.listComments(issues_listComments_params)
             await Promise.all(response.data.filter(
               comment=>comment.user.id==41898282 && comment.body.startsWith('日本語の')
@@ -82,8 +81,7 @@ jobs:
               repo: context.repo.repo,
               body: "日本語のLint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
             }
-            console.log("call issues.createComment:")
-            console.log(issues_createComment_params)
+            console.log("call issues.createComment:", issues_createComment_params)
             await github.issues.createComment(issues_createComment_params)
       - name: Exit
         if: ${{ github.event.pull_request.head.repo.full_name != github.repository && steps.lint.outcome == 'failure' }}
@@ -167,8 +165,7 @@ jobs:
               state: "open",
               ...pull_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
+            console.log("call pulls.list:", pulls_list_params)
             const list_res = await github.pulls.list(pulls_list_params)
 
             if (0 < list_res.data.length) {
@@ -180,8 +177,7 @@ jobs:
               body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
               ...pull_params
             }
-            console.log("call pulls.create:")
-            console.log(pulls_create_params)
+            console.log("call pulls.create:", pulls_create_params)
             const create_res = await github.pulls.create(pulls_create_params)
 
             if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
@@ -193,8 +189,7 @@ jobs:
               assignees: ["${{github.event.pull_request.user.login}}"],
               ...common_params
             }
-            console.log("call issues.addAssignees:")
-            console.log(issues_add_assignees_params)
+            console.log("call issues.addAssignees:", issues_add_assignees_params)
             await github.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
@@ -217,8 +212,7 @@ jobs:
               state: "open",
               ...common_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
+            console.log("call pulls.list:", pulls_list_params)
             const res = await github.pulls.list(pulls_list_params)
             await Promise.all(res.data.map(async data => {
               const pulls_update_params = {
@@ -226,15 +220,13 @@ jobs:
                 state: "closed",
                 ...common_params
               }
-              console.log("call pulls.update:")
-              console.log(pulls_update_params)
+              console.log("call pulls.update:", pulls_update_params)
               await github.pulls.update(pulls_update_params)
               const git_deleteRef_params = {
                 ref: "heads/" + head_name,
                 ...common_params
               }
-              console.log("call git.deleteRef:")
-              console.log(git_deleteRef_params)
+              console.log("call git.deleteRef:", git_deleteRef_params)
               await github.git.deleteRef(git_deleteRef_params)
             }))
       - name: Exit
