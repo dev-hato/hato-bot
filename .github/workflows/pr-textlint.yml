@@ -71,8 +71,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }
-              console.log("call issues.deleteComment:")
-              console.log(issues_deleteComment_params)
+              console.log("call issues.deleteComment:", issues_deleteComment_params)
               await github.issues.deleteComment(issues_deleteComment_params)
             }))
 
