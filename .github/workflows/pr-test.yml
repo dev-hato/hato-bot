@@ -98,31 +98,32 @@ jobs:
               state: "open",
               ...pull_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.length === 0) {
-                const pulls_create_params = {
-                  title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-                  body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
-                  ...pull_params
-                }
-                console.log("call pulls.create:")
-                console.log(pulls_create_params)
-                github.pulls.create(pulls_create_params).then(create_res => {
-                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
-                    const issues_add_assignees_params = {
-                      issue_number: create_res.data.number,
-                      assignees: ["${{github.event.pull_request.user.login}}"],
-                      ...common_params
-                    }
-                    console.log("call issues.addAssignees:")
-                    console.log(issues_add_assignees_params)
-                    github.issues.addAssignees(issues_add_assignees_params)
-                  }
-                })
-              }
-            })
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
+
+            if (0 < pulls.length) {
+              return
+            }
+
+            const pulls_create_params = {
+              title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}",
+              ...pull_params
+            }
+            console.log("call pulls.create:", pulls_create_params)
+            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
+
+            if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
+              return
+            }
+
+            const issues_add_assignees_params = {
+              issue_number: create_pull_res.number,
+              assignees: ["${{github.event.pull_request.user.login}}"],
+              ...common_params
+            }
+            console.log("call issues.addAssignees:", issues_add_assignees_params)
+            await github.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v4.1
@@ -144,28 +145,24 @@ jobs:
               state: "open",
               ...common_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(res => {
-              for(const data of res.data){
-                const pulls_update_params = {
-                  pull_number: data.number,
-                  state: "closed",
-                  ...common_params
-                }
-                console.log("call pulls.update:")
-                console.log(pulls_update_params)
-                github.pulls.update(pulls_update_params).then(res2 => {
-                  const git_deleteRef_params = {
-                    ref: "heads/" + head_name,
-                    ...common_params
-                  }
-                  console.log("call git.deleteRef:")
-                  console.log(git_deleteRef_params)
-                  github.git.deleteRef(git_deleteRef_params)
-                })
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
+
+            for(const data of pulls) {
+              const pulls_update_params = {
+                pull_number: data.number,
+                state: "closed",
+                ...common_params
               }
-            })
+              console.log("call pulls.update:", pulls_update_params)
+              await github.pulls.update(pulls_update_params)
+              const git_deleteRef_params = {
+                ref: "heads/" + head_name,
+                ...common_params
+              }
+              console.log("call git.deleteRef:", git_deleteRef_params)
+              await github.git.deleteRef(git_deleteRef_params)
+            }
       - name: Exit
         if: ${{ steps.format.outcome == 'failure' }}
         run: exit 1
