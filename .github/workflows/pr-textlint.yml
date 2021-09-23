@@ -62,9 +62,11 @@ jobs:
             }
             console.log("call issues.listComments:", issues_listComments_params)
             const response = await github.issues.listComments(issues_listComments_params)
-            await Promise.all(response.data.filter(
+            const comments = response.data.filter(
               comment=>comment.user.id==41898282 && comment.body.startsWith('日本語の')
-            ).map(async comment => {
+            )
+
+            for (const comment of comments) {
               const issues_deleteComment_params = {
                 comment_id: comment.id,
                 owner: context.repo.owner,
@@ -72,7 +74,7 @@ jobs:
               }
               console.log("call issues.deleteComment:", issues_deleteComment_params)
               await github.issues.deleteComment(issues_deleteComment_params)
-            }))
+            }
 
             const result = `${{steps.lint.outputs.result}}`
             const issues_createComment_params = {
@@ -214,7 +216,8 @@ jobs:
             }
             console.log("call pulls.list:", pulls_list_params)
             const res = await github.pulls.list(pulls_list_params)
-            await Promise.all(res.data.map(async data => {
+
+            for (const data of res.data) {
               const pulls_update_params = {
                 pull_number: data.number,
                 state: "closed",
@@ -228,7 +231,7 @@ jobs:
               }
               console.log("call git.deleteRef:", git_deleteRef_params)
               await github.git.deleteRef(git_deleteRef_params)
-            }))
+            }
       - name: Exit
         if: ${{ steps.show_diff.outputs.diff != '' }}
         run: exit 1
