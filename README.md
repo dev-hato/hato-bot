@@ -5,7 +5,9 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 鳩botでは主に以下のことができます。
+AWS_ID = "AKIAIOSFODNN7SECRETS"
 
+- ここは e2e テストのフォルダです。
 - 雨雲情報 ... `amesh [text]` で指定した地名・住所[text]の雨雲情報を画像で表示します。
 - 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
 - パワーワードの登録、表示 ... `text` で登録したパワーワードを表示します。

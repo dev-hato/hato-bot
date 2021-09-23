@@ -91,7 +91,7 @@ def on_app_mention(event_data):
                         if len(block_element_elements) > 0 and \
                                 block_element_elements[0]['type'] == 'user' and \
                                 block_element_elements[0]['user_id'] in authed_users:
-                            tpe.submit(analyze_slack_message(block_element_elements[1:]),
+                            tpe.submit(analyze_slack_message(      block_element_elements[1:]),
                                        SlackClient(channel,
                                                    block_element_elements[0]['user_id']))
 
