@@ -61,14 +61,13 @@ jobs:
              repo: context.repo.repo
             }
             console.log("call issues.listComments:", issues_listComments_params)
-            const response = await github.issues.listComments(issues_listComments_params)
-            const comments = response.data.filter(
-              comment=>comment.user.id==41898282 && comment.body.startsWith('日本語の')
+            const issue_comments = (await github.issues.listComments(issues_listComments_params)).data.filter(
+              issue_comment => issue_comment.user.id==41898282 && issue_comment.body.startsWith('日本語の')
             )
 
-            for (const comment of comments) {
+            for (const issue_comment of issue_comments) {
               const issues_deleteComment_params = {
-                comment_id: comment.id,
+                comment_id: issue_comment.id,
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }
@@ -168,9 +167,9 @@ jobs:
               ...pull_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const list_res = await github.pulls.list(pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
 
-            if (0 < list_res.data.length) {
+            if (0 < pulls.length) {
               return
             }
 
@@ -180,14 +179,14 @@ jobs:
               ...pull_params
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_res = await github.pulls.create(pulls_create_params)
+            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
 
             if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
               return
             }
 
             const issues_add_assignees_params = {
-              issue_number: create_res.data.number,
+              issue_number: create_pull_res.number,
               assignees: ["${{github.event.pull_request.user.login}}"],
               ...common_params
             }
@@ -215,9 +214,9 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const res = await github.pulls.list(pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
 
-            for (const data of res.data) {
+            for (const data of pulls) {
               const pulls_update_params = {
                 pull_number: data.number,
                 state: "closed",

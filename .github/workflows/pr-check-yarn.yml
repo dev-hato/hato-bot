@@ -67,9 +67,9 @@ jobs:
               ...pull_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const list_res = await github.pulls.list(pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
 
-            if (0 < list_res.data.length) {
+            if (0 < pulls.length) {
               return
             }
 
@@ -79,14 +79,14 @@ jobs:
               ...pull_params
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_res = await github.pulls.create(pulls_create_params)
+            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
 
             if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
               return
             }
 
             const issues_add_assignees_params = {
-              issue_number: create_res.data.number,
+              issue_number: create_pull_res.number,
               assignees: ["${{github.event.pull_request.user.login}}"],
               ...common_params
             }
@@ -114,11 +114,11 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const res = await github.pulls.list(pulls_list_params)
+            const pulls = (await github.pulls.list(pulls_list_params)).data
 
-            for (const data of res.data) {
+            for (const pull of pulls) {
               const pulls_update_params = {
-                pull_number: data.number,
+                pull_number: pull.number,
                 state: "closed",
                 ...common_params
               }
