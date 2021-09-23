@@ -20,7 +20,7 @@ COPY Pipfile Pipfile
 # * git: Pythonライブラリのインストールの際に必要
 RUN apk add --no-cache -t .used-packages postgresql-libs libjpeg-turbo && \
     apk add --no-cache -t .build-deps jpeg-dev zlib-dev gcc musl-dev postgresql-dev git && \
-    pip install pipenv==2020.8.13 --no-cache-dir && \
+    pip install pipenv==2021.5.29 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apk --purge del .build-deps && \
