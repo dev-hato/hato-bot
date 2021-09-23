@@ -70,11 +70,6 @@ jobs:
             console.log("call pulls.requestReviewers:")
             console.log(pulls_request_reviews_params)
             await github.pulls.requestReviewers(pulls_request_reviews_params)
-
-            if ("${{github.event.pull_request.user.login}}" === "dependabot[bot]") {
-              return
-            }
-
             const issues_add_assignees_params = {
               issue_number: create_res.data.number,
               assignees: release_users,
