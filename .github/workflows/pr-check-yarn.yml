@@ -1,11 +1,7 @@
 name: pr-check-yarn
 
-# package.jsonかyarn.lockに差分があるPRに反応して起動する
 on:
   pull_request:
-    paths:
-      - "package.json"
-      - "yarn.lock"
 
 jobs:
   # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
