@@ -143,7 +143,7 @@ jobs:
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-text-${HEAD_REF}"
-      - name: Get pull requests
+      - name: Get PullRequests
         uses: actions/github-script@v4.1
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}

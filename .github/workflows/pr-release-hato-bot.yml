@@ -25,7 +25,7 @@ jobs:
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
-      - name: Get pull requests
+      - name: Get PullRequests
         uses: actions/github-script@v4.1
         if: ${{ steps.get_diff.outputs.result != '' }}
         id: get_pull_requests
