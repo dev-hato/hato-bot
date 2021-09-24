@@ -93,7 +93,7 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
+            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
@@ -154,7 +154,7 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
+            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
 
             for(const data of pulls) {
               const pulls_update_params = {

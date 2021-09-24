@@ -61,7 +61,7 @@ jobs:
              repo: context.repo.repo
             }
             console.log("call issues.listComments:", issues_listComments_params)
-            const issue_comments = (await github.issues.listComments(issues_listComments_params)).data.filter(
+            const issue_comments = (await github.paginate(github.issues.listComments, issues_listComments_params)).filter(
               issue_comment => issue_comment.user.id==41898282 && issue_comment.body.startsWith('日本語の')
             )
 
@@ -161,7 +161,7 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
+            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
@@ -221,7 +221,7 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = (await github.pulls.list(pulls_list_params)).data
+            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
 
             for (const data of pulls) {
               const pulls_update_params = {
