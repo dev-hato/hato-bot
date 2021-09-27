@@ -2,7 +2,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-preset-recommend": "^4.0.0",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "^2.0.1",
-    "secretlint": "^4.0.0",
+    "secretlint": "^4.1.0",
     "textlint": "^12.0.2",
     "textlint-rule-abbr-within-parentheses": "^1.0.2",
     "textlint-rule-footnote-order": "^1.0.3",
