@@ -51,7 +51,7 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != '' }}
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -144,7 +144,7 @@ jobs:
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-text-${HEAD_REF}"
       - name: Get PullRequests
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' }}
@@ -165,7 +165,7 @@ jobs:
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' && steps.get_pull_requests.outputs.result == 0 }}
@@ -186,7 +186,7 @@ jobs:
             const create_pull_res = (await github.pulls.create(pulls_create_params)).data
             return create_pull_res.number
       - name: Assign a user
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         if: ${{ steps.show_diff.outputs.diff != '' && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -201,7 +201,7 @@ jobs:
             await github.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff == '' }}
