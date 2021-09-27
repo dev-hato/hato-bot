@@ -2924,10 +2924,10 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-secretlint@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/secretlint/-/secretlint-4.0.0.tgz#3264534119ab6ac7333eabc5c5afaeae48b84ae4"
-  integrity sha512-9+tJQKzNEVhYLuemRuFpoxgGgi7I1A95aXMy50nV960orNK6ICB+NhUvi065+6sP+qd0JPJqHmy4bermim0NrA==
+secretlint@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/secretlint/-/secretlint-4.1.0.tgz#5d4f5965d860e59bd86b7ad5ad831413b243dee4"
+  integrity sha512-lIQU06/PyT5rXJRpVPGtTF3w8ghPCxNauQzn0MtyOti18JV7cP4icGoUJREHg3LyBfkbPFkJuv5ztAJbB/weAw==
   dependencies:
     "@secretlint/config-creator" "^4.0.0"
     "@secretlint/formatter" "^4.0.0"
