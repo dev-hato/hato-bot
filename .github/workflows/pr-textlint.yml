@@ -230,13 +230,13 @@ jobs:
                 ...common_params
               }
               console.log("call pulls.update:", pulls_update_params)
-              await github.pulls.update(pulls_update_params)
+              await github.rest.pulls.update(pulls_update_params)
               const git_deleteRef_params = {
                 ref: "heads/" + head_name,
                 ...common_params
               }
               console.log("call git.deleteRef:", git_deleteRef_params)
-              await github.git.deleteRef(git_deleteRef_params)
+              await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
         if: ${{ steps.show_diff.outputs.diff != '' }}

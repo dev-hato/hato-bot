@@ -131,7 +131,7 @@ jobs:
               ...common_params
             }
             console.log("call issues.addAssignees:", issues_add_assignees_params)
-            await github.issues.addAssignees(issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v5
@@ -154,7 +154,7 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
 
             for(const data of pulls) {
               const pulls_update_params = {
@@ -163,13 +163,13 @@ jobs:
                 ...common_params
               }
               console.log("call pulls.update:", pulls_update_params)
-              await github.pulls.update(pulls_update_params)
+              await github.rest.pulls.update(pulls_update_params)
               const git_deleteRef_params = {
                 ref: "heads/" + head_name,
                 ...common_params
               }
               console.log("call git.deleteRef:", git_deleteRef_params)
-              await github.git.deleteRef(git_deleteRef_params)
+              await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
         if: ${{ steps.format.outcome == 'failure' }}
