@@ -51,7 +51,7 @@ jobs:
       # lint結果をコメントに残す
       - name: Lint Comment
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.lint.outputs.result != '' }}
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -61,7 +61,7 @@ jobs:
              repo: context.repo.repo
             }
             console.log("call issues.listComments:", issues_listComments_params)
-            const issue_comments = (await github.paginate(github.issues.listComments, issues_listComments_params)).filter(
+            const issue_comments = (await github.paginate(github.rest.issues.listComments, issues_listComments_params)).filter(
               issue_comment => issue_comment.user.id==41898282 && issue_comment.body.startsWith('日本語の')
             )
 
@@ -72,7 +72,7 @@ jobs:
                 repo: context.repo.repo
               }
               console.log("call issues.deleteComment:", issues_deleteComment_params)
-              await github.issues.deleteComment(issues_deleteComment_params)
+              await github.rest.issues.deleteComment(issues_deleteComment_params)
             }
 
             const result = `${{steps.lint.outputs.result}}`
@@ -83,7 +83,7 @@ jobs:
               body: "日本語のLint結果だよ！🕊🕊🕊\n```\n"+result+"\n```"
             }
             console.log("call issues.createComment:", issues_createComment_params)
-            await github.issues.createComment(issues_createComment_params)
+            await github.rest.issues.createComment(issues_createComment_params)
       - name: Exit
         if: ${{ github.event.pull_request.head.repo.full_name != github.repository && steps.lint.outcome == 'failure' }}
         run: exit 1
@@ -144,7 +144,7 @@ jobs:
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-text-${HEAD_REF}"
       - name: Get PullRequests
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' }}
@@ -161,11 +161,11 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff != '' && steps.get_pull_requests.outputs.result == 0 }}
@@ -183,10 +183,10 @@ jobs:
               body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
+            const create_pull_res = (await github.rest.pulls.create(pulls_create_params)).data
             return create_pull_res.number
       - name: Assign a user
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         if: ${{ steps.show_diff.outputs.diff != '' && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -198,10 +198,10 @@ jobs:
               assignees: ["${{github.event.pull_request.user.login}}"]
             }
             console.log("call issues.addAssignees:", issues_add_assignees_params)
-            await github.issues.addAssignees(issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ steps.show_diff.outputs.diff == '' }}
@@ -221,7 +221,7 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
 
             for (const data of pulls) {
               const pulls_update_params = {
@@ -230,13 +230,13 @@ jobs:
                 ...common_params
               }
               console.log("call pulls.update:", pulls_update_params)
-              await github.pulls.update(pulls_update_params)
+              await github.rest.pulls.update(pulls_update_params)
               const git_deleteRef_params = {
                 ref: "heads/" + head_name,
                 ...common_params
               }
               console.log("call git.deleteRef:", git_deleteRef_params)
-              await github.git.deleteRef(git_deleteRef_params)
+              await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
         if: ${{ steps.show_diff.outputs.diff != '' }}
