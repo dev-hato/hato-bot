@@ -93,7 +93,7 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
@@ -115,7 +115,7 @@ jobs:
               body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
+            const create_pull_res = (await github.rest.pulls.create(pulls_create_params)).data
             return create_pull_res.number
       - name: Assign a user
         uses: actions/github-script@v5

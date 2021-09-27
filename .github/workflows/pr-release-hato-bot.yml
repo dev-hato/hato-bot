@@ -40,7 +40,7 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
             return pulls.length
       - name: Create PullRequest
         uses: actions/github-script@v5
@@ -61,7 +61,7 @@ jobs:
               ...common_params
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = (await github.pulls.create(pulls_create_params)).data
+            const create_pull_res = (await github.rest.pulls.create(pulls_create_params)).data
             const release_users = ["nakkaa"]
             const pulls_request_reviews_params = {
               pull_number: create_pull_res.number,
@@ -69,11 +69,11 @@ jobs:
               ...common_params
             }
             console.log("call pulls.requestReviewers:", pulls_request_reviews_params)
-            await github.pulls.requestReviewers(pulls_request_reviews_params)
+            await github.rest.pulls.requestReviewers(pulls_request_reviews_params)
             const issues_add_assignees_params = {
               issue_number: create_pull_res.number,
               assignees: release_users,
               ...common_params
             }
             console.log("call issues.addAssignees:", issues_add_assignees_params)
-            await github.issues.addAssignees(issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)
