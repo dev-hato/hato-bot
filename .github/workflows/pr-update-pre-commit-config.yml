@@ -1,0 +1,157 @@
+name: pr-update-pre-commit-config
+
+on:
+  pull_request:
+
+jobs:
+  update-pre-commit-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: npm install js-yaml
+      - name: Update .pre-commit-config.yaml
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs')
+            const yaml = require('js-yaml')
+
+            const config_filename = '.pre-commit-config.yaml'
+            const config = yaml.load(fs.readFileSync(config_filename, 'utf8'))
+            const common_params = {
+                owner: 'zricethezav',
+                repo: 'gitleaks'
+            }
+            console.log("call repos.getLatestRelease:", common_params)
+            const latest_release = (await github.rest.repos.getLatestRelease(common_params)).data
+            config.repos = config.repos.map(repo => {
+                if (repo.repo === 'https://github.com/' + common_params.owner + '/' + common_params.repo) {
+                    repo.rev = latest_release.tag_name;
+                }
+
+                return repo;
+            })
+
+            try {
+                fs.writeFileSync(config_filename, yaml.dump(config), 'utf8')
+            } catch (err) {
+                console.error(err.message)
+                process.exit(1)
+            }
+      # 差分があったときは差分を出力する
+      - name: Show diff
+        id: diff
+        run: |
+          result=$(git diff .pre-commit-config.yaml)
+          echo "::set-output name=result::$result"
+      # 差分があったときは、コミットを作りpushする
+      - name: Push
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
+        run: |
+          git config user.name "hatohakaraage"
+          git config user.email "hatohakaraage@example.com"
+          git add .pre-commit-config.yaml
+          git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
+          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-version-pre-commit-config-${HEAD_REF}"
+      - name: Get PullRequests
+        uses: actions/github-script@v5
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
+        id: get_pull_requests
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const HEAD_REF = process.env["HEAD_REF"]
+            const pulls_list_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev-hato:fix-version-pre-commit-config-" + HEAD_REF,
+              base: HEAD_REF,
+              state: "open"
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
+            return pulls.length
+      # pushしたブランチでPRを作る
+      - name: Create PullRequest
+        uses: actions/github-script@v5
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 }}
+        id: create_pull_request
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const HEAD_REF = process.env["HEAD_REF"]
+            const pulls_create_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev-hato:fix-version-pre-commit-config-" + HEAD_REF,
+              base: HEAD_REF,
+              title: ".pre-commit-config.yamlを直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
+              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
+            }
+            console.log("call pulls.create:", pulls_create_params)
+            const create_pull_res = (await github.rest.pulls.create(pulls_create_params)).data
+            return create_pull_res.number
+      - name: Assign a user
+        uses: actions/github-script@v5
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issues_add_assignees_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{steps.create_pull_request.outputs.result}},
+              assignees: ["${{github.event.pull_request.user.login}}"]
+            }
+            console.log("call issues.addAssignees:", issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)
+      # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
+      - name: Close PullRequest
+        uses: actions/github-script@v5
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref}}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result == '' }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const HEAD_REF = process.env["HEAD_REF"]
+            const head_name = "fix-version-pre-commit-config-" + HEAD_REF
+            const common_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }
+            const pulls_list_params = {
+              head: "dev-hato:" + head_name,
+              base: HEAD_REF,
+              state: "open",
+              ...common_params
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
+
+            for (const pull of pulls) {
+              const pulls_update_params = {
+                pull_number: pull.number,
+                state: "closed",
+                ...common_params
+              }
+              console.log("call pulls.update:", pulls_update_params)
+              await github.rest.pulls.update(pulls_update_params)
+              const git_deleteRef_params = {
+                ref: "heads/" + head_name,
+                ...common_params
+              }
+              console.log("call git.deleteRef:", git_deleteRef_params)
+              await github.rest.git.deleteRef(git_deleteRef_params)
+            }
+      - name: Exit
+        if: ${{ steps.diff.outputs.result != '' }}
+        run: exit 1

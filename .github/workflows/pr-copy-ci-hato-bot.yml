@@ -25,7 +25,7 @@ jobs:
           worklows_path=.github/workflows
           find sudden-death/${worklows_path} -type f -not -name "*sudden-death.yml" -exec rm -f {} \;
           find hato-bot/${worklows_path} -type f -not -name "*hato-bot.yml" -exec cp {} sudden-death/${worklows_path}/ \;
-          for f in .secretlintrc.json .textlintrc package.json yarn.lock
+          for f in .gitleaks.toml .pre-commit-config.yaml .textlintrc package.json yarn.lock
           do
             cp hato-bot/${f} sudden-death/
           done
