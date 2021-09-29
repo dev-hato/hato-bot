@@ -94,7 +94,8 @@
 
 #### コミットする前に行うこと
 
-誤ってクレデンシャルをコミットしないよう、 <https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。
+<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
+これにより、[.pre-commit-config.yaml](.pre-commit-config.yaml)の設定に基づいて、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
 
 #### 補足
 
