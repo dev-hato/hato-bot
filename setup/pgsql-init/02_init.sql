@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS vocabulary
 CREATE TABLE IF NOT EXISTS slack_client_msg_id
 (
     client_msg_id text UNIQUE,
-    created_at timestamp
+    created_at TIMESTAMP
 );

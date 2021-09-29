@@ -30,7 +30,7 @@ class Database:
             try:
                 cursor.execute(sql)
                 self.conn.commit()
-                print('Execute: {}'.format(sql))
+                print(f'Execute: {sql}')
             except Exception as _e:
                 print('Can not execute sql(create_table).')
                 raise _e
