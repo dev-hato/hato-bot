@@ -55,8 +55,8 @@ jobs:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.diff.outputs.result != '' }}
         run: |
-          git config user.name "hatohakaraage"
-          git config user.email "hatohakaraage@example.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .pre-commit-config.yaml
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-version-pre-commit-config-${HEAD_REF}"
