@@ -10,7 +10,7 @@
     "textlint-rule-ja-hiragana-keishikimeishi": "^1.1.0",
     "textlint-rule-ja-unnatural-alphabet": "^2.0.1",
     "textlint-rule-ng-word": "^1.0.0",
-    "textlint-rule-no-dead-link": "^4.7.0",
+    "textlint-rule-no-dead-link": "^4.8.0",
     "textlint-rule-no-mixed-zenkaku-and-hankaku-alphabet": "^1.0.1",
     "textlint-rule-prefer-tari-tari": "^1.0.3",
     "textlint-rule-preset-ja-spacing": "^2.2.0",
