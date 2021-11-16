@@ -244,7 +244,7 @@ jobs:
         run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
       - name: Lint files
-        uses: github/super-linter@v4.8.1
+        uses: github/super-linter@v4.8.3
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
