@@ -180,6 +180,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.9]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -243,6 +244,25 @@ jobs:
       - name: Move the dependencies
         run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
 
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: yarn cache
+        uses: actions/cache@v2.1.6
+        with:
+          key: ${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-${{ matrix.node-version }}-yarn-
+      - name: Install dependencies
+        run: |
+          yarn install -D
+
       - name: Lint files
         uses: github/super-linter@v4.8.4
         env:
@@ -254,3 +274,4 @@ jobs:
           WORKON_HOME: ""
           PYTHONPATH: "/github/workspace/:\
             /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
+          PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/cache/dotnet/tools:/usr/share/dotnet:/github/workspace/node_modules/.bin:/node_modules/.bin
