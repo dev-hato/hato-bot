@@ -17,5 +17,8 @@
     "textlint-rule-preset-ja-technical-writing": "^7.0.0",
     "textlint-rule-preset-jtf-style": "^2.3.12",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
+  },
+  "resolutions": {
+    "ansi-regex": "^5.0.1"
   }
 }
