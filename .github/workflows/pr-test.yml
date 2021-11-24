@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
@@ -192,7 +192,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: pipenv cache
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
@@ -252,7 +252,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: yarn cache
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           key: ${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
