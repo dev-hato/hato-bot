@@ -27,11 +27,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2.1.7
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
+          key: 66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
+            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
       - name: Install pipenv
         run: |
           file_name=Dockerfile
