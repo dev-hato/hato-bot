@@ -27,11 +27,11 @@ jobs:
       - name: pipenv cache
         uses: actions/cache@v2.1.7
         with:
-          key: 66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
+          key: 66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-Linux-3.9-Dockerfile-12171e652ae90b2ad1572a9380fc3332f4af81b8dcf16851cd13afc51db42f75-pipenv-8570ed44497bda5e4bd208b24a107b0dfe3b1abbca504ae144e38b80297d42d1
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-${{ runner.os }}-3.9-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-Linux-3.9-Dockerfile-12171e652ae90b2ad1572a9380fc3332f4af81b8dcf16851cd13afc51db42f75-pipenv-8570ed44497bda5e4bd208b24a107b0dfe3b1abbca504ae144e38b80297d42d1
+            66bc2ea99d8cf18199498750cba3e45393e69ec5206bd7d82ddc2665e5225388-Linux-3.9-Dockerfile-12171e652ae90b2ad1572a9380fc3332f4af81b8dcf16851cd13afc51db42f75-pipenv-
       - name: Install pipenv
         run: |
           file_name=Dockerfile
