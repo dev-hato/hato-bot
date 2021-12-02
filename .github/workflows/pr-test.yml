@@ -26,14 +26,7 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -191,14 +184,7 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -248,17 +234,7 @@ jobs:
         uses: actions/setup-node@v2.5.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: yarn cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}-yarn-${{ hashFiles('**/yarn.lock') }}
-            ${{ runner.os }}-${{ matrix.node-version }}-yarn-
+          cache: yarn
       - name: Install dependencies
         run: |
           yarn install -D

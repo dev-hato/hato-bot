@@ -24,14 +24,7 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile
