@@ -47,6 +47,16 @@ jobs:
           fi
 
           pip install ${package_name_with_version}
+
+          if [ -f ${file_name} ]
+          then
+            new_version="$(pip list --outdated | grep pipenv | awk '{print $3}')"
+            if [ -n "${new_version}" ]
+            then
+              sed -i -E "s/${package_name}[^ ]+/${package_name}==${new_version}/g" ${file_name}
+              pip install ${package_name}==${new_version}
+            fi
+          fi
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
