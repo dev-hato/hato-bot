@@ -35,6 +35,8 @@ jobs:
             ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
             ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
       - name: Install pipenv
+        id: install_pipenv
+        continue-on-error: true
         run: |
           file_name=Dockerfile
           package_name=pipenv
@@ -47,6 +49,17 @@ jobs:
           fi
 
           pip install ${package_name_with_version}
+
+          if [ -f ${file_name} ]
+          then
+            new_version="$(pip list --outdated | grep pipenv | awk '{print $3}')"
+            if [ -n "${new_version}" ]
+            then
+              sed -i -E "s/${package_name}[^ ]+/${package_name}==${new_version}/g" ${file_name}
+              pip install "${package_name}==${new_version}"
+              exit 1
+            fi
+          fi
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
@@ -61,14 +74,14 @@ jobs:
         continue-on-error: true
       # 差分があったときは差分を出力する
       - name: Show diff
-        if: ${{ steps.format.outcome == 'failure' }}
+        if: ${{ steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure' }}
         run: |
           git diff
       # 差分があったときは、コミットを作りpushする
       - name: Push
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -79,7 +92,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') }}
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -100,7 +113,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' && steps.get_pull_requests.outputs.result == 0 }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') && steps.get_pull_requests.outputs.result == 0 }}
         id: create_pull_request
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -119,7 +132,7 @@ jobs:
             return create_pull_res.number
       - name: Assign a user
         uses: actions/github-script@v5
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome == 'failure' && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -137,7 +150,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && steps.format.outcome != 'failure' }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' || steps.format.outcome != 'failure') }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -172,7 +185,7 @@ jobs:
               await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
-        if: ${{ steps.format.outcome == 'failure' }}
+        if: ${{ steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure' }}
         run: exit 1
 
   pr-super-lint:
