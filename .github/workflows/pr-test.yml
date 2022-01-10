@@ -150,7 +150,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' || steps.format.outcome != 'failure') }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' && steps.format.outcome != 'failure') && 0 < steps.get_pull_requests.outputs.result }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
