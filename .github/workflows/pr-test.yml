@@ -140,8 +140,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{steps.create_pull_request.outputs.result}},
-              assignees: ["${{github.event.pull_request.user.login}}"],
-              ...common_params
+              assignees: ["${{github.event.pull_request.user.login}}"]
             }
             console.log("call issues.addAssignees:", issues_add_assignees_params)
             await github.rest.issues.addAssignees(issues_add_assignees_params)
@@ -150,7 +149,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' || steps.format.outcome != 'failure') }}
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' && steps.format.outcome != 'failure') }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
