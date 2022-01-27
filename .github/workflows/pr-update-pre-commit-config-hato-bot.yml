@@ -29,7 +29,9 @@ jobs:
                 repo: 'gitleaks'
             }
             console.log("call repos.getLatestRelease:", common_params)
-            const latest_release = await github.rest.repos.getLatestRelease(common_params)
+            const latest_release = await github.rest.repos.getLatestRelease(
+                                     common_params
+                                   )
             const latest_release_data = latest_release.data
             config.repos = config.repos.map(repo => {
                 let repo_name = 'https://github.com/'

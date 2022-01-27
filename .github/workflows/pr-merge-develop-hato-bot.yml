@@ -54,7 +54,9 @@ jobs:
               ...common_params
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = await github.rest.pulls.create(pulls_create_params)
+            const create_pull_res = await github.rest.pulls.create(
+                                      pulls_create_params
+                                    )
             const create_pull_res_data = create_pull_res.data
             const release_users = ["nakkaa"]
             const pulls_request_reviews_params = {

@@ -104,7 +104,9 @@ jobs:
               body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = await github.rest.pulls.create(pulls_create_params)
+            const create_pull_res = await github.rest.pulls.create(
+                                      pulls_create_params
+                                    )
             const create_pull_res_data = create_pull_res.data
             return create_pull_res_data.number
       - name: Assign a user
