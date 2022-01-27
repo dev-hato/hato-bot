@@ -28,7 +28,7 @@ jobs:
       - run: |
           KEY="${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}"
           KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv-v2"
+          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv-v3"
           echo "KEY=${KEY}" >> "${GITHUB_ENV}"
       - name: pipenv cache
         uses: actions/cache@v2.1.7
