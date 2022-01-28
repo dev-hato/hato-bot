@@ -113,8 +113,8 @@ jobs:
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
             const number = "#${{github.event.pull_request.number}}"
-            let title = ".pre-commit-config.yamlを直してあげたよ！PRをマージしてね！"
-            title += " " + number
+            let title = ".pre-commit-config.yamlを直してあげたよ！PRをマージしてね！ "
+            title += number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,

@@ -94,8 +94,8 @@ jobs:
             let head = "${{github.event.pull_request.head.repo.owner.login}}"
             head += ":yarn-" + HEAD_REF
             const number = "#${{github.event.pull_request.number}}"
-            let title = "package.jsonやyarn.lockが更新されたので直してあげたよ！PRをマージしてね！"
-            title += " " + number
+            let title = "package.jsonやyarn.lockが更新されたので直してあげたよ！PRをマージしてね！ "
+            title += number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
