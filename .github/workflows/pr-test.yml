@@ -95,8 +95,8 @@ jobs:
       - name: Push
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome == 'failure'
+        if: ${{ env.REPO_NAME == github.repository \
+          && (steps.install_pipenv.outcome == 'failure' \
           || steps.format.outcome == 'failure') }}
         run: |
           git config user.name "github-actions[bot]"
