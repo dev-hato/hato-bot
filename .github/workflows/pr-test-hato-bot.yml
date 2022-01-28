@@ -1,3 +1,4 @@
+---
 name: pr-test-hato-bot
 
 # pull_requestで何かあった時に起動する
@@ -24,14 +25,19 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
+      - run: |
+          KEY="${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}"
+          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
+          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv-v2"
+          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
       - name: pipenv cache
         uses: actions/cache@v2.1.7
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-${{ hashFiles('./Pipfile') }}
+          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-v2-
+            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
+            ${{ env.KEY }}-
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -39,7 +45,8 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+            PATTERN="${package_name}[^ ]+"
+            package_name_with_version=$(grep -oE "${PATTERN}" ${file_name})
           else
             package_name_with_version=${package_name}
           fi
@@ -81,12 +88,16 @@ jobs:
       - name: Test
         working-directory: ./setup
         run: |
-          cmd="curl -XPOST -d '{\"message\": \"help\"}' -H \"Content-Type: application/json\" http://localhost:3000/healthcheck"
+          cmd="curl -XPOST -d '{\"message\": \"help\"}'"
+          cmd+=" -H \"Content-Type: application/json\""
+          cmd+=" http://localhost:3000/healthcheck"
+          cmd_="${cmd} -w '%{http_code}' -o /dev/null -s"
           start_unixtime=$(date +%s)
 
-          while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] && (! (docker-compose ps | grep -q Exit))
+          while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] \
+                && (! (docker-compose ps | grep -q Exit))
           do
-            if [ "$(eval "${cmd} -w '%{http_code}' -o /dev/null -s")" = 200 ] && eval "${cmd}"
+            if [ "$(eval "${cmd_}")" = 200 ] && eval "${cmd}"
             then
               docker-compose logs
               exit 0
