@@ -49,7 +49,8 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+            PATTERN="${package_name}[^ ]+"
+            package_name_with_version=$(grep -oE "${PATTERN}" ${file_name})
           else
             package_name_with_version=${package_name}
           fi
