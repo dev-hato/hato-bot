@@ -108,8 +108,7 @@ jobs:
             const create_pull_res = await github.rest.pulls.create(
                                       pulls_create_params
                                     )
-            const create_pull_res_data = create_pull_res.data
-            return create_pull_res_data.number
+            return create_pull_res.data.number
       - name: Assign a user
         uses: actions/github-script@v5
         if: ${{ env.REPO_NAME == github.repository
