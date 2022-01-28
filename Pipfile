@@ -13,7 +13,7 @@ requests = "==2.27.1"
 Pillow = ">=7.1.2"
 pyperclip = "==1.8.2"
 click = "==8.0.3"
-sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "cfb96f26ed32a71304f46c9fff8979a2521ea16f"}
+sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
 psycopg2-binary = "==2.9.3"
 slackeventsapi = "==3.0.1"
 slackclient = "==2.9.3"
