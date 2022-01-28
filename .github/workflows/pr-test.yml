@@ -146,15 +146,16 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
+            const number = "#${{github.event.pull_request.number}}"
             let title = "formatが間違ってたので直してあげたよ！PRをマージしてね！"
-            title += " #${{github.event.pull_request.number}}"
+            title += " " + number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: "dev-hato:fix-format-" + HEAD_REF,
               base: HEAD_REF,
               title,
-              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
+              body: "鳩の唐揚げおいしい！😋😋😋 " + number
             }
             console.log("call pulls.create:", pulls_create_params)
             const create_pull_res = await github.rest.pulls.create(
