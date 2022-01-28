@@ -61,7 +61,9 @@ jobs:
             new_version="$(pip list --outdated | grep pipenv | awk '{print $3}')"
             if [ -n "${new_version}" ]
             then
-              sed -i -E "s/${package_name}[^ ]+/${package_name}==${new_version}/g" ${file_name}
+              PATTERN_BEFORE="${package_name}[^ ]+"
+              PATTERN_AFTER="${package_name}==${new_version}"
+              sed -i -E "s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g" ${file_name}
               pip install "${package_name}==${new_version}"
               exit 1
             fi
