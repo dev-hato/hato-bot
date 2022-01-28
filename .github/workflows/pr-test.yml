@@ -49,23 +49,17 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            PATTERN="${package_name}[^ ]+"
-            package_name_v=$(grep -oE "${PATTERN}" ${file_name})
+            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
           else
-            package_name_v=${package_name}
+            package_name_with_version=${package_name}
           fi
-
-          pip install ${package_name_v}
-
+          pip install ${package_name_with_version}
           if [ -f ${file_name} ]
           then
-            new_version="$(pip list --outdated | grep pipenv)"
-            new_version="$(echo "${new_version}" | awk '{print $3}')"
+            new_version="$(pip list --outdated | grep pipenv | awk '{print $3}')"
             if [ -n "${new_version}" ]
             then
-              PATTERN_BEFORE="${package_name}[^ ]+"
-              PATTERN_AFTER="${package_name}==${new_version}"
-              sed -i -E "s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g" ${file_name}
+              sed -i -E "s/${package_name}[^ ]+/${package_name}==${new_version}/g" ${file_name}
               pip install "${package_name}==${new_version}"
               exit 1
             fi
