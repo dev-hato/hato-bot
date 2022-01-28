@@ -32,13 +32,12 @@ jobs:
             const latest_release = await github.rest.repos.getLatestRelease(
                                      common_params
                                    )
-            const latest_release_data = latest_release.data
             config.repos = config.repos.map(repo => {
                 let repo_name = 'https://github.com/'
                 repo_name += common_params.owner + '/' + common_params.repo
 
                 if (repo.repo === repo_name) {
-                    repo.rev = latest_release_data.tag_name
+                    repo.rev = latest_release.data.tag_name
                 }
 
                 return repo;
