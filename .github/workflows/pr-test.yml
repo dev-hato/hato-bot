@@ -58,7 +58,7 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            new_version="$(pip list --outdated | grep pipenv)"
+            new_version="$(pip list --outdated | grep pipenv || true)"
             new_version="$(echo -e "${new_version}" | awk '{print $3}')"
             if [ -n "${new_version}" ]
             then
