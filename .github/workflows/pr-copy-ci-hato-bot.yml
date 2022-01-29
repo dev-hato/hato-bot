@@ -64,4 +64,5 @@ jobs:
           GIT_SSH_COMMAND+=" -i deploy_key.pem"
           GIT_SSH_COMMAND+=" -o StrictHostKeyChecking=no"
           GIT_SSH_COMMAND+=" -F /dev/null"
+          export GIT_SSH_COMMAND
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
