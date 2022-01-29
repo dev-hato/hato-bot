@@ -1,3 +1,4 @@
+---
 name: pr-test
 
 # pull_requestで何かあった時に起動する
@@ -26,14 +27,19 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
+      - run: |
+          KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
+          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
+          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
+          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
       - name: pipenv cache
         uses: actions/cache@v2.1.7
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
+          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
+            ${{ env.KEY }}-
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
@@ -43,7 +49,8 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+            PATTERN="${package_name}[^ ]+"
+            package_name_with_version=$(grep -oE "${PATTERN}" ${file_name})
           else
             package_name_with_version=${package_name}
           fi
@@ -52,10 +59,13 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            new_version="$(pip list --outdated | grep pipenv | awk '{print $3}')"
+            new_version="$(pip list --outdated | grep pipenv || true)"
+            new_version="$(echo -e "${new_version}" | awk '{print $3}')"
             if [ -n "${new_version}" ]
             then
-              sed -i -E "s/${package_name}[^ ]+/${package_name}==${new_version}/g" ${file_name}
+              PATTERN_BEFORE="${package_name}[^ ]+"
+              PATTERN_AFTER="${package_name}==${new_version}"
+              sed -i -E "s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g" ${file_name}
               pip install "${package_name}==${new_version}"
               exit 1
             fi
@@ -74,25 +84,38 @@ jobs:
         continue-on-error: true
       # 差分があったときは差分を出力する
       - name: Show diff
-        if: ${{ steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure' }}
+        if: ${{ steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure' }}
         run: |
           git diff
+      - run: |
+          REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
+          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
       # 差分があったときは、コミットを作りpushする
       - name: Push
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') }}
+        if: ${{ env.REPO_NAME == github.repository
+          && (steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure') }}
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "${EMAIL}"
           git add -u
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          git push -f https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git "HEAD:refs/heads/fix-format-${HEAD_REF}"
+          REPO_URL="https://"
+          REPO_URL+="${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/"
+          REPO_URL+="${{github.repository}}.git"
+          GITHUB_HEAD="HEAD:refs/heads/fix-format-${HEAD_REF}"
+          git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') }}
+        if: ${{ env.REPO_NAME == github.repository
+          && (steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure') }}
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -106,33 +129,46 @@ jobs:
               state: "open"
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list,
+                                                pulls_list_params)
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') && steps.get_pull_requests.outputs.result == 0 }}
+        if: ${{ env.REPO_NAME == github.repository
+          && (steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure')
+          && steps.get_pull_requests.outputs.result == 0 }}
         id: create_pull_request
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
+            const number = "#${{github.event.pull_request.number}}"
+            let title = "formatが間違ってたので直してあげたよ！PRをマージしてね！ "
+            title += number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: "dev-hato:fix-format-" + HEAD_REF,
               base: HEAD_REF,
-              title: "formatが間違ってたので直してあげたよ！PRをマージしてね！ #${{github.event.pull_request.number}}",
-              body: "鳩の唐揚げおいしい！😋😋😋 #${{github.event.pull_request.number}}"
+              title,
+              body: "鳩の唐揚げおいしい！😋😋😋 " + number
             }
             console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = (await github.rest.pulls.create(pulls_create_params)).data
-            return create_pull_res.number
+            const create_pull_res = await github.rest.pulls.create(
+                                      pulls_create_params
+                                    )
+            return create_pull_res.data.number
       - name: Assign a user
         uses: actions/github-script@v5
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure') && steps.get_pull_requests.outputs.result == 0 && github.event.pull_request.user.login != 'dependabot[bot]' }}
+        if: ${{ env.REPO_NAME == github.repository
+          && (steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure')
+          && steps.get_pull_requests.outputs.result == 0
+          && github.event.pull_request.user.login != 'dependabot[bot]' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -142,14 +178,17 @@ jobs:
               issue_number: ${{steps.create_pull_request.outputs.result}},
               assignees: ["${{github.event.pull_request.user.login}}"]
             }
-            console.log("call issues.addAssignees:", issues_add_assignees_params)
+            console.log("call issues.addAssignees:")
+            console.log(issues_add_assignees_params)
             await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v5
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && (steps.install_pipenv.outcome != 'failure' && steps.format.outcome != 'failure') }}
+        if: ${{ env.REPO_NAME == github.repository
+          && (steps.install_pipenv.outcome != 'failure'
+          && steps.format.outcome != 'failure') }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -166,7 +205,8 @@ jobs:
               ...common_params
             }
             console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list, pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list,
+                                                pulls_list_params)
 
             for(const data of pulls) {
               const pulls_update_params = {
@@ -184,7 +224,8 @@ jobs:
               await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
-        if: ${{ steps.install_pipenv.outcome == 'failure' || steps.format.outcome == 'failure' }}
+        if: ${{ steps.install_pipenv.outcome == 'failure'
+          || steps.format.outcome == 'failure' }}
         run: exit 1
 
   pr-super-lint:
@@ -203,14 +244,19 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
+      - run: |
+          KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
+          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
+          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
+          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
       - name: pipenv cache
         uses: actions/cache@v2.1.7
         with:
-          key: ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
+          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
           path: ${{ env.WORKON_HOME }}
           restore-keys: |
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-${{ hashFiles('./Pipfile') }}
-            ${{ hashFiles('./.github/workflows/pr-test.yml') }}-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile-${{ hashFiles('./Dockerfile') }}-pipenv-
+            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
+            ${{ env.KEY }}-
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -218,12 +264,12 @@ jobs:
 
           if [ -f ${file_name} ]
           then
-            package_name_with_version=$(grep -oE "${package_name}[^ ]+" ${file_name})
+            package_name_v=$(grep -oE "${package_name}[^ ]+" ${file_name})
           else
-            package_name_with_version=${package_name}
+            package_name_v=${package_name}
           fi
 
-          pip install ${package_name_with_version}
+          pip install ${package_name_v}
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
@@ -231,11 +277,13 @@ jobs:
           pipenv install --dev
 
         # pipenvの仕様で、project直下の.venvの場合は .venv/lib/... にインストールされるが、
-        # WORKON_HOMEを設定してインストール先をずらした場合は .venv/hato-bot-(hash)/lib/... にインストールされる。
+        # WORKON_HOMEを設定してインストール先をずらした場合は
+        # .venv/hato-bot-(hash)/lib/... にインストールされる。
         # 参考URL: https://bit.ly/2CnKOtJ
         #
         # ${GITHUB_REPOSITORY##*/}
-        # GITHUB_REPOSITORYは dev-hato/hato-bot のように入るので、シェル芸で hato-bot のみ取り出している。
+        # GITHUB_REPOSITORYは dev-hato/hato-bot のように入るので、
+        # シェル芸で hato-bot のみ取り出している。
         # 他に持っていっても使えるようにした。
         # 参考URL: https://bit.ly/2PP4IRt
         #
@@ -245,7 +293,8 @@ jobs:
         # 参考URL: https://bit.ly/2KJhjqk
       - name: Set venv_path
         run: |
-          venv_path=$(find ${{ env.WORKON_HOME }} -name "${GITHUB_REPOSITORY##*/}-*")
+          NAME="${GITHUB_REPOSITORY##*/}-*"
+          venv_path=$(find ${{ env.WORKON_HOME }} -name "${NAME}")
           echo "${venv_path}"
           echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
 
@@ -254,7 +303,9 @@ jobs:
         # ここに cp -r することで、super-linterのなかに.venvを配置できる
         # また、元ディレクトリにも残っているので、キャッシュが作られる
       - name: Move the dependencies
-        run: cp -r ${{ env.venv_path }} /home/runner/work/_temp/_github_workflow/.venv
+        run: |
+          DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
+          cp -r ${{ env.venv_path }} "${DEST_PATH}"
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2.5.1
@@ -264,9 +315,13 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install -D
-
+      - run: |
+          PYTHONPATH="/github/workspace/"
+          PYTHONPATH+=":/github/workflow/.venv/lib/"
+          PYTHONPATH+="python${{ matrix.python-version }}/site-packages"
+          echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
       - name: Lint files
-        uses: github/super-linter@v4.8.5
+        uses: github/super-linter@v4.8.7
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
@@ -274,6 +329,5 @@ jobs:
           VALIDATE_PYTHON_ISORT: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
-          PYTHONPATH: "/github/workspace/:\
-            /github/workflow/.venv/lib/python${{ matrix.python-version }}/site-packages"
-          PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/cache/dotnet/tools:/usr/share/dotnet:/github/workspace/node_modules/.bin:/node_modules/.bin
+          PYTHONPATH: ${{ env.PYTHONPATH }}
+          PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
