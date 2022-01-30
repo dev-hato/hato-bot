@@ -38,11 +38,8 @@ def __init__():
 def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]:
     """Slackコマンド解析"""
 
-    if len(messages) > 0 and messages[0]['type'] == 'text':
-        message = messages[0]['text'].strip()
-        return analyze.analyze_message(message)
-
-    return hato.default_action
+    message = ''.join([m['text'] for m in messages if 'text' in m]).strip()
+    return analyze.analyze_message(message)
 
 
 @slack_events_adapter.on("app_mention")
