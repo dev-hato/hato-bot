@@ -17,7 +17,10 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
     def test_telephone_link(self):
         """電話番号のリンクを含むコマンドを正しく解析できる"""
         client1 = TestClient()
-        messages = [{'type': 'text', 'text': '>< '}, {'type': 'link', 'url': 'tel:09012345678', 'text': '09012345678'}]
+        messages = [
+            {'type': 'text', 'text': '>< '},
+            {'type': 'link', 'url': 'tel:09012345678', 'text': '09012345678'}
+        ]
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
         hato.totuzensi('09012345678')(client2)
@@ -26,7 +29,10 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
     def test_code(self):
         """コードを含むコマンドを正しく解析できる"""
         client1 = TestClient()
-        messages = [{'type': 'text', 'text': '>< '}, {'type': 'text', 'text': '09012345678', 'style': {'code': True}}]
+        messages = [
+            {'type': 'text', 'text': '>< '},
+            {'type': 'text', 'text': '09012345678', 'style': {'code': True}}
+        ]
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
         hato.totuzensi('09012345678')(client2)
