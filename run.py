@@ -11,7 +11,6 @@ from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
 from flask import Flask, request, escape
 import slackbot_settings as conf
-from plugins import hato
 from plugins import analyze
 from library.clientclass import SlackClient, ApiClient
 from library.database import Database
