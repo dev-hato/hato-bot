@@ -24,7 +24,8 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
         hato.totuzensi('09012345678')(client2)
-        self.assertEqual(client1.get_post_message(), client2.get_post_message())
+        self.assertEqual(client1.get_post_message(),
+                         client2.get_post_message())
 
     def test_code(self):
         """コードを含むコマンドを正しく解析できる"""
@@ -36,4 +37,5 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
         hato.totuzensi('09012345678')(client2)
-        self.assertEqual(client1.get_post_message(), client2.get_post_message())
+        self.assertEqual(client1.get_post_message(),
+                         client2.get_post_message())
