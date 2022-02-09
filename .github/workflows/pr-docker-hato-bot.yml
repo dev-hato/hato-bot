@@ -41,9 +41,9 @@ jobs:
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'push' }}
       - name: Build docker image
-        run: docker-compose build
+        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - name: Start docker
-        run: docker-compose up -d --build --build-arg BUILDKIT_INLINE_CACHE=1
+        run: docker-compose up -d
       # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
       - name: Test
         run: |
