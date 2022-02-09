@@ -10,8 +10,8 @@ services:
       context: ./pgsql
       cache_from:
         - ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
-        - ghcr.io/dev-hato/hato-atama/postgres
-    image: ghcr.io/dev-hato/hato-atama/postgres:${TAG_NAME}
+        - ghcr.io/dev-hato/hato-bot/postgres
+    image: ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
     environment:
       POSTGRES_PASSWORD: password
     volumes:
@@ -25,8 +25,8 @@ services:
       context: ../
       cache_from:
         - ghcr.io/dev-hato/hato-bot/hato-bot:${TAG_NAME}
-        - ghcr.io/dev-hato/hato-atama/hato-bot
-    image: ghcr.io/dev-hato/hato-atama/hato-bot:${TAG_NAME}
+        - ghcr.io/dev-hato/hato-bot/hato-bot
+    image: ghcr.io/dev-hato/hato-bot/hato-bot:${TAG_NAME}
     env_file:
       - ../.env
     volumes:
