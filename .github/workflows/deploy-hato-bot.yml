@@ -10,6 +10,9 @@ on:
 jobs:
   deploy_docker_image:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: setup
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
