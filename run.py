@@ -9,7 +9,7 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask, request, escape
+from flask import Flask, request, escape, jsonify
 import slackbot_settings as conf
 from plugins import analyze
 from library.clientclass import SlackClient, ApiClient
@@ -129,6 +129,14 @@ def healthcheck_app():
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
     return client.response
+
+
+@app.route('/status', methods=["GET"])
+def status():
+    """
+    死活監視のためのレスポンスをJSON形式で返します
+    """
+    return jsonify({'message': 'hato-bot is running'}), 200
 
 
 def main():
