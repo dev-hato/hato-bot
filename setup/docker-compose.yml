@@ -14,6 +14,7 @@ services:
     image: ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
     environment:
       POSTGRES_PASSWORD: password
+    restart: always
     volumes:
       - pgsql-data:/var/lib/postgresql/data
       - ./pgsql-init:/docker-entrypoint-initdb.d
@@ -29,6 +30,7 @@ services:
     image: ghcr.io/dev-hato/hato-bot/hato-bot:${TAG_NAME}
     env_file:
       - ../.env
+    restart: always
     volumes:
       - ../:/usr/src/app
     ports:
