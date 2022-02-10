@@ -8,6 +8,10 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ./pgsql
+      cache_from:
+        - ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
+        - ghcr.io/dev-hato/hato-bot/postgres
+    image: ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
     environment:
       POSTGRES_PASSWORD: password
     restart: always
@@ -20,6 +24,10 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ../
+      cache_from:
+        - ghcr.io/dev-hato/hato-bot/hato-bot:${TAG_NAME}
+        - ghcr.io/dev-hato/hato-bot/hato-bot
+    image: ghcr.io/dev-hato/hato-bot/hato-bot:${TAG_NAME}
     env_file:
       - ../.env
     restart: always
