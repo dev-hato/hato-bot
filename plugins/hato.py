@@ -23,7 +23,7 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 logger = getLogger(__name__)
-VERSION = "2.1.1"
+VERSION = "2.2.0"
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
@@ -263,7 +263,7 @@ def version(client: BaseClient):
             pass
 
     str_ver += "\n" \
-               "Copyright (C) 2020 hato-bot Development team\n" \
+               "Copyright (C) 2022 hato-bot Development team\n" \
                "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
 
