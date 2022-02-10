@@ -1,3 +1,4 @@
+---
 name: pr-release-hato-bot
 
 on:
@@ -25,9 +26,28 @@ jobs:
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
+      - name: Get PullRequests
+        uses: actions/github-script@v5
+        if: ${{ steps.get_diff.outputs.result != '' }}
+        id: get_pull_requests
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const pulls_list_params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev-hato:develop",
+              base: "master",
+              state: "open"
+            }
+            console.log("call pulls.list:", pulls_list_params)
+            const pulls = await github.paginate(github.rest.pulls.list,
+                                                pulls_list_params)
+            return pulls.length
       - name: Create PullRequest
-        uses: actions/github-script@v4.0.2
-        if: steps.get_diff.outputs.result != ''
+        uses: actions/github-script@v5
+        if: ${{ steps.get_diff.outputs.result != ''
+          && steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -35,47 +55,35 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            const pull_params = {
+            const pulls_create_params = {
               head: "dev-hato:develop",
               base: "master",
+              title: "リリース",
+              body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
+              draft: true,
               ...common_params
             }
-            const pulls_list_params = {
-              state: "open",
-              ...pull_params
+            console.log("call pulls.create:", pulls_create_params)
+            const create_pull_res = await github.rest.pulls.create(
+                                      pulls_create_params
+                                    )
+            const number = create_pull_res.data.number
+            const release_users = ["nakkaa"]
+            const pulls_request_reviews_params = {
+              pull_number: number,
+              reviewers: release_users,
+              ...common_params
             }
-            console.log("call pulls.list:")
-            console.log(pulls_list_params)
-            github.pulls.list(pulls_list_params).then(list_res => {
-              if (list_res.data.length === 0) {
-                const pulls_create_params = {
-                  title: "リリース",
-                  body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
-                  draft: true,
-                  ...pull_params
-                }
-                console.log("call pulls.create:")
-                console.log(pulls_create_params)
-                github.pulls.create(pulls_create_params).then(create_res => {
-                  const release_users = ["nakkaa"]
-                  const pulls_request_reviews_params = {
-                    pull_number: create_res.data.number,
-                    reviewers: release_users,
-                    ...common_params
-                  }
-                  console.log("call pulls.requestReviewers:")
-                  console.log(pulls_request_reviews_params)
-                  github.pulls.requestReviewers(pulls_request_reviews_params)
-                  if("${{github.event.pull_request.user.login}}" !== "dependabot[bot]") {
-                    const issues_add_assignees_params = {
-                      issue_number: create_res.data.number,
-                      assignees: release_users,
-                      ...common_params
-                    }
-                    console.log("call issues.addAssignees:")
-                    console.log(issues_add_assignees_params)
-                    github.issues.addAssignees(issues_add_assignees_params)
-                  }
-                })
-              }
-            })
+            console.log("call pulls.requestReviewers:")
+            console.log(pulls_request_reviews_params)
+            await github.rest.pulls.requestReviewers(
+              pulls_request_reviews_params
+            )
+            const issues_add_assignees_params = {
+              issue_number: number,
+              assignees: release_users,
+              ...common_params
+            }
+            console.log("call issues.addAssignees:")
+            console.log(issues_add_assignees_params)
+            await github.rest.issues.addAssignees(issues_add_assignees_params)

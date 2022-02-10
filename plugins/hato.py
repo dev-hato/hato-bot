@@ -23,7 +23,7 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 logger = getLogger(__name__)
-VERSION = "2.1.1"
+VERSION = "2.2.0"
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
@@ -41,11 +41,11 @@ def help_message(client: BaseClient):
         '',
         '使い方',
         '```',
-        'amesh ... 東京のameshを表示する。',
-        'amesh [text] ... 指定した地名・住所[text]のameshを表示する。',
+        'amesh ... 東京のamesh(雨雲情報)を表示する。',
+        'amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。',
         'amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。',
         '標高 ... 東京の標高を表示する。',
-        '標高 [text] ... 指定した地名・住所[text]の標高を表示する。',
+        '標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。',
         '標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。',
         'eq ... 最新の地震情報を3件表示する。',
         'text list ... パワーワード一覧を表示する。 ',
@@ -165,16 +165,16 @@ def amesh(place: str):
                 lon = geo_data['lon']
 
         if lat is None or lon is None:
-            client.post('雨雲状況を取得できなかったっぽ......')
+            client.post('座標を特定できなかったっぽ......')
             return None
 
+        client.post(msg)
         amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10,
                               around_tiles=2)
         if amesh_img is None:
             client.post('雨雲状況を取得できなかったっぽ......')
             return None
 
-        client.post(msg)
         with NamedTemporaryFile() as weather_map_file:
             amesh_img.save(weather_map_file, format='PNG')
 
@@ -217,23 +217,27 @@ def altitude(place: str):
                 coordinates = [geo_data['lon'], geo_data['lat']]
                 place_name = geo_data['place']
 
-        if coordinates is not None:
-            res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
-                               {
-                                   'appid': conf.YAHOO_API_TOKEN,
-                                   'coordinates': ','.join(coordinates),
-                                   'output': 'json'
-                               },
-                               stream=True)
-            if res.status_code == 200:
-                data_list = json.loads(res.content)
-                if 'Feature' in data_list:
-                    for data in data_list['Feature']:
-                        if 'Property' in data and 'Altitude' in data['Property']:
-                            altitude_ = data['Property']['Altitude']
-                            altitude_str = '{:,}'.format(altitude_)
-                            client.post(f'{place_name}の標高は{altitude_str}mっぽ！')
-                            return res
+        if coordinates is None:
+            client.post('座標を特定できなかったっぽ......')
+            return None
+
+        res = requests.get('https://map.yahooapis.jp/alt/V1/getAltitude',
+                           {
+                               'appid': conf.YAHOO_API_TOKEN,
+                               'coordinates': ','.join(coordinates),
+                               'output': 'json'
+                           },
+                           stream=True)
+
+        if res.status_code == 200:
+            data_list = json.loads(res.content)
+            if 'Feature' in data_list:
+                for data in data_list['Feature']:
+                    if 'Property' in data and 'Altitude' in data['Property']:
+                        altitude_ = data['Property']['Altitude']
+                        altitude_str = f'{altitude_:,}'
+                        client.post(f'{place_name}の標高は{altitude_str}mっぽ！')
+                        return res
 
         client.post('標高を取得できなかったっぽ......')
         return None
@@ -259,7 +263,7 @@ def version(client: BaseClient):
             pass
 
     str_ver += "\n" \
-               "Copyright (C) 2020 hato-bot Development team\n" \
+               "Copyright (C) 2022 hato-bot Development team\n" \
                "https://github.com/dev-hato/hato-bot ```"
     client.post(str_ver)
 

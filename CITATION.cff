@@ -1,0 +1,9 @@
+authors:
+  - given-names: "dev-hato"
+cff-version: "1.1.0"
+date-released: 2021-06-17
+license: MIT
+message: "愛嬌のあるSlack用bot"
+repository-code: "https://github.com/dev-hato/hato-bot"
+title: "hato-bot"
+version: "2.1.1"

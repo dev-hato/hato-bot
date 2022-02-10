@@ -9,10 +9,9 @@ import logging.config
 from typing import Callable, List
 from concurrent.futures import ThreadPoolExecutor
 from slackeventsapi import SlackEventAdapter
-from flask import Flask, request
+from flask import Flask, request, escape, jsonify
 import slackbot_settings as conf
-import plugins.hato as hato
-import plugins.analyze as analyze
+from plugins import analyze
 from library.clientclass import SlackClient, ApiClient
 from library.database import Database
 
@@ -38,11 +37,8 @@ def __init__():
 def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]:
     """Slackコマンド解析"""
 
-    if len(messages) > 0 and messages[0]['type'] == 'text':
-        message = messages[0]['text'].strip()
-        return analyze.analyze_message(message)
-
-    return hato.default_action
+    message = ''.join([m['text'] for m in messages if 'text' in m]).strip()
+    return analyze.analyze_message(message)
 
 
 @slack_events_adapter.on("app_mention")
@@ -128,11 +124,19 @@ def healthcheck_app():
     curl -XPOST -d '{"message": "鳩"}' \
         -H "Content-Type: application/json" http://localhost:3000/healthcheck
     """
-    msg = request.json['message']
+    msg = escape(request.json['message'])
     client = ApiClient()
     client.post(f'コマンド: {msg}')
     analyze.analyze_message(msg)(client)
     return client.response
+
+
+@app.route('/status', methods=["GET"])
+def status():
+    """
+    死活監視のためのレスポンスをJSON形式で返します
+    """
+    return jsonify({'message': 'hato-bot is running'}), 200
 
 
 def main():

@@ -13,8 +13,7 @@ def get_quake_list(limit: int = 10) -> Optional[Any]:
     """
     地震リストを取得
     """
-    quake_url = 'https://api.p2pquake.net/v1/human-readable?limit={}'.format(
-        limit)
+    quake_url = f'https://api.p2pquake.net/v1/human-readable?limit={limit}'
     response = requests.get(quake_url)
     if response.status_code == 200:
         data = json.loads(response.text)
@@ -42,10 +41,10 @@ def generate_quake_info_for_slack(data: Any, max_cnt: int = 1) -> str:
                 sindo /= 10
 
             msg += '---\n'
-            msg += '発生時刻: {}\n'.format(time)
-            msg += '震源地: {}\n'.format(singenti)
-            msg += 'マグニチュード: {}\n'.format(magnitude)
-            msg += '最大震度: {}\n\n'.format(sindo)
+            msg += f'発生時刻: {time}\n'
+            msg += f'震源地: {singenti}\n'
+            msg += f'マグニチュード: {magnitude}\n'
+            msg += f'最大震度: {sindo}\n\n'
             if max_cnt <= cnt:
                 break
             cnt += 1

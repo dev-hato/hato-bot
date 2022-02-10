@@ -5,7 +5,7 @@ analyze.pyのテスト
 import unittest
 
 from plugins.analyze import analyze_message
-import plugins.hato as hato
+from plugins import hato
 from tests.plugins import TestClient
 
 

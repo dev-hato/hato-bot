@@ -70,7 +70,7 @@ def get_vocabularys():
         cnt = 1
         for row in result:
             _, text = row
-            slack_msg = slack_msg + '\n {0}. {1}'.format(cnt, text)
+            slack_msg = slack_msg + f'\n {cnt}. {text}'
             cnt += 1
 
         slack_msg = slack_msg + "```"
@@ -98,7 +98,7 @@ def show_vocabulary(word_id: int) -> str:
     for row in result:
         _, text = row
         if cnt == word_id:
-            slack_msg = '{}'.format(text)
+            slack_msg = text
         cnt += 1
 
     return slack_msg
@@ -113,7 +113,7 @@ def show_random_vocabulary() -> str:
         result = v_d.get_random_word()
 
     if result is not None and len(result) > 0:
-        slack_msg = '{}'.format(result[0])
+        slack_msg = result[0]
 
     return slack_msg
 

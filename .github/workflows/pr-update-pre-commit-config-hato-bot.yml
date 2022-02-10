@@ -1,38 +1,60 @@
 ---
-name: pr-check-yarn
+name: pr-update-pre-commit-config-hato-bot
 
 on:
   pull_request:
 
 jobs:
-  # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
-  pr-check-yarn:
+  update-pre-commit-config:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-      fail-fast: false
-
     steps:
       - uses: actions/checkout@v2
         with:
-          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
-          # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.5.1
+      - name: Install packages
+        run: yarn add js-yaml
+      - name: Update .pre-commit-config.yaml
+        uses: actions/github-script@v5
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: yarn
-      - name: Install dependencies
-        run: |
-          yarn install -D
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs')
+            const yaml = require('js-yaml')
+
+            const config_filename = '.pre-commit-config.yaml'
+            const config = yaml.load(fs.readFileSync(config_filename, 'utf8'))
+            const common_params = {
+                owner: 'zricethezav',
+                repo: 'gitleaks'
+            }
+            console.log("call repos.getLatestRelease:", common_params)
+            const latest_release = await github.rest.repos.getLatestRelease(
+                                     common_params
+                                   )
+            config.repos = config.repos.map(repo => {
+                let repo_name = 'https://github.com/'
+                repo_name += common_params.owner + '/' + common_params.repo
+
+                if (repo.repo === repo_name) {
+                    repo.rev = latest_release.data.tag_name
+                }
+
+                return repo;
+            })
+            const content = '---\n' + yaml.dump(config)
+
+            try {
+                fs.writeFileSync(config_filename, content, 'utf8')
+            } catch (err) {
+                console.error(err.message)
+                process.exit(1)
+            }
       # 差分があったときは差分を出力する
       - name: Show diff
         id: diff
         run: |
-          result=$(git diff)
+          result=$(git diff .pre-commit-config.yaml)
           echo "::set-output name=result::$result"
       - run: |
           REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
@@ -47,12 +69,12 @@ jobs:
           git config user.name "github-actions[bot]"
           EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
           git config user.email "${EMAIL}"
-          git add -u
+          git add .pre-commit-config.yaml
           git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
           REPO_URL="https://"
           REPO_URL+="${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/"
           REPO_URL+="${{github.repository}}.git"
-          GITHUB_HEAD="HEAD:refs/heads/yarn-${HEAD_REF}"
+          GITHUB_HEAD="HEAD:refs/heads/fix-version-pre-commit-config-${HEAD_REF}"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
         uses: actions/github-script@v5
@@ -65,12 +87,10 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
-            let head = "${{github.event.pull_request.head.repo.owner.login}}"
-            head += ":yarn-" + HEAD_REF
             const pulls_list_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head,
+              head: "dev-hato:fix-version-pre-commit-config-" + HEAD_REF,
               base: HEAD_REF,
               state: "open"
             }
@@ -91,15 +111,13 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
-            let head = "${{github.event.pull_request.head.repo.owner.login}}"
-            head += ":yarn-" + HEAD_REF
             const number = "#${{github.event.pull_request.number}}"
-            let title = "package.jsonやyarn.lockが更新されたので直してあげたよ！PRをマージしてね！ "
+            let title = ".pre-commit-config.yamlを直してあげたよ！PRをマージしてね！ "
             title += number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head,
+              head: "dev-hato:fix-version-pre-commit-config-" + HEAD_REF,
               base: HEAD_REF,
               title,
               body: "鳩の唐揚げおいしい！😋😋😋 " + number
@@ -127,8 +145,7 @@ jobs:
             console.log("call issues.addAssignees:")
             console.log(issues_add_assignees_params)
             await github.rest.issues.addAssignees(issues_add_assignees_params)
-      # 既にpackage.json, yarn.lock修正のPRがある状態で、
-      # 手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
+      # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v5
         env:
@@ -139,15 +156,13 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
-            const head_name = "yarn-" + HEAD_REF
+            const head_name = "fix-version-pre-commit-config-" + HEAD_REF
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
             }
-            let head = "${{github.event.pull_request.head.repo.owner.login}}:"
-            head += head_name
             const pulls_list_params = {
-              head,
+              head: "dev-hato:" + head_name,
               base: HEAD_REF,
               state: "open",
               ...common_params

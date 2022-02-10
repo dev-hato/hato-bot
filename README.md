@@ -92,6 +92,11 @@
     ./ngrok http 3000
     ```
 
+#### コミットする前に行うこと
+
+<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
+これにより、[.pre-commit-config.yaml](.pre-commit-config.yaml)の設定に基づいて、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
+
 #### 補足
 
 - コードを整形する場合は `pipenv run autopep8 --in-place --recursive .` を実行します。
@@ -102,10 +107,10 @@
 
     ```text
     amesh ... 東京のameshを表示する。
-    amesh [text] ... 指定した地名・住所[text]のameshを表示する。
+    amesh [text] ... 指定した地名・住所・郵便番号[text]のameshを表示する。
     amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。
     標高 ... 東京の標高を表示する。
-    標高 [text] ... 指定した地名・住所[text]の標高を表示する。
+    標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
     標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
     eq ... 最新の地震情報を3件表示する。
     text list ... パワーワード一覧を表示する。
