@@ -275,7 +275,6 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
-          echo $PYTHONPATH
 
         # pipenvの仕様で、project直下の.venvの場合は .venv/lib/... にインストールされるが、
         # WORKON_HOMEを設定してインストール先をずらした場合は
@@ -318,8 +317,9 @@ jobs:
           yarn install -D
       - run: |
           PYTHONPATH="/github/workspace/"
-          PYTHONPATH+=":/github/workflow/.venv/lib/"
-          PYTHONPATH+="python3.9/site-packages"
+          for dir in $(ls ${venv_path}/lib); do
+            PYTHONPATH+=":/github/workflow/.venv/lib/${dir}/site-packages"
+          done
           echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
