@@ -316,11 +316,7 @@ jobs:
         run: |
           yarn install -D
       - run: |
-          PYTHONPATH="/github/workspace/"
-          for dir in "${venv_path}/lib"/*; do
-            PYTHONPATH+=":/github/workflow/.venv/lib/${dir}/site-packages"
-          done
-          echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
+          jq -nr --arg version ${{ matrix.python-version }} '"PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python\($version|split(".")[0:2]|join("."))/site-packages"' >> "${GITHUB_ENV}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
         env:
