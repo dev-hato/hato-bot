@@ -35,3 +35,5 @@ DEFAULT_REPLY = "使い方がわからない時は `help` とメンションす�
 PLUGINS = ['plugins']
 
 GIT_COMMIT_HASH = os.environ.get('GIT_COMMIT_HASH')
+
+VERSION = "2.2.2"
