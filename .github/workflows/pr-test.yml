@@ -232,7 +232,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9.10]
         node-version: [16.x]
 
     steps:
@@ -240,13 +239,14 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
+      - run: echo "PYTHON_VFERSION=$(cat .python-version | awk -F. 'OFS="." {print $1,$2}')" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VFERSION }}
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHON_VFERSION }}
       - run: |
           KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
+          KEY+="-${{ runner.os }}-${{ env.PYTHON_VFERSION }}-Dockerfile"
           KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
           echo "KEY=${KEY}" >> "${GITHUB_ENV}"
       - name: pipenv cache
@@ -316,7 +316,7 @@ jobs:
         run: |
           yarn install -D
       - run: |
-          echo "PYTHONPATH=/github/workpace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
+          echo "PYTHONPATH=/github/workpace/:/github/workflow/.venv/lib/python${{ env.PYTHON_VFERSION }}/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
         env:
