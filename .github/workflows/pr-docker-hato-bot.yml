@@ -71,4 +71,6 @@ jobs:
       - run: echo 'TAG_NAME=test' >> "$GITHUB_ENV"
 #      - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
 #        if: ${{ github.event_name == 'release' }}
+      - name: Build docker image
+        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - run: docker-compose push
