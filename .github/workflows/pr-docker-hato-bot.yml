@@ -39,9 +39,9 @@ jobs:
           HEAD_REF: ${{github.head_ref}}
         if: ${{ github.event_name == 'pull_request' }}
       - run: |
-          echo 'TAG_NAME=v${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
+          echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
           echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
-        if: ${{ github.event_name == 'relase' }}
+        if: ${{ github.event_name == 'release' }}
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - name: Start docker
