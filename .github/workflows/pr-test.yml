@@ -320,7 +320,7 @@ jobs:
           PYTHONPATH+=":${venv_path}/site-packages"
           echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
       - run: |
-          ls -R ${venv_path}
+          cat ${venv_path}/pyvenv.cfg
           echo "${PYTHONPATH}"
           echo "${venv_path}"
       - name: Lint files
