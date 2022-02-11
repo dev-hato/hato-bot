@@ -38,9 +38,7 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
         if: ${{ github.event_name == 'pull_request' }}
-      - run: |
-          echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
-          echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
+      - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
@@ -70,3 +68,11 @@ jobs:
           docker-compose logs
           exit 1
       - run: docker-compose push
+      - run: |
+          for image in postgres hato-bot; do
+            image_name="ghcr.io/dev-hato/hato-bot/${image}"
+            latest_tag="${image_name}:latest"
+            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
+            docker push "${latest_tag}"
+          done
+        if: ${{ github.event_name == 'release' }}
