@@ -23,7 +23,7 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 logger = getLogger(__name__)
-VERSION = "2.2.0"
+VERSION = "2.2.1"
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
