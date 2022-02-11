@@ -68,9 +68,11 @@ jobs:
           docker-compose logs
           exit 1
       - run: docker-compose push
-      - run: echo 'TAG_NAME=test' >> "$GITHUB_ENV"
-#      - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
+      - name: Add latest tag
 #        if: ${{ github.event_name == 'release' }}
-      - name: Build docker image
-        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
+        run: |
+          for image in postgres hato-bot; do
+            image_name="ghcr.io/dev-hato/hato-bot/${image}"
+            docker tag "${image_name}:${TAG_NAME}" "${image_name}:test"
+          done
       - run: docker-compose push
