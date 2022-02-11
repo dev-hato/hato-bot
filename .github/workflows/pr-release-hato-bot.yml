@@ -27,7 +27,7 @@ jobs:
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ steps.get_diff.outputs.result != '' }}
         id: get_pull_requests
         with:
@@ -45,7 +45,7 @@ jobs:
                                                 pulls_list_params)
             return pulls.length
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ steps.get_diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0 }}
         with:

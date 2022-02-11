@@ -55,7 +55,7 @@ jobs:
           GITHUB_HEAD="HEAD:refs/heads/yarn-${HEAD_REF}"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -80,7 +80,7 @@ jobs:
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -110,7 +110,7 @@ jobs:
                                     )
             return create_pull_res.data.number
       - name: Assign a user
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ env.REPO_NAME == github.repository
           && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0
@@ -130,7 +130,7 @@ jobs:
       # 既にpackage.json, yarn.lock修正のPRがある状態で、
       # 手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
