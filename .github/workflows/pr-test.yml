@@ -317,7 +317,7 @@ jobs:
           yarn install -D
       - run: |
           PYTHONPATH="/github/workspace/"
-          for dir in $(ls ${venv_path}/lib); do
+          for dir in ${venv_path}/lib/*; do
             PYTHONPATH+=":/github/workflow/.venv/lib/${dir}/site-packages"
           done
           echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
