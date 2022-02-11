@@ -68,11 +68,11 @@ jobs:
           docker-compose logs
           exit 1
       - run: docker-compose push
-      - name: Add latest tag
-#        if: ${{ github.event_name == 'release' }}
-        run: |
+      - run: |
           for image in postgres hato-bot; do
             image_name="ghcr.io/dev-hato/hato-bot/${image}"
-            docker tag "${image_name}:${TAG_NAME}" "${image_name}:test"
+            latest_tag="${image_name}:test"
+            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
+            docker push "${latest_tag}"
           done
-      - run: docker-compose push
+#        if: ${{ github.event_name == 'release' }}
