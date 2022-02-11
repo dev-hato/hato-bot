@@ -239,7 +239,7 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - run: echo "PYTHON_VFERSION=$(cat .python-version | awk -F. 'OFS="." {print $1,$2}')" >> "${GITHUB_ENV}"
+      - run: echo "PYTHON_VFERSION=$(awk -F. 'OFS="." {print $1,$2}' < .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VFERSION }}
         uses: actions/setup-python@v2.3.2
         with:
