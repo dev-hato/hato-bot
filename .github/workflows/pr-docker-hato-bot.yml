@@ -71,8 +71,8 @@ jobs:
       - run: |
           for image in postgres hato-bot; do
             image_name="ghcr.io/dev-hato/hato-bot/${image}"
-            latest_tag="${image_name}:test"
+            latest_tag="${image_name}:latest"
             docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
             docker push "${latest_tag}"
           done
-#        if: ${{ github.event_name == 'release' }}
+        if: ${{ github.event_name == 'release' }}
