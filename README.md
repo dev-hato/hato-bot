@@ -65,7 +65,7 @@
 
     ```sh
     cd ./setup
-    docker-compose up -d
+    TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g") docker-compose up -d
     cd ..
     ```
 
@@ -73,7 +73,7 @@
 
     ```sh
     cd ./setup
-    docker-compose restart
+    TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g") docker-compose restart
     ```
 
 #### コマンドの実行方法
