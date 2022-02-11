@@ -251,7 +251,7 @@ def version(client: BaseClient):
     user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
     str_ver = "バージョン情報\n```" \
-              f"Version {VERSION}"
+              f"Version {conf.VERSION}"
 
     if conf.GIT_COMMIT_HASH:
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
