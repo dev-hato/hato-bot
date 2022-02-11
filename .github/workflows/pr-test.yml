@@ -321,6 +321,10 @@ jobs:
             PYTHONPATH+=":/github/workflow/.venv/lib/${dir}/site-packages"
           done
           echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
+      - run: |
+          ls -al ${{venv_path}}
+          echo "${PYTHONPATH}"
+          echo "${venv_path}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
         env:
