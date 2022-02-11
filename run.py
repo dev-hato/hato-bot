@@ -136,7 +136,7 @@ def status():
     """
     死活監視のためのレスポンスをJSON形式で返します
     """
-    return jsonify({'message': 'hato-bot is running'}), 200
+    return jsonify({'message': 'hato-bot is running', 'version': conf.VERSION}), 200
 
 
 def main():

@@ -23,7 +23,6 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 logger = getLogger(__name__)
-VERSION = "2.2.1"
 
 
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
@@ -251,7 +250,7 @@ def version(client: BaseClient):
     user = client.get_send_user_name()
     logger.debug("%s called 'hato version'", user)
     str_ver = "バージョン情報\n```" \
-              f"Version {VERSION}"
+              f"Version {conf.VERSION}"
 
     if conf.GIT_COMMIT_HASH:
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
