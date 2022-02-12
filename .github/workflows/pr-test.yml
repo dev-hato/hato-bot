@@ -5,9 +5,6 @@ name: pr-test
 on:
   pull_request:
 
-env:
-  WORKON_HOME: /tmp/.venv
-
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
@@ -265,7 +262,7 @@ jobs:
       - name: Set venv_path
         run: |
           NAME="${GITHUB_REPOSITORY##*/}-*"
-          venv_path=$(find ${{ env.WORKON_HOME }} -name "${NAME}")
+          venv_path=$(find ${WORKON_HOME} -name "${NAME}")
           echo "${venv_path}"
           echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
 
