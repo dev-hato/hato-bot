@@ -10,9 +10,6 @@ jobs:
   # リリース用のPRを作成するjob
   pr-release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9.10]
 
     steps:
       - uses: actions/checkout@v2

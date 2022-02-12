@@ -13,31 +13,17 @@ jobs:
   # testが落ちたらチェックが落ちる
   pr-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9.10]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
-      - name: Set up Python ${{ matrix.python-version }}
+      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: ${{ matrix.python-version }}
-      - run: |
-          KEY="${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv-v2"
-          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-            ${{ env.KEY }}-
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile

@@ -8,10 +8,6 @@ jobs:
   # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
   pr-check-yarn:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-      fail-fast: false
 
     steps:
       - uses: actions/checkout@v2
@@ -20,10 +16,11 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - run: echo "NODE_VERSION=16.x" >> "${GITHUB_ENV}"
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2.5.1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Install dependencies
         run: |
