@@ -35,7 +35,7 @@ jobs:
           do
             cp hato-bot/.github/linters/${f} sudden-death/.github/linters/
           done
-          for f in .gitleaks.toml .pre-commit-config.yaml package.json yarn.lock
+          for f in .gitleaks.toml .pre-commit-config.yaml .python-version package.json yarn.lock
           do
             cp hato-bot/${f} sudden-death/
           done
