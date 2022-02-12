@@ -5,16 +5,10 @@ name: pr-test
 on:
   pull_request:
 
-env:
-  WORKON_HOME: /tmp/.venv
-
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9.10]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,23 +17,12 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Python ${{ matrix.python-version }}
+      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: ${{ matrix.python-version }}
-      - run: |
-          KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
-          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-            ${{ env.KEY }}-
+          python-version: ${{env.PYTHON_VERSION }}
+          cache: pipenv
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
@@ -230,33 +213,18 @@ jobs:
 
   pr-super-lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9.10]
-        node-version: [16.x]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
+      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: ${{ matrix.python-version }}
-      - run: |
-          KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
-          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-            ${{ env.KEY }}-
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -276,25 +244,11 @@ jobs:
         run: |
           pipenv install --dev
 
-        # pipenvの仕様で、project直下の.venvの場合は .venv/lib/... にインストールされるが、
-        # WORKON_HOMEを設定してインストール先をずらした場合は
-        # .venv/hato-bot-(hash)/lib/... にインストールされる。
-        # 参考URL: https://bit.ly/2CnKOtJ
-        #
-        # ${GITHUB_REPOSITORY##*/}
-        # GITHUB_REPOSITORYは dev-hato/hato-bot のように入るので、
-        # シェル芸で hato-bot のみ取り出している。
-        # 他に持っていっても使えるようにした。
-        # 参考URL: https://bit.ly/2PP4IRt
-        #
-        # log出力のためにfindコマンド単体も置いている
-        #
         # 環境ファイルを使ってenvにsetしている
         # 参考URL: https://bit.ly/2KJhjqk
       - name: Set venv_path
         run: |
-          NAME="${GITHUB_REPOSITORY##*/}-*"
-          venv_path=$(find ${{ env.WORKON_HOME }} -name "${NAME}")
+          venv_path=$(pipenv --venv)
           echo "${venv_path}"
           echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
 
@@ -306,11 +260,11 @@ jobs:
         run: |
           DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
           cp -r ${{ env.venv_path }} "${DEST_PATH}"
-
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2.5.1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Install dependencies
         run: |
