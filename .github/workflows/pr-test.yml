@@ -270,6 +270,31 @@ jobs:
           yarn install -D
 #     - run: |
 #         echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
+      - name: Set PATH
+        run: |
+          echo /github/workspace/node_modules/.bin >> "${GITHUB_PATH}"
+          echo /usr/local/sbin >> "${GITHUB_PATH}"
+          echo /usr/local/bin >> "${GITHUB_PATH}"
+          echo /usr/sbin >> "${GITHUB_PATH}"
+          echo /usr/bin >> "${GITHUB_PATH}"
+          echo /sbin >> "${GITHUB_PATH}"
+          echo /bin >> "${GITHUB_PATH}"
+          echo /node_modules/.bin >> "${GITHUB_PATH}"
+          echo /venvs/ansible-lint/bin >> "${GITHUB_PATH}"
+          echo /venvs/black/bin >> "${GITHUB_PATH}"
+          echo /venvs/cfn-lint/bin >> "${GITHUB_PATH}"
+          echo /venvs/cpplint/bin >> "${GITHUB_PATH}"
+          echo /venvs/flake8/bin >> "${GITHUB_PATH}"
+          echo /venvs/isort/bin >> "${GITHUB_PATH}"
+          echo /venvs/mypy/bin >> "${GITHUB_PATH}"
+          echo /venvs/pylint/bin >> "${GITHUB_PATH}"
+          echo /venvs/snakefmt/bin >> "${GITHUB_PATH}"
+          echo /venvs/snakemake/bin >> "${GITHUB_PATH}"
+          echo /venvs/sqlfluff/bin >> "${GITHUB_PATH}"
+          echo /venvs/yamllint/bin >> "${GITHUB_PATH}"
+          echo /venvs/yq/bin >> "${GITHUB_PATH}"
+          echo /var/cache/dotnet/tools >> "${GITHUB_PATH}"
+          echo /usr/share/dotnet >> "${GITHUB_PATH}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
         env:
@@ -278,4 +303,4 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_PYTHON_ISORT: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
+          PATH: ${{ env.PATH }}
