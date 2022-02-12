@@ -5,9 +5,6 @@ name: pr-test-hato-bot
 on:
   pull_request:
 
-env:
-  WORKON_HOME: /tmp/.venv
-
 jobs:
   # unittestを行う
   # testが落ちたらチェックが落ちる
