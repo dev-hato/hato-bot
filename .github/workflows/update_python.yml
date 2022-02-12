@@ -123,7 +123,7 @@ jobs:
             console.log("call issues.addAssignees:")
             console.log(issues_add_assignees_params)
             await github.rest.issues.addAssignees(issues_add_assignees_params)
-      # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
+      # 既にバージョン同期のPRがある状態で、手動でバージョンを修正した場合、バージョン同期のPRを閉じる
       - name: Close PullRequest
         uses: actions/github-script@v5
         env:
