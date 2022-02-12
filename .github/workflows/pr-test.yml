@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version: [3.9.10]
 
     steps:
       - uses: actions/checkout@v2
@@ -232,7 +232,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version: [3.9.10]
         node-version: [16.x]
 
     steps:
@@ -316,10 +316,7 @@ jobs:
         run: |
           yarn install -D
       - run: |
-          PYTHONPATH="/github/workspace/"
-          PYTHONPATH+=":/github/workflow/.venv/lib/"
-          PYTHONPATH+="python${{ matrix.python-version }}/site-packages"
-          echo "PYTHONPATH=${PYTHONPATH}" >> "${GITHUB_ENV}"
+          echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
         uses: github/super-linter@v4.8.7
         env:
