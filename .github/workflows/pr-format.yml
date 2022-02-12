@@ -1,20 +1,14 @@
 ---
-name: pr-test
+name: pr-format
 
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
 
-env:
-  WORKON_HOME: /tmp/.venv
-
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,23 +17,12 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Python ${{ matrix.python-version }}
+      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: ${{ matrix.python-version }}
-      - run: |
-          KEY="${{ hashFiles('./.github/workflows/pr-test.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv"
-          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-            ${{ env.KEY }}-
+          python-version: ${{env.PYTHON_VERSION }}
+          cache: pipenv
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
@@ -110,7 +93,7 @@ jobs:
           GITHUB_HEAD="HEAD:refs/heads/fix-format-${HEAD_REF}"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -134,7 +117,7 @@ jobs:
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -163,7 +146,7 @@ jobs:
                                     )
             return create_pull_res.data.number
       - name: Assign a user
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ env.REPO_NAME == github.repository
           && (steps.install_pipenv.outcome == 'failure'
           || steps.format.outcome == 'failure')
@@ -183,7 +166,7 @@ jobs:
             await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にformat修正のPRがある状態で、手動でformatを修正した場合、format修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
