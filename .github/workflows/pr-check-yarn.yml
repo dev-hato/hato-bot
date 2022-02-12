@@ -16,7 +16,7 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - run: echo "NODE_VERSION=16.x" >> "${GITHUB_ENV}"
+      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2.5.1
         with:
