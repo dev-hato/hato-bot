@@ -77,7 +77,7 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - run: echo "TAG_NAME=latest" >> "$GITHUB_ENV"
+      - run: echo "TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")" >> "$GITHUB_ENV"
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - name: Start docker
