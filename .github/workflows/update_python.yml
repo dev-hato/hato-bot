@@ -1,12 +1,12 @@
 ---
-name: update-python-hato-bot
+name: update-python
 
 on:
   pull_request:
 
 jobs:
-  # .python-version をDockerイメージと同期させる
-  update-version-python-version:
+  # Pipfile をDockerイメージと同期させる
+  update-version-pipfile:
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
@@ -15,19 +15,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get Python version
-        id: get_python_version
-        run: |
-          image_name=hato_bot
-          docker build -t "${image_name}" .
-          DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
-          python_version=$(docker run ${image_name} sh -c "${DOCKER_CMD}")
-          echo "Python version:" "${python_version}"
-          echo "::set-output name=python_version::${python_version}"
-      - name: Update versions
-        run: |
-          PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
-          echo "${PYTHON_VERSION}" > .python-version
+      - run: sed -i -e "s/^python_version = \".*\"$/python_version = \"$(cat .python-version)\"/g" Pipfile
       # 差分があったときは差分を出力する
       - name: Show diff
         id: diff
@@ -52,7 +40,7 @@ jobs:
           REPO_URL="https://"
           REPO_URL+="${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/"
           REPO_URL+="${{github.repository}}.git"
-          GITHUB_HEAD="HEAD:refs/heads/fix-version-${HEAD_REF}-python-version"
+          GITHUB_HEAD="HEAD:refs/heads/fix-version-${HEAD_REF}-pipfile"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
         uses: actions/github-script@v5
@@ -68,7 +56,7 @@ jobs:
             const pulls_list_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:fix-version-" + HEAD_REF + "-python-version",
+              head: "dev-hato:fix-version-" + HEAD_REF + '-pipfile',
               base: HEAD_REF,
               state: "open"
             }
@@ -90,12 +78,12 @@ jobs:
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
             const number = "#${{github.event.pull_request.number}}"
-            let title = ".python-versionを直してあげたよ！PRをマージしてね！ "
+            let title = "Pipfileを直してあげたよ！PRをマージしてね！ "
             title += number
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:fix-version-" + HEAD_REF + "-python-version",
+              head: "dev-hato:fix-version-" + HEAD_REF + '-pipfile',
               base: HEAD_REF,
               title,
               body: "鳩の唐揚げおいしい！😋😋😋 " + number
@@ -134,7 +122,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const HEAD_REF = process.env["HEAD_REF"]
-            const head_name = "fix-version-" + HEAD_REF + "-python-version"
+            const head_name = "fix-version-" + HEAD_REF + '-pipfile'
             const common_params = {
               owner: context.repo.owner,
               repo: context.repo.repo
