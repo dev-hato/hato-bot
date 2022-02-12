@@ -262,7 +262,7 @@ jobs:
       - name: Set venv_path
         run: |
           NAME="${GITHUB_REPOSITORY##*/}-*"
-          venv_path=$(find ${WORKON_HOME} -name "${NAME}")
+          venv_path=$(pipenv --venv)
           echo "${venv_path}"
           echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
 
