@@ -70,7 +70,7 @@ jobs:
       - run: |
           echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
-        uses: github/super-linter@v4.8.7
+        uses: github/super-linter/slim@v4.8.7
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
@@ -80,3 +80,5 @@ jobs:
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
           PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
+      - name: Lint dotenv
+        uses: dotenv-linter/action-dotenv-linter@v2.15.0
