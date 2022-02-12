@@ -1,5 +1,5 @@
 ---
-name: update-python
+name: update-python-hato-bot
 
 on:
   pull_request:
