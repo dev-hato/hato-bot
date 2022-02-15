@@ -19,7 +19,8 @@ RUN apt-get update && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
-    rm -rf ~/.cache
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* ~/.cache
 
 COPY *.py ./
 COPY library library
