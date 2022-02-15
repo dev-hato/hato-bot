@@ -5,13 +5,7 @@ volumes:
     driver: "local"
 services:
   postgres:
-    build:
-      dockerfile: ./Dockerfile
-      context: ./pgsql
-      cache_from:
-        - ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
-        - ghcr.io/dev-hato/hato-bot/postgres
-    image: ghcr.io/dev-hato/hato-bot/postgres:${TAG_NAME}
+    image: postgres:14.2-bullseye
     environment:
       POSTGRES_PASSWORD: password
     restart: always
