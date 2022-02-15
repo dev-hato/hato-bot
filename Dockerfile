@@ -2,7 +2,7 @@
 FROM debian:buster-slim AS commit-hash
 COPY . /
 RUN apt-get update \
-    && apt-get install -y  --no-install-recommends git=1:2.20.1-2+deb10u3 \
+    && apt-get install -y  --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
 FROM python:3.9.10-slim-buster
@@ -14,7 +14,7 @@ COPY Pipfile Pipfile
 # Pythonライブラリのインストール時に必要なパッケージ (Pythonライブラリインストール後にアンインストール)
 # * git: Pythonライブラリのインストールの際に必要
 RUN apt-get update && \
-    apt-get install -y  --no-install-recommends git=1:2.20.1-2+deb10u3 && \
+    apt-get install -y  --no-install-recommends git && \
     pip install pipenv==2022.1.8 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
