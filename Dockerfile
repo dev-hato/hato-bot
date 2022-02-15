@@ -1,11 +1,11 @@
 # バージョン情報に表示する commit hash を埋め込む
-FROM debian:buster-slim AS commit-hash
+FROM debian:bullseye-slim AS commit-hash
 COPY . /
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.9.10-slim-buster
+FROM python:3.9.10-slim-bullseye
 
 WORKDIR /usr/src/app
 
