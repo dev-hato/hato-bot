@@ -1,30 +1,26 @@
 # バージョン情報に表示する commit hash を埋め込む
-FROM alpine:3.15.0 AS commit-hash
+FROM debian:bullseye-slim AS commit-hash
 COPY . /
-RUN apk add --no-cache -U git \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.9.10-alpine
+FROM python:3.9.10-slim-bullseye
 
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
 
-# 実行時に必要なパッケージ (グループ名: .used-packages)
-# * postgresql-libs: psycopg2を使用する際に必要
-# * libjpeg-turbo: Pillowを使用する際に必要
-#
-# Pythonライブラリのインストール時に必要なパッケージ (グループ名: .build-deps, Pythonライブラリインストール後にアンインストール)
-# * jpeg-dev, zlib-dev: Pillowのインストールの際に必要
-# * gcc, musl-dev, postgresql-dev: psycopg2のインストールの際に必要
+# Pythonライブラリのインストール時に必要なパッケージ (Pythonライブラリインストール後にアンインストール)
 # * git: Pythonライブラリのインストールの際に必要
-RUN apk add --no-cache -t .used-packages postgresql-libs libjpeg-turbo && \
-    apk add --no-cache -t .build-deps jpeg-dev zlib-dev gcc musl-dev postgresql-dev git && \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
     pip install pipenv==2022.1.8 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
-    apk --purge del .build-deps && \
-    rm -rf ~/.cache
+    apt-get remove -y git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* ~/.cache
 
 COPY *.py ./
 COPY library library
