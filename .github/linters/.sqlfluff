@@ -1,0 +1,2 @@
+[sqlfluff:rules:L029]
+quoted_identifiers_policy = aliases
