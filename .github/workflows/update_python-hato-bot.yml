@@ -12,6 +12,7 @@ jobs:
       DOCKER_BUILDKIT: 1
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v2
         with:
