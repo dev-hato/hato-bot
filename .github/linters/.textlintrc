@@ -2,6 +2,9 @@
   "filters": {},
   "rules": {
     "@textlint-ja/no-insert-dropping-sa": true,
+    "@proofdict/proofdict": {
+      "dictURL": "https://azu.github.io/proof-dictionary/"
+    },
     "abbr-within-parentheses": true,
     "footnote-order": true,
     "general-novel-style-ja": {
