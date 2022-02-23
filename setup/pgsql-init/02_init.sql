@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS vocabulary
 (
-    "no" SERIAL UNIQUE,
+    no SERIAL UNIQUE,
     word TEXT
 );
 CREATE TABLE IF NOT EXISTS slack_client_msg_id
