@@ -11,19 +11,17 @@ from functools import reduce
 from random import choices
 
 
-class AbstractOmikujiResults(ABC)
+class AbstractOmikujiResults(ABC):
 
-
-"""
+    """
     おみくじの結果一覧の抽象クラス
     """
-pass
+
+    pass
 
 
-"""
-Enumを継承している
-"""
 
+# Enumを継承している
 AbstractOmikujiResults.register(Enum)
 
 
@@ -72,10 +70,7 @@ class Omikuji:
         )[0]
 
 
-"""
-以下おみくじの設定
-"""
-
+# 以下おみくじの設定
 
 class OmikujiResults(AbstractOmikujiResults):
     DaiKichi = auto()
