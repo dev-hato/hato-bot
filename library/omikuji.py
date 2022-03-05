@@ -52,7 +52,7 @@ class Omikuji:
         各エントリーのテスト、 排出率の合計が1であること、エントリーのキーが不整合のテストをする
         """
         for entry in values(self.entries):
-            entry.test
+            entry.test()
 
         assert reduce(lambda acc, cur: acc + cur.rate, self.entries, 0) == 1.0
         assert len(filter(lambda key, value: key !=
