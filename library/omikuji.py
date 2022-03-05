@@ -31,7 +31,7 @@ class OmikujiResult:
     message: str
 
     def test(self):
-        assert type(key).name == 'OmikujiResults'
+        assert isinstance(key, AbstractOmikujiResults)
         assert rate < 1
         assert message != ''
 
