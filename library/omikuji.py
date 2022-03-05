@@ -10,18 +10,21 @@ from dataclasses import dataclass
 from functools import reduce
 from random import choices
 
+
 class AbstractOmikujiResults(ABC)
-    """
+
+
+"""
     おみくじの結果一覧の抽象クラス
     """
-    pass
-    
+pass
+
+
 """
 Enumを継承している
 """
 
 AbstractOmikujiResults.register(Enum)
-
 
 
 @dataclass
@@ -55,14 +58,15 @@ class Omikuji:
             entry.test
 
         assert reduce(lambda acc, cur: acc + cur.rate, self.entries, 0) == 1.0
-        assert len(filter(lambda key, value: key != value.key, self.entries)) == 0
+        assert len(filter(lambda key, value: key !=
+                   value.key, self.entries)) == 0
 
     def draw(self):
         """
         おみくじを引く
         """
         return choices(
-            population=self.entries, 
+            population=self.entries,
             weights=map(lambda entry: entry.rate, self.entries)
             k=1
         )[0]
@@ -71,6 +75,8 @@ class Omikuji:
 """
 おみくじメイン処理
 """
+
+
 class OmikujiResults(AbstractOmikujiResults):
     DaiKichi = auto()
     ChuKichi = auto()
@@ -79,6 +85,7 @@ class OmikujiResults(AbstractOmikujiResults):
     Kichi = auto()
     Kyo = auto()
     DaiKyo = auto()
+
 
 omikuji = Omikuji(entries={
     OmikujiResults.DaiKichi: OmikujiResult(OmikujiResults.DaiKichi, 0.02, ":tada: 大吉 何でもうまくいく!!気がする!!"),
@@ -90,8 +97,10 @@ omikuji = Omikuji(entries={
     OmikujiResults.DaiKyo: OmikujiResult(OmikujiResults.DaiKyo, 0.0025, ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"),
 })
 
+
 def test():
     omikuji.test()
-    
-def draw(): 
+
+
+def draw():
     return omikuji.draw().message
