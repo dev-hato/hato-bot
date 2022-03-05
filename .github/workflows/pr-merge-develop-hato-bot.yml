@@ -11,16 +11,13 @@ jobs:
   # masterとdevelopの間でコミットログに差異が出ないようにする
   pr-master-to-develop:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -37,7 +34,7 @@ jobs:
                                                 pulls_list_params)
             return pulls.length
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

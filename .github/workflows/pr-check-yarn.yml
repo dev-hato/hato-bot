@@ -8,22 +8,19 @@ jobs:
   # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
   pr-check-yarn:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-      fail-fast: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.5.1
+      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3.0.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Install dependencies
         run: |
@@ -55,7 +52,7 @@ jobs:
           GITHUB_HEAD="HEAD:refs/heads/yarn-${HEAD_REF}"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -80,7 +77,7 @@ jobs:
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -110,7 +107,7 @@ jobs:
                                     )
             return create_pull_res.data.number
       - name: Assign a user
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ env.REPO_NAME == github.repository
           && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0
@@ -130,7 +127,7 @@ jobs:
       # 既にpackage.json, yarn.lock修正のPRがある状態で、
       # 手動でpackage.json, yarn.lockを修正した場合、修正のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository

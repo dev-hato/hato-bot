@@ -4,40 +4,27 @@ name: pr-test-hato-bot
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
-
-env:
-  WORKON_HOME: /tmp/.venv
+  push:
+    branches:
+      - master
+      - develop
 
 jobs:
   # unittestを行う
   # testが落ちたらチェックが落ちる
   pr-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9, 3.8]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: "recursive"
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.3.2
+      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python-version }}
-      - run: |
-          KEY="${{ hashFiles('./.github/workflows/pr-test-hato-bot.yml') }}"
-          KEY+="-${{ runner.os }}-${{ matrix.python-version }}-Dockerfile"
-          KEY+="-${{ hashFiles('./Dockerfile') }}-pipenv-v2"
-          echo "KEY=${KEY}" >> "${GITHUB_ENV}"
-      - name: pipenv cache
-        uses: actions/cache@v2.1.7
-        with:
-          key: ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-          path: ${{ env.WORKON_HOME }}
-          restore-keys: |
-            ${{ env.KEY }}-${{ hashFiles('./Pipfile') }}
-            ${{ env.KEY }}-
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pipenv
       - name: Install pipenv
         run: |
           file_name=Dockerfile
@@ -63,3 +50,58 @@ jobs:
       - name: Test
         run: |
           pipenv run python -m unittest
+
+  pr-docker:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: setup
+    env:
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set .env
+        run: cp .env.example .env
+        working-directory: .
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - run: echo "TAG_NAME=latest" >> "$GITHUB_ENV"
+      - name: Build docker image
+        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
+      - name: Start docker
+        run: docker-compose up -d
+      # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
+      - name: Test
+        run: |
+          cmd="curl -XPOST -d '{\"message\": \"help\"}'"
+          cmd+=" -H \"Content-Type: application/json\""
+          cmd+=" http://localhost:3000/healthcheck"
+          cmd_="${cmd} -w '%{http_code}' -o /dev/null -s"
+          start_unixtime=$(date +%s)
+
+          while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] \
+                && (! (docker-compose ps | grep -q Exit))
+          do
+            if [ "$(eval "${cmd_}")" = 200 ] && eval "${cmd}"
+            then
+              docker-compose logs
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          docker-compose logs
+          exit 1

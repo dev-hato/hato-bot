@@ -19,7 +19,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set .env
@@ -42,37 +42,10 @@ jobs:
         if: ${{ github.event_name == 'release' }}
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
-      - name: Start docker
-        run: docker-compose up -d
-      # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
-      - name: Test
-        run: |
-          cmd="curl -XPOST -d '{\"message\": \"help\"}'"
-          cmd+=" -H \"Content-Type: application/json\""
-          cmd+=" http://localhost:3000/healthcheck"
-          cmd_="${cmd} -w '%{http_code}' -o /dev/null -s"
-          start_unixtime=$(date +%s)
-
-          while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] \
-                && (! (docker-compose ps | grep -q Exit))
-          do
-            if [ "$(eval "${cmd_}")" = 200 ] && eval "${cmd}"
-            then
-              docker-compose logs
-              exit 0
-            fi
-
-            sleep 1
-          done
-
-          docker-compose logs
-          exit 1
       - run: docker-compose push
       - run: |
-          for image in postgres hato-bot; do
-            image_name="ghcr.io/dev-hato/hato-bot/${image}"
-            latest_tag="${image_name}:latest"
-            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
-            docker push "${latest_tag}"
-          done
+          image_name="ghcr.io/dev-hato/hato-bot/hato-bot"
+          latest_tag="${image_name}:latest"
+          docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
+          docker push "${latest_tag}"
         if: ${{ github.event_name == 'release' }}
