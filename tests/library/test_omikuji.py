@@ -4,7 +4,7 @@ omikujiライブラリのテスト
 
 import unittest
 from library.omikuji import AbstractOmikujiResults, OmikujiResult, Omikuji, test
-    
+
 
 class TestOmikuji(unittest.TestCase):
     """
@@ -16,7 +16,6 @@ class TestOmikuji(unittest.TestCase):
         おみくじの設定が正常か
         """
         test()
-
 
     def test_omikuji_minimum:
         """
