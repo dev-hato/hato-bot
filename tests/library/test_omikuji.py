@@ -4,7 +4,7 @@ omikujiライブラリのテスト
 
 import unittest
 from library.omikuji import AbstractOmikujiResults, OmikujiResult, Omikuji, test
-from Enum import auto
+from enum import auto
 
 
 class TestOmikuji(unittest.TestCase):
