@@ -20,7 +20,6 @@ class AbstractOmikujiResults(ABC):
     pass
 
 
-
 # Enumを継承している
 AbstractOmikujiResults.register(Enum)
 
