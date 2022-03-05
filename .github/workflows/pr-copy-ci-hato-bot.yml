@@ -31,11 +31,7 @@ jobs:
           find hato-bot/${worklows_path} -type f \
                                          -not -name "*hato-bot.yml" \
                                          -exec cp {} "${DEST_PATH}" \;
-          for f in .markdown-lint.yml .python-lint .python-lint .textlintrc
-          do
-            cp hato-bot/.github/linters/${f} sudden-death/.github/linters/
-          done
-          for f in .gitleaks.toml .pre-commit-config.yaml .python-version package.json yarn.lock
+          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .pre-commit-config.yaml .python-version package.json yarn.lock
           do
             cp hato-bot/${f} sudden-death/
           done
