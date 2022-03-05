@@ -31,9 +31,8 @@ class OmikujiResult:
     message: str
 
     def test(self):
-        assert isinstance(key, AbstractOmikujiResults)
-        assert rate < 1
-        assert message != ''
+        assert self.rate < 1
+        assert self.message != ''
 
 
 class Omikuji:
@@ -51,22 +50,21 @@ class Omikuji:
 
         各エントリーのテスト、 排出率の合計が1であること、エントリーのキーが不整合のテストをする
         """
-        for entry in values(self.entries):
+        for entry in self.entries.values():
             entry.test()
 
-        assert reduce(lambda acc, cur: acc + cur.rate, self.entries, 0) == 1.0
-        assert len(filter(lambda key, value: key !=
-                   value.key, self.entries)) == 0
+        assert round(reduce(lambda acc, cur: acc + cur.rate, self.entries.values(), 0), 1) == 1
+        assert len(list(filter(lambda item: (item[0] != item[1].key), self.entries.items()))) == 0
 
     def draw(self):
         """
         おみくじを引く
         """
         return choices(
-            population=self.entries,
-            weights=map(lambda entry: entry.rate, self.entries),
+            population=list(self.entries.items()),
+            weights=map(lambda entry: entry.rate, self.entries.values()),
             k=1
-        )[0]
+        )[0][1]
 
 
 # 以下おみくじの設定
