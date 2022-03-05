@@ -84,7 +84,7 @@ class OmikujiResults(AbstractOmikujiResults):
 omikuji = Omikuji(entries={
     OmikujiResults.DaiKichi: OmikujiResult(OmikujiResults.DaiKichi, 0.02, ":tada: 大吉 何でもうまくいく!!気がする!!"),
     OmikujiResults.ChuKichi: OmikujiResult(OmikujiResults.ChuKichi, 0.2, ":smile: 中吉 そこそこうまくいくかも!?"),
-    OmikujiResults.SyoKichi: OmikujiResult(OmikujiResults.ShoKichi, 0.38, ":smily: 小吉 なんとなくうまくいくかも!?"),
+    OmikujiResults.ShoKichi: OmikujiResult(OmikujiResults.ShoKichi, 0.38, ":smily: 小吉 なんとなくうまくいくかも!?"),
     OmikujiResults.Kichi: OmikujiResult(OmikujiResults.Kichi, 0.3, ":smirk: 吉 まあうまくいくかも!?"),
     OmikujiResults.HatoKichi: OmikujiResult(OmikujiResults.HatoKichi, 0.09, ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"),
     OmikujiResults.Kyo: OmikujiResult(OmikujiResults.Kyo, 0.0075, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"),
