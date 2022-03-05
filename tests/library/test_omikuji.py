@@ -11,13 +11,13 @@ class TestOmikuji(unittest.TestCase):
     おみくじのテスト
     """
 
-    def test_omikuji_config:
+    def test_omikuji_config(self):
         """
         おみくじの設定が正常か
         """
         test()
 
-    def test_omikuji_minimum:
+    def test_omikuji_minimum(self):
         """
         おみくじの実装が正常か
         """

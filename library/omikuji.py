@@ -41,7 +41,7 @@ class OmikujiResult:
 
 class Omikuji:
     """
-    おみくじのメイン処理
+    おみくじのコアロジック
     ガチャではないので排出率を公開するメソッドはあえて実装されていない
     """
 
@@ -73,7 +73,7 @@ class Omikuji:
 
 
 """
-おみくじメイン処理
+以下おみくじの設定
 """
 
 
@@ -99,8 +99,15 @@ omikuji = Omikuji(entries={
 
 
 def test():
+    """
+    おみくじの設定テスト
+    """
+
     omikuji.test()
 
 
 def draw():
+    """
+    おみくじ抽選
+    """
     return omikuji.draw().message
