@@ -11,8 +11,8 @@ from random import choices
 from typing import TypeVar, Generic
 
 
+TOmikujiEnum = TypeVar('TOmikujiEnum')  # type: ignore
 
-TOmikujiEnum = TypeVar('TOmikujiEnum') # type: ignore
 
 @dataclass
 class OmikujiResult:
@@ -76,44 +76,44 @@ class OmikujiResults(Enum):
 
 
 omikuji = Omikuji[OmikujiResults](entries={
-        OmikujiResults.DAI_KICHI: OmikujiResult(
-                OmikujiResults.DAI_KICHI,
-                0.02,
-                ":tada: 大吉 何でもうまくいく!!気がする!!"
-                ),
-        OmikujiResults.CHU_KICHI: OmikujiResult(
-                OmikujiResults.CHU_KICHI,
-                0.2,
-                ":smile: 中吉 そこそこうまくいくかも!?"
-                ),
-        OmikujiResults.SHO_KICHI: OmikujiResult(
-                OmikujiResults.SHO_KICHI,
-                0.38,
-                ":smily: 小吉 なんとなくうまくいくかも!?"
-                ),
+    OmikujiResults.DAI_KICHI: OmikujiResult(
+        OmikujiResults.DAI_KICHI,
+        0.02,
+        ":tada: 大吉 何でもうまくいく!!気がする!!"
+    ),
+    OmikujiResults.CHU_KICHI: OmikujiResult(
+        OmikujiResults.CHU_KICHI,
+        0.2,
+        ":smile: 中吉 そこそこうまくいくかも!?"
+    ),
+    OmikujiResults.SHO_KICHI: OmikujiResult(
+        OmikujiResults.SHO_KICHI,
+        0.38,
+        ":smily: 小吉 なんとなくうまくいくかも!?"
+    ),
 
-        OmikujiResults.KICHI: OmikujiResult(
-                OmikujiResults.KICHI,
-                0.3,
-                ":smirk: 吉 まあうまくいくかも!?"
-                ),
-        OmikujiResults.HATO_KICHI: OmikujiResult(
-                OmikujiResults.HATO_KICHI,
-                0.09,
-                ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
-                ),
+    OmikujiResults.KICHI: OmikujiResult(
+        OmikujiResults.KICHI,
+        0.3,
+        ":smirk: 吉 まあうまくいくかも!?"
+    ),
+    OmikujiResults.HATO_KICHI: OmikujiResult(
+        OmikujiResults.HATO_KICHI,
+        0.09,
+        ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
+    ),
 
-        OmikujiResults.KYO: OmikujiResult(
-                OmikujiResults.KYO,
-                0.0075,
-                ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
-                ),
+    OmikujiResults.KYO: OmikujiResult(
+        OmikujiResults.KYO,
+        0.0075,
+        ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+    ),
 
-        OmikujiResults.DAI_KYO: OmikujiResult(
-                OmikujiResults.DAI_KYO,
-                0.0025,
-                ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
-                ),
+    OmikujiResults.DAI_KYO: OmikujiResult(
+        OmikujiResults.DAI_KYO,
+        0.0025,
+        ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
+    ),
 
 })
 
