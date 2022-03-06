@@ -3,8 +3,8 @@ omikujiライブラリのテスト
 """
 
 import unittest
-from library.omikuji import AbstractOmikujiResults, OmikujiResult, Omikuji, test
-from enum import auto
+from library.omikuji import OmikujiResult, Omikuji, test
+from enum import Enum, auto
 
 
 class TestOmikuji(unittest.TestCase):
@@ -23,11 +23,11 @@ class TestOmikuji(unittest.TestCase):
         おみくじの実装が正常か
         """
 
-        class TestOmikujiResults(AbstractOmikujiResults):
+        class TestOmikujiResults(Enum):
             Kichi = auto()
             SueKichi = auto()
 
-        testOmikuji = Omikuji(entries={
+        testOmikuji = Omikuji[TestOmikujiResults](entries={
             TestOmikujiResults.Kichi: OmikujiResult(TestOmikujiResults.Kichi, 0.5, "吉"),
             TestOmikujiResults.SueKichi: OmikujiResult(TestOmikujiResults.SueKichi, 0.5, "末吉"),
         })
