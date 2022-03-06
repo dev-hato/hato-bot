@@ -14,6 +14,7 @@ from typing import TypeVar, Generic
 
 TOmikujiEnum = TypeVar('TOmikujiEnum')
 
+
 @dataclass
 class OmikujiResult:
     key: TOmikujiEnum
