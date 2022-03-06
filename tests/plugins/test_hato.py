@@ -242,7 +242,9 @@ class TestOmikuji(unittest.TestCase):
     def test_omikuji(self):
         client1 = TestClient()
         omikuji(client1)
-        self.assertIn(client1.get_post_message(), map(lambda e: e.message, omikuji.entries.values))
+        self.assertIn(client1.get_post_message(), map(
+            lambda e: e.message, omikuji.entries.values))
+
 
 if __name__ == '__main__':
     unittest.main()
