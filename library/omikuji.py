@@ -4,7 +4,6 @@
 おみくじを返す
 """
 
-from abc import ABC
 from enum import Enum, auto
 from dataclasses import dataclass
 from functools import reduce
@@ -12,11 +11,15 @@ from random import choices
 from typing import TypeVar, Generic
 
 
-TOmikujiEnum = TypeVar('TOmikujiEnum')
 
+TOmikujiEnum = TypeVar('TOmikujiEnum') # type: ignore
 
 @dataclass
 class OmikujiResult:
+    """
+    おみくじの引いた結果を示すデータクラス
+    排出率の調整もここで行う
+    """
     key: TOmikujiEnum
     rate: float
     message: str
@@ -55,7 +58,7 @@ class Omikuji(Generic[TOmikujiEnum]):
         """
         return choices(
             population=list(self.entries.items()),
-            weights=map(lambda entry: entry.rate, self.entries.values()),
+            weights=list(map(lambda entry: entry.rate, self.entries.values())),
             k=1
         )[0][1]
 
@@ -63,23 +66,55 @@ class Omikuji(Generic[TOmikujiEnum]):
 # 以下おみくじの設定
 
 class OmikujiResults(Enum):
-    DaiKichi = auto()
-    ChuKichi = auto()
-    ShoKichi = auto()
-    HatoKichi = auto()
-    Kichi = auto()
-    Kyo = auto()
-    DaiKyo = auto()
+    DAI_KICHI = auto()
+    CHU_KICHI = auto()
+    SHO_KICHI = auto()
+    HATO_KICHI = auto()
+    KICHI = auto()
+    KYO = auto()
+    DAI_KYO = auto()
 
 
 omikuji = Omikuji[OmikujiResults](entries={
-    OmikujiResults.DaiKichi: OmikujiResult(OmikujiResults.DaiKichi, 0.02, ":tada: 大吉 何でもうまくいく!!気がする!!"),
-    OmikujiResults.ChuKichi: OmikujiResult(OmikujiResults.ChuKichi, 0.2, ":smile: 中吉 そこそこうまくいくかも!?"),
-    OmikujiResults.ShoKichi: OmikujiResult(OmikujiResults.ShoKichi, 0.38, ":smily: 小吉 なんとなくうまくいくかも!?"),
-    OmikujiResults.Kichi: OmikujiResult(OmikujiResults.Kichi, 0.3, ":smirk: 吉 まあうまくいくかも!?"),
-    OmikujiResults.HatoKichi: OmikujiResult(OmikujiResults.HatoKichi, 0.09, ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"),
-    OmikujiResults.Kyo: OmikujiResult(OmikujiResults.Kyo, 0.0075, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"),
-    OmikujiResults.DaiKyo: OmikujiResult(OmikujiResults.DaiKyo, 0.0025, ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"),
+        OmikujiResults.DAI_KICHI: OmikujiResult(
+                OmikujiResults.DAI_KICHI,
+                0.02,
+                ":tada: 大吉 何でもうまくいく!!気がする!!"
+                ),
+        OmikujiResults.CHU_KICHI: OmikujiResult(
+                OmikujiResults.CHU_KICHI,
+                0.2,
+                ":smile: 中吉 そこそこうまくいくかも!?"
+                ),
+        OmikujiResults.SHO_KICHI: OmikujiResult(
+                OmikujiResults.SHO_KICHI,
+                0.38,
+                ":smily: 小吉 なんとなくうまくいくかも!?"
+                ),
+
+        OmikujiResults.KICHI: OmikujiResult(
+                OmikujiResults.KICHI,
+                0.3,
+                ":smirk: 吉 まあうまくいくかも!?"
+                ),
+        OmikujiResults.HATO_KICHI: OmikujiResult(
+                OmikujiResults.HATO_KICHI,
+                0.09,
+                ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
+                ),
+
+        OmikujiResults.KYO: OmikujiResult(
+                OmikujiResults.KYO,
+                0.0075,
+                ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+                ),
+
+        OmikujiResults.DAI_KYO: OmikujiResult(
+                OmikujiResults.DAI_KYO,
+                0.0025,
+                ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
+                ),
+
 })
 
 
