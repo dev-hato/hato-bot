@@ -16,6 +16,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Set org name
+        uses: actions/github-script@v6
+        if: env.REPO_NAME == github.repository
+        id: set_org_name
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script:
+            return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v6
         id: get_pull_requests
@@ -25,7 +34,7 @@ jobs:
             const pulls_list_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:master",
+              head: "${{steps.set_org_name.outputs.result}}:master",
               base: "develop",
               state: "open"
             }
@@ -44,7 +53,7 @@ jobs:
               repo: context.repo.repo
             }
             const pulls_create_params = {
-              head: "dev-hato:master",
+              head: "${{steps.set_org_name.outputs.result}}:master",
               base: "develop",
               title: "master -> develop",
               body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",

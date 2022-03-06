@@ -16,10 +16,19 @@ jobs:
         with:
           fetch-depth: 0
           path: hato-bot
+      - name: Set org name
+        uses: actions/github-script@v6
+        if: env.REPO_NAME == github.repository
+        id: set_org_name
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script:
+            return process.env.GITHUB_REPOSITORY.split('/')[0]
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          repository: dev-hato/sudden-death
+          repository: ${{steps.set_org_name.outputs.result}}/sudden-death
           path: sudden-death
       - name: Copy CI
         run: |
@@ -54,7 +63,7 @@ jobs:
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
-          REPO_URL="git@github.com:dev-hato/sudden-death.git"
+          REPO_URL="git@github.com:${{steps.set_org_name.outputs.result}}/sudden-death.git"
           GITHUB_HEAD="HEAD:refs/heads/pr-copy-ci"
           GIT_SSH_COMMAND="ssh"
           GIT_SSH_COMMAND+=" -i deploy_key.pem"

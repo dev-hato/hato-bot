@@ -23,6 +23,15 @@ jobs:
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
           echo "::set-output name=result::${result}"
+      - name: Set org name
+        uses: actions/github-script@v6
+        if: env.REPO_NAME == github.repository
+        id: set_org_name
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script:
+            return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v6
         if: ${{ steps.get_diff.outputs.result != '' }}
@@ -33,7 +42,7 @@ jobs:
             const pulls_list_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:develop",
+              head: "${{steps.set_org_name.outputs.result}}:develop",
               base: "master",
               state: "open"
             }
@@ -53,7 +62,7 @@ jobs:
               repo: context.repo.repo
             }
             const pulls_create_params = {
-              head: "dev-hato:develop",
+              head: "${{steps.set_org_name.outputs.result}}:develop",
               base: "master",
               title: "リリース",
               body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
