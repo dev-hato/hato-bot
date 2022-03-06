@@ -44,8 +44,10 @@ class Omikuji(Generic[TOmikujiEnum]):
         for entry in self.entries.values():
             entry.test()
 
-        assert round(reduce(lambda acc, cur: acc + cur.rate, self.entries.values(), 0), 1) == 1
-        assert len(list(filter(lambda item: (item[0] != item[1].key), self.entries.items()))) == 0
+        assert round(reduce(lambda acc, cur: acc + cur.rate,
+                     self.entries.values(), 0), 1) == 1
+        assert len(
+            list(filter(lambda item: (item[0] != item[1].key), self.entries.items()))) == 0
 
     def draw(self):
         """
