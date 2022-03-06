@@ -21,7 +21,6 @@ class OmikujiResult:
     message: str
 
     def test(self):
-        assert isinstance(self.key, Enum)
         assert self.rate < 1
         assert self.message != ''
 
@@ -49,7 +48,7 @@ class Omikuji(Generic[TOmikujiEnum]):
         assert len(
             list(filter(lambda item: (item[0] != item[1].key), self.entries.items()))) == 0
 
-    def draw(self):
+    def draw(self) -> OmikujiResult:
         """
         おみくじを引く
         """
@@ -91,7 +90,7 @@ def test():
     omikuji.test()
 
 
-def draw():
+def draw() -> str:
     """
     おみくじ抽選
     """
