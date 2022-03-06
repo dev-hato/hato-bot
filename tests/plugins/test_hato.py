@@ -246,7 +246,7 @@ class TestOmikuji(unittest.TestCase):
             client1.get_post_message(),
             list(map(
                 lambda e: e.message,
-                omikuji_instance.entries.values
+                omikuji_instance.entries.values()
             ))
         )
 
