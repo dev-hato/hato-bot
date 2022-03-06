@@ -22,6 +22,7 @@ from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
+from library.omikuji import draw as omikuji_draw
 logger = getLogger(__name__)
 
 
@@ -54,6 +55,7 @@ def help_message(client: BaseClient):
         'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 ',
         '>< [text] ... 文字列[text]を吹き出しで表示する。',
         'にゃーん ... 「よしよし」と返す。',
+        'おみくじ ... おみくじを引いて返す。',
         'version ... バージョン情報を表示する。',
         '',
         '詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!',
@@ -273,3 +275,10 @@ def yoshiyoshi(client: BaseClient):
     logger.debug("%s called 'hato yoshiyoshi'", client.get_send_user())
     logger.debug("%s app called 'hato yoshiyoshi'", client.get_type())
     client.post('よしよし')
+
+
+def omikuji(client: BaseClient):
+    """
+    おみくじ結果を返す
+    """
+    client.post(message=omikuji_draw())
