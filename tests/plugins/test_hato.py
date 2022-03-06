@@ -14,7 +14,7 @@ from plugins.hato import split_command, amesh, altitude, yoshiyoshi, omikuji
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 
-from library.omikuji import omikuji
+from library.omikuji import omikuji as omikuji_instance
 
 
 class TestSplitCommand(unittest.TestCase):
@@ -243,7 +243,7 @@ class TestOmikuji(unittest.TestCase):
         client1 = TestClient()
         omikuji(client1)
         self.assertIn(client1.get_post_message(), map(
-            lambda e: e.message, omikuji.entries.values))
+            lambda e: e.message, omikuji_instance.entries.values))
 
 
 if __name__ == '__main__':
