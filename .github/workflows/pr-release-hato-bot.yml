@@ -25,7 +25,6 @@ jobs:
           echo "::set-output name=result::${result}"
       - name: Set org name
         uses: actions/github-script@v6
-        if: env.REPO_NAME == github.repository
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
