@@ -3,8 +3,9 @@ omikujiライブラリのテスト
 """
 
 import unittest
-from library.omikuji import OmikujiResult, Omikuji, test
 from enum import Enum, auto
+
+from library.omikuji import OmikujiResult, Omikuji, test
 
 
 class TestOmikuji(unittest.TestCase):
@@ -12,7 +13,7 @@ class TestOmikuji(unittest.TestCase):
     おみくじのテスト
     """
 
-    def test_omikuji_config(self):
+    def test_omikuji_config():
         """
         おみくじの設定が正常か
         """
@@ -23,13 +24,16 @@ class TestOmikuji(unittest.TestCase):
         おみくじの実装が正常か
         """
 
-        class TestOmikujiResults(Enum):
-            Kichi = auto()
-            SueKichi = auto()
+        class DummyOmikujiResults(Enum):
+            """
+            テスト用のおみくじ結果Enum
+            """
+            KICHI = auto()
+            SUE_KICHI = auto()
 
-        testOmikuji = Omikuji[TestOmikujiResults](entries={
-            TestOmikujiResults.Kichi: OmikujiResult(TestOmikujiResults.Kichi, 0.5, "吉"),
-            TestOmikujiResults.SueKichi: OmikujiResult(TestOmikujiResults.SueKichi, 0.5, "末吉"),
+        testOmikuji = Omikuji[DummyOmikujiResults](entries={
+            DummyOmikujiResults.KICHI: OmikujiResult(DummyOmikujiResults.KICHI, 0.5, "吉"),
+            DummyOmikujiResults.SUE_KICHI: OmikujiResult(DummyOmikujiResults.SUE_KICHI, 0.5, "末吉"),
         })
 
-        self.assertIn(testOmikuji.draw().key, TestOmikujiResults)
+        self.assertIn(testOmikuji.draw().key, DummyOmikujiResults)

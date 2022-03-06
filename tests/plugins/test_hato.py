@@ -240,6 +240,9 @@ class TestOmikuji(unittest.TestCase):
     """
 
     def test_omikuji(self):
+        """
+        登録されたメッセージのいずれかが返ってくることのみ確認
+        """
         client1 = TestClient()
         omikuji(client1)
         self.assertIn(
