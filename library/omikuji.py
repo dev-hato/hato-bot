@@ -9,39 +9,30 @@ from enum import Enum, auto
 from dataclasses import dataclass
 from functools import reduce
 from random import choices
+from typing import TypeVar, Generic
 
 
-class AbstractOmikujiResults(ABC):
-
-    """
-    おみくじの結果一覧の抽象クラス
-    """
-
-    pass
-
-
-# Enumを継承している
-AbstractOmikujiResults.register(Enum)
-
+TOmikujiEnum = TypeVar('TOmikujiEnum')
 
 @dataclass
 class OmikujiResult:
-    key: AbstractOmikujiResults
+    key: TOmikujiEnum
     rate: float
     message: str
 
     def test(self):
+        assert isinstance(self.key, Enum)
         assert self.rate < 1
         assert self.message != ''
 
 
-class Omikuji:
+class Omikuji(Generic[TOmikujiEnum]):
     """
     おみくじのコアロジック
     ガチャではないので排出率を公開するメソッドはあえて実装されていない
     """
 
-    def __init__(self, entries: dict[AbstractOmikujiResults, OmikujiResult]):
+    def __init__(self, entries: dict[TOmikujiEnum, OmikujiResult]):
         self.entries = entries
 
     def test(self):
@@ -69,7 +60,7 @@ class Omikuji:
 
 # 以下おみくじの設定
 
-class OmikujiResults(AbstractOmikujiResults):
+class OmikujiResults(Enum):
     DaiKichi = auto()
     ChuKichi = auto()
     ShoKichi = auto()
@@ -79,7 +70,7 @@ class OmikujiResults(AbstractOmikujiResults):
     DaiKyo = auto()
 
 
-omikuji = Omikuji(entries={
+omikuji = Omikuji[OmikujiResults](entries={
     OmikujiResults.DaiKichi: OmikujiResult(OmikujiResults.DaiKichi, 0.02, ":tada: 大吉 何でもうまくいく!!気がする!!"),
     OmikujiResults.ChuKichi: OmikujiResult(OmikujiResults.ChuKichi, 0.2, ":smile: 中吉 そこそこうまくいくかも!?"),
     OmikujiResults.ShoKichi: OmikujiResult(OmikujiResults.ShoKichi, 0.38, ":smily: 小吉 なんとなくうまくいくかも!?"),
