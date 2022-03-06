@@ -32,7 +32,4 @@ class TestOmikuji(unittest.TestCase):
             TestOmikujiResults.SueKichi: OmikujiResult(TestOmikujiResults.SueKichi, 0.5, "末吉"),
         })
 
-        self.assertTrue(
-            testOmikuji.draw().message == "吉"
-            or testOmikuji.draw().message == "末吉"
-        )
+        self.assertIn(testOmikuji.draw().key, TestOmikujiResults)
