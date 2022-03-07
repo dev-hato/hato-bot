@@ -19,7 +19,6 @@ class TestOmikuji(unittest.TestCase):
         """
         self.assertIsNone(test())
 
-
     def test_omikuji_minimum(self):
         """
         おみくじの実装が正常か
