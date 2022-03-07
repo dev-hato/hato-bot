@@ -13,11 +13,12 @@ class TestOmikuji(unittest.TestCase):
     おみくじのテスト
     """
 
-    def test_omikuji_config():
+    def test_omikuji_config(self):
         """
         おみくじの設定が正常か
         """
-        test()
+        self.assertIsNone(test())
+
 
     def test_omikuji_minimum(self):
         """
@@ -31,9 +32,9 @@ class TestOmikuji(unittest.TestCase):
             KICHI = auto()
             SUE_KICHI = auto()
 
-        testOmikuji = Omikuji[DummyOmikujiResults](entries={
+        dummy_omikuji = Omikuji[DummyOmikujiResults](entries={
             DummyOmikujiResults.KICHI: OmikujiResult(DummyOmikujiResults.KICHI, 0.5, "吉"),
             DummyOmikujiResults.SUE_KICHI: OmikujiResult(DummyOmikujiResults.SUE_KICHI, 0.5, "末吉"),
         })
 
-        self.assertIn(testOmikuji.draw().key, DummyOmikujiResults)
+        self.assertIn(dummy_omikuji.draw().key, DummyOmikujiResults)

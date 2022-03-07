@@ -69,6 +69,10 @@ class Omikuji(Generic[TOmikujiEnum]):
 # 以下おみくじの設定
 
 class OmikujiResults(Enum):
+    """
+    おみくじ結果のEnum
+    """
+
     DAI_KICHI = auto()
     CHU_KICHI = auto()
     SHO_KICHI = auto()
