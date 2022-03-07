@@ -18,6 +18,7 @@ jobs:
       COMPOSE_DOCKER_CLI_BUILD: 1
     permissions:
       packages: write
+    if: github.repository == github.event.pull_request.head.repo.full_name
     steps:
       - uses: actions/checkout@v3
         with:
@@ -40,11 +41,12 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
+      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - run: docker-compose push
       - run: |
-          image_name="ghcr.io/dev-hato/hato-bot/hato-bot"
+          image_name="ghcr.io/${{env.REPOSITORY}}/hato-bot"
           latest_tag="${image_name}:latest"
           docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
           docker push "${latest_tag}"

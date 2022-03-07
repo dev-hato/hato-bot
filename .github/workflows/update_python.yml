@@ -42,6 +42,15 @@ jobs:
           REPO_URL+="${{github.repository}}.git"
           GITHUB_HEAD="HEAD:refs/heads/fix-version-${HEAD_REF}-pipfile"
           git push -f "${REPO_URL}" "${GITHUB_HEAD}"
+      - name: Set org name
+        uses: actions/github-script@v6
+        if: env.REPO_NAME == github.repository
+        id: set_org_name
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script:
+            return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v5
         env:
@@ -56,7 +65,7 @@ jobs:
             const pulls_list_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:fix-version-" + HEAD_REF + '-pipfile',
+              head: "${{steps.set_org_name.outputs.result}}:fix-version-" + HEAD_REF + '-pipfile',
               base: HEAD_REF,
               state: "open"
             }
@@ -83,7 +92,7 @@ jobs:
             const pulls_create_params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "dev-hato:fix-version-" + HEAD_REF + '-pipfile',
+              head: "${{steps.set_org_name.outputs.result}}:fix-version-" + HEAD_REF + '-pipfile',
               base: HEAD_REF,
               title,
               body: "鳩の唐揚げおいしい！😋😋😋 " + number
@@ -128,7 +137,7 @@ jobs:
               repo: context.repo.repo
             }
             const pulls_list_params = {
-              head: "dev-hato:" + head_name,
+              head: "${{steps.set_org_name.outputs.result}}:" + head_name,
               base: HEAD_REF,
               state: "open",
               ...common_params
