@@ -69,7 +69,7 @@ omikuji = Omikuji(entries={
     ),
     'HATO_KICHI': OmikujiResult(
         900,
-        ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
+        ":dove_of_peace: 鳩吉 お前が鳩になる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
     ),
 
     'KYO': OmikujiResult(
