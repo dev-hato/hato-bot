@@ -3,7 +3,6 @@ omikujiライブラリのテスト
 """
 
 import unittest
-from enum import Enum, auto
 
 from library.omikuji import OmikujiResult, Omikuji
 

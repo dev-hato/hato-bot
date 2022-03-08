@@ -5,9 +5,7 @@
 """
 
 from typing import Hashable
-from enum import Enum, auto
 from dataclasses import dataclass
-from functools import reduce
 from random import choices
 
 
