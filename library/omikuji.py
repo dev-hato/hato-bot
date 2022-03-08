@@ -43,7 +43,8 @@ class Omikuji:
         """
         return choices(
             population=list(self.entries.items()),
-            weights=list(map(lambda entry: entry.appearance, self.entries.values())),
+            weights=list(
+                map(lambda entry: entry.appearance, self.entries.values())),
             k=1
         )[0]
 
@@ -73,7 +74,7 @@ omikuji = Omikuji(entries={
         ":dove_of_peace: 鳩吉 お前がになる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
     ),
 
-   'KYO': OmikujiResult(
+    'KYO': OmikujiResult(
         75,
         ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
     ),
