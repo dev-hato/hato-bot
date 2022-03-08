@@ -4,7 +4,7 @@
 おみくじを返す
 """
 
-from typing import Hashable
+from typing import Hashable, Tuple
 from dataclasses import dataclass
 from random import choices
 
@@ -26,16 +26,15 @@ class OmikujiResult():
         assert self.message != ''
 
 
+@dataclass
 class Omikuji:
     """
     おみくじのコアロジック
     ガチャではないので排出率を公開するメソッドはあえて実装されていない
     """
+    entries: dict[Hashable, OmikujiResult]
 
-    def __init__(self, entries: dict[Hashable, OmikujiResult]):
-        self.entries = entries
-
-    def draw(self) -> (Hashable, OmikujiResult):
+    def draw(self) -> Tuple[Hashable, OmikujiResult]:
         """
         おみくじを引く
         """
@@ -49,7 +48,7 @@ class Omikuji:
 
 # 以下おみくじの設定
 
-omikuji = Omikuji(entries={
+omikuji = Omikuji({
     'DAI_KICHI': OmikujiResult(
         200,
         ":tada: 大吉 何でもうまくいく!!気がする!!"
