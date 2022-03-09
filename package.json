@@ -5,7 +5,7 @@
     "lint:text": "textlint -c .textlintrc $(find . -name '*.md' | grep -v node_modules)",
     "lint:sql": "pipenv run sqlfluff lint --config .sqlfluff",
     "lint:python": "pipenv run pylint --rcfile .python-lint $(find . -name '*.py' | grep -v node_modules)",
-    "lint:python-type": "pipenv run mypy --config-file mypy.ini --install-types --non-interactive $(find . -name '*.py' | grep -v node_modules)",
+    "lint:python-type": "pipenv run mypy --config-file .mypy.ini --install-types --non-interactive $(find . -name '*.py' | grep -v node_modules)",
     "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile"
   },
   "devDependencies": {
