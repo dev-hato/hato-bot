@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: "recursive"
           fetch-depth: 0
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2.3.2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
@@ -60,7 +60,7 @@ jobs:
           cp -r ${{ env.venv_path }} "${DEST_PATH}"
       - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
@@ -76,6 +76,7 @@ jobs:
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_JSCPD: false
           VALIDATE_PYTHON_ISORT: false
+          LINTER_RULES_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}

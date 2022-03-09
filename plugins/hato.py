@@ -6,6 +6,7 @@ import imghdr
 import json
 import os
 import re
+from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
@@ -22,6 +23,7 @@ from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
+from library.omikuji import OmikujiResult, OmikujiResults, draw as omikuji_draw
 logger = getLogger(__name__)
 
 
@@ -54,6 +56,7 @@ def help_message(client: BaseClient):
         'text delete [int] ... 指定した番号[int]のパワーワードを削除する。 ',
         '>< [text] ... 文字列[text]を吹き出しで表示する。',
         'にゃーん ... 「よしよし」と返す。',
+        'おみくじ ... おみくじを引いて返す。',
         'version ... バージョン情報を表示する。',
         '',
         '詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!',
@@ -273,3 +276,65 @@ def yoshiyoshi(client: BaseClient):
     logger.debug("%s called 'hato yoshiyoshi'", client.get_send_user())
     logger.debug("%s app called 'hato yoshiyoshi'", client.get_type())
     client.post('よしよし')
+
+
+# 以下おみくじの設定
+# Refer: dev-hato/hato-bot#876
+class OmikujiEnum(Enum):
+    """
+    おみくじの結果一覧
+    """
+    DAI_KICHI = auto()
+    CHU_KICHI = auto()
+    SHO_KICHI = auto()
+    KICHI = auto()
+    SUE_KICHI = auto()
+    AGE_KICHI = auto()
+    KYO = auto()
+    DAI_KYO = auto()
+
+
+omikuji_results = OmikujiResults({
+    OmikujiEnum.DAI_KICHI: OmikujiResult(
+        12,
+        ":tada: 大吉 何でもうまくいく!!気がする!!"
+    ),
+    OmikujiEnum.KICHI: OmikujiResult(
+        100,
+        ":smirk: 吉 まあうまくいくかも!?"
+    ),
+    OmikujiEnum.CHU_KICHI: OmikujiResult(
+        100,
+        ":smile: 中吉 そこそこうまくいくかも!?"
+    ),
+    OmikujiEnum.SHO_KICHI: OmikujiResult(
+        100,
+        ":smily: 小吉 なんとなくうまくいくかも!?"
+    ),
+    OmikujiEnum.SUE_KICHI: OmikujiResult(
+        37,
+        ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
+    ),
+    OmikujiEnum.AGE_KICHI: OmikujiResult(
+        2,
+        ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
+    ),
+    OmikujiEnum.KYO: OmikujiResult(
+        12,
+        ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+    ),
+    OmikujiEnum.DAI_KYO: OmikujiResult(
+        2,
+        ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
+    ),
+})
+
+
+def omikuji(client: BaseClient):
+    """
+    おみくじ結果を返す
+    """
+
+    logger.debug("%s called 'hato yoshiyoshi'", client.get_send_user())
+    logger.debug("%s app called 'hato yoshiyoshi'", client.get_type())
+    client.post(omikuji_draw(omikuji_results)[1].message)
