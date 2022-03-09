@@ -4,7 +4,8 @@ omikujiライブラリのテスト
 
 import unittest
 
-from library.omikuji import OmikujiResult, Omikuji
+from enum import Enum, auto
+from library.omikuji import OmikujiResult, OmikujiResults, draw
 
 
 class TestOmikuji(unittest.TestCase):
@@ -16,9 +17,19 @@ class TestOmikuji(unittest.TestCase):
         """
         おみくじの実装が正常か
         """
-        dummy_omikuji = Omikuji(entries={
-            'KICHI': OmikujiResult(1, "吉"),
-            'SUE_KICHI': OmikujiResult(1, "末吉"),
+        class DummyOmikujiEnum(Enum):
+            """
+            おみくじ設定(ダミー)
+            """
+            KICHI = auto()
+            SUE_KICHI = auto()
+
+        dummy_omikuji_results = OmikujiResults({
+            DummyOmikujiEnum.KICHI: OmikujiResult(1, "吉"),
+            DummyOmikujiEnum.SUE_KICHI: OmikujiResult(1, "末吉"),
         })
 
-        self.assertIn(dummy_omikuji.draw()[0], dummy_omikuji.entries.keys())
+        self.assertIn(
+            draw(dummy_omikuji_results)[0],
+            dummy_omikuji_results.keys()
+        )

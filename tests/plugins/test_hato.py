@@ -10,11 +10,9 @@ from typing import List
 import requests_mock
 
 import slackbot_settings as conf
-from plugins.hato import split_command, amesh, altitude, yoshiyoshi, omikuji
+from plugins.hato import split_command, amesh, altitude, yoshiyoshi, omikuji, omikuji_results
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
-
-from library.omikuji import omikuji as omikuji_instance
 
 
 class TestSplitCommand(unittest.TestCase):
@@ -241,16 +239,14 @@ class TestOmikuji(unittest.TestCase):
 
     def test_omikuji(self):
         """
-        登録されたメッセージのいずれかが返ってくることのみ確認
+        設定したおみくじ結果のうち1つが返ってくる
         """
+
         client1 = TestClient()
         omikuji(client1)
         self.assertIn(
             client1.get_post_message(),
-            list(map(
-                lambda e: e.message,
-                omikuji_instance.entries.values()
-            ))
+            map(lambda e: e.message, omikuji_results.values())
         )
 
 
