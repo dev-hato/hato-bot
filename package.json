@@ -1,7 +1,17 @@
 {
+  "scripts": {
+    "lint": "yarn run lint:markdown && yarn run lint:text && yarn run lint:sql && yarn run lint:python && yarn run lint:python-type && yarn run lint:dockerfile",
+    "lint:markdown": "markdownlint -c .markdown-lint.yml -i node_modules .",
+    "lint:text": "textlint -c .textlintrc $(find . -name '*.md' | grep -v node_modules)",
+    "lint:sql": "pipenv run sqlfluff lint --config .sqlfluff",
+    "lint:python": "pipenv run pylint --rcfile .python-lint $(find . -name '*.py' | grep -v node_modules)",
+    "lint:python-type": "pipenv run mypy --config-file .mypy.ini --install-types --non-interactive $(find . -name '*.py' | grep -v node_modules)",
+    "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile"
+  },
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "^3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "^2.0.1",
+    "markdownlint-cli": "^0.31.1",
     "textlint": "^12.1.1",
     "textlint-rule-abbr-within-parentheses": "^1.0.2",
     "textlint-rule-footnote-order": "^1.0.3",

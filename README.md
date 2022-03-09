@@ -39,8 +39,9 @@
 自分のPCで動かすこともできます。
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
+2. hadolintをインストールします。
 
-1. このリポジトリをcloneします。
+3. このリポジトリをcloneします。
 
     安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
 
@@ -51,17 +52,18 @@
 
     または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
 
-1. [Pipenv](https://pipenv-ja.readthedocs.io/ja/translate-ja/)で仮想環境を作成します。
+4. 必要なパッケージをインストールします。
 
     ```sh
     pipenv install
+    yarn install
     ```
 
-1. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
     `.env.example` をコピーして使うとよいでしょう
 
-1. docker-composeで鳩botとPostgreSQLを起動します。
+6. docker-composeで鳩botとPostgreSQLを起動します。
 
     ```sh
     cd ./setup
@@ -70,13 +72,19 @@
     cd ..
     ```
 
-1. コードの変更はdocker-composeの再起動で適用できます。
+7. コードの変更はdocker-composeの再起動で適用できます。
 
     ```sh
     cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose restart
     ```
+
+#### lintをかける方法
+
+```sh
+yarn run lint
+```
 
 #### コマンドの実行方法
 
