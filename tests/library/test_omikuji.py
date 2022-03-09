@@ -20,10 +20,11 @@ class TestOmikuji(unittest.TestCase):
         class DummyOmikujiEnum(Enum):
             KICHI = auto()
             SUE_KICHI = auto()
-        
+
         dummy_omikuji_results = OmikujiResults({
             DummyOmikujiEnum.KICHI: OmikujiResult(1, "吉"),
             DummyOmikujiEnum.SUE_KICHI: OmikujiResult(1, "末吉"),
         })
 
-        self.assertIn(draw(dummy_omikuji_results)[0], dummy_omikuji_results.keys())
+        self.assertIn(draw(dummy_omikuji_results)[
+                      0], dummy_omikuji_results.keys())

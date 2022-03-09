@@ -296,7 +296,6 @@ def omikuji(client: BaseClient):
         KYO = auto()
         DAI_KYO = auto()
 
-
     omikuji_result = omikuji_draw(
         OmikujiResults[OmikujiEnum]({
             OmikujiEnum.DAI_KICHI: OmikujiResult(

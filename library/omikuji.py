@@ -26,7 +26,9 @@ class OmikujiResult():
         assert self.appearance > 0
         assert self.message != ''
 
+
 TOmikujiEnum = TypeVar('TOmikujiEnum')
+
 
 class OmikujiResults(dict[TOmikujiEnum, OmikujiResult]):
     """
@@ -48,5 +50,3 @@ def draw(entries: OmikujiResults) -> Tuple[TOmikujiEnum, OmikujiResult]:
             map(lambda entry: entry.appearance, entries.values())),
         k=1
     )[0]
-
-
