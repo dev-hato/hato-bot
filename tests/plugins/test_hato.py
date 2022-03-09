@@ -10,7 +10,7 @@ from typing import List
 import requests_mock
 
 import slackbot_settings as conf
-from plugins.hato import split_command, amesh, altitude, yoshiyoshi
+from plugins.hato import split_command, amesh, altitude, yoshiyoshi, omikuji, omikuji_results
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 
@@ -230,6 +230,24 @@ class TestYoshiyoshi(unittest.TestCase):
         client1 = TestClient()
         yoshiyoshi(client1)
         self.assertEqual(client1.get_post_message(), 'よしよし')
+
+
+class TestOmikuji(unittest.TestCase):
+    """
+    omikujiのテスト
+    """
+
+    def test_omikuji(self):
+        """
+        設定したおみくじ結果のうち1つが返ってくる
+        """
+
+        client1 = TestClient()
+        omikuji(client1)
+        self.assertIn(
+            client1.get_post_message(),
+            map(lambda e: e.message, omikuji_results.values())
+        )
 
 
 if __name__ == '__main__':
