@@ -22,7 +22,7 @@ from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
-from library.omikuji import draw as omikuji_draw
+from library.omikuji import OmikujiResult, OmikujiResults, draw as omikuji_draw
 logger = getLogger(__name__)
 
 
@@ -281,4 +281,56 @@ def omikuji(client: BaseClient):
     """
     おみくじ結果を返す
     """
-    client.post(message=omikuji_draw())
+
+    # 以下おみくじの設定
+
+    class OmikujiEnum(Enum):
+        """
+        おみくじの結果一覧
+        """
+        DAI_KICHI = auto()
+        CHU_KICHI = auto()
+        SHO_KICHI = auto()
+        KICHI = auto()
+        HATO_KICHI = auto()
+        KYO = auto()
+        DAI_KYO = auto()
+
+
+    omikuji_result = omikuji_draw(
+        OmikujiResults[OmikujiEnum]({
+            OmikujiEnum.DAI_KICHI: OmikujiResult(
+                200,
+                ":tada: 大吉 何でもうまくいく!!気がする!!"
+            ),
+            OmikujiEnum.CHU_KICHI: OmikujiResult(
+                2000,
+                ":smile: 中吉 そこそこうまくいくかも!?"
+            ),
+            OmikujiEnum.SHO_KICHI: OmikujiResult(
+                3800,
+                ":smily: 小吉 なんとなくうまくいくかも!?"
+            ),
+
+            OmikujiEnum.KICHI: OmikujiResult(
+                3000,
+                ":smirk: 吉 まあうまくいくかも!?"
+            ),
+            OmikujiEnum.HATO_KICHI: OmikujiResult(
+                900,
+                ":dove_of_peace: 鳩吉 お前が鳩になる番だ!!羽ばたけ!!!飛べ!!!!唐揚げになれ!!!!!"
+            ),
+
+            OmikujiEnum.KYO: OmikujiResult(
+                75,
+                ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+            ),
+
+            OmikujiEnum.DAI_KYO: OmikujiResult(
+                25,
+                ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
+            ),
+        })
+    )[1].message
+
+    client.post(omikuji_result)
