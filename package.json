@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "lint": "yarn run lint:markdown && yarn run lint:text && yarn run lint:sql && yarn run lint:python && yarn run lint:python-type && yarn run lint:dockerfile",
+    "lint": "yarn run lint:markdown && yarn run lint:text && yarn run lint:sql && yarn run lint:python && yarn run lint:python-type && yarn run lint:dockerfile && yarn run lint:secret",
     "lint:markdown": "markdownlint -c .markdown-lint.yml -i node_modules .",
     "lint:text": "textlint -c .textlintrc $(find . -name '*.md' | grep -v node_modules)",
     "lint:sql": "pipenv run sqlfluff lint --config .sqlfluff",
     "lint:python": "pipenv run pylint --rcfile .python-lint *.py",
     "lint:python-type": "pipenv run mypy --config-file .mypy.ini --install-types --non-interactive *.py",
-    "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile"
+    "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile",
+    "lint:secret": "docker run --rm --platform=linux/amd64 -v $(pwd):/path -w /path zricethezav/gitleaks protect --verbose --redact"
   },
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "^3.1.2",
