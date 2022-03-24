@@ -203,16 +203,18 @@ def amesh(place: str):
 
 def electricity_demand(client: BaseClient):
     """東京電力管内の電力使用率を表示する"""
-    try:
-        res = pd.io.stata.BytesIO(requests.get('https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv').content)
-        df = pd.read_csv(res, encoding='shift_jis', skiprows=12, index_col='TIME')[:24]['使用率(%)'].dropna().astype(int)
-        latest_data = df[df > 0]
-        client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
-                    f'{latest_data.index[-1]}時点 {latest_data[-1]}%')
-        df.plot()
-    except urllib.error.HTTPError:
+    res = requests.get('https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv')
+
+    if res.status_code != 200:
         client.post('東京電力管内の電力使用率を取得できなかったっぽ......')
         return None
+
+    res_io = pd.io.stata.BytesIO(res.content)
+    df = pd.read_csv(res_io, encoding='shift_jis', skiprows=12, index_col='TIME')[:24]['使用率(%)'].dropna().astype(int)
+    latest_data = df[df > 0]
+    client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
+                f'{latest_data.index[-1]}時点 {latest_data[-1]}%')
+    df.plot()
 
     plt.ylim(0, 100)
     plt.grid()
