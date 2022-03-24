@@ -210,7 +210,7 @@ def electricity_demand(client: BaseClient):
 
     res_io = pd.io.stata.BytesIO(res.content)
     df = pd.read_csv(res_io, encoding='shift_jis',
-                          skiprows=12, index_col='TIME')
+                     skiprows=12, index_col='TIME')
     df = df[:24]['使用率(%)'].dropna().astype(int)
     latest_data = df[df > 0]
     client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
