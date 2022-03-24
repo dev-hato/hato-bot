@@ -204,7 +204,8 @@ def amesh(place: str):
 def electricity_demand(client: BaseClient):
     """東京電力管内の電力使用率を表示する"""
     try:
-        with urllib.request.urlopen('https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv') as f:
+        req = urllib.request.Request('https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv')
+        with urllib.request.urlopen(req) as f:
             df = pd.read_csv(pd.io.stata.BytesIO(f.read()),
                              encoding='shift_jis', skiprows=12, index_col='TIME')[:24]['使用率(%)'].dropna().astype(int)
             latest_data = df[df > 0]
