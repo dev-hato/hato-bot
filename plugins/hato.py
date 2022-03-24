@@ -6,8 +6,6 @@ import imghdr
 import json
 import os
 import re
-import urllib.error
-import urllib.request
 
 import pandas as pd
 import matplotlib.pyplot as plt
