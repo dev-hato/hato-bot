@@ -8,11 +8,11 @@ import os
 import re
 
 from enum import Enum, auto
-from git import Repo
-from git.exc import InvalidGitRepositoryError, GitCommandNotFound
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
+from git import Repo
+from git.exc import InvalidGitRepositoryError, GitCommandNotFound
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
@@ -209,13 +209,13 @@ def electricity_demand(client: BaseClient):
         return None
 
     res_io = pd.io.stata.BytesIO(res.content)
-    df = pd.read_csv(res_io, encoding='shift_jis',
-                     skiprows=12, index_col='TIME')
-    df = df[:24]['使用率(%)'].dropna().astype(int)
-    latest_data = df[df > 0]
+    df_base = pd.read_csv(res_io, encoding='shift_jis',
+                          skiprows=12, index_col='TIME')
+    df_percent = df_base[:24]['使用率(%)'].dropna().astype(int)
+    latest_data = df_percent[df_percent > 0]
     client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
                 f'{latest_data.index[-1]}時点 {latest_data[-1]}%')
-    df.plot()
+    df_percent.plot()
 
     plt.ylim(0, 100)
     plt.grid()
