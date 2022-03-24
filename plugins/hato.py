@@ -208,7 +208,8 @@ def electricity_demand(client: BaseClient):
             df = pd.read_csv(pd.io.stata.BytesIO(f.read()),
                              encoding='shift_jis', skiprows=12, index_col='TIME')[:24]['使用率(%)'].dropna().astype(int)
             latest_data = df[df > 0]
-            client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n{latest_data.index[-1]}時点 {latest_data[-1]}%')
+            client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
+                        f'{latest_data.index[-1]}時点 {latest_data[-1]}%')
             df.plot()
     except urllib.error.HTTPError:
         client.post('東京電力管内の電力使用率を取得できなかったっぽ......')
@@ -220,7 +221,8 @@ def electricity_demand(client: BaseClient):
     with NamedTemporaryFile() as graph_file:
         ext = 'png'
         plt.savefig(graph_file.name, format=ext)
-        client.upload(file=graph_file.name, filename=os.path.extsep.join(['tepco_electricity_demand_graph', ext]))
+        client.upload(file=graph_file.name,
+                      filename=os.path.extsep.join(['tepco_electricity_demand_graph', ext]))
 
     plt.close('all')
     return True
