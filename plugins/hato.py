@@ -6,16 +6,15 @@ import imghdr
 import json
 import os
 import re
-
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List
+import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
 import pandas as pd
 import matplotlib.pyplot as plt
-import requests
 
 import slackbot_settings as conf
 from library.vocabularydb \
