@@ -58,6 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
+          pipenv lock
       # autopep8でformatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
