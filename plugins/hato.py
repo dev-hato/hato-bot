@@ -13,6 +13,8 @@ from typing import List
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
+import pandas as pd
+import matplotlib.pyplot as plt
 
 import slackbot_settings as conf
 from library.vocabularydb \
@@ -45,6 +47,7 @@ def help_message(client: BaseClient):
         'amesh ... 東京のamesh(雨雲情報)を表示する。',
         'amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。',
         'amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。',
+        '電力 ... 東京電力管内の電力使用率を表示する。',
         '標高 ... 東京の標高を表示する。',
         '標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。',
         '標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。',
@@ -193,6 +196,37 @@ def amesh(place: str):
         return None
 
     return ret
+
+
+def electricity_demand(client: BaseClient):
+    """東京電力管内の電力使用率を表示する"""
+    url = 'https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv'
+    res = requests.get(url)
+
+    if res.status_code != 200:
+        client.post('東京電力管内の電力使用率を取得できなかったっぽ......')
+        return None
+
+    res_io = pd.io.stata.BytesIO(res.content)
+    df_base = pd.read_csv(res_io, encoding='shift_jis',
+                          skiprows=12, index_col='TIME')
+    df_percent = df_base[:24]['使用率(%)'].dropna().astype(int)
+    latest_data = df_percent[df_percent > 0]
+    client.post(f'東京電力管内の電力使用率をお知らせするっぽ！\n'
+                f'{latest_data.index[-1]}時点 {latest_data[-1]}%')
+    df_percent.plot()
+
+    plt.ylim(0, 100)
+    plt.grid()
+
+    with NamedTemporaryFile() as graph_file:
+        ext = 'png'
+        plt.savefig(graph_file.name, format=ext)
+        client.upload(file=graph_file.name,
+                      filename=os.path.extsep.join(['tepco_electricity_demand_graph', ext]))
+
+    plt.close('all')
+    return True
 
 
 def altitude(place: str):
