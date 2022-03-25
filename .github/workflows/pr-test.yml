@@ -70,7 +70,7 @@ jobs:
       - run: |
           echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
-        uses: github/super-linter/slim@v4.9.0
+        uses: github/super-linter/slim@v4.9.1
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
