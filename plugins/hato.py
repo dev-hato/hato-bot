@@ -343,7 +343,7 @@ omikuji_results = OmikujiResults({
     ),
     OmikujiEnum.SHO_KICHI: OmikujiResult(
         100,
-        ":smily: 小吉 なんとなくうまくいくかも!?"
+        ":smiley: 小吉 なんとなくうまくいくかも!?"
     ),
     OmikujiEnum.SUE_KICHI: OmikujiResult(
         37,
