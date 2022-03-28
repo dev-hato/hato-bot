@@ -111,6 +111,7 @@ def get_text_list():
 
     return get_vocabularys()
 
+
 @action('text add')
 def add_text(word: str):
     """パワーワードの追加"""
@@ -267,29 +268,29 @@ def altitude(place: str):
     return '標高を取得できなかったっぽ......'
 
 
-@action('version')
+@ action('version')
 def version(client: BaseClient):
     """versionを表示する"""
 
-    str_ver = "バージョン情報\n```" \
+    str_ver="バージョン情報\n```"
               f"Version {conf.VERSION}"
 
     if conf.GIT_COMMIT_HASH:
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
     else:
         try:
-            repo = Repo()
+            repo=Repo()
             str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
         except (InvalidGitRepositoryError, GitCommandNotFound):
             pass
 
-    str_ver += "\n" \
-               "Copyright (C) 2022 hato-bot Development team\n" \
+    str_ver += "\n"
+               "Copyright (C) 2022 hato-bot Development team\n"
                "https://github.com/dev-hato/hato-bot ```"
     return str_ver
 
 
-@action('にゃーん')
+@ action('にゃーん')
 def yoshiyoshi(client: BaseClient):
     """「にゃーん」を見つけたら、「よしよし」と返す"""
 
@@ -299,17 +300,17 @@ class OmikujiEnum(Enum):
     """
     おみくじの結果一覧
     """
-    DAI_KICHI = auto()
-    CHU_KICHI = auto()
-    SHO_KICHI = auto()
-    KICHI = auto()
-    SUE_KICHI = auto()
-    AGE_KICHI = auto()
-    KYO = auto()
-    DAI_KYO = auto()
+    DAI_KICHI=auto()
+    CHU_KICHI=auto()
+    SHO_KICHI=auto()
+    KICHI=auto()
+    SUE_KICHI=auto()
+    AGE_KICHI=auto()
+    KYO=auto()
+    DAI_KYO=auto()
 
 
-omikuji_results = OmikujiResults({
+omikuji_results=OmikujiResults({
     OmikujiEnum.DAI_KICHI: OmikujiResult(
         12,
         ":tada: 大吉 何でもうまくいく!!気がする!!"
@@ -345,7 +346,7 @@ omikuji_results = OmikujiResults({
 })
 
 
-@action('おみくじ')
+@ action('おみくじ')
 def omikuji():
     """
     おみくじ結果を返す
