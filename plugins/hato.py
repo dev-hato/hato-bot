@@ -89,7 +89,7 @@ def help_message():
 def default_action():
     """どのコマンドにもマッチしなかった"""
 
-   return conf.DEFAULT_REPLY
+    return conf.DEFAULT_REPLY
 
 
 @action('eq')
@@ -191,6 +191,7 @@ def amesh(client: BaseClient, place: str):
                       filename=os.path.extsep.join(filename))
 
 
+@action('電力', with_client=True)
 def electricity_demand(client: BaseClient):
     """東京電力管内の電力使用率を表示する"""
     url = 'https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv'
@@ -219,7 +220,6 @@ def electricity_demand(client: BaseClient):
                       filename=os.path.extsep.join(['tepco_electricity_demand_graph', ext]))
 
     plt.close('all')
-    return True
 
 
 @action('標高')
@@ -345,11 +345,10 @@ omikuji_results = OmikujiResults({
 })
 
 
-def omikuji(client: BaseClient):
+@action('おみくじ')
+def omikuji():
     """
     おみくじ結果を返す
     """
 
-    logger.debug("%s called 'hato yoshiyoshi'", client.get_send_user())
-    logger.debug("%s app called 'hato yoshiyoshi'", client.get_type())
-    client.post(omikuji_draw(omikuji_results)[1].message)
+    return omikuji_draw(omikuji_results)[1].message
