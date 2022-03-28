@@ -36,7 +36,7 @@ def action(plugin_name: str, with_client: bool = False) -> Callable[[BaseClient]
 
     def _action(func: Callable[[BaseClient], Union[str, None]]):
         def wrapper(client: BaseClient, *args, **kwargs):
-            logger.debug("%s called '%s'", plugin_name, client.get_send_user())
+            logger.debug("%s called '%s'", client.get_send_user(), plugin_name)
             logger.debug("%s app called '%s'", client.get_type(), plugin_name)
             if with_client:
                 func(client, *args, **kwargs)
