@@ -53,7 +53,7 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
     return re.split(r'\s+', command.strip().strip('　'), maxsplit)
 
 
-@action('hato help')
+@action('help')
 def help_message():
     """「hato help」を見つけたら、使い方を表示する"""
 
