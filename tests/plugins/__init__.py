@@ -22,12 +22,10 @@ class TestClient(BaseClient):
 
         return self.post_message
 
-    @staticmethod
-    def get_send_user_name() -> str:
+    def get_send_user_name(self) -> str:
         return "test user"
 
-    @staticmethod
-    def get_send_user() -> str:
+    def get_send_user(self) -> str:
         return "abc123"
 
     def upload(self, file: str, filename: str):
