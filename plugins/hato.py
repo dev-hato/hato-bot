@@ -111,6 +111,7 @@ def get_text_list():
 
     return get_vocabularys()
 
+
 @action('text add')
 def add_text(word: str):
     """パワーワードの追加"""
@@ -292,6 +293,8 @@ def version(client: BaseClient):
 @action('にゃーん')
 def yoshiyoshi(client: BaseClient):
     """「にゃーん」を見つけたら、「よしよし」と返す"""
+    return 'よしよし'
+
 
 # 以下おみくじの設定
 # Refer: dev-hato/hato-bot#876
