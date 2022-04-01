@@ -263,7 +263,7 @@ def altitude(place: str):
                 if 'Property' in data and 'Altitude' in data['Property']:
                     altitude_ = data['Property']['Altitude']
                     altitude_str = f'{altitude_:,}'
-                    return f'{place_name}の標高は{altitude_str}mっぽ！')
+                    return f'{place_name}の標高は{altitude_str}mっぽ！'
 
     return '標高を取得できなかったっぽ......'
 
