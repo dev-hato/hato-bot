@@ -9,7 +9,7 @@ import re
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List
+from typing import List, Callable, Union
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
@@ -29,12 +29,12 @@ from library.omikuji import OmikujiResult, OmikujiResults, draw as omikuji_draw
 logger = getLogger(__name__)
 
 
-def action(plugin_name: str, with_client: bool = False) -> Callable[[BaseClient], None]:
+def action(plugin_name: str, with_client: bool = False) -> Callable[[BaseClient, ...], None]:
     """
     アクション定義メソッドに使うデコレータ
     """
 
-    def _action(func: Callable[[BaseClient], Union[str, None]]):
+    def _action(func: Callable[[BaseClient, ...], Union[str, None]]):
         def wrapper(client: BaseClient, *args, **kwargs):
             logger.debug("%s called '%s'", client.get_send_user(), plugin_name)
             logger.debug("%s app called '%s'", client.get_type(), plugin_name)
@@ -43,7 +43,7 @@ def action(plugin_name: str, with_client: bool = False) -> Callable[[BaseClient]
             else:
                 client.post(func(*args, **kwargs))
 
-        return wraper
+        return wrapper
     return _action
 
 
@@ -269,7 +269,7 @@ def altitude(place: str):
 
 
 @action('version')
-def version(client: BaseClient):
+def version():
     """versionを表示する"""
 
     str_ver = "バージョン情報\n```" \
@@ -291,7 +291,7 @@ def version(client: BaseClient):
 
 
 @action('にゃーん')
-def yoshiyoshi(client: BaseClient):
+def yoshiyoshi():
     """「にゃーん」を見つけたら、「よしよし」と返す"""
     return 'よしよし'
 
