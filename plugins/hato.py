@@ -128,7 +128,7 @@ def show_text(power_word_id: str):
 
 
 @action('text random')
-def show_random_text(client: BaseClient):
+def show_random_text():
     """パワーワードの一覧からランダムで1つを表示する"""
 
     return show_random_vocabulary()
@@ -200,7 +200,7 @@ def electricity_demand(client: BaseClient):
 
     if res.status_code != 200:
         client.post('東京電力管内の電力使用率を取得できなかったっぽ......')
-        return None
+        return
 
     res_io = pd.io.stata.BytesIO(res.content)
     df_base = pd.read_csv(res_io, encoding='shift_jis',
@@ -221,6 +221,7 @@ def electricity_demand(client: BaseClient):
                       filename=os.path.extsep.join(['tepco_electricity_demand_graph', ext]))
 
     plt.close('all')
+    return
 
 
 @action('標高')
