@@ -23,6 +23,7 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         ]
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
+        # pylint: disable=E1121
         hato.totuzensi(client2, '09012345678')
         self.assertEqual(client1.get_post_message(),
                          client2.get_post_message())
@@ -36,6 +37,7 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         ]
         analyze_slack_message(messages)(client1)
         client2 = TestClient()
+        # pylint: disable=E1121
         hato.totuzensi(client2, '09012345678')
         self.assertEqual(client1.get_post_message(),
                          client2.get_post_message())

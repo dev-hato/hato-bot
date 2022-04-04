@@ -9,16 +9,13 @@ import re
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List, Callable, Union, Any, TYPE_CHECKING
+from typing import List
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
 import pandas as pd
 import matplotlib.pyplot as plt
 import slackbot_settings as conf
-
-if TYPE_CHECKING:
-    from mypy_extensions import VarArg
 
 from library.vocabularydb \
     import get_vocabularys, add_vocabulary, show_vocabulary, \
@@ -41,7 +38,7 @@ def action(plugin_name: str, with_client: bool = False):
 
     """
 
-    def _action(func: Callable[[BaseClient, VarArg(Any)], Union[str, None]]):
+    def _action(func):
         def wrapper(client: BaseClient, *args, **kwargs):
             logger.debug("%s called '%s'", client.get_send_user(), plugin_name)
             logger.debug("%s app called '%s'", client.get_type(), plugin_name)
