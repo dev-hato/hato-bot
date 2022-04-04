@@ -24,7 +24,7 @@ class TestAnaryzeMessage(unittest.TestCase):
         client1 = TestClient()
         analyze_message('>< aaa')(client1)
         client2 = TestClient()
-        hato.totuzensi(client2, 'aaa')
+        hato.totuzensi(client2, message='aaa')
         self.assertEqual(client1.get_post_message(),
                          client2.get_post_message())
         # self.assertEqual(analyze_message('>< aaa'), hato.totuzensi('aaa'))

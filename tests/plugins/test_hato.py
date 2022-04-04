@@ -76,7 +76,7 @@ class TestAmesh(unittest.TestCase):
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
         mocker.get(jma_json_url, content=json_content)
-        amesh(client1, place)
+        amesh(client1, place=place)
         return client1
 
     def amesh_upload_png_test(self,
@@ -157,7 +157,7 @@ class TestAltitude(unittest.TestCase):
         query = '&'.join([f'{k}={v}' for k, v in params.items()])
         mocker.get('https://map.yahooapis.jp/alt/V1/getAltitude?' + query,
                    content=json.dumps(content).encode())
-        altitude(client1, place)
+        altitude(client1, place=place)
         return client1
 
     def test_altitude_with_no_params(self):
