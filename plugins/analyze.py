@@ -3,9 +3,9 @@
 """
 
 from typing import Callable
+from functools import partial
 from library.clientclass import BaseClient
 from plugins import hato
-from functools import partial
 
 
 def analyze_message(message: str) -> Callable[[BaseClient], None]:

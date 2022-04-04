@@ -9,7 +9,7 @@ import re
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List, Callable, Union
+from typing import List, Callable, Union, Any
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
@@ -18,7 +18,8 @@ import matplotlib.pyplot as plt
 
 import slackbot_settings as conf
 from library.vocabularydb \
-    import get_vocabularys, add_vocabulary, show_vocabulary, delete_vocabulary, show_random_vocabulary
+    import get_vocabularys, add_vocabulary, show_vocabulary, \
+    delete_vocabulary, show_random_vocabulary
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.hukidasi import generator
 from library.geo import get_geo_data
@@ -26,22 +27,27 @@ from library.hatokaraage import hato_ha_karaage
 from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults, draw as omikuji_draw
+
+from mypy_extensions import VarArg
+
 logger = getLogger(__name__)
 
-
-def action(plugin_name: str, with_client: bool = False) -> Callable[[BaseClient, ...], None]:
+def action(plugin_name: str, with_client: bool = False):
     """
     アクション定義メソッドに使うデコレータ
+
     """
 
-    def _action(func: Callable[[BaseClient, ...], Union[str, None]]):
+    def _action(func: Callable[[BaseClient, VarArg(Any)], Union[str, None]]):
         def wrapper(client: BaseClient, *args, **kwargs):
             logger.debug("%s called '%s'", client.get_send_user(), plugin_name)
             logger.debug("%s app called '%s'", client.get_type(), plugin_name)
             if with_client:
                 func(client, *args, **kwargs)
             else:
-                client.post(func(*args, **kwargs))
+                return_val = func(*args, **kwargs)
+                if isinstance(return_val, str):
+                    client.post(return_val)
 
         return wrapper
     return _action
@@ -236,8 +242,7 @@ def altitude(place: str):
         try:
             coordinates = [str(float(p)) for p in reversed(place_list)]
         except ValueError:
-            client.post('引数が正しくないっぽ......')
-            return None
+            return '引数が正しくないっぽ......'
 
         place_name = ', '.join(reversed(coordinates))
     else:
