@@ -9,14 +9,16 @@ import re
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List, Callable, Union, Any
+from typing import List, Callable, Union, Any, TYPE_CHECKING
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
-from mypy_extensions import VarArg
 import pandas as pd
 import matplotlib.pyplot as plt
 import slackbot_settings as conf
+
+if TYPE_CHECKING:
+    from mypy_extensions import VarArg
 
 from library.vocabularydb \
     import get_vocabularys, add_vocabulary, show_vocabulary, \
