@@ -13,10 +13,11 @@ from typing import List, Callable, Union, Any
 import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandNotFound
+from mypy_extensions import VarArg
 import pandas as pd
 import matplotlib.pyplot as plt
-
 import slackbot_settings as conf
+
 from library.vocabularydb \
     import get_vocabularys, add_vocabulary, show_vocabulary, \
     delete_vocabulary, show_random_vocabulary
@@ -28,7 +29,6 @@ from library.clientclass import BaseClient
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults, draw as omikuji_draw
 
-from mypy_extensions import VarArg
 
 logger = getLogger(__name__)
 
