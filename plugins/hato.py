@@ -32,6 +32,7 @@ from mypy_extensions import VarArg
 
 logger = getLogger(__name__)
 
+
 def action(plugin_name: str, with_client: bool = False):
     """
     アクション定義メソッドに使うデコレータ
