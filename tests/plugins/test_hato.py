@@ -76,8 +76,8 @@ class TestAmesh(unittest.TestCase):
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
         mocker.get(jma_json_url, content=json_content)
-        res = amesh(place)(client1)
-        self.assertEqual(res, True)
+        actual = amesh(client1, place=place)
+        self.assertEqual(None, actual)
         return client1
 
     def amesh_upload_png_test(self,
@@ -158,8 +158,9 @@ class TestAltitude(unittest.TestCase):
         query = '&'.join([f'{k}={v}' for k, v in params.items()])
         mocker.get('https://map.yahooapis.jp/alt/V1/getAltitude?' + query,
                    content=json.dumps(content).encode())
-        req = altitude(place)(client1)
-        self.assertEqual(req.status_code, 200)
+        # pylint: disable=E1121
+        actual = altitude(client1, place)
+        self.assertEqual(None, actual)
         return client1
 
     def test_altitude_with_no_params(self):
@@ -228,6 +229,7 @@ class TestYoshiyoshi(unittest.TestCase):
     def test_yoshiyoshi(self):
         """ 正常系のテストケース """
         client1 = TestClient()
+        # pylint: disable=E1121
         yoshiyoshi(client1)
         self.assertEqual(client1.get_post_message(), 'よしよし')
 
@@ -243,6 +245,7 @@ class TestOmikuji(unittest.TestCase):
         """
 
         client1 = TestClient()
+        # pylint: disable=E1121
         omikuji(client1)
         self.assertIn(
             client1.get_post_message(),

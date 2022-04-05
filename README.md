@@ -39,8 +39,9 @@
 自分のPCで動かすこともできます。
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
+2. hadolintをインストールします。
 
-1. このリポジトリをcloneします。
+3. このリポジトリをcloneします。
 
     安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
 
@@ -51,17 +52,18 @@
 
     または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
 
-1. [Pipenv](https://pipenv-ja.readthedocs.io/ja/translate-ja/)で仮想環境を作成します。
+4. 必要なパッケージをインストールします。
 
     ```sh
     pipenv install
+    yarn install
     ```
 
-1. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
     `.env.example` をコピーして使うとよいでしょう
 
-1. docker-composeで鳩botとPostgreSQLを起動します。
+6. docker-composeで鳩botとPostgreSQLを起動します。
 
     ```sh
     cd ./setup
@@ -70,13 +72,19 @@
     cd ..
     ```
 
-1. コードの変更はdocker-composeの再起動で適用できます。
+7. コードの変更はdocker-composeの再起動で適用できます。
 
     ```sh
     cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose restart
     ```
+
+#### lintをかける方法
+
+```sh
+yarn run lint
+```
 
 #### コマンドの実行方法
 
@@ -111,6 +119,7 @@
     amesh ... 東京のameshを表示する。
     amesh [text] ... 指定した地名・住所・郵便番号[text]のameshを表示する。
     amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。
+    電力 ... 東京電力管内の電力使用率を表示する。
     標高 ... 東京の標高を表示する。
     標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
     標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
@@ -122,6 +131,7 @@
     text delete [int] ... 指定した番号[int]のパワーワードを削除する。
     >< [text] ... 文字列[text]を吹き出しで表示する。
     にゃーん ... 「よしよし」と返す。
+    おみくじ ... おみくじを引いて返す。
     version ... バージョン情報を表示する。
     ```
 

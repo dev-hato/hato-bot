@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.10.2-slim-bullseye
+FROM python:3.10.4-slim-bullseye
 
 WORKDIR /usr/src/app
 
@@ -15,7 +15,7 @@ COPY Pipfile Pipfile
 # * git: Pythonライブラリのインストールの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
-    pip install pipenv==2022.1.8 --no-cache-dir && \
+    pip install pipenv==2022.3.28 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
