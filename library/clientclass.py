@@ -24,7 +24,7 @@ class BaseClient(metaclass=ABCMeta):
         """
         発火させたユーザーを返す
         """
-        raise        NotImplementedError()
+        raise NotImplementedError()
 
     @abstractmethod
     def get_send_user_name(self) -> str:
