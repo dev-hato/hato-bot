@@ -44,7 +44,7 @@ jobs:
               console.log("call pulls.list:", pulls_list_params)
               const pulls = await github.paginate(github.rest.pulls.list,
                                                   pulls_list_params)
-            
+
               for (const pull of pulls) {
                 const pulls_update_params = {
                   pull_number: pull.number,
