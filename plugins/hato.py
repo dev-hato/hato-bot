@@ -14,9 +14,9 @@ from typing import List
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
-import slackbot_settings as conf
 from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
+import slackbot_settings as conf
 from library.clientclass import BaseClient
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.geo import get_geo_data
