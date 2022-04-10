@@ -11,7 +11,6 @@ from typing import Callable, List
 
 from flask import Flask, escape, jsonify, request
 from slackeventsapi import SlackEventAdapter
-
 import slackbot_settings as conf
 from library.clientclass import ApiClient, SlackClient
 from library.database import Database
