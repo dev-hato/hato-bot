@@ -14,10 +14,9 @@ from typing import List
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
+import slackbot_settings as conf
 from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
-
-import slackbot_settings as conf
 from library.clientclass import BaseClient
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.geo import get_geo_data
@@ -26,9 +25,13 @@ from library.hukidasi import generator
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults
 from library.omikuji import draw as omikuji_draw
-from library.vocabularydb import (add_vocabulary, delete_vocabulary,
-                                  get_vocabularys, show_random_vocabulary,
-                                  show_vocabulary)
+from library.vocabularydb import (
+    add_vocabulary,
+    delete_vocabulary,
+    get_vocabularys,
+    show_random_vocabulary,
+    show_vocabulary,
+)
 
 logger = getLogger(__name__)
 
