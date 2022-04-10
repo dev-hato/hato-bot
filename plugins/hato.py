@@ -33,7 +33,6 @@ from library.vocabularydb import (
     show_vocabulary,
 )
 
-
 logger = getLogger(__name__)
 
 
