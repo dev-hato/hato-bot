@@ -33,4 +33,5 @@ class TestOmikuji(unittest.TestCase):
             }
         )
 
-        self.assertIn(draw(dummy_omikuji_results)[0], dummy_omikuji_results.keys())
+        self.assertIn(draw(dummy_omikuji_results)[
+                      0], dummy_omikuji_results.keys())
