@@ -185,7 +185,8 @@ def amesh(client: BaseClient, place: str):
         return
 
     client.post(msg)
-    amesh_img = jma_amesh(lat=float(lat), lng=float(lon), zoom=10, around_tiles=2)
+    amesh_img = jma_amesh(lat=float(lat), lng=float(lon),
+                          zoom=10, around_tiles=2)
     if amesh_img is None:
         client.post("雨雲状況を取得できなかったっぽ......")
         return
@@ -215,7 +216,8 @@ def electricity_demand(client: BaseClient):
         return
 
     res_io = pd.io.stata.BytesIO(res.content)
-    df_base = pd.read_csv(res_io, encoding="shift_jis", skiprows=12, index_col="TIME")
+    df_base = pd.read_csv(res_io, encoding="shift_jis",
+                          skiprows=12, index_col="TIME")
     df_percent = df_base[:24]["使用率(%)"].dropna().astype(int)
     latest_data = df_percent[df_percent > 0]
     client.post(
@@ -231,7 +233,8 @@ def electricity_demand(client: BaseClient):
         plt.savefig(graph_file.name, format=ext)
         client.upload(
             file=graph_file.name,
-            filename=os.path.extsep.join(["tepco_electricity_demand_graph", ext]),
+            filename=os.path.extsep.join(
+                ["tepco_electricity_demand_graph", ext]),
         )
 
     plt.close("all")
