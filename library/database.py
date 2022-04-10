@@ -12,9 +12,9 @@ class Database:
 
     def __init__(self):
         try:
-            self.conn = psycopg2.connect(conf.DB_URL, sslmode='require')
+            self.conn = psycopg2.connect(conf.DB_URL, sslmode="require")
         except psycopg2.Error as _e:
-            print('Can not connect to database.')
+            print("Can not connect to database.")
             raise _e
 
     def __enter__(self):
@@ -30,7 +30,7 @@ class Database:
             try:
                 cursor.execute(sql)
                 self.conn.commit()
-                print(f'Execute: {sql}')
+                print(f"Execute: {sql}")
             except Exception as _e:
-                print('Can not execute sql(create_table).')
+                print("Can not execute sql(create_table).")
                 raise _e
