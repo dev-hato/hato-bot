@@ -8,7 +8,6 @@ import unittest
 from typing import List
 
 import requests_mock
-
 import slackbot_settings as conf
 from plugins.hato import (
     altitude,
