@@ -494,7 +494,7 @@
                 "sha256:fade0d4f4d292b6f39951b6836d7a3c7ef5b2347f3c420cd9820a1d90d794802",
                 "sha256:fdf3c08bce27132395d3c3ba1503cac12e17282358cb4bddc25cc46b0aca07aa"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_version >= '3.10'",
             "version": "==1.22.3"
         },
         "packaging": {
@@ -906,7 +906,7 @@
                 "sha256:a94b8c1c17dc24498917f7289fe383b457d8ad4ef2a3ffca80a892a41c8b58a6",
                 "sha256:b51356163ab1f93592dd7e45adb169cc8c7044ad8c2fe19b2bacc0ac90e70336"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
+            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
             "version": "==6.4.5"
         },
         "dill": {
@@ -937,7 +937,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
+            "markers": "python_full_version >= '3.6.1' and python_full_version < '4.0.0'",
             "version": "==5.10.1"
         },
         "jinja2": {
@@ -1340,7 +1340,7 @@
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
                 "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version >= '3.7'",
             "version": "==2.0.1"
         },
         "tqdm": {
