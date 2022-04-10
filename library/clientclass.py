@@ -5,7 +5,9 @@ clientに使うclass
 """
 import os
 from abc import ABCMeta, abstractmethod
+
 from slack import WebClient
+
 import slackbot_settings as conf
 
 

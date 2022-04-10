@@ -2,8 +2,9 @@
 メッセージを解析する
 """
 
-from typing import Callable
 from functools import partial
+from typing import Callable
+
 from library.clientclass import BaseClient
 from plugins import hato
 

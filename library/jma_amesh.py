@@ -4,13 +4,14 @@
 jma_amesh
 """
 
-from dataclasses import dataclass
-from io import BytesIO
-import random
-from string import Template
 import json
 import math
-from typing import Optional, List, Tuple
+import random
+from dataclasses import dataclass
+from io import BytesIO
+from string import Template
+from typing import List, Optional, Tuple
+
 import requests
 from PIL import Image, ImageEnhance
 

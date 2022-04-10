@@ -6,7 +6,7 @@ amesh
 
 import json
 import re
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 import requests
 
