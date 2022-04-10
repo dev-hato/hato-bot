@@ -96,7 +96,8 @@ def on_app_mention(event_data):
                             and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
-                                analyze_slack_message(block_element_elements[1:]),
+                                analyze_slack_message(
+                                    block_element_elements[1:]),
                                 SlackClient(
                                     channel, block_element_elements[0]["user_id"]
                                 ),
