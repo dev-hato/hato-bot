@@ -121,8 +121,8 @@ def get_latest_jma_image(
     return get_tile_image(
         url_template=Template(
             # pylint: disable=C0301
-            f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{latest_time}/none/{latest_time}/surf/hrpns/${{zoom}}/${{x}}/${{y}}.png"
-        ),  # noqa: E501
+            f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{latest_time}/none/{latest_time}/surf/hrpns/${{zoom}}/${{x}}/${{y}}.png"  # noqa: E501
+        ),
         lat=lat,
         lng=lng,
         zoom=zoom,
