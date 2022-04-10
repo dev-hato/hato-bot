@@ -25,7 +25,8 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         client2 = TestClient()
         # pylint: disable=E1121
         hato.totuzensi(client2, "09012345678")
-        self.assertEqual(client1.get_post_message(), client2.get_post_message())
+        self.assertEqual(client1.get_post_message(),
+                         client2.get_post_message())
 
     def test_code(self):
         """コードを含むコマンドを正しく解析できる"""
@@ -38,4 +39,5 @@ class TestAnalyzeSlackMessage(unittest.TestCase):
         client2 = TestClient()
         # pylint: disable=E1121
         hato.totuzensi(client2, "09012345678")
-        self.assertEqual(client1.get_post_message(), client2.get_post_message())
+        self.assertEqual(client1.get_post_message(),
+                         client2.get_post_message())

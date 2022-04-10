@@ -55,7 +55,8 @@ class SlackClient(BaseClient):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
         self.send_user = send_user
-        self.send_user_name = self.client.users_info(user=send_user)["user"]["name"]
+        self.send_user_name = self.client.users_info(user=send_user)[
+            "user"]["name"]
 
     def post(self, message):
         """Slackにポストする"""
