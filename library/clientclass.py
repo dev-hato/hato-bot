@@ -5,7 +5,6 @@ clientに使うclass
 """
 import os
 from abc import ABCMeta, abstractmethod
-
 from slack import WebClient
 import slackbot_settings as conf
 
@@ -42,7 +41,7 @@ class BaseClient(metaclass=ABCMeta):
     @staticmethod
     def get_type() -> str:
         """インスタンスの種類を返す"""
-        return "test"
+        return 'test'
 
 
 class SlackClient(BaseClient):
@@ -54,16 +53,22 @@ class SlackClient(BaseClient):
         self.client = WebClient(token=conf.SLACK_API_TOKEN)
         self.slack_channel = channel
         self.send_user = send_user
-        self.send_user_name = self.client.users_info(user=send_user)["user"]["name"]
+        self.send_user_name = self.client.users_info(user=send_user)[
+            'user']['name']
 
     def post(self, message):
         """Slackにポストする"""
-        self.client.chat_postMessage(channel=self.slack_channel, text=message)
+        self.client.chat_postMessage(
+            channel=self.slack_channel,
+            text=message
+        )
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
         self.client.files_upload(
-            channels=self.slack_channel, file=file, filename=filename
+            channels=self.slack_channel,
+            file=file,
+            filename=filename
         )
 
     def get_send_user(self):
@@ -76,7 +81,7 @@ class SlackClient(BaseClient):
     @staticmethod
     def get_type():
         """slack"""
-        return "slack"
+        return 'slack'
 
 
 class ApiClient(BaseClient):
@@ -86,7 +91,7 @@ class ApiClient(BaseClient):
     """
 
     def __init__(self):
-        self.response = ""
+        self.response = ''
 
     def post(self, message):
         """ポストする"""
@@ -94,16 +99,16 @@ class ApiClient(BaseClient):
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        self.response = os.linesep.join([self.response, f"upload: {filename}"])
+        self.response = os.linesep.join([self.response, f'upload: {filename}'])
 
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""
-        return "api_user_id"
+        return 'api_user_id'
 
     def get_send_user_name(self):
-        return "api_user"
+        return 'api_user'
 
     @staticmethod
     def get_type():
         """api"""
-        return "api"
+        return 'api'
