@@ -26,13 +26,9 @@ from library.hukidasi import generator
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults
 from library.omikuji import draw as omikuji_draw
-from library.vocabularydb import (
-    add_vocabulary,
-    delete_vocabulary,
-    get_vocabularys,
-    show_random_vocabulary,
-    show_vocabulary,
-)
+from library.vocabularydb import (add_vocabulary, delete_vocabulary,
+                                  get_vocabularys, show_random_vocabulary,
+                                  show_vocabulary)
 
 logger = getLogger(__name__)
 

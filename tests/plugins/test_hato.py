@@ -8,15 +8,10 @@ import unittest
 from typing import List
 
 import requests_mock
+
 import slackbot_settings as conf
-from plugins.hato import (
-    altitude,
-    amesh,
-    omikuji,
-    omikuji_results,
-    split_command,
-    yoshiyoshi,
-)
+from plugins.hato import (altitude, amesh, omikuji, omikuji_results,
+                          split_command, yoshiyoshi)
 from tests.library.test_geo import set_mock
 from tests.plugins import TestClient
 
