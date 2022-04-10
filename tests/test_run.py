@@ -4,8 +4,8 @@ run.pyのテスト
 
 import unittest
 
-from run import analyze_slack_message
 from plugins import hato
+from run import analyze_slack_message
 from tests.plugins import TestClient
 
 

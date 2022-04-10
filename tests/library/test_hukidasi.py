@@ -2,8 +2,9 @@
 hukidashiライブラリのテスト
 """
 
-import unittest
 import textwrap
+import unittest
+
 from library.hukidasi import generator
 
 
