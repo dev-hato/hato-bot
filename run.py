@@ -2,7 +2,7 @@
 
 """
 BotのMain関数
- """
+"""
 import logging
 import logging.config
 import sys
