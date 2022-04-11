@@ -4,9 +4,9 @@
 おみくじを返す
 """
 
-from typing import Tuple, TypeVar
 from dataclasses import dataclass
 from random import choices
+from typing import Tuple, TypeVar
 
 
 @dataclass

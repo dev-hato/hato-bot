@@ -3,6 +3,7 @@
 """
 
 import unittest
+
 from library.hatokaraage import hato_ha_karaage
 
 
