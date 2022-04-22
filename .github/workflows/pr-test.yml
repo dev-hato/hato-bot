@@ -81,4 +81,4 @@ jobs:
           PYTHONPATH: ${{ env.PYTHONPATH }}
           PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@v2.15.0
+        uses: dotenv-linter/action-dotenv-linter@v2.16.0
