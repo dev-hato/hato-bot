@@ -15,7 +15,7 @@ COPY Pipfile Pipfile
 # * git: Pythonライブラリのインストールの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
-    pip install pipenv==2022.4.8 --no-cache-dir && \
+    pip install pipenv==2022.4.21 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
