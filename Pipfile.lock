@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "935fb73e884276d1eb91476fde7a57ac901311a677d2f02fec323eb3517ef208"
+            "sha256": "e93a7a81b26ab4da2ca4d382507d823e4c239dd1af61bd61edd45d7ca6bed773"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -701,11 +701,11 @@
         },
         "slackclient": {
             "hashes": [
-                "sha256:07ec8fa76f6aa64852210ae235ff9e637ba78124e06c0b07a7eeea4abb955965",
-                "sha256:2d68d668c02f4038299897e5c4723ab85dd40a3548354924b24f333a435856f8"
+                "sha256:a8cab9146795e23d66a03473b80dd23df8c500829dfa9d06b3e3d5aec0a2b293",
+                "sha256:ab79fefb5412d0595bc01d2f195a787597f2a617b6766562932ab9ffbe5cb173"
             ],
             "index": "pypi",
-            "version": "==2.9.3"
+            "version": "==2.9.4"
         },
         "slackeventsapi": {
             "hashes": [
@@ -1340,7 +1340,7 @@
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
                 "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version < '3.11'",
             "version": "==2.0.1"
         },
         "tqdm": {
