@@ -11,7 +11,7 @@ autopep8 = "==1.6.0"
 requests-mock = "==1.9.3"
 pylint = "==2.13.7"
 sqlfluff = "==0.13.0"
-mypy = "==0.942"
+mypy = "==0.950"
 
 [packages]
 python-dotenv = "==0.20.0"
