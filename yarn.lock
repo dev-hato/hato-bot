@@ -2463,17 +2463,7 @@ textlint-rule-helper@^1.1.5:
   dependencies:
     unist-util-visit "^1.1.0"
 
-textlint-rule-helper@^2.0.0, textlint-rule-helper@^2.1.1, textlint-rule-helper@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/textlint-rule-helper/-/textlint-rule-helper-2.2.0.tgz#30522ba904a03849d57ea3e5ebd5920027cd8da3"
-  integrity sha512-9S5CsgQuQwPjM2wvr4JGdpkLf+pR9gOjedSQFa/Dkrbh+D9MXt1LIR4Jvx1RujKtt2nq42prmEX2q3xOxyUcIQ==
-  dependencies:
-    "@textlint/ast-node-types" "^4.4.3"
-    "@textlint/types" "^1.5.5"
-    structured-source "^3.0.2"
-    unist-util-visit "^1.1.0"
-
-textlint-rule-helper@^2.2.1:
+textlint-rule-helper@^2.0.0, textlint-rule-helper@^2.1.1, textlint-rule-helper@^2.2.0, textlint-rule-helper@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/textlint-rule-helper/-/textlint-rule-helper-2.2.1.tgz#fe223d4a6c492b9aaf6e8a33fca5ad8a02e4e027"
   integrity sha512-pdX3uNbFzQTgINamaBpEHRT/MgROHev5wCnQnUTXRLT5DaRjls0Rmpi5d1MPZG6HT5NKVL++Q2J0FUbh5shi3Q==
@@ -2849,10 +2839,10 @@ textlint-rule-sentence-length@^3.0.0:
     textlint-rule-helper "^2.1.1"
     textlint-util-to-string "^3.1.1"
 
-textlint-rule-terminology@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/textlint-rule-terminology/-/textlint-rule-terminology-2.1.5.tgz#21aaed9409e031f71fd450d024b6de9590be2489"
-  integrity sha512-VW+ea4ByLPddSUqoFkVVJF8zWnO8kqKwvC681wGFAjI4CYz9WhjEQH1ikhoEHXnd5AFXNArcjyoa8hoihrXy0w==
+textlint-rule-terminology@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/textlint-rule-terminology/-/textlint-rule-terminology-3.0.0.tgz#7f1fbe23a26b5fa2b4b9ee74b784d8ba5ff0744f"
+  integrity sha512-ySHbdLcA9Mdbbbc/Wkts3f8CVvY2Nsy3r21NH4bK785jhdpZozG771WDR7d7L5nNnFBeH7MmS0IcscfMpxMyvQ==
   dependencies:
     lodash "^4.17.15"
     strip-json-comments "^3.0.1"
