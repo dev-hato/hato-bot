@@ -6,6 +6,10 @@ on:
     types:
       - published
   pull_request:
+  push:
+    branches:
+      - master
+      - develop
 
 jobs:
   deploy_docker_image:

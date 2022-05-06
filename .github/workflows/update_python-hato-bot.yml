@@ -18,13 +18,26 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+      - run: |
+          exit_code=1
+          
+          for i in $(seq 600); do
+            docker-compose pull
+            exit_code=${?}
+          
+            if [ ${exit_code} -eq 0 ]; then
+              break
+            fi
+          
+            sleep 1
+          done
+          
+          exit ${exit_code}
       - name: Get Python version
         id: get_python_version
         run: |
-          image_name=hato_bot
-          docker build -t "${image_name}" .
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
-          python_version=$(docker run ${image_name} sh -c "${DOCKER_CMD}")
+          python_version=$(docker-compose run hato-bot sh -c "${DOCKER_CMD}")
           echo "Python version:" "${python_version}"
           echo "::set-output name=python_version::${python_version}"
       - name: Update versions

@@ -74,14 +74,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
       - run: |
           echo "TAG_NAME=latest" >> "$GITHUB_ENV"
           echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - name: Build docker image
-        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
+      - run: |
+          exit_code=1
+
+          for i in $(seq 600); do
+            docker-compose pull
+            exit_code=${?}
+
+            if [ ${exit_code} -eq 0 ]; then
+              break
+            fi
+
+            sleep 1
+          done
+
+          exit ${exit_code}
       - name: Start docker
         run: docker-compose up -d
       # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
