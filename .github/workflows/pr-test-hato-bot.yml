@@ -74,9 +74,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          echo "TAG_NAME=latest" >> "$GITHUB_ENV"
-          echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
+      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
+        env:
+          HEAD_REF: ${{github.head_ref}}
+      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: |
           exit_code=1
 

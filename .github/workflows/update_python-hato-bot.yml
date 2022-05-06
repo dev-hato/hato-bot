@@ -18,6 +18,10 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
+        env:
+          HEAD_REF: ${{github.head_ref}}
+      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: |
           exit_code=1
 
