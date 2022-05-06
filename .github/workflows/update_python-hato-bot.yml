@@ -24,25 +24,7 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - run: |
-          exit_code=1
-
-          for i in $(seq 600); do
-            echo "<${i}>"
-
-            set -e
-            docker-compose pull
-            exit_code=${?}
-            set +e
-
-            if [ ${exit_code} -eq 0 ]; then
-              break
-            fi
-
-            sleep 1
-          done
-
-          exit ${exit_code}
+      - run: docker-compose pull
         working-directory: setup
       - name: Get Python version
         id: get_python_version
