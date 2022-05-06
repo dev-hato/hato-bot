@@ -19,6 +19,7 @@ RUN apt-get update && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* ~/.cache
 
