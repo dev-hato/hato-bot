@@ -28,6 +28,7 @@ jobs:
           exit_code=1
 
           for i in $(seq 600); do
+          ` echo "<${i}>"
             docker-compose pull
             exit_code=${?}
 
