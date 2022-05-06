@@ -20,18 +20,18 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: |
           exit_code=1
-          
+
           for i in $(seq 600); do
             docker-compose pull
             exit_code=${?}
-          
+
             if [ ${exit_code} -eq 0 ]; then
               break
             fi
-          
+
             sleep 1
           done
-          
+
           exit ${exit_code}
       - name: Get Python version
         id: get_python_version
