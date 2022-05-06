@@ -33,8 +33,10 @@ jobs:
           done
 
           exit ${exit_code}
+        working-directory: setup
       - name: Get Python version
         id: get_python_version
+        working-directory: setup
         run: |
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
           python_version=$(docker-compose run hato-bot sh -c "${DOCKER_CMD}")
