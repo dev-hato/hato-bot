@@ -83,8 +83,11 @@ jobs:
 
           for i in $(seq 600); do
             echo "<${i}>"
+
+            set -e
             docker-compose pull
             exit_code=${?}
+            set +e
 
             if [ ${exit_code} -eq 0 ]; then
               break
