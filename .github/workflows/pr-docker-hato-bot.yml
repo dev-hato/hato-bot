@@ -42,6 +42,8 @@ jobs:
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
+      - run: docker-compose pull
+        continue-on-error: true
       - name: Build docker image
         run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
       - run: docker-compose push
