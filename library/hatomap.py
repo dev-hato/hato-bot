@@ -158,7 +158,7 @@ class RasterTileServer:
         )
 
     def request(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
-        if bbox is None or False:
+        if bbox is None:
             return None
 
         (tl_tilepx, rb_tilepx) = bbox.covered_tiles()

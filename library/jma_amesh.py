@@ -106,18 +106,13 @@ def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
             RasterLayer(url=get_jma_image_server(
-                jma_timestamp["hrpns_nd"]), opacity=128/256),
-            LineTrace(coords=[get_circle(lat, lng, 10*1000)],
-                      color=(100, 100, 100, 255)),
-            LineTrace(coords=[get_circle(lat, lng, 20*1000)],
-                      color=(100, 100, 130, 255)),
-            LineTrace(coords=[get_circle(lat, lng, 50*1000)],
-                      color=(100, 100, 150, 255)),
-            LineTrace(coords=[get_circle(lat, lng, 100*1000)],
-                      color=(100, 100, 200, 255)),
-            LineTrace(coords=[get_circle(lat, lng, 200*1000)],
-                      color=(100, 100, 255, 255)),
-            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])], size=12,
+                jma_timestamp["hrpns_nd"]), opacity=128/256)
+        ] + [
+            LineTrace(coords=[get_circle(lat, lng, d*1000)],
+                      color=(100, 100, 100, 255))
+            for d in [10, 20, 30, 40, 50]
+        ] + [
+            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])], size=14,
                         symbol='thunder', fill_color=(0, 255, 255, 255), border_color=(0, 64, 64, 255))
         ]
     )
