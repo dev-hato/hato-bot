@@ -402,7 +402,7 @@ class HatoMap:
         img = np.zeros((height, width, 3), np.uint8)
         img.fill(255)
         img[offset_top:, :] = body_img
-        img = cv2_putText_3(img, self.title, (0, offset_top), "./assets/ipag.ttf",
+        img = cv2_putText_3(img, self.title, (0, offset_top), "./library/assets/ipag.ttf",
                             fontScale=16,
                             color=(0, 0, 0))
 
