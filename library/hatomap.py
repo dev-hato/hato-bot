@@ -8,7 +8,7 @@ from multiprocessing import Pool
 
 from typing import Any, List, Optional, Tuple, Union
 
-from cv2 import cv2
+import cv2
 import numpy as np
 import requests
 from PIL import Image, ImageDraw, ImageFont
