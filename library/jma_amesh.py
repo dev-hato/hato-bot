@@ -12,7 +12,7 @@ from typing import List, Optional, Tuple
 
 import requests
 from PIL import Image
-from hatomap import HatoMap, LineTrace, MapBox, GeoCoord, MarkerTrace, RasterLayer
+from library.hatomap import HatoMap, LineTrace, MapBox, GeoCoord, MarkerTrace, RasterLayer
 
 
 @dataclass
