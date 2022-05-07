@@ -15,7 +15,6 @@ from PIL import Image
 from hatomap import HatoMap, LineTrace, MapBox, GeoCoord, MarkerTrace, RasterLayer
 
 
-
 @dataclass
 class TimeJsonElement:
     """targetTimesの要素"""
@@ -24,7 +23,7 @@ class TimeJsonElement:
     elements: List[str]
 
 
-def get_latest_timestamps()->dict:
+def get_latest_timestamps() -> dict:
     """データごとの最終更新時刻を取得する"""
     urls = [
         'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
@@ -38,26 +37,30 @@ def get_latest_timestamps()->dict:
             data = [TimeJsonElement(**i) for i in json.loads(response.text)]
             return_arr += data
 
-    elements = list(set([e for i in timejson for e in i.elements ]))
+    elements = list(set([e for i in timejson for e in i.elements]))
     return dict([
         (e,
             max(
-                [i.basetime for i in timejson if i.basetime == i.validtime and e in i.elements]
+                [i.basetime for i in timejson if i.basetime ==
+                    i.validtime and e in i.elements]
             )
-        )
+         )
         for e in elements
     ])
 
-def timestamp2jst(timestamp:str)-> str:
+
+def timestamp2jst(timestamp: str) -> str:
     """targetTimes.jsonの時刻書式をJSTに変換し読みやすくする"""
     return datetime.datetime.strptime(timestamp, '%Y%m%d%H%M%S') \
         .replace(tzinfo=datetime.timezone.utc) \
         .astimezone(datetime.timezone(datetime.timedelta(hours=9))) \
         .strftime("%Y-%m-%d %H:%M")
 
-def get_jma_image_server(timestamp:str) -> str:
+
+def get_jma_image_server(timestamp: str) -> str:
     """気象庁雨雲レーダー画像を取得する"""
     return f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png'
+
 
 def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
     """気象庁落雷JSONを取得する"""
@@ -65,25 +68,31 @@ def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
     response = requests.get(liden_json_url)
     if response.status_code == 200:
         return [
-            ( e["geometry"]["coordinates"][1],
-              e["geometry"]["coordinates"][0],
-              e["properties"]["type"]
-            ) for e in json.loads(response.text)["features"]
+            (e["geometry"]["coordinates"][1],
+             e["geometry"]["coordinates"][0],
+             e["properties"]["type"]
+             ) for e in json.loads(response.text)["features"]
         ]
     return None
+
 
 def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
     """指定した地点から半径radiusメートルの正360角形の頂点を列挙する"""
     earth_radius = 6378137
     earth_f = 298.257222101
-    earth_e_sq = (2 * earth_f - 1) / earth_f ** 2 
+    earth_e_sq = (2 * earth_f - 1) / earth_f ** 2
     c = 1 - (earth_e_sq * math.sin(lat) ** 2)
-    meter_1deg_lat = math.pi * earth_radius * (1 - earth_e_sq) / (180 * c ** 1.5)
-    meter_1deg_lng = math.pi * earth_radius * math.cos(lat * math.pi / 180) / (180 * math.sqrt(c))
+    meter_1deg_lat = math.pi * earth_radius * \
+        (1 - earth_e_sq) / (180 * c ** 1.5)
+    meter_1deg_lng = math.pi * earth_radius * \
+        math.cos(lat * math.pi / 180) / (180 * math.sqrt(c))
 
-    lats = np.sin(np.radians(np.arange(0,361,1))) * radius / meter_1deg_lat + lat
-    lngs = np.cos(np.radians(np.arange(0,361,1))) * radius / meter_1deg_lng + lng
+    lats = np.sin(np.radians(np.arange(0, 361, 1))) * \
+        radius / meter_1deg_lat + lat
+    lngs = np.cos(np.radians(np.arange(0, 361, 1))) * \
+        radius / meter_1deg_lng + lng
     return np.array([lats, lngs]).T
+
 
 def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
     """
@@ -94,17 +103,24 @@ def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[
     h = HatoMap(
         basemap='open-street-map-dim',
         title=f'雨雲:{timestamp2jst(jma_timestamp["hrpns_nd"])} 雷:{timestamp2jst(jma_timestamp["liden"])}',
-        mapbox=MapBox(center=GeoCoord(lat, lng),zoom=zoom),
+        mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
-            RasterLayer(url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128/256),
-            LineTrace(coords=[get_circle(lat, lng, 10*1000)], color=(100,100,100,255)),
-            LineTrace(coords=[get_circle(lat, lng, 20*1000)], color=(100,100,130,255)),
-            LineTrace(coords=[get_circle(lat, lng, 50*1000)], color=(100,100,150,255)),
-            LineTrace(coords=[get_circle(lat, lng, 100*1000)], color=(100,100,200,255)),
-            LineTrace(coords=[get_circle(lat, lng, 200*1000)], color=(100,100,255,255)),
-            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden("20220506032500")], size=12, symbol='thunder', fill_color=(0,255,255,255), border_color=(0,64,64,255))
+            RasterLayer(url=get_jma_image_server(
+                jma_timestamp["hrpns_nd"]), opacity=128/256),
+            LineTrace(coords=[get_circle(lat, lng, 10*1000)],
+                      color=(100, 100, 100, 255)),
+            LineTrace(coords=[get_circle(lat, lng, 20*1000)],
+                      color=(100, 100, 130, 255)),
+            LineTrace(coords=[get_circle(lat, lng, 50*1000)],
+                      color=(100, 100, 150, 255)),
+            LineTrace(coords=[get_circle(lat, lng, 100*1000)],
+                      color=(100, 100, 200, 255)),
+            LineTrace(coords=[get_circle(lat, lng, 200*1000)],
+                      color=(100, 100, 255, 255)),
+            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden("20220506032500")], size=12,
+                        symbol='thunder', fill_color=(0, 255, 255, 255), border_color=(0, 64, 64, 255))
         ]
     )
     width = (2*around_tiles+1) * 256
-    i = h.get_image(width=width,height=width)
-    return Image.fromarray(i[:, :, ::-1]) # OpenCV形式からPIL形式に変換
+    i = h.get_image(width=width, height=width)
+    return Image.fromarray(i[:, :, ::-1])  # OpenCV形式からPIL形式に変換

@@ -308,7 +308,6 @@ class RasterLayer:
         return layer_img
 
 
-
 def cv2_putText_3(img, text, org, fontFace, fontScale, color):
     """
     OpenCVでも日本語フォントでテキストを挿入する。
