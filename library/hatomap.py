@@ -63,8 +63,8 @@ class WebMercatorPixelCoord:
     def belongs_tile(self) -> WebMercatorTilePixel:
         return WebMercatorTilePixel(
             WebMercatorTile(
-                tile_x=self.pixel_x // 256,
-                tile_y=self.pixel_y // 256,
+                tile_x=int(self.pixel_x // 256),
+                tile_y=int(self.pixel_y // 256),
                 zoom_level=self.zoom_level
             ),
             int(round(self.pixel_x % 256)),
@@ -196,7 +196,7 @@ class RasterTileServer:
 class LineTrace:
     coords: Union[List["np.ndarray"], List[List[GeoCoord]]]
     width: int = 1
-    color: Tuple(int, int, int, int) = (255, 0, 255, 255)
+    color: Tuple[int, int, int, int] = (255, 0, 255, 255)
 
     def get_image(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
@@ -220,9 +220,9 @@ class MarkerTrace:
     coords: Union["np.ndarray", List[GeoCoord]]
     symbol: str = "circle"
     size: int = 4
-    border_color: Tuple(int, int, int) = (255, 0, 255, 255)
+    border_color: Tuple[int, int, int] = (255, 0, 255, 255)
     border_width: int = 1
-    fill_color: Optional[Tuple(int, int, int, int)] = None
+    fill_color: Optional[Tuple[int, int, int, int]] = None
 
     def get_image(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
 
@@ -297,8 +297,8 @@ class RasterLayer:
 
         if self.brightness != 1.0 or self.chroma != 1.0:
             img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
-            img_hsv[..., (1)] = img_hsv[..., (1)] * self.brightness
-            img_hsv[..., (2)] = img_hsv[..., (2)] * self.chroma
+            img_hsv[..., 1] = img_hsv[..., 1] * self.brightness
+            img_hsv[..., 2] = img_hsv[..., 2] * self.chroma
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
         if self.opacity != 1.0:
