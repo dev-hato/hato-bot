@@ -102,10 +102,11 @@ class TestAmesh(unittest.TestCase):
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            with open(os.path.join(os.path.dirname(__file__),
-                                   'test_targetTimes_N1.json'), mode='rb') as json_file:
-                with open(os.path.join(os.path.dirname(__file__),
-                                       'test_liden_data.geojson'), mode='rb') as liden_json_file:
+            with open(os.path.join(os.path.dirname(__file__), 'test_targetTimes_N1.json'
+                                   ), mode='rb') as json_file:
+                with open(os.path.join(
+                    os.path.dirname(__file__), 'test_liden_data.geojson'
+                    ), mode='rb') as liden_json_file:
                     client1 = self.get_amesh_test(mocker,
                                                   place,
                                                   image_content=picture_file.read(),

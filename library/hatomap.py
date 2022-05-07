@@ -1,16 +1,17 @@
 from __future__ import annotations
+
+import math
+import random
+import string
 from dataclasses import dataclass, field
 from multiprocessing import Pool
 
-import string
-from typing import Any, List, Literal, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 
-from PIL import Image, ImageDraw, ImageFont
-import numpy as np
-import math
-import requests
 import cv2
-import random
+import numpy as np
+import requests
+from PIL import Image, ImageDraw, ImageFont
 
 
 @dataclass
@@ -106,9 +107,10 @@ class WebMercatorPixelBBox:
     def _ndarray_geocoords2pixel(self, geocoords: np.ndarray) -> np.ndarray:
         return np.array([
             256 * (1 << self.zoom) *
-            (geocoords[..., 1] + 180) / 360 - self.pixel_x_west,
-            256 * (1 << self.zoom) * (.5 - np.log(np.tan(np.pi/4 +
-                                                         geocoords[..., 0]*np.pi/180/2)) / (2*np.pi)) - self.pixel_y_north
+                (geocoords[..., 1] + 180) / 360 - self.pixel_x_west,
+            256 * (1 << self.zoom) * 
+                (.5 - np.log(np.tan(np.pi/4 + geocoords[..., 0]*np.pi/180/2)) / (2*np.pi))
+                - self.pixel_y_north
         ]).astype(np.int32).T
 
     def geocoords2pixel(
@@ -116,12 +118,14 @@ class WebMercatorPixelBBox:
 
         if type(geocoords) is np.ndarray:
             return self._ndarray_geocoords2pixel(geocoords)
+        if type(geocoords) is not list:
+            return None
         if type(geocoords[0]) is np.ndarray:
             return [self._ndarray_geocoords2pixel(g) for g in geocoords]
 
         if type(geocoords[0]) is GeoCoord:
             return [self.geocoord2pixel(g) for g in geocoords]
-        if type(geocoords[0][0]) is GeoCoord:
+        if type(geocoords[0]) is list and type(geocoords[0][0]) is GeoCoord:
             return [[self.geocoord2pixel(g) for g in gg] for gg in geocoords]
 
 

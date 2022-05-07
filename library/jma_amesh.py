@@ -3,16 +3,23 @@
 """
 jma_amesh
 """
-import numpy as np
 import datetime
 import json
 import math
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
+import numpy as np
 import requests
+from library.hatomap import (
+    GeoCoord,
+    HatoMap,
+    LineTrace,
+    MapBox,
+    MarkerTrace,
+    RasterLayer
+)
 from PIL import Image
-from library.hatomap import HatoMap, LineTrace, MapBox, GeoCoord, MarkerTrace, RasterLayer
 
 
 @dataclass
@@ -59,12 +66,12 @@ def timestamp2jst(timestamp: str) -> str:
 
 def get_jma_image_server(timestamp: str) -> str:
     """気象庁雨雲レーダー画像を取得する"""
-    return f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png'
+    return f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png'  # noqa: E501
 
 
 def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
     """気象庁落雷JSONを取得する"""
-    liden_json_url = f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson'
+    liden_json_url = f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson'  # noqa: E501
     response = requests.get(liden_json_url)
     if response.status_code == 200:
         return [
