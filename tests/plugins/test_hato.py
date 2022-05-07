@@ -106,7 +106,7 @@ class TestAmesh(unittest.TestCase):
                                    ), mode='rb') as json_file:
                 with open(os.path.join(
                     os.path.dirname(__file__), 'test_liden_data.geojson'
-                    ), mode='rb') as liden_json_file:
+                ), mode='rb') as liden_json_file:
                     client1 = self.get_amesh_test(mocker,
                                                   place,
                                                   image_content=picture_file.read(),
