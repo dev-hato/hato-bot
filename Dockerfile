@@ -13,8 +13,9 @@ COPY Pipfile Pipfile
 
 # Pythonライブラリのインストール時に必要なパッケージ (Pythonライブラリインストール後にアンインストール)
 # * git: Pythonライブラリのインストールの際に必要
+# * libopencv-dev: OpenCV
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git && \
+    apt-get install -y --no-install-recommends git libopencv-dev && \
     pip install pipenv==2022.5.2 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
