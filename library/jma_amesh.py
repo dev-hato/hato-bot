@@ -117,7 +117,7 @@ def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[
                       color=(100, 100, 200, 255)),
             LineTrace(coords=[get_circle(lat, lng, 200*1000)],
                       color=(100, 100, 255, 255)),
-            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden("20220506032500")], size=12,
+            MarkerTrace([GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])], size=12,
                         symbol='thunder', fill_color=(0, 255, 255, 255), border_color=(0, 64, 64, 255))
         ]
     )
