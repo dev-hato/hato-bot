@@ -10,7 +10,7 @@ python_version = "3.10"
 autopep8 = "==1.6.0"
 requests-mock = "==1.9.3"
 pylint = "==2.13.8"
-sqlfluff = "==0.13.0"
+sqlfluff = "==0.13.1"
 mypy = "==0.950"
 
 [packages]
