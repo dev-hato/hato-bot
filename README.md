@@ -52,7 +52,7 @@
 
     または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
 
-4. 必要なパッケージをインストールします。
+4. 必要なパッケージをインストールします (必要なければ飛ばしてもOK)。
 
     ```sh
     pipenv install
