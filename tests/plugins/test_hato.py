@@ -79,8 +79,10 @@ class TestAmesh(unittest.TestCase):
         jma_image_url = re.compile(
             r'www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png')
         osm_image_url = re.compile(r'tile\.openstreetmap\.org/.+\.png')
-        jma_json_url = re.compile(r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json')
-        liden_json_url = re.compile(r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson')
+        jma_json_url = re.compile(
+            r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json')
+        liden_json_url = re.compile(
+            r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson')
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
         mocker.get(jma_json_url, content=json_content)
@@ -103,13 +105,13 @@ class TestAmesh(unittest.TestCase):
             with open(os.path.join(os.path.dirname(__file__),
                                    'test_targetTimes_N1.json'), mode='rb') as json_file:
                 with open(os.path.join(os.path.dirname(__file__),
-                                   'test_liden_data.geojson'), mode='rb') as liden_json_file:
+                                       'test_liden_data.geojson'), mode='rb') as liden_json_file:
                     client1 = self.get_amesh_test(mocker,
-                                                place,
-                                                image_content=picture_file.read(),
-                                                json_content=json_file.read(),
-                                                liden_json_content=liden_json_file.read()
-                                            )
+                                                  place,
+                                                  image_content=picture_file.read(),
+                                                  json_content=json_file.read(),
+                                                  liden_json_content=liden_json_file.read()
+                                                  )
                     self.assertEqual(client1.get_post_message(), msg)
                     self.assertEqual(client1.get_filename(), 'amesh.png')
 
