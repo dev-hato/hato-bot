@@ -96,7 +96,7 @@ class WebMercatorPixelBBox:
             ).belongs_tile()
         )
 
-    def geocoord2pixel(self, geocoord: GeoCoord) -> Tuple(int, int):
+    def geocoord2pixel(self, geocoord: GeoCoord) -> Tuple[int, int]:
         wmp_coord = WebMercatorPixelCoord.from_geocoord(geocoord, self.zoom)
         return (
             int(round(wmp_coord.pixel_x - self.pixel_x_west)),
