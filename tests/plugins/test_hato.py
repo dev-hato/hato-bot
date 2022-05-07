@@ -84,7 +84,7 @@ class TestAmesh(unittest.TestCase):
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
         mocker.get(jma_json_url, content=json_content)
-        mocker.get(liden_json_url, content=json_content)
+        mocker.get(liden_json_url, content=liden_json_content)
         actual = amesh(client1, place=place)
         self.assertEqual(None, actual)
         return client1
@@ -106,9 +106,9 @@ class TestAmesh(unittest.TestCase):
                                    'test_liden_data.geojson'), mode='rb') as liden_json_file:
                     client1 = self.get_amesh_test(mocker,
                                                 place,
-                                                picture_file.read(),
-                                                json_file.read(),
-                                                liden_json_file.read()
+                                                image_content=picture_file.read(),
+                                                json_content=json_file.read(),
+                                                liden_json_content=liden_json_file.read()
                                             )
                     self.assertEqual(client1.get_post_message(), msg)
                     self.assertEqual(client1.get_filename(), 'amesh.png')
