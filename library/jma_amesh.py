@@ -35,7 +35,7 @@ def get_latest_timestamps() -> dict:
         response = requests.get(url)
         if response.status_code == 200:
             data = [TimeJsonElement(**i) for i in json.loads(response.text)]
-            return_arr += data
+            timejson += data
 
     elements = list(set([e for i in timejson for e in i.elements]))
     return dict([
