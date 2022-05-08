@@ -75,6 +75,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_JSCPD: false
+          ACTIONS_RUNNER_DEBUG: true
           LINTER_RULES_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
