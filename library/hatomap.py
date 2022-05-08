@@ -107,10 +107,11 @@ class WebMercatorPixelBBox:
     def _ndarray_geocoords2pixel(self, geocoords: np.ndarray) -> np.ndarray:
         return np.array([
             256 * (1 << self.zoom) *
-                (geocoords[..., 1] + 180) / 360 - self.pixel_x_west,
-            256 * (1 << self.zoom) * 
-                (.5 - np.log(np.tan(np.pi/4 + geocoords[..., 0]*np.pi/180/2)) / (2*np.pi))
-                - self.pixel_y_north
+            (geocoords[..., 1] + 180) / 360 - self.pixel_x_west,
+            256 * (1 << self.zoom) *
+            (.5 - np.log(np.tan(np.pi/4 +
+             geocoords[..., 0]*np.pi/180/2)) / (2*np.pi))
+            - self.pixel_y_north
         ]).astype(np.int32).T
 
     def geocoords2pixel(
