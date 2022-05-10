@@ -11,6 +11,7 @@ jobs:
   pr-close-hato-bot:
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       pull-requests: write
     steps:
       - run: |
