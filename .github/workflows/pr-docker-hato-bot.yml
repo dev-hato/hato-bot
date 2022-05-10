@@ -21,6 +21,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     permissions:
+      contents: read
       packages: write
     if: github.event_name == 'release' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
@@ -245,8 +246,6 @@ jobs:
     defaults:
       run:
         working-directory: setup
-    permissions:
-      packages: write
     needs: deploy_docker_image
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:

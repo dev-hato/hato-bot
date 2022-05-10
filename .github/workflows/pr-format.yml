@@ -5,6 +5,10 @@ name: pr-format
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
