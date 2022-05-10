@@ -4,6 +4,10 @@ name: pr-check-yarn
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   # package.jsonかyarn.lockに差分があれば、package.jsonからyarn.lockを作り出す
   pr-check-yarn:

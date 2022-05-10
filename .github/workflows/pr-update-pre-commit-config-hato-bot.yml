@@ -4,6 +4,10 @@ name: pr-update-pre-commit-config-hato-bot
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update-pre-commit-config:
     runs-on: ubuntu-latest
