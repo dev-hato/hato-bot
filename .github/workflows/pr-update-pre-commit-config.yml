@@ -1,5 +1,5 @@
 ---
-name: pr-update-pre-commit-config-hato-bot
+name: pr-update-pre-commit-config
 
 on:
   pull_request:
