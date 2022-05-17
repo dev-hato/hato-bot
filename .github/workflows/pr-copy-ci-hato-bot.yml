@@ -39,7 +39,7 @@ jobs:
           find hato-bot/${worklows_path} -type f \
                                          -not -name "*hato-bot.yml" \
                                          -exec cp {} "${DEST_PATH}" \;
-          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .mypy.ini .pre-commit-config.yaml .python-version
+          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .mypy.ini .pre-commit-config.yaml .python-version .pep8 .flake8
           do
             cp hato-bot/${f} sudden-death/
           done
