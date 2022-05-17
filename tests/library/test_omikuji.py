@@ -17,19 +17,20 @@ class TestOmikuji(unittest.TestCase):
         """
         おみくじの実装が正常か
         """
+
         class DummyOmikujiEnum(Enum):
             """
             おみくじ設定(ダミー)
             """
+
             KICHI = auto()
             SUE_KICHI = auto()
 
-        dummy_omikuji_results = OmikujiResults({
-            DummyOmikujiEnum.KICHI: OmikujiResult(1, "吉"),
-            DummyOmikujiEnum.SUE_KICHI: OmikujiResult(1, "末吉"),
-        })
-
-        self.assertIn(
-            draw(dummy_omikuji_results)[0],
-            dummy_omikuji_results.keys()
+        dummy_omikuji_results = OmikujiResults(
+            {
+                DummyOmikujiEnum.KICHI: OmikujiResult(1, "吉"),
+                DummyOmikujiEnum.SUE_KICHI: OmikujiResult(1, "末吉"),
+            }
         )
+
+        self.assertIn(draw(dummy_omikuji_results)[0], dummy_omikuji_results.keys())
