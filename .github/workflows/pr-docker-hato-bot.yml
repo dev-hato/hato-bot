@@ -14,9 +14,6 @@ on:
 jobs:
   deploy_docker_image:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: setup
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -30,16 +27,19 @@ jobs:
           fetch-depth: 0
       - name: Set .env
         run: cp .env.example .env
-        working-directory: .
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
+        env:
+          DOCKER_CONTENT_TRUST: 1
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
@@ -47,16 +47,23 @@ jobs:
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - run: docker compose pull
-        continue-on-error: true
-      - name: Build docker image
-        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
-      - run: docker-compose push
+      - name: Build and push
+        uses: docker/bake-action@v2.0.0
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          pull: true
+          files: docker-compose.yml
       - run: |
-          image_name="ghcr.io/${{env.REPOSITORY}}/hato-bot"
-          latest_tag="${image_name}:latest"
-          docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
-          docker push "${latest_tag}"
+          docker compose up -d
+          for image_name in $(docker compose images | awk '{print $2}' | tail -n +2); do
+            latest_tag="${image_name}:latest"
+            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
+            docker push "${latest_tag}"
+          done
+        env:
+          DOCKER_CONTENT_TRUST: 1
         if: ${{ github.event_name == 'release' }}
 
   # .python-version をDockerイメージと同期させる
@@ -65,6 +72,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
     if: github.event_name == 'pull_request'
     steps:
@@ -79,10 +88,8 @@ jobs:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker-compose pull
-        working-directory: setup
       - name: Get Python version
         id: get_python_version
-        working-directory: setup
         run: |
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
           python_version=$(docker-compose run hato-bot sh -c "${DOCKER_CMD}")
@@ -243,9 +250,8 @@ jobs:
 
   pr-docker:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: setup
+    env:
+      DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
@@ -254,7 +260,6 @@ jobs:
           fetch-depth: 0
       - name: Set .env
         run: cp .env.example .env
-        working-directory: .
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -291,3 +296,34 @@ jobs:
 
           docker-compose logs
           exit 1
+
+  dockle:
+    runs-on: ubuntu-latest
+    needs: deploy_docker_image
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    env:
+      DOCKER_CONTENT_TRUST: 1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set .env
+        run: cp .env.example .env
+      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
+        env:
+          HEAD_REF: ${{github.head_ref}}
+      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
+      - run: |
+          VERSION=$(
+            curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
+            grep '"tag_name":' | \
+            sed -E 's/.*"v([^"]+)".*/\1/' \
+          )
+          curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.deb"
+          sudo dpkg -i dockle.deb
+      - run: docker compose pull
+      - run: docker compose up -d
+      - run: |
+          for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -n +2); do
+            cmd="dockle --exit-code 1 ${image_name}"
+            echo "> ${cmd}"
+            eval "${cmd}"
+          done

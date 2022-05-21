@@ -21,15 +21,19 @@ RUN apt-get update && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* ~/.cache
-
-RUN useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+    rm -rf /var/lib/apt/lists/* ~/.cache tmp/* \
+    && for f in /bin/su /bin/mount /usr/bin/wall /usr/bin/expiry /sbin/unix_chkpwd /usr/bin/chage \
+             /usr/bin/passwd /usr/bin/chfn /bin/umount /usr/bin/chsh /usr/bin/newgrp /usr/bin/gpasswd; do \
+      chmod u-s "${f}"; \
+      chmod u-g "${f}"; \
+    done \
+    && useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
 USER nonroot
 
 COPY *.py ./
 COPY library library
 COPY plugins plugins
-COPY setup setup
+COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet

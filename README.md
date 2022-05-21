@@ -66,7 +66,6 @@
 6. docker-composeで鳩botとPostgreSQLを起動します。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose up -d
     cd ..
@@ -75,7 +74,6 @@
 7. コードの変更はdocker-composeの再起動で適用できます。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose restart
     ```
