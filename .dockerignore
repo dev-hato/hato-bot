@@ -2,7 +2,6 @@
 .DS_Store
 __pycache__/
 .vscode/
-setup/pgsql-data
 .mypy_cache/
 node_modules/
 docker-compose.yml

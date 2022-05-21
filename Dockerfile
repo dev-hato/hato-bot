@@ -33,7 +33,7 @@ USER nonroot
 COPY *.py ./
 COPY library library
 COPY plugins plugins
-COPY pgsql-init pgsql-init
+COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet

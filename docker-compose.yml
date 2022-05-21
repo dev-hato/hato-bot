@@ -1,13 +1,13 @@
 ---
 version: "3.7"
 volumes:
-  pgsql-data:
+  postgres-data:
     driver: "local"
 services:
   postgres:
     build:
       dockerfile: ./Dockerfile
-      context: pgsql
+      context: postgres
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
@@ -20,8 +20,8 @@ services:
       POSTGRES_PASSWORD: password
     restart: always
     volumes:
-      - pgsql-data:/var/lib/postgresql/data
-      - ./pgsql-init:/docker-entrypoint-initdb.d
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
   hato-bot:
