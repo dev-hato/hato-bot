@@ -23,6 +23,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* ~/.cache
 
+RUN useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+USER nonroot
+
 COPY *.py ./
 COPY library library
 COPY plugins plugins
