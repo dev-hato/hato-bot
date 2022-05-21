@@ -27,7 +27,7 @@ services:
   hato-bot:
     build:
       dockerfile: ./Dockerfile
-      context: ../
+      context: .
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
