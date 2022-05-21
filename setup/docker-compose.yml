@@ -37,7 +37,7 @@ services:
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
     platform: linux/amd64
     env_file:
-      - .env
+      - setup/.env
     restart: always
     volumes:
       - ../:/usr/src/app
