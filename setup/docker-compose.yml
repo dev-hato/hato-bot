@@ -11,6 +11,10 @@ services:
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
     environment:
       POSTGRES_PASSWORD: password
@@ -27,6 +31,9 @@ services:
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
+      x-bake:
+        platforms:
+          - linux/amd64
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
     platform: linux/amd64
     env_file:
