@@ -56,10 +56,12 @@ jobs:
           pull: true
           files: docker-compose.yml
       - run: |
-          image_name="ghcr.io/${{env.REPOSITORY}}/hato-bot"
-          latest_tag="${image_name}:latest"
-          docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
-          docker push "${latest_tag}"
+          docker compose up -d
+          for image_name in $(docker compose images | awk '{print $2}' | tail -n +2); do
+            latest_tag="${image_name}:latest"
+            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
+            docker push "${latest_tag}"
+          done
         env:
           DOCKER_CONTENT_TRUST: 1
         if: ${{ github.event_name == 'release' }}
