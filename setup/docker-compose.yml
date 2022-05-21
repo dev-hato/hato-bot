@@ -5,9 +5,13 @@ volumes:
     driver: "local"
 services:
   postgres:
-    image: postgres:14.2-bullseye
-    environment:
-      POSTGRES_PASSWORD: password
+    build:
+      dockerfile: ./Dockerfile
+      context: pgsql
+      cache_from:
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
+    image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
     restart: always
     volumes:
       - pgsql-data:/var/lib/postgresql/data
