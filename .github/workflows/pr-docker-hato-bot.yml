@@ -58,7 +58,7 @@ jobs:
         with:
           push: true
           pull: true
-          files: docker-compose.yml
+          files: setup/docker-compose.yml
       - run: |
           image_name="ghcr.io/${{env.REPOSITORY}}/hato-bot"
           latest_tag="${image_name}:latest"
