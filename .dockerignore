@@ -6,4 +6,3 @@ setup/pgsql-data
 .mypy_cache/
 node_modules/
 docker-compose.yml
-Dockerfile

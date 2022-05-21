@@ -59,14 +59,13 @@
     yarn install
     ```
 
-5. `setup/.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-    `setup/.env.example` をコピーして使うとよいでしょう
+    `.env.example` をコピーして使うとよいでしょう
 
 6. docker-composeで鳩botとPostgreSQLを起動します。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose up -d
     cd ..
@@ -75,7 +74,6 @@
 7. コードの変更はdocker-composeの再起動で適用できます。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker-compose restart
     ```

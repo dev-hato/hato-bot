@@ -33,7 +33,7 @@ USER nonroot
 COPY *.py ./
 COPY library library
 COPY plugins plugins
-COPY setup setup
+COPY pgsql-init pgsql-init
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet

@@ -46,7 +46,6 @@ jobs:
           pipenv install --dev
       - name: Set .env
         run: cp .env.example .env
-        working-directory: setup
       - name: Test
         run: |
           pipenv run python -m unittest

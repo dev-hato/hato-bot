@@ -14,9 +14,6 @@ on:
 jobs:
   deploy_docker_image:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: setup
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -57,7 +54,7 @@ jobs:
         with:
           push: true
           pull: true
-          files: setup/docker-compose.yml
+          files: docker-compose.yml
       - run: |
           image_name="ghcr.io/${{env.REPOSITORY}}/hato-bot"
           latest_tag="${image_name}:latest"
@@ -84,16 +81,13 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set .env
         run: cp .env.example .env
-        working-directory: setup
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker-compose pull
-        working-directory: setup
       - name: Get Python version
         id: get_python_version
-        working-directory: setup
         run: |
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
           python_version=$(docker-compose run hato-bot sh -c "${DOCKER_CMD}")
@@ -254,9 +248,6 @@ jobs:
 
   pr-docker:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: setup
     env:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
@@ -308,9 +299,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy_docker_image
     if: github.event_name == 'pull_request' || github.event_name == 'push'
-    defaults:
-      run:
-        working-directory: setup
     env:
       DOCKER_CONTENT_TRUST: 1
     steps:
