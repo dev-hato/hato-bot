@@ -53,7 +53,6 @@ jobs:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
-          pull: true
           files: docker-compose.yml
       - run: |
           docker compose up -d
