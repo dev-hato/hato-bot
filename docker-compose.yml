@@ -11,6 +11,8 @@ services:
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
+      args:
+        BUILDKIT_INLINE_CACHE: 1
       x-bake:
         platforms:
           - linux/amd64
@@ -31,6 +33,10 @@ services:
       cache_from:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
+      args:
+        BUILDKIT_INLINE_CACHE: 1
       x-bake:
         platforms:
           - linux/amd64
