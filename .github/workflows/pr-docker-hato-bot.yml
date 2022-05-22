@@ -47,7 +47,14 @@ jobs:
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - name: Build and push
+      - name: Build and push (build)
+        uses: docker/bake-action@v2.0.0
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: build.docker-compose.yml
+      - name: Build and push (main)
         uses: docker/bake-action@v2.0.0
         env:
           DOCKER_CONTENT_TRUST: 1
