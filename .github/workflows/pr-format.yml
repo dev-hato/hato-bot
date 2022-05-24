@@ -27,6 +27,11 @@ jobs:
         with:
           python-version: ${{env.PYTHON_VERSION }}
           cache: pipenv
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
@@ -63,12 +68,12 @@ jobs:
         run: |
           pipenv install --dev
           pipenv lock
+          yarn install -D
       # autopep8でformatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
         id: format
-        run: |
-          pipenv run autopep8 --exit-code --in-place --recursive .
+        run: yarn run fix:python
         continue-on-error: true
       # 差分があったときは差分を出力する
       - name: Show diff

@@ -7,7 +7,9 @@
     "lint:python": "pipenv run pylint --rcfile .python-lint *.py",
     "lint:python-type": "pipenv run mypy --config-file .mypy.ini --install-types --non-interactive *.py",
     "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile",
-    "lint:secret": "docker run --rm --platform=linux/amd64 -v $(pwd):/path -w /path zricethezav/gitleaks protect --verbose --redact"
+    "lint:secret": "docker run --rm --platform=linux/amd64 -v $(pwd):/path -w /path zricethezav/gitleaks protect --verbose --redact",
+    "fix": "yarn run fix:python",
+    "fix:python": "pipenv run autopep8 --exit-code --in-place --recursive ."
   },
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "^3.1.2",
