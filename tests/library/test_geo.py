@@ -40,8 +40,7 @@ class TestGetGeoData(unittest.TestCase):
         """正しい地名を指定した場合"""
         with requests_mock.Mocker() as mocker:
             place = "長野"
-            result = {"place": "長野県長野市",
-                      "lat": "36.64858580", "lon": "138.19477310"}
+            result = {"place": "長野県長野市", "lat": "36.64858580", "lon": "138.19477310"}
             content = {
                 "Feature": [
                     {

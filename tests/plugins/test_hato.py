@@ -52,8 +52,7 @@ class TestSplitCommand(unittest.TestCase):
 
     def test_maxsplit(self):
         """空白が間に2つ以上ある場合"""
-        self.assertEqual(split_command(
-            " text add テスト", 1), ["text", "add テスト"])
+        self.assertEqual(split_command(" text add テスト", 1), ["text", "add テスト"])
 
 
 class TestAmesh(unittest.TestCase):
@@ -77,8 +76,7 @@ class TestAmesh(unittest.TestCase):
         """
         client1 = TestClient()
 
-        jma_image_url = re.compile(
-            r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png")
+        jma_image_url = re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png")
         osm_image_url = re.compile(r"tile\.openstreetmap\.org/.+\.png")
         jma_json_url = (
             "https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json"
@@ -102,8 +100,7 @@ class TestAmesh(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
         ) as picture_file:
             with open(
-                os.path.join(os.path.dirname(__file__),
-                             "test_targetTimes_N1.json"),
+                os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
                 mode="rb",
             ) as json_file:
                 client1 = self.get_amesh_test(
@@ -134,8 +131,7 @@ class TestAmesh(unittest.TestCase):
         """
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
-            self.amesh_upload_png_test(
-                mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
+            self.amesh_upload_png_test(mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
 
 
 class TestAltitude(unittest.TestCase):
@@ -192,11 +188,9 @@ class TestAltitude(unittest.TestCase):
             altitude_content = {
                 "Feature": [{"Property": {"Altitude": altitude_setagaya}}]
             }
-            client1 = self.altitude_test(
-                mocker, "", coordinates, altitude_content)
+            client1 = self.altitude_test(mocker, "", coordinates, altitude_content)
             self.assertEqual(
-                client1.get_post_message(
-                ), f"東京都世田谷区の標高は{altitude_setagaya}mっぽ！"
+                client1.get_post_message(), f"東京都世田谷区の標高は{altitude_setagaya}mっぽ！"
             )
 
     def test_altitude_with_params(self):
@@ -206,8 +200,7 @@ class TestAltitude(unittest.TestCase):
         with requests_mock.Mocker() as mocker:
             coordinates = ["12.345", "123.456"]
             altitude_ = 122
-            altitude_content = {"Feature": [
-                {"Property": {"Altitude": altitude_}}]}
+            altitude_content = {"Feature": [{"Property": {"Altitude": altitude_}}]}
             client1 = self.altitude_test(
                 mocker, " ".join(coordinates), coordinates, altitude_content
             )
