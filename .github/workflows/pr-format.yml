@@ -22,6 +22,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
+      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v3
         with:
