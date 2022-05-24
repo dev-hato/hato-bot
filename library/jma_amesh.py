@@ -40,7 +40,8 @@ def geocoord2webcoord(lat: float, lng: float, zoom: int) -> Tuple[float, float]:
         (1 << zoom)
         * (
             0.5
-            - math.log(math.tan(math.pi / 4 + lat * math.pi / 180 / 2)) / (2 * math.pi)
+            - math.log(math.tan(math.pi / 4 + lat *
+                       math.pi / 180 / 2)) / (2 * math.pi)
         ),
         (1 << zoom) * (lng + 180) / 360,
     )
@@ -68,7 +69,8 @@ def geocoord2tiles(
             tile_y = centre_tile.tile_y + j
             if 0 <= tile_x < tile_max and 0 <= tile_y < tile_max:
                 res.append(
-                    WebMercatorTile(tile_x=tile_x, tile_y=tile_y, zoom_level=zoom)
+                    WebMercatorTile(
+                        tile_x=tile_x, tile_y=tile_y, zoom_level=zoom)
                 )
     return res
 
@@ -90,7 +92,8 @@ def get_tile_image(
     urls = []
     for tile in geocoord2tiles(lat=lat, lng=lng, around_tiles=around_tiles, zoom=zoom):
         urls.append(
-            url_template.substitute({"zoom": zoom, "x": tile.tile_x, "y": tile.tile_y})
+            url_template.substitute(
+                {"zoom": zoom, "x": tile.tile_x, "y": tile.tile_y})
         )
     res = []
     for url in urls:
@@ -116,7 +119,8 @@ def get_latest_jma_image(
     timejson = get_timejson()
     if timejson is None:
         return None
-    latest_time = max([i.basetime for i in timejson if i.basetime == i.validtime])
+    latest_time = max(
+        [i.basetime for i in timejson if i.basetime == i.validtime])
 
     return get_tile_image(
         url_template=Template(
@@ -160,8 +164,10 @@ def jma_amesh(
     jma_image_alpha.putalpha(0)
     jma_image_mask = jma_image.copy().getchannel("A")
     jma_image.putalpha(128)
-    jma_image_trans = Image.composite(jma_image, jma_image_alpha, jma_image_mask)
-    osm_image = get_osm_image(lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles)
+    jma_image_trans = Image.composite(
+        jma_image, jma_image_alpha, jma_image_mask)
+    osm_image = get_osm_image(
+        lat=lat, lng=lng, zoom=zoom, around_tiles=around_tiles)
     converter = ImageEnhance.Brightness(osm_image)
     osm_image = converter.enhance(0.6)
     return Image.alpha_composite(osm_image, jma_image_trans)
