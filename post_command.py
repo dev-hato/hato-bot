@@ -18,7 +18,8 @@ def main():
     args = parser.parse_args()
     requests.post(
         "http://localhost:3000/",
-        json={"message": args.message, "channel": args.channel, "user": args.user},
+        json={"message": args.message,
+              "channel": args.channel, "user": args.user},
     )
 
 
