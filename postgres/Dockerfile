@@ -8,4 +8,4 @@ RUN for f in /bin/su /usr/bin/expiry /usr/bin/wall /bin/mount /usr/bin/gpasswd /
 
 USER postgres
 
-HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD pg_isready
+HEALTHCHECK CMD pg_isready
