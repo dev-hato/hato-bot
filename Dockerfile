@@ -11,10 +11,11 @@ WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
 
-# Pythonライブラリのインストール時に必要なパッケージ (Pythonライブラリインストール後にアンインストール)
+# 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
+# * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git && \
+    apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.5.2 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
@@ -37,4 +38,5 @@ COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
+HEALTHCHECK CMD curl -s -S -o /dev/null http://localhost:3000/status || exit 1
 CMD ["python", "entrypoint.py"]

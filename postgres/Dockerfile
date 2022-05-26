@@ -7,3 +7,5 @@ RUN for f in /bin/su /usr/bin/expiry /usr/bin/wall /bin/mount /usr/bin/gpasswd /
     done
 
 USER postgres
+
+HEALTHCHECK CMD pg_isready

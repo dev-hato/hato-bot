@@ -1,5 +1,5 @@
 ---
-version: "3.7"
+version: "3.8"
 volumes:
   postgres-data:
     driver: "local"
@@ -50,4 +50,5 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
