@@ -38,5 +38,5 @@ COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
-HEALTHCHECK CMD curl -s -S -o /dev/null http://localhost:3000/status || exit 1
+HEALTHCHECK --interval=5s --retries=20 CMD ["curl", "-s", "-S", "-o", "/dev/null", "http://localhost:3000/status"]
 CMD ["python", "entrypoint.py"]
