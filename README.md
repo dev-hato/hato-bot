@@ -63,19 +63,19 @@
 
     `.env.example` をコピーして使うとよいでしょう
 
-6. docker-composeで鳩botとPostgreSQLを起動します。
+6. docker composeで鳩botとPostgreSQLを起動します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker-compose up -d
+    docker compose up -d
     cd ..
     ```
 
-7. コードの変更はdocker-composeの再起動で適用できます。
+7. コードの変更はdocker composeの再起動で適用できます。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker-compose restart
+    docker compose restart
     ```
 
 #### lintをかける方法

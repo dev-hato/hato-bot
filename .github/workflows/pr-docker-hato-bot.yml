@@ -91,12 +91,12 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - run: docker-compose pull
+      - run: docker compose pull
       - name: Get Python version
         id: get_python_version
         run: |
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
-          python_version=$(docker-compose run hato-bot sh -c "${DOCKER_CMD}")
+          python_version=$(docker compose run hato-bot sh -c "${DOCKER_CMD}")
           echo "Python version:" "${python_version}"
           echo "::set-output name=python_version::${python_version}"
       - name: Update versions
@@ -274,9 +274,9 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - run: docker-compose pull
+      - run: docker compose pull
       - name: Start docker
-        run: docker-compose up -d
+        run: docker compose up -d
       # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
       - name: Test
         run: |
@@ -287,18 +287,18 @@ jobs:
           start_unixtime=$(date +%s)
 
           while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] \
-                && (! (docker-compose ps | grep -q Exit))
+                && (! (docker compose ps | grep -q Exit))
           do
             if [ "$(eval "${cmd_}")" = 200 ] && eval "${cmd}"
             then
-              docker-compose logs
+              docker compose logs
               exit 0
             fi
 
             sleep 1
           done
 
-          docker-compose logs
+          docker compose logs
           exit 1
 
   dockle:
