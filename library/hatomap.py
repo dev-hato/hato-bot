@@ -51,7 +51,7 @@ class WebMercatorPixelCoord:
         return cls(
             256 * (1 << zoom) * (geocoord.lng + 180) / 360,
             256 * (1 << zoom) * (.5 - math.log(math.tan(math.pi /
-                                                        4 + geocoord.lat*math.pi/180/2)) / (2*math.pi)),
+                                                        4 + geocoord.lat * math.pi / 180 / 2)) / (2 * math.pi)),
             zoom
         )
 
@@ -109,8 +109,8 @@ class WebMercatorPixelBBox:
             256 * (1 << self.zoom) *
             (geocoords[..., 1] + 180) / 360 - self.pixel_x_west,
             256 * (1 << self.zoom) *
-            (.5 - np.log(np.tan(np.pi/4 +
-             geocoords[..., 0]*np.pi/180/2)) / (2*np.pi))
+            (.5 - np.log(np.tan(np.pi / 4 +
+             geocoords[..., 0] * np.pi / 180 / 2)) / (2 * np.pi))
             - self.pixel_y_north
         ]).astype(np.int32).T
 
@@ -169,8 +169,8 @@ class RasterTileServer:
         (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
 
         request_urls = []
-        for x in range(tl_tilepx.tile.tile_x, rb_tilepx.tile.tile_x+1):
-            for y in range(tl_tilepx.tile.tile_y, rb_tilepx.tile.tile_y+1):
+        for x in range(tl_tilepx.tile.tile_x, rb_tilepx.tile.tile_x + 1):
+            for y in range(tl_tilepx.tile.tile_y, rb_tilepx.tile.tile_y + 1):
                 request_urls.append(
                     string.Template(self.url).safe_substitute({
                         "x": x, "y": y, "z": bbox.zoom
@@ -184,7 +184,7 @@ class RasterTileServer:
 
         concated = np.concatenate(
             [
-                np.concatenate(imgs[i:i+tile_height_cnt], axis=0) for i in range(0, len(imgs), tile_height_cnt)
+                np.concatenate(imgs[i:i + tile_height_cnt], axis=0) for i in range(0, len(imgs), tile_height_cnt)
             ],
             axis=1
         )
@@ -253,9 +253,9 @@ class MarkerTrace:
             for c in px_coords:
                 print(c)
                 if self.fill_color is not None:
-                    cv2.circle(img, c, int(round(self.size/2)), thickness=-
+                    cv2.circle(img, c, int(round(self.size / 2)), thickness=-
                                1, color=self.fill_color, lineType=cv2.LINE_AA)
-                cv2.circle(img, c, int(round(self.size/2)), thickness=self.border_width,
+                cv2.circle(img, c, int(round(self.size / 2)), thickness=self.border_width,
                            color=self.border_color, lineType=cv2.LINE_AA)
         elif self.symbol == "square":
             for c in px_coords:
@@ -323,7 +323,7 @@ def cv2_putText_3(img, text, org, fontFace, fontScale, color):
     draw = ImageDraw.Draw(imgPIL)
     fontPIL = ImageFont.truetype(font=fontFace, size=fontScale)
     w, h = draw.textsize(text, font=fontPIL)
-    draw.text(xy=(x, y-h), text=text, fill=color, font=fontPIL)
+    draw.text(xy=(x, y - h), text=text, fill=color, font=fontPIL)
     return np.array(imgPIL, dtype=np.uint8)
 
 
@@ -401,7 +401,7 @@ class HatoMap:
             if body_img is None:
                 body_img = layer_img[..., :3]
             else:
-                body_img = body_img[..., :3] * (1-layer_img[..., 3:] / 255) + \
+                body_img = body_img[..., :3] * (1 - layer_img[..., 3:] / 255) + \
                     layer_img[..., :3] * (layer_img[..., 3:] / 255)
 
         img = np.zeros((height, width, 3), np.uint8)
