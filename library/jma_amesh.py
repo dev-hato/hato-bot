@@ -22,9 +22,11 @@ from library.hatomap import (
 from PIL import Image
 
 
+
 @dataclass
 class TimeJsonElement:
     """targetTimesの要素"""
+
     basetime: str
     validtime: str
     elements: List[str]
@@ -73,6 +75,7 @@ def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
     """気象庁落雷JSONを取得する"""
     liden_json_url = f'https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson'  # noqa: E501
     response = requests.get(liden_json_url)
+
     if response.status_code == 200:
         return [
             (e["geometry"]["coordinates"][1],
@@ -101,11 +104,14 @@ def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
     return np.array([lats, lngs]).T
 
 
-def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
+def jma_amesh(
+    lat: float, lng: float, zoom: int, around_tiles: int
+) -> Optional[Image.Image]:
     """
     気象庁雨雲レーダーとOpenStreatMap画像を取得して結合する
     Usage: jma_amesh(lat=37, lng=139, zoom=8, around_tiles=2).save('res2.png')
     """
+
     jma_timestamp = get_latest_timestamps()
     h = HatoMap(
         basemap='open-street-map-dim',

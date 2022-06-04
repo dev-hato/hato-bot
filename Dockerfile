@@ -11,24 +11,33 @@ WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
 
-# Pythonライブラリのインストール時に必要なパッケージ (Pythonライブラリインストール後にアンインストール)
+# 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
+# * curl: ヘルスチェックの際に必要
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git libopencv-dev && \
+    apt-get install -y --no-install-recommends git libopencv-dev curl&& \
     pip install pipenv==2022.5.2 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* ~/.cache
+    rm -rf /var/lib/apt/lists/* ~/.cache tmp/* \
+    && for f in /bin/su /bin/mount /usr/bin/wall /usr/bin/expiry /sbin/unix_chkpwd /usr/bin/chage \
+             /usr/bin/passwd /usr/bin/chfn /bin/umount /usr/bin/chsh /usr/bin/newgrp /usr/bin/gpasswd; do \
+      chmod u-s "${f}"; \
+      chmod u-g "${f}"; \
+    done \
+    && useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+USER nonroot
 
 COPY *.py ./
 COPY library library
 COPY plugins plugins
-COPY setup setup
+COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
+HEALTHCHECK --interval=5s --retries=20 CMD ["curl", "-s", "-S", "-o", "/dev/null", "http://localhost:3000/status"]
 CMD ["python", "entrypoint.py"]

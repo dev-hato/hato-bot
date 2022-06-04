@@ -2839,10 +2839,10 @@ textlint-rule-sentence-length@^3.0.0:
     textlint-rule-helper "^2.1.1"
     textlint-util-to-string "^3.1.1"
 
-textlint-rule-terminology@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/textlint-rule-terminology/-/textlint-rule-terminology-3.0.0.tgz#7f1fbe23a26b5fa2b4b9ee74b784d8ba5ff0744f"
-  integrity sha512-ySHbdLcA9Mdbbbc/Wkts3f8CVvY2Nsy3r21NH4bK785jhdpZozG771WDR7d7L5nNnFBeH7MmS0IcscfMpxMyvQ==
+textlint-rule-terminology@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/textlint-rule-terminology/-/textlint-rule-terminology-3.0.1.tgz#c9da61f592caf424341a0986245b099e226d83b8"
+  integrity sha512-jk2SGGep+XBckhIm9u6CG7NeMZiosJRPfoh7ISlCZizj/JGNk/zheDYGVXwKbFu20SxsguyUIpTF1z/d1Q+NeQ==
   dependencies:
     lodash "^4.17.15"
     strip-json-comments "^3.0.1"
