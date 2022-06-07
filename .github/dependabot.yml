@@ -14,6 +14,7 @@ updates:
       - dependency-name: python
         versions:
           - 3.11.0b1-slim-bullseye
+          - 3.11.0b3-slim-bullseye
     open-pull-requests-limit: 1
   - package-ecosystem: docker
     directory: "/postgres"
