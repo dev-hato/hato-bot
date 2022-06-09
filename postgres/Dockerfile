@@ -1,10 +1,29 @@
 FROM postgres:14.3-bullseye
 
-RUN for f in /bin/su /usr/bin/expiry /usr/bin/wall /bin/mount /usr/bin/gpasswd /usr/bin/chfn  \
-             /usr/bin/newgrp /bin/umount /usr/bin/passwd /sbin/unix_chkpwd /usr/bin/chsh /usr/bin/chage; do \
-      chmod u-s "${f}"; \
-      chmod u-g "${f}"; \
-    done
+RUN chmod u-s /bin/su && \
+    chmod g-s /bin/su && \
+    chmod u-s /usr/bin/expiry && \
+    chmod g-s /usr/bin/expiry && \
+    chmod u-s /usr/bin/wall && \
+    chmod g-s /usr/bin/wall && \
+    chmod u-s /bin/mount && \
+    chmod g-s /bin/mount && \
+    chmod u-s /usr/bin/gpasswd && \
+    chmod g-s /usr/bin/gpasswd && \
+    chmod u-s /usr/bin/chfn && \
+    chmod g-s /usr/bin/chfn && \
+    chmod u-s /usr/bin/newgrp && \
+    chmod g-s /usr/bin/newgrp && \
+    chmod u-s /bin/umount && \
+    chmod g-s /bin/umount && \
+    chmod u-s /usr/bin/passwd && \
+    chmod g-s /usr/bin/passwd && \
+    chmod u-s /sbin/unix_chkpwd && \
+    chmod g-s /sbin/unix_chkpwd && \
+    chmod u-s /usr/bin/chsh && \
+    chmod g-s /usr/bin/chsh && \
+    chmod u-s /usr/bin/chage && \
+    chmod g-s /usr/bin/chage
 
 USER postgres
 
