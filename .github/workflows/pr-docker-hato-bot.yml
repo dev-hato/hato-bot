@@ -59,16 +59,24 @@ jobs:
         with:
           push: true
           files: docker-compose.yml
-      - run: |
-          docker compose up -d
-          for image_name in $(docker compose images | awk '{print $2}' | tail -n +2); do
-            latest_tag="${image_name}:latest"
-            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
-            docker push "${latest_tag}"
-          done
+      - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
+        if: ${{ github.event_name == 'release' }}
+      - name: Build and push (build) (latest)
+        uses: docker/bake-action@v2.0.0
+        if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: build.docker-compose.yml
+      - name: Build and push (main) (latest)
+        uses: docker/bake-action@v2.0.0
         if: ${{ github.event_name == 'release' }}
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
