@@ -1,7 +1,7 @@
 FROM postgres:14.3-bullseye
 
-RUN find / -type f -perm /u+s -exec chmod u-s {} \; && \
-    find / -type f -perm /g+s -exec chmod g-s {} \;
+RUN find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
+    find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \;
 
 USER postgres
 

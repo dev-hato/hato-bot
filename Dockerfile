@@ -23,8 +23,8 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
-    find / -type f -perm /u+s -exec chmod u-s {} \; && \
-    find / -type f -perm /g+s -exec chmod g-s {} \; && \
+    find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
+    find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
 USER nonroot
 
