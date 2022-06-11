@@ -284,7 +284,7 @@ jobs:
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker compose pull
       - name: Start docker
-        run: docker compose up -d
+        run: docker compose up -d --wait
       # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
       - name: Test
         run: |

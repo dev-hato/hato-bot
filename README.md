@@ -67,7 +67,7 @@
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose up -d
+    docker compose up -d --wait
     cd ..
     ```
 
