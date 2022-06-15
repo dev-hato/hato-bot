@@ -50,7 +50,9 @@ jobs:
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
-        run: echo "::set-output name=diff::$(git diff)"
+        run: |
+          git add -A
+          echo "::set-output name=diff::$(git diff --cached)"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death
@@ -58,7 +60,6 @@ jobs:
           git config user.name "github-actions[bot]"
           EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
           git config user.email "${EMAIL}"
-          git add -A
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
