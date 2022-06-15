@@ -60,9 +60,7 @@ jobs:
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
-        run: |
-          pipenv install --dev
-          pipenv lock
+        run: pipenv install --dev
       # autopep8でformatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
@@ -72,10 +70,10 @@ jobs:
         continue-on-error: true
       # 差分があったときは差分を出力する
       - name: Show diff
-        if: ${{ steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure' }}
+        id: diff
         run: |
-          git diff
+          result=$(git diff)
+          echo "::set-output name=result::$result"
       - run: |
           REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
           echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
@@ -84,8 +82,7 @@ jobs:
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure') }}
+          && steps.diff.outputs.result != '' }}
         run: |
           git config user.name "github-actions[bot]"
           EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
@@ -111,8 +108,7 @@ jobs:
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure') }}
+          && steps.diff.outputs.result != '' }}
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -135,8 +131,7 @@ jobs:
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure')
+          && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0 }}
         id: create_pull_request
         with:
@@ -162,8 +157,7 @@ jobs:
       - name: Assign a user
         uses: actions/github-script@v6
         if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure')
+          && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0
           && github.event.pull_request.user.login != 'dependabot[bot]' }}
         with:
@@ -184,8 +178,7 @@ jobs:
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
-          && (steps.install_pipenv.outcome != 'failure'
-          && steps.format.outcome != 'failure') }}
+          && steps.diff.outputs.result == '' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -221,6 +214,5 @@ jobs:
               await github.rest.git.deleteRef(git_deleteRef_params)
             }
       - name: Exit
-        if: ${{ steps.install_pipenv.outcome == 'failure'
-          || steps.format.outcome == 'failure' }}
+        if: steps.diff.outputs.result != ''
         run: exit 1
