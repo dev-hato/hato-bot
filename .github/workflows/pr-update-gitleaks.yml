@@ -1,5 +1,5 @@
 ---
-name: update-gitleaks
+name: pr-update-gitleaks
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-gitleaks:
+  pr-update-gitleaks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
