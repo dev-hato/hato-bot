@@ -20,7 +20,7 @@ jobs:
         run: yarn add js-yaml
       - name: Update .gitleaks.toml
         run: |
-          version="$(grep super-linter .github/workflows/super-linter.yml | grep uses | sed -e 's/.*@v//g')"
+          version="$(grep super-linter .github/workflows/pr-test.yml | grep uses | sed -e 's/.*@v//g')"
           curl "https://raw.githubusercontent.com/github/super-linter/v${version}/TEMPLATES/.gitleaks.toml" > .gitleaks.toml
       - name: Update .pre-commit-config.yaml
         uses: actions/github-script@v6
