@@ -147,7 +147,7 @@ jobs:
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -170,7 +170,7 @@ jobs:
             return pulls.length
       # pushしたブランチでPRを作る
       - name: Create PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
@@ -198,7 +198,7 @@ jobs:
                                     )
             return create_pull_res.data.number
       - name: Assign a user
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: ${{ env.REPO_NAME == github.repository
           && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0
@@ -217,7 +217,7 @@ jobs:
             await github.rest.issues.addAssignees(issues_add_assignees_params)
       # 既にバージョン同期のPRがある状態で、手動でバージョンを修正した場合、バージョン同期のPRを閉じる
       - name: Close PullRequest
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: ${{ env.REPO_NAME == github.repository
