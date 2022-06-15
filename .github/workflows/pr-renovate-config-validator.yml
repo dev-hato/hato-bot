@@ -1,0 +1,23 @@
+---
+name: pr-renovate-config-validator
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  pr-renovate-config-validator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+      - run: yarn install -D
+      - run: yarn renovate-config-validator
