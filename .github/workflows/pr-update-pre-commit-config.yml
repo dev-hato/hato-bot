@@ -16,6 +16,9 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v3.3.0
+        with:
+          cache: yarn
       - name: Install packages
         run: yarn add js-yaml
       - name: Update .pre-commit-config.yaml
