@@ -148,7 +148,8 @@ jobs:
         if: ${{ env.REPO_NAME == github.repository
           && steps.diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0
-          && github.event.pull_request.user.login != 'dependabot[bot]' }}
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && github.event.pull_request.user.login != 'renovate[bot]' }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
