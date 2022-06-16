@@ -1406,10 +1406,10 @@
   resolved "https://registry.yarnpkg.com/@redis/time-series/-/time-series-1.0.3.tgz#4cfca8e564228c0bddcdf4418cba60c20b224ac4"
   integrity sha512-OFp0q4SGrTH0Mruf6oFsHGea58u8vS/iI5+NpYdicaM+7BgqBZH8FFvNZ8rYYLrUO/QRqMq72NpXmxLVNcdmjA==
 
-"@renovatebot/pep440@2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@renovatebot/pep440/-/pep440-2.1.2.tgz#2daf92c1f3641d38698a594ebbc6749a890c9ec6"
-  integrity sha512-5E61yI69foKY0hxoYWabUZLYras9S3Mrzrz7bhf4W5pKVZJse1ypNUjKW5bsiSQoAiZqXFECiD0q1Nw8LA3gyQ==
+"@renovatebot/pep440@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@renovatebot/pep440/-/pep440-2.1.3.tgz#9845809ab50f98f08c2914c7ab50b0931e43968d"
+  integrity sha512-ZCBEyZ19sA/Anp/Ke74Kdn7aL06T7v1RL15wzKDJrLuScZrpgZ6eMFQKY4vgTzSikXShlox73NGF8qHJ+z+7Gw==
 
 "@renovatebot/ruby-semver@1.1.4":
   version "1.1.4"
@@ -5153,10 +5153,10 @@ once@~1.3.0:
   dependencies:
     wrappy "1"
 
-openpgp@5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-5.2.1.tgz#cc48b25eb7d1b4613a167c9e6def8717eea53429"
-  integrity sha512-zvu63kxe70q3D6WlKC/TB2pzI59I8V/l4G+z/VYgNVOyARsoH9q4i/WqwoHPjWG5HnRjhII3WSvp3gXH2DMPVg==
+openpgp@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-5.3.0.tgz#e8fc97e538865b8c095dbd91c7be4203bd1dd1df"
+  integrity sha512-qjCj0vYpV3dmmkE+vURiJ5kVAJwrMk8BPukvpWJiHcTNWKwPVsRS810plIe4klIcHVf1ScgUQwqtBbv99ff+kQ==
   dependencies:
     asn1.js "^5.0.0"
 
@@ -5790,10 +5790,10 @@ remark@13.0.0:
     remark-stringify "^9.0.0"
     unified "^9.1.0"
 
-renovate@32.87.0:
-  version "32.87.0"
-  resolved "https://registry.yarnpkg.com/renovate/-/renovate-32.87.0.tgz#25619393415195f697e21f63c133e43a4658ddd6"
-  integrity sha512-nM9c6jvCFNy5F41KNAaWz7bbF01qWHLYPBLoFZT4xWKq0clPq+IBi8/Sjcn0t26O6IwLxqj0F0KtN6KSA3/A4Q==
+renovate@32.88.1:
+  version "32.88.1"
+  resolved "https://registry.yarnpkg.com/renovate/-/renovate-32.88.1.tgz#35dfb244914eecf46c0ef6172b7f3fc1a4d06205"
+  integrity sha512-QlAs3aJVlD9C7XKhUBj80rruhWaSHHcC03QK920Diw+31L4DHR9kArhS/ZVf8ojhMZhyULUGG1cycm7GX8XRYw==
   dependencies:
     "@aws-sdk/client-ec2" "3.72.0"
     "@aws-sdk/client-ecr" "3.72.0"
@@ -5802,7 +5802,7 @@ renovate@32.87.0:
     "@cheap-glitch/mi-cron" "1.0.1"
     "@iarna/toml" "2.2.5"
     "@jamiemagee/osv-offline" "1.2.7"
-    "@renovatebot/pep440" "2.1.2"
+    "@renovatebot/pep440" "2.1.3"
     "@renovatebot/ruby-semver" "1.1.4"
     "@sindresorhus/is" "4.6.0"
     "@yarnpkg/core" "3.1.0"
@@ -5853,7 +5853,7 @@ renovate@32.87.0:
     moo "0.5.1"
     nanoid "3.3.4"
     node-html-parser "5.3.3"
-    openpgp "5.2.1"
+    openpgp "5.3.0"
     p-all "3.0.0"
     p-map "4.0.0"
     p-queue "6.6.2"
