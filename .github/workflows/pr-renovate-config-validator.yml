@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
       - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3.3.0

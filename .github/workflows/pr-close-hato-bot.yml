@@ -18,7 +18,7 @@ jobs:
           REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
           echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
       - name: Close PullRequest
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.1.0
         env:
           HEAD_REF: ${{github.event.pull_request.head.ref}}
         if: env.REPO_NAME == github.repository
