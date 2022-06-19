@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "97c8a21c6a4735e52e55bd22d452617933bcb2fa1be25d6e20b3224270d6a3c0"
+            "sha256": "e85b7aae333c3f6fef51c79c2ffca5a869c1a0fe8b05ef62c6fd17fe0b106fcc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -728,7 +728,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "883a70ff5cb7d5c4799d9329be0c6b1c3b5a0fe6"
+            "ref": "ea9bdbb5ca957d7bebf0ac5b69ee38e170653c37"
         },
         "typing-extensions": {
             "hashes": [
@@ -910,7 +910,7 @@
                 "sha256:3763b4fc2ef91063ba72b50214652224b2d0a9f31544d5504596f5c4a847cd7b",
                 "sha256:fb54e906bf48fd7d4b85950b9dc5b483642213a1b2fb9ba0abcb9103d7c747c4"
             ],
-            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
             "version": "==6.5.0"
         },
         "dill": {
@@ -941,7 +941,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_full_version >= '3.6.1' and python_full_version < '4.0.0'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jinja2": {
@@ -1142,11 +1142,11 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:095567c96e19e6f57b5b907e67d265ff535e588fe26b12b5ebe1fc5645b2c731",
-                "sha256:705c620d388035bdd9ff8b44c5bcdd235bfb49d276d488dd2c8ff1736aa42526"
+                "sha256:4e1378f815c63e7e44590d0d339ed6435f5281d0a0cc357d29a86ea0365ef868",
+                "sha256:6757a027e15816be23625b079ebc45464e4c9d9dde0c826d18beee53fe22a2e7"
             ],
             "index": "pypi",
-            "version": "==2.13.9"
+            "version": "==2.14.3"
         },
         "pyparsing": {
             "hashes": [
@@ -1301,11 +1301,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:5a844ad6e190dccc67d6d7411d119c5152ce01f7c76be4d8a1eaa314501bba77",
-                "sha256:bf8a748ac98b09d32c9a64a995a6b25921c96cc5743c1efa82763ba80ff54e91"
+                "sha256:2a5de5d1ed1fd6dfbe4f1a1079af816032e2d8dfc0975265b57a61429511d10c",
+                "sha256:a4c782ac58fcc9e3a86e5e1a4c74cf9d24bf21e4f1562043309022e1bb76951c"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==62.4.0"
+            "version": "==62.5.0"
         },
         "six": {
             "hashes": [
@@ -1346,6 +1346,14 @@
             ],
             "markers": "python_version < '3.11'",
             "version": "==2.0.1"
+        },
+        "tomlkit": {
+            "hashes": [
+                "sha256:0f4050db66fd445b885778900ce4dd9aea8c90c4721141fde0d6ade893820ef1",
+                "sha256:71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"
+            ],
+            "markers": "python_version >= '3.6' and python_version < '4'",
+            "version": "==0.11.0"
         },
         "tqdm": {
             "hashes": [
