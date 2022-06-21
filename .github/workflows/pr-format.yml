@@ -4,6 +4,9 @@ name: pr-format
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: write

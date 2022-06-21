@@ -3,6 +3,9 @@ name: pr-update-gitleaks
 
 on:
   pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: write
