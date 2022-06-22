@@ -18,9 +18,13 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v3.3.0
         with:
-          cache: yarn
+          cache: npm
       - name: Install packages
-        run: yarn add js-yaml
+        run: |
+          npm_version=$(grep \"npm\" package.json \
+                        | sed -e 's/ *"npm": "^\(.*\)"/\1/g')
+          npm install --prefer-offline -g "npm@${npm_version}"
+          npm install --prefer-offline js-yaml
       - name: Update .gitleaks.toml
         run: |
           version="$(grep super-linter .github/workflows/pr-test.yml | grep uses | sed -e 's/.*@//g')"

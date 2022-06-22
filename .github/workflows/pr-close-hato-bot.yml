@@ -31,7 +31,7 @@ jobs:
               repo: context.repo.repo
             }
 
-            for (const head_name of ["yarn-" + HEAD_REF,
+            for (const head_name of ["npm-" + HEAD_REF,
                                      "fix-format-" + HEAD_REF,
                                      "fix-version-pre-commit-config-" + HEAD_REF,
                                      "fix-version-" + HEAD_REF + "-python-version"]) {

@@ -56,7 +56,7 @@
 
     ```sh
     pipenv install
-    yarn install
+    npm install
     ```
 
 5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
@@ -81,7 +81,7 @@
 #### lintをかける方法
 
 ```sh
-yarn run lint
+npm run lint
 ```
 
 #### コマンドの実行方法
