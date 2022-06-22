@@ -63,7 +63,11 @@ jobs:
         with:
           cache: npm
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: |
+          npm_version=$(grep \"npm\" package.json \
+                        | sed -e 's/ *"npm": "^\(.*\)"/\1/g')
+          npm install --prefer-offline -g "npm@${npm_version}"
+          npm ci --prefer-offline
       - run: |
           echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
