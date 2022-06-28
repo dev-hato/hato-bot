@@ -20,7 +20,7 @@ jobs:
         with:
           cache: yarn
       - name: Install packages
-        run: yarn add js-yaml
+        run: yarn install
       - name: Update .gitleaks.toml
         run: |
           version="$(grep super-linter .github/workflows/pr-test.yml | grep uses | sed -e 's/.*@//g')"
