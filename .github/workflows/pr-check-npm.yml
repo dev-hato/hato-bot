@@ -35,7 +35,7 @@ jobs:
         with:
           cache: npm
       - run: |
-          npm_version=$(jq -r .engines.npm package.json | sed -e 's/^\^//g')
+          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
       # 差分があったときは差分を出力する
@@ -212,7 +212,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: |
-          npm_version=$(jq -r .engines.npm package.json | sed -e 's/^\^//g')
+          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
       # 差分があったときは差分を出力する
