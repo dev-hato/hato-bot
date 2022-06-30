@@ -32,5 +32,8 @@
     "textlint-rule-preset-ja-technical-writing": "7.0.0",
     "textlint-rule-preset-jtf-style": "2.3.12",
     "textlint-rule-terminology": "3.0.2"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }
