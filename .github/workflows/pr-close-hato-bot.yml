@@ -34,7 +34,7 @@ jobs:
             for (const head_name of ["yarn-" + HEAD_REF,
                                      "fix-format-" + HEAD_REF,
                                      "fix-version-pre-commit-config-" + HEAD_REF,
-                                     "fix-version-" + HEAD_REF + "-python-version"]) {
+                                     "fix-version-python-version-" + HEAD_REF]) {
               let head = "${{github.event.pull_request.head.repo.owner.login}}:"
               head += head_name
               const pulls_list_params = {
