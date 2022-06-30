@@ -76,3 +76,4 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
           pr-title-prefix: formatが間違ってたので直してあげたよ！
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
