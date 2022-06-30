@@ -13,11 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.0.2
-      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-      - run: yarn install -D
-      - run: yarn renovate-config-validator
+          cache: npm
+      - run: |
+          npm_version=$(jq -r .engines.npm package.json | sed -e 's/^\^//g')
+          npm install --prefer-offline --location=global "npm@${npm_version}"
+          npm ci --prefer-offline
+      - run: npx renovate-config-validator

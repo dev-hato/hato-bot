@@ -58,15 +58,15 @@ jobs:
         run: |
           DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
           cp -r ${{ env.venv_path }} "${DEST_PATH}"
-      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3.3.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
+          cache: npm
       - name: Install dependencies
         run: |
-          yarn install -D
+          npm_version=$(jq -r .engines.npm package.json | sed -e 's/^\^//g')
+          npm install --prefer-offline --location=global "npm@${npm_version}"
+          npm ci --prefer-offline
       - run: |
           echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files

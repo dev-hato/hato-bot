@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "yarn run lint:markdown && yarn run lint:text && yarn run lint:sql && yarn run lint:python && yarn run lint:python-type && yarn run lint:dockerfile && yarn run lint:secret",
+    "lint": "npm run lint:markdown && npm run lint:text && npm run lint:sql && npm run lint:python && npm run lint:python-type && npm run lint:dockerfile && npm run lint:secret",
     "lint:markdown": "markdownlint -c .markdown-lint.yml -i node_modules .",
     "lint:text": "textlint -c .textlintrc $(find . -name '*.md' | grep -v node_modules)",
     "lint:sql": "pipenv run sqlfluff lint --config .sqlfluff",
@@ -32,5 +32,8 @@
     "textlint-rule-preset-ja-technical-writing": "7.0.0",
     "textlint-rule-preset-jtf-style": "2.3.12",
     "textlint-rule-terminology": "3.0.2"
+  },
+  "engines": {
+    "npm": "^8.5.1"
   }
 }
