@@ -20,6 +20,6 @@ jobs:
       - run: |
           npm_version=$(grep \"npm\" package.json \
                         | sed -e 's/ *"npm": "^\(.*\)"/\1/g')
-          npm install --prefer-offline -g "npm@${npm_version}"
+          npm install --prefer-offline --location=global "npm@${npm_version}"
           npm ci --prefer-offline
       - run: npx renovate-config-validator
