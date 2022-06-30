@@ -70,3 +70,4 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pre-commit-config
           pr-title-prefix: gitleaksをアップデートしてあげたよ！
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
