@@ -21,8 +21,7 @@ jobs:
           cache: npm
       - name: Install packages
         run: |
-          npm_version=$(grep \"npm\" package.json \
-                        | sed -e 's/ *"npm": "^\(.*\)"/\1/g')
+          npm_version=$(jq -r .engines.npm package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install --prefer-offline js-yaml
       - name: Update .gitleaks.toml
