@@ -146,9 +146,41 @@ jobs:
       - name: Test
         run: curl http://localhost:3000/status
 
+  update-dockle:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_CONTENT_TRUST: 1
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Get latest dockle version
+        uses: actions/github-script@v6.1.0
+        id: get_latest_dockle_version
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: 'goodwithtech',
+              repo: 'dockle'
+            });
+            return release.data.tag_name.replace('v', '');
+      - run: sed -i -e 's/dockle_version=\([0-9.]*\)$/dockle_version=${{ steps.get_latest_dockle_version.outputs.result }}/g' .github/workflows/pr-docker-hato-bot.yml
+      - uses: dev-hato/actions-diff-pr-management@main
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: update-dockle
+          pr-title-prefix: Dockleをアップデートしてあげたよ！
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+
   dockle:
     runs-on: ubuntu-latest
-    needs: deploy_docker_image
+    needs:
+      - update-dockle
+      - deploy_docker_image
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     env:
       DOCKER_CONTENT_TRUST: 1
@@ -161,12 +193,8 @@ jobs:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: |
-          VERSION=$(
-            curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
-            grep '"tag_name":' | \
-            sed -E 's/.*"v([^"]+)".*/\1/' \
-          )
-          curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.deb"
+          dockle_version=0.4.5
+          curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${dockle_version}/dockle_${dockle_version}_Linux-64bit.deb"
           sudo dpkg -i dockle.deb
       - run: docker compose pull
       - run: docker compose up -d
