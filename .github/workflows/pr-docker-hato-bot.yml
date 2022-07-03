@@ -110,7 +110,7 @@ jobs:
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      - uses: dev-hato/actions-diff-pr-management@v0.0.4
+      - uses: dev-hato/actions-diff-pr-management@v0.0.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
@@ -169,7 +169,7 @@ jobs:
             });
             return release.data.tag_name.replace('v', '');
       - run: sed -i -e 's/dockle_version=\([0-9.]*\)$/dockle_version=${{ steps.get_latest_dockle_version.outputs.result }}/g' .github/workflows/pr-docker-hato-bot.yml
-      - uses: dev-hato/actions-diff-pr-management@v0.0.4
+      - uses: dev-hato/actions-diff-pr-management@v0.0.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: update-dockle
