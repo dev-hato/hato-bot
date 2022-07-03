@@ -47,6 +47,32 @@ jobs:
           PATTERN_AFTER="$(grep '^click' hato-bot/Pipfile)"
           PATTERN="s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g"
           sed -i -e "${PATTERN}" sudden-death/Pipfile
+      - name: Copy package.json
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            const hatoBotPackage = require('./hato-bot/package.json');
+            const hatoBotPackageLock = require('./hato-bot/package-lock.json');
+            const suddenDeathPackage = require('./sudden_death/package.json');
+            const suddenDeathPackageLock = require('./sudden_death/package-lock.json');
+
+            delete hatoBotPackage.scripts;
+
+            for (const packageKey of Object.keys(hatoBotPackage)) {
+                suddenDeathPackage[packageKey] = hatoBotPackage[packageKey];
+            }
+
+            fs.writeFileSync('./sudden_death/package.json', JSON.stringify(suddenDeathPackage, null, "  "), 'utf8');
+
+            delete hatoBotPackageLock.name;
+
+            for (const packageLockKey of Object.keys(hatoBotPackageLock)) {
+                suddenDeathPackageLock[packageLockKey] = hatoBotPackageLock[packageLockKey];
+            }
+
+            fs.writeFileSync('./sudden_death/package-lock.json', JSON.stringify(suddenDeathPackageLock, null, "  "), 'utf8');
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
