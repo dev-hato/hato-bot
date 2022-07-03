@@ -67,7 +67,7 @@ jobs:
                 console.error(err.message)
                 process.exit(1)
             }
-      - uses: dev-hato/actions-diff-pr-management@v0.0.6
+      - uses: dev-hato/actions-diff-pr-management@v0.0.7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pre-commit-config
