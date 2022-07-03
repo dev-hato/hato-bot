@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6f0d5b41f78f0431a4a5251e82b95716c6a680d1cad73e52d7b36cedbef75b41"
+            "sha256": "99b1c1d0da5d073be54815c325ee642b8d986e220198c6e240a7c5e3f56e9d1a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -748,7 +748,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "1cea2c31d7df7f1e1e7281e7b01348a946ba30d2"
+            "ref": "9827391d5148012eab4825a1cd6621797689da16"
         },
         "typing-extensions": {
             "hashes": [
@@ -930,7 +930,7 @@
                 "sha256:8c3bb13812e9667bc83f8c7606402511e9c2fe79d6786f129522e79693ee096b",
                 "sha256:ad602868ff14969563216866fc249f068df54892bd6c989201110bbb837dab06"
             ],
-            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.2'",
             "version": "==6.5.1"
         },
         "dill": {
@@ -961,7 +961,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_full_version >= '3.6.1' and python_full_version < '4.0.0'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jinja2": {
@@ -1337,11 +1337,11 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:3bd945622355c9a7f0a44161db4e0e3b3bad0bfeb735f09940f1b4efff40ec64",
-                "sha256:f3edd24506271cabaa39732500e3c0c40bcfab2ec9f4ac3bfb80ceae05b24936"
+                "sha256:3d30643e039da9db9b5392e95a75a8f88b582c5c9224d9c4f4677a39bef71233",
+                "sha256:9b832e66782e72d6e851c30b18d64e8c97fd6decd0c0f9ff2954a77a252a9ff5"
             ],
             "index": "pypi",
-            "version": "==1.0.0"
+            "version": "==1.1.0"
         },
         "tblib": {
             "hashes": [
@@ -1372,7 +1372,7 @@
                 "sha256:0f4050db66fd445b885778900ce4dd9aea8c90c4721141fde0d6ade893820ef1",
                 "sha256:71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"
             ],
-            "markers": "python_version >= '3.6' and python_full_version < '4.0.0'",
+            "markers": "python_version >= '3.6' and python_version < '4.0'",
             "version": "==0.11.0"
         },
         "tqdm": {
