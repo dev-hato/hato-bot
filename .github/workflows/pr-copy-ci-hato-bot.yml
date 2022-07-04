@@ -64,7 +64,7 @@ jobs:
                 suddenDeathPackage[packageKey] = hatoBotPackage[packageKey];
             }
 
-            fs.writeFileSync('./sudden-death/package.json', JSON.stringify(suddenDeathPackage, null, "  "), 'utf8');
+            fs.writeFileSync('./sudden-death/package.json', JSON.stringify(suddenDeathPackage, null, "  ") + "\n", 'utf8');
 
             delete hatoBotPackageLock.name;
 
@@ -72,7 +72,7 @@ jobs:
                 suddenDeathPackageLock[packageLockKey] = hatoBotPackageLock[packageLockKey];
             }
 
-            fs.writeFileSync('./sudden-death/package-lock.json', JSON.stringify(suddenDeathPackageLock, null, "  "), 'utf8');
+            fs.writeFileSync('./sudden-death/package-lock.json', JSON.stringify(suddenDeathPackageLock, null, "  ") + "\n", 'utf8');
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
