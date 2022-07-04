@@ -71,7 +71,7 @@ jobs:
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v0.0.7
+      - uses: dev-hato/actions-diff-pr-management@v0.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
