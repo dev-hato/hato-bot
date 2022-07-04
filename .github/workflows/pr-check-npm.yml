@@ -38,7 +38,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
-      - uses: dev-hato/actions-diff-pr-management@v0.0.6
+      - uses: dev-hato/actions-diff-pr-management@v0.0.7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -75,7 +75,7 @@ jobs:
       - run: |
           REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
           echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
-      - uses: dev-hato/actions-diff-pr-management@v0.0.6
+      - uses: dev-hato/actions-diff-pr-management@v0.0.7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
