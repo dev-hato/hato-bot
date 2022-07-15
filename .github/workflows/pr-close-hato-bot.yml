@@ -14,52 +14,15 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/checkout@v3.0.2
+      - uses: actions/setup-node@v3.3.0
+        with:
+          cache: npm
       - run: |
-          REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
-          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
-      - name: Close PullRequest
-        uses: actions/github-script@v6.1.0
-        env:
-          HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: env.REPO_NAME == github.repository
+          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
+          npm install --prefer-offline --location=global "npm@${npm_version}"
+          npm ci --prefer-offline
+      - uses: dev-hato/actions-close-pr@v0.0.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const HEAD_REF = process.env["HEAD_REF"]
-            const common_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-
-            for (const head_name of ["npm-" + HEAD_REF,
-                                     "fix-format-" + HEAD_REF,
-                                     "fix-version-pre-commit-config-" + HEAD_REF,
-                                     "fix-version-python-version-" + HEAD_REF]) {
-              let head = "${{github.event.pull_request.head.repo.owner.login}}:"
-              head += head_name
-              const pulls_list_params = {
-                head,
-                base: HEAD_REF,
-                state: "open",
-                ...common_params
-              }
-              console.log("call pulls.list:", pulls_list_params)
-              const pulls = await github.paginate(github.rest.pulls.list,
-                                                  pulls_list_params)
-
-              for (const pull of pulls) {
-                const pulls_update_params = {
-                  pull_number: pull.number,
-                  state: "closed",
-                  ...common_params
-                }
-                console.log("call pulls.update:", pulls_update_params)
-                await github.rest.pulls.update(pulls_update_params)
-                const git_deleteRef_params = {
-                  ref: "heads/" + head_name,
-                  ...common_params
-                }
-                console.log("call git.deleteRef:", git_deleteRef_params)
-                await github.rest.git.deleteRef(git_deleteRef_params)
-              }
-            }
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
