@@ -14,7 +14,6 @@ from typing import List, Optional, Tuple
 
 import requests
 from PIL import Image, ImageEnhance
-
 from slackbot_settings import VERSION
 
 
@@ -96,7 +95,15 @@ def get_tile_image(
         )
     res = []
     for url in urls:
-        res.append(Image.open(BytesIO(requests.get(url, headers={'user-agent': f'hato-bot/{VERSION}'}).content)))
+        res.append(
+            Image.open(
+                BytesIO(
+                    requests.get(
+                        url, headers={"user-agent": f"hato-bot/{VERSION}"}
+                    ).content
+                )
+            )
+        )
     dst_image = Image.new(
         "RGBA", (256 * (2 * around_tiles + 1), 256 * (2 * around_tiles + 1))
     )
