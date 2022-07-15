@@ -1,5 +1,5 @@
 ---
-name: pr-close-hato-bot
+name: pr-close
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   # PR close時にCIが出したPRをcloseする
-  pr-close-hato-bot:
+  pr-close:
     runs-on: ubuntu-latest
     permissions:
       contents: write
