@@ -59,13 +59,13 @@ class TestAmesh(unittest.TestCase):
     """
     ameshが正しく動作しているかテストする
     """
+
     def get_amesh_test(self,
                        mocker: requests_mock.Mocker,
                        place: str,
                        image_content=None,
                        json_content=None,
                        liden_json_content=None):
-
         """
         ameshを取得できるかテスト
         :param mocker requestsのMock

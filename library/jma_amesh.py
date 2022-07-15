@@ -22,7 +22,6 @@ from library.hatomap import (
 from PIL import Image
 
 
-
 @dataclass
 class TimeJsonElement:
     """targetTimesの要素"""
@@ -119,9 +118,9 @@ def jma_amesh(
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
             RasterLayer(url=get_jma_image_server(
-                jma_timestamp["hrpns_nd"]), opacity=128/256)
+                jma_timestamp["hrpns_nd"]), opacity=128 / 256)
         ] + [
-            LineTrace(coords=[get_circle(lat, lng, d*1000)],
+            LineTrace(coords=[get_circle(lat, lng, d * 1000)],
                       color=(100, 100, 100, 255))
             for d in range(10, 60, 10)
         ] + [
@@ -129,6 +128,6 @@ def jma_amesh(
                         symbol='thunder', fill_color=(0, 255, 255, 255), border_color=(0, 64, 64, 255))
         ]
     )
-    width = (2*around_tiles+1) * 256
+    width = (2 * around_tiles + 1) * 256
     i = h.get_image(width=width, height=width)
     return Image.fromarray(i[:, :, ::-1])  # OpenCV形式からPIL形式に変換
