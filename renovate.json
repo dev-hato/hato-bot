@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "github>dev-hato/renovate-config",
+    "config:base"
+  ]
+}

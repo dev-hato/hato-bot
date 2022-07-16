@@ -4,17 +4,18 @@
 おみくじを返す
 """
 
-from typing import Tuple, TypeVar
 from dataclasses import dataclass
 from random import choices
+from typing import Tuple, TypeVar
 
 
 @dataclass
-class OmikujiResult():
+class OmikujiResult:
     """
     おみくじの引いた結果を示すデータクラス
     出やすさの調整もここで行う
     """
+
     appearance: int
     message: str
 
@@ -23,10 +24,10 @@ class OmikujiResult():
         初期化後のアサーション
         """
         assert self.appearance > 0
-        assert self.message != ''
+        assert self.message != ""
 
 
-TOmikujiEnum = TypeVar('TOmikujiEnum')
+TOmikujiEnum = TypeVar("TOmikujiEnum")
 OmikujiResults = dict[TOmikujiEnum, OmikujiResult]
 
 
@@ -37,7 +38,6 @@ def draw(entries: OmikujiResults) -> Tuple[TOmikujiEnum, OmikujiResult]:
 
     return choices(
         population=list(entries.items()),
-        weights=list(
-            map(lambda entry: entry.appearance, entries.values())),
-        k=1
+        weights=list(map(lambda entry: entry.appearance, entries.values())),
+        k=1,
     )[0]

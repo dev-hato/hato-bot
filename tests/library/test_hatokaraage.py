@@ -3,6 +3,7 @@
 """
 
 import unittest
+
 from library.hatokaraage import hato_ha_karaage
 
 
@@ -15,14 +16,14 @@ class TestHatoHaKaraage(unittest.TestCase):
         """
         鳩じゃないものは唐揚げにはならない
         """
-        self.assertEqual(hato_ha_karaage('hoge'), 'hoge')
+        self.assertEqual(hato_ha_karaage("hoge"), "hoge")
 
     def test_include_hato(self):
         """
         鳩であれば唐揚げになる
         """
-        self.assertEqual(hato_ha_karaage('鳩は唐揚げではない'), '鳩は唐揚げ')
+        self.assertEqual(hato_ha_karaage("鳩は唐揚げではない"), "鳩は唐揚げ")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

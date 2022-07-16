@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           submodules: "recursive"
           fetch-depth: 0
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
@@ -58,28 +58,35 @@ jobs:
         run: |
           DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
           cp -r ${{ env.venv_path }} "${DEST_PATH}"
-      - run: echo "NODE_VERSION=16" >> "${GITHUB_ENV}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@v3.4.1
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
+          cache: npm
       - name: Install dependencies
         run: |
-          yarn install -D
+          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
+          npm install --prefer-offline --location=global "npm@${npm_version}"
+          npm ci --prefer-offline
       - run: |
           echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
-        uses: github/super-linter/slim@v4.9.2
+        uses: github/super-linter/slim@v4.9.4
         env:
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_PYTHON_BLACK: false
           VALIDATE_JSCPD: false
-          VALIDATE_PYTHON_ISORT: false
           LINTER_RULES_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
           PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
+
+  pr-dotenv-linter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@v2.15.0
+        uses: dotenv-linter/action-dotenv-linter@v2.16.0

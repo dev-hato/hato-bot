@@ -1,5 +1,7 @@
 {
-  "filters": {},
+  "filters": {
+    "comments": true
+  },
   "rules": {
     "@textlint-ja/no-insert-dropping-sa": true,
     "@proofdict/proofdict": {
@@ -39,6 +41,7 @@
       "1.1.3.箇条書き": false,
       "4.3.1.丸かっこ（）": false,
       "4.3.2.大かっこ［］": false
-    }
+    },
+    "terminology": true
   }
 }

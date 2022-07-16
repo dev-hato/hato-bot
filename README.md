@@ -52,38 +52,36 @@
 
     または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
 
-4. 必要なパッケージをインストールします。
+4. 必要に応じてパッケージをインストールします。
 
     ```sh
     pipenv install
-    yarn install
+    npm install
     ```
 
 5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
     `.env.example` をコピーして使うとよいでしょう
 
-6. docker-composeで鳩botとPostgreSQLを起動します。
+6. docker composeで鳩botとPostgreSQLを起動します。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker-compose up -d
+    docker compose up -d --wait
     cd ..
     ```
 
-7. コードの変更はdocker-composeの再起動で適用できます。
+7. コードの変更はdocker composeの再起動で適用できます。
 
     ```sh
-    cd ./setup
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker-compose restart
+    docker compose restart
     ```
 
 #### lintをかける方法
 
 ```sh
-yarn run lint
+npm run lint
 ```
 
 #### コマンドの実行方法
