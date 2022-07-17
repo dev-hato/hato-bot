@@ -3,6 +3,10 @@ name: pr-check-npm
 
 on:
   pull_request:
+  push:
+    branches:
+      - master
+      - develop
 
 permissions:
   contents: write
