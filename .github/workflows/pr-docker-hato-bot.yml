@@ -148,8 +148,6 @@ jobs:
 
   update-dockle:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_CONTENT_TRUST: 1
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
       - uses: actions/checkout@v3.0.2
