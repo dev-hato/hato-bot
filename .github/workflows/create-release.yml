@@ -13,15 +13,11 @@ on:
       - .dockerignore
       - .python-version
       - build.docker-compose.yml
-      - create_env.py
       - docker-compose.yml
       - Dockerfile
-      - entrypoint.py
       - Pipfile*
-      - run.py
       - runtime.txt
-      - slackbot_settings.py
-      - wait_db.py
+      - '**/*.py'
 
 jobs:
   create-release:
