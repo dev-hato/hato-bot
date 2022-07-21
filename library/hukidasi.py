@@ -4,10 +4,6 @@
 吹き出し用にtextを装飾する
 """
 
-# Sudden Death(元にしたコードのライセンスは以下の通り)
-# MIT License
-# Copyright (c) 2016 koluku
-# https://github.com/koluku/sudden-death/blob/master/LICENSE
 from sudden_death import generator as sd_generator
 
 
