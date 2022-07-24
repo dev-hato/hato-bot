@@ -202,3 +202,16 @@ jobs:
             echo "> ${cmd}"
             eval "${cmd}"
           done
+
+  deploy-complete:
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - update-version-python-version
+      - pr-docker
+      - dockle
+    steps:
+      - if: needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'
+        run: exit 0
+      - if: needs.update-version-python-version.result != 'success' || needs.pr-docker.result != 'success' || needs.dockle.result != 'success'
+        run: exit 1
