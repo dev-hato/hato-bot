@@ -152,24 +152,9 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get latest dockle version
-        uses: actions/github-script@v6.1.0
-        id: get_latest_dockle_version
+      - uses: dev-hato/actions-update-dockle@v0.0.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            const release = await github.rest.repos.getLatestRelease({
-              owner: 'goodwithtech',
-              repo: 'dockle'
-            });
-            return release.data.tag_name.replace('v', '');
-      - run: echo '${{ steps.get_latest_dockle_version.outputs.result }}' > .dockle-version
-      - uses: dev-hato/actions-diff-pr-management@v0.0.10
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: update-dockle
-          pr-title-prefix: Dockleをアップデートしてあげたよ！
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
   dockle:
