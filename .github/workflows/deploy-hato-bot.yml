@@ -1,5 +1,5 @@
 ---
-name: deploy
+name: deploy-hato-bot
 
 on:
   release:
