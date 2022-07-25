@@ -85,3 +85,13 @@ jobs:
           branch-name-prefix: npm
           pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+
+  pr-check-npm-complete:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: pr-check-npm
+    steps:
+      - if: needs.pr-check-npm.result == 'success'
+        run: exit 0
+      - if: needs.pr-check-npm.result != 'success'
+        run: exit 1

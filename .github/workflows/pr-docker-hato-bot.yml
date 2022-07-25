@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    if: github.event_name == 'release' || github.repository == github.event.pull_request.head.repo.full_name
+    if: github.event_name == 'release' || github.event_name == 'push' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
       - uses: actions/checkout@v3.0.2
         with:
@@ -122,7 +122,6 @@ jobs:
     env:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
       - uses: actions/checkout@v3.0.2
         with:
@@ -148,30 +147,14 @@ jobs:
 
   update-dockle:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
       - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get latest dockle version
-        uses: actions/github-script@v6.1.0
-        id: get_latest_dockle_version
+      - uses: dev-hato/actions-update-dockle@v0.0.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            const release = await github.rest.repos.getLatestRelease({
-              owner: 'goodwithtech',
-              repo: 'dockle'
-            });
-            return release.data.tag_name.replace('v', '');
-      - run: sed -i -e 's/dockle_version=\([0-9.]*\)$/dockle_version=${{ steps.get_latest_dockle_version.outputs.result }}/g' .github/workflows/pr-docker-hato-bot.yml
-      - uses: dev-hato/actions-diff-pr-management@v0.0.10
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: update-dockle
-          pr-title-prefix: Dockleをアップデートしてあげたよ！
           repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
   dockle:
@@ -179,7 +162,6 @@ jobs:
     needs:
       - update-dockle
       - deploy_docker_image
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
     env:
       DOCKER_CONTENT_TRUST: 1
     steps:
@@ -191,14 +173,34 @@ jobs:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: |
-          dockle_version=0.4.5
+          dockle_version="$(cat .dockle-version)"
           curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${dockle_version}/dockle_${dockle_version}_Linux-64bit.deb"
           sudo dpkg -i dockle.deb
       - run: docker compose pull
       - run: docker compose up -d
       - run: |
           for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -n +2); do
-            cmd="dockle --exit-code 1 ${image_name}"
+            cmd="dockle --exit-code 1 "
+
+            if [[ "${image_name}" =~ "postgres" ]]; then
+              cmd+="-ak key "
+            fi
+
+            cmd+="${image_name}"
             echo "> ${cmd}"
             eval "${cmd}"
           done
+
+  deploy-complete:
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - update-version-python-version
+      - pr-docker
+      - update-dockle
+      - dockle
+    steps:
+      - if: needs.update-dockle.result == 'success' && ((github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))
+        run: exit 0
+      - if: needs.update-dockle.result != 'success' || ((github.event_name != 'pull_request' || github.repository == github.event.pull_request.head.repo.full_name) && (needs.update-version-python-version.result != 'success' || needs.pr-docker.result != 'success' || needs.dockle.result != 'success'))
+        run: exit 1
