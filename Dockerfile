@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.10.4-slim-bullseye
+FROM python:3.10.5-slim-bullseye
 
 WORKDIR /usr/src/app
 
@@ -16,20 +16,17 @@ COPY Pipfile Pipfile
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git libopencv-dev curl&& \
-    pip install pipenv==2022.5.2 --no-cache-dir && \
+    apt-get install -y --no-install-recommends git libopencv-dev curl && \
+    pip install pipenv==2022.7.24 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* ~/.cache tmp/* \
-    && for f in /bin/su /bin/mount /usr/bin/wall /usr/bin/expiry /sbin/unix_chkpwd /usr/bin/chage \
-             /usr/bin/passwd /usr/bin/chfn /bin/umount /usr/bin/chsh /usr/bin/newgrp /usr/bin/gpasswd; do \
-      chmod u-s "${f}"; \
-      chmod u-g "${f}"; \
-    done \
-    && useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+    rm -rf /var/lib/apt/lists ~/.cache /tmp && \
+    find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
+    find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
+    useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
 USER nonroot
 
 COPY *.py ./

@@ -20,7 +20,7 @@ from library.hatomap import (
     RasterLayer
 )
 from PIL import Image
-
+from slackbot_settings import VERSION
 
 @dataclass
 class TimeJsonElement:
