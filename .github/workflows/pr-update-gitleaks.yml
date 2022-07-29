@@ -1,0 +1,34 @@
+---
+name: pr-update-gitleaks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-update-gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v3.4.1
+        with:
+          cache: npm
+      - name: Install packages
+        run: |
+          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
+          npm install --prefer-offline --location=global "npm@${npm_version}"
+          npm ci --prefer-offline
+      - uses: dev-hato/actions-update-gitleaks@v0.0.4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          super-linter-yml-file: .github/workflows/pr-test.yml
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}

@@ -4,7 +4,7 @@
   
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-鳩botでは主に以下のことができます。
+鳩botでは主に次のことができます。
 
 - 雨雲情報 ... `amesh [text]` で指定した地名・住所[text]の雨雲情報を画像で表示します。
 - 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
@@ -56,7 +56,7 @@
 
     ```sh
     pipenv install
-    yarn install
+    npm install
     ```
 
 5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
@@ -67,7 +67,7 @@
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose up -d
+    docker compose up -d --wait
     cd ..
     ```
 
@@ -81,7 +81,7 @@
 #### lintをかける方法
 
 ```sh
-yarn run lint
+npm run lint
 ```
 
 #### コマンドの実行方法

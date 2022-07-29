@@ -1,10 +1,7 @@
-FROM postgres:14.3-bullseye
+FROM postgres:14.4-bullseye
 
-RUN for f in /bin/su /usr/bin/expiry /usr/bin/wall /bin/mount /usr/bin/gpasswd /usr/bin/chfn  \
-             /usr/bin/newgrp /bin/umount /usr/bin/passwd /sbin/unix_chkpwd /usr/bin/chsh /usr/bin/chage; do \
-      chmod u-s "${f}"; \
-      chmod u-g "${f}"; \
-    done
+RUN find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
+    find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \;
 
 USER postgres
 

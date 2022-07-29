@@ -11,6 +11,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 import requests
+<<<<<<< HEAD
 from library.hatomap import (
     GeoCoord,
     HatoMap,
@@ -21,6 +22,20 @@ from library.hatomap import (
 )
 from PIL import Image
 from slackbot_settings import VERSION
+=======
+from PIL import Image, ImageEnhance
+from slackbot_settings import VERSION
+
+
+@dataclass
+class WebMercatorTile:
+    """Webメルカトル座標上のタイル"""
+
+    tile_x: int = 0
+    tile_y: int = 0
+    zoom_level: int = 10
+
+>>>>>>> develop
 
 @dataclass
 class TimeJsonElement:

@@ -6,7 +6,7 @@
 
 1. 紫色の `Deploy to Heroku` ボタンをクリックします。
 
-1. Herokuの画面が開いたら以下の項目を入力します。
+1. Herokuの画面が開いたら次の項目を入力します。
     * `App name` : Heroku上のアプリ名です。好きな名前を入力します。(例： `example`)
     * `SLACK_API_TOKEN` : Slackの `Bot User OAuth Access Token` を入力します。
     * `SLACK_SIGNING_SECRET` : Slackの `Signing Secret` を入力します。

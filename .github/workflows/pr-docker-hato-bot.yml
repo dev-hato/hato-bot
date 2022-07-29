@@ -22,7 +22,7 @@ jobs:
       packages: write
     if: github.event_name == 'release' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
       - name: Set .env
@@ -46,29 +46,37 @@ jobs:
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build and push (build)
-        uses: docker/bake-action@v2.0.0
+        uses: docker/bake-action@v2.2.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: build.docker-compose.yml
       - name: Build and push (main)
-        uses: docker/bake-action@v2.0.0
+        uses: docker/bake-action@v2.2.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml
-      - run: |
-          docker compose up -d
-          for image_name in $(docker compose images | awk '{print $2}' | tail -n +2); do
-            latest_tag="${image_name}:latest"
-            docker tag "${image_name}:${TAG_NAME}" "${latest_tag}"
-            docker push "${latest_tag}"
-          done
+      - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
+        if: ${{ github.event_name == 'release' }}
+      - name: Build and push (build) (latest)
+        uses: docker/bake-action@v2.2.0
+        if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: build.docker-compose.yml
+      - name: Build and push (main) (latest)
+        uses: docker/bake-action@v2.2.0
         if: ${{ github.event_name == 'release' }}
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
@@ -79,9 +87,8 @@ jobs:
     env:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
-    if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -103,163 +110,20 @@ jobs:
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      # 差分があったときは差分を出力する
-      - name: Show diff
-        id: diff
-        run: |
-          result=$(git diff)
-          echo "::set-output name=result::$result"
-      - run: |
-          REPO_NAME="${{ github.event.pull_request.head.repo.full_name }}"
-          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
-      # 差分があったときは、コミットを作りpushする
-      - name: Push
-        env:
-          HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ env.REPO_NAME == github.repository
-          && steps.diff.outputs.result != '' }}
-        run: |
-          git config user.name "github-actions[bot]"
-          EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.email "${EMAIL}"
-          git add -u
-          git commit -m "鳩は唐揚げ！(自動で直してあげたよ！)"
-          REPO_URL="https://"
-          REPO_URL+="${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/"
-          REPO_URL+="${{github.repository}}.git"
-          GITHUB_HEAD="HEAD:refs/heads/fix-version-${HEAD_REF}-python-version"
-          git push -f "${REPO_URL}" "${GITHUB_HEAD}"
-      - name: Set org name
-        uses: actions/github-script@v6
-        if: env.REPO_NAME == github.repository
-        id: set_org_name
+      - uses: dev-hato/actions-diff-pr-management@v0.0.11
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script:
-            return process.env.GITHUB_REPOSITORY.split('/')[0]
-      - name: Get PullRequests
-        uses: actions/github-script@v5
-        env:
-          HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ env.REPO_NAME == github.repository
-          && steps.diff.outputs.result != '' }}
-        id: get_pull_requests
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const HEAD_REF = process.env["HEAD_REF"]
-            const pulls_list_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "${{steps.set_org_name.outputs.result}}:fix-version-" + HEAD_REF + "-python-version",
-              base: HEAD_REF,
-              state: "open"
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list,
-                                                pulls_list_params)
-            return pulls.length
-      # pushしたブランチでPRを作る
-      - name: Create PullRequest
-        uses: actions/github-script@v5
-        env:
-          HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ env.REPO_NAME == github.repository
-          && steps.diff.outputs.result != ''
-          && steps.get_pull_requests.outputs.result == 0 }}
-        id: create_pull_request
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const HEAD_REF = process.env["HEAD_REF"]
-            const number = "#${{github.event.pull_request.number}}"
-            let title = ".python-versionを直してあげたよ！PRをマージしてね！ "
-            title += number
-            const pulls_create_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "${{steps.set_org_name.outputs.result}}:fix-version-" + HEAD_REF + "-python-version",
-              base: HEAD_REF,
-              title,
-              body: "鳩の唐揚げおいしい！😋😋😋 " + number
-            }
-            console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = await github.rest.pulls.create(
-                                      pulls_create_params
-                                    )
-            return create_pull_res.data.number
-      - name: Assign a user
-        uses: actions/github-script@v5
-        if: ${{ env.REPO_NAME == github.repository
-          && steps.diff.outputs.result != ''
-          && steps.get_pull_requests.outputs.result == 0
-          && github.event.pull_request.user.login != 'dependabot[bot]' }}
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issues_add_assignees_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{steps.create_pull_request.outputs.result}},
-              assignees: ["${{github.event.pull_request.user.login}}"]
-            }
-            console.log("call issues.addAssignees:")
-            console.log(issues_add_assignees_params)
-            await github.rest.issues.addAssignees(issues_add_assignees_params)
-      # 既にバージョン同期のPRがある状態で、手動でバージョンを修正した場合、バージョン同期のPRを閉じる
-      - name: Close PullRequest
-        uses: actions/github-script@v5
-        env:
-          HEAD_REF: ${{github.event.pull_request.head.ref}}
-        if: ${{ env.REPO_NAME == github.repository
-          && steps.diff.outputs.result == '' }}
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const HEAD_REF = process.env["HEAD_REF"]
-            const head_name = "fix-version-" + HEAD_REF + "-python-version"
-            const common_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pulls_list_params = {
-              head: "${{steps.set_org_name.outputs.result}}:" + head_name,
-              base: HEAD_REF,
-              state: "open",
-              ...common_params
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list,
-                                                pulls_list_params)
-
-            for (const pull of pulls) {
-              const pulls_update_params = {
-                pull_number: pull.number,
-                state: "closed",
-                ...common_params
-              }
-              console.log("call pulls.update:", pulls_update_params)
-              await github.rest.pulls.update(pulls_update_params)
-              const git_deleteRef_params = {
-                ref: "heads/" + head_name,
-                ...common_params
-              }
-              console.log("call git.deleteRef:", git_deleteRef_params)
-              await github.rest.git.deleteRef(git_deleteRef_params)
-            }
-      - name: Exit
-        if: ${{ steps.diff.outputs.result != '' }}
-        run: exit 1
+          branch-name-prefix: fix-version-python-version
+          pr-title-prefix: .python-versionを直してあげたよ！
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
   pr-docker:
     runs-on: ubuntu-latest
     env:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
       - name: Set .env
@@ -276,39 +140,32 @@ jobs:
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker compose pull
       - name: Start docker
-        run: docker compose up -d
-      # Dockerコンテナ立ち上げから2分以内に疎通できるようになるかテストする
+        run: docker compose up -d --wait
+      # Dockerコンテナに疎通できるかテストする
       - name: Test
-        run: |
-          cmd="curl -XPOST -d '{\"message\": \"help\"}'"
-          cmd+=" -H \"Content-Type: application/json\""
-          cmd+=" http://localhost:3000/healthcheck"
-          cmd_="${cmd} -w '%{http_code}' -o /dev/null -s"
-          start_unixtime=$(date +%s)
+        run: curl http://localhost:3000/status
 
-          while [ "$(echo "$(date +%s) - ${start_unixtime}" | bc)" -lt 120 ] \
-                && (! (docker compose ps | grep -q Exit))
-          do
-            if [ "$(eval "${cmd_}")" = 200 ] && eval "${cmd}"
-            then
-              docker compose logs
-              exit 0
-            fi
-
-            sleep 1
-          done
-
-          docker compose logs
-          exit 1
+  update-dockle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: dev-hato/actions-update-dockle@v0.0.1
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
 
   dockle:
     runs-on: ubuntu-latest
-    needs: deploy_docker_image
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    needs:
+      - update-dockle
+      - deploy_docker_image
     env:
       DOCKER_CONTENT_TRUST: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
       - name: Set .env
         run: cp .env.example .env
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
@@ -316,18 +173,34 @@ jobs:
           HEAD_REF: ${{github.head_ref}}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: |
-          VERSION=$(
-            curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
-            grep '"tag_name":' | \
-            sed -E 's/.*"v([^"]+)".*/\1/' \
-          )
-          curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.deb"
+          dockle_version="$(cat .dockle-version)"
+          curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${dockle_version}/dockle_${dockle_version}_Linux-64bit.deb"
           sudo dpkg -i dockle.deb
       - run: docker compose pull
       - run: docker compose up -d
       - run: |
           for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -n +2); do
-            cmd="dockle --exit-code 1 ${image_name}"
+            cmd="dockle --exit-code 1 "
+
+            if [[ "${image_name}" =~ "postgres" ]]; then
+              cmd+="-ak key "
+            fi
+
+            cmd+="${image_name}"
             echo "> ${cmd}"
             eval "${cmd}"
           done
+
+  deploy-complete:
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - update-version-python-version
+      - pr-docker
+      - update-dockle
+      - dockle
+    steps:
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))
+        run: exit 0
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))) }}
+        run: exit 1

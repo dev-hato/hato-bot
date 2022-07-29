@@ -12,19 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.1.0
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           repository: ${{steps.set_org_name.outputs.result}}/sudden-death
@@ -39,7 +39,7 @@ jobs:
           find hato-bot/${worklows_path} -type f \
                                          -not -name "*hato-bot.yml" \
                                          -exec cp {} "${DEST_PATH}" \;
-          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .mypy.ini .pre-commit-config.yaml .python-version .pep8 .flake8
+          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .mypy.ini .pre-commit-config.yaml .python-version .pep8 .flake8 renovate.json
           do
             cp hato-bot/${f} sudden-death/
           done
@@ -47,10 +47,38 @@ jobs:
           PATTERN_AFTER="$(grep '^click' hato-bot/Pipfile)"
           PATTERN="s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g"
           sed -i -e "${PATTERN}" sudden-death/Pipfile
+      - name: Copy package.json
+        uses: actions/github-script@v6.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            const hatoBotPackage = require('./hato-bot/package.json');
+            const hatoBotPackageLock = require('./hato-bot/package-lock.json');
+            const suddenDeathPackage = require('./sudden-death/package.json');
+            const suddenDeathPackageLock = require('./sudden-death/package-lock.json');
+
+            delete hatoBotPackage.scripts;
+
+            for (const packageKey of Object.keys(hatoBotPackage)) {
+                suddenDeathPackage[packageKey] = hatoBotPackage[packageKey];
+            }
+
+            fs.writeFileSync('./sudden-death/package.json', JSON.stringify(suddenDeathPackage, null, "  ") + "\n", 'utf8');
+
+            delete hatoBotPackageLock.name;
+
+            for (const packageLockKey of Object.keys(hatoBotPackageLock)) {
+                suddenDeathPackageLock[packageLockKey] = hatoBotPackageLock[packageLockKey];
+            }
+
+            fs.writeFileSync('./sudden-death/package-lock.json', JSON.stringify(suddenDeathPackageLock, null, "  ") + "\n", 'utf8');
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
-        run: echo "::set-output name=diff::$(git diff)"
+        run: |
+          git add -A
+          echo "::set-output name=diff::$(git diff --cached)"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death
@@ -58,7 +86,6 @@ jobs:
           git config user.name "github-actions[bot]"
           EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
           git config user.email "${EMAIL}"
-          git add -A
           git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
           echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
           chmod 600 deploy_key.pem
