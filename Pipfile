@@ -14,6 +14,7 @@ sqlfluff = "==1.2.1"
 mypy = "==0.971"
 black = "*"
 isort = "*"
+flakr8 = "*"
 
 [packages]
 python-dotenv = "==0.20.0"
