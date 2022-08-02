@@ -12,6 +12,7 @@ requests-mock = "==1.9.3"
 pylint = "==2.14.5"
 sqlfluff = "==1.2.1"
 mypy = "==0.971"
+black = "*"
 
 [packages]
 python-dotenv = "==0.20.0"
