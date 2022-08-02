@@ -60,12 +60,14 @@ class TestAmesh(unittest.TestCase):
     ameshが正しく動作しているかテストする
     """
 
-    def get_amesh_test(self,
-                       mocker: requests_mock.Mocker,
-                       place: str,
-                       image_content=None,
-                       json_content=None,
-                       liden_json_content=None):
+    def get_amesh_test(
+        self,
+        mocker: requests_mock.Mocker,
+        place: str,
+        image_content=None,
+        json_content=None,
+        liden_json_content=None
+    ):
         """
         ameshを取得できるかテスト
         :param mocker requestsのMock
@@ -75,13 +77,14 @@ class TestAmesh(unittest.TestCase):
         """
         client1 = TestClient()
 
-        jma_image_url = re.compile(
-            r'www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png')
+        jma_image_url = re.compile(r'www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png')
         osm_image_url = re.compile(r'tile\.openstreetmap\.org/.+\.png')
         jma_json_url = re.compile(
-            r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json')
+            r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json'
+        )
         liden_json_url = re.compile(
-            r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson')
+            r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson'
+        )
 
         mocker.get(jma_image_url, content=image_content)
         mocker.get(osm_image_url, content=image_content)
@@ -98,20 +101,25 @@ class TestAmesh(unittest.TestCase):
         :param place: コマンドの引数
         :param msg: Slackに投稿されて欲しいメッセージ
         """
-        with open(os.path.join(os.path.dirname(__file__), 'test.png'), mode='rb') as picture_file:
-            with open(os.path.join(os.path.dirname(__file__), 'test_targetTimes_N1.json'
-                                   ), mode='rb') as json_file:
-                with open(os.path.join(
-                    os.path.dirname(__file__), 'test_liden_data.geojson'
-                ), mode='rb') as liden_json_file:
-                    client1 = self.get_amesh_test(mocker,
-                                                  place,
-                                                  image_content=picture_file.read(),
-                                                  json_content=json_file.read(),
-                                                  liden_json_content=liden_json_file.read()
-                                                  )
-                    self.assertEqual(client1.get_post_message(), msg)
-                    self.assertEqual(client1.get_filename(), 'amesh.png')
+        with open(
+            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
+        ) as picture_file:
+            with open(
+                os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
+                mode="rb",
+            ) as json_file:
+                with open(
+                    os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
+                    mode="rb",
+                ) as liden_json_file:
+                    client1 = self.get_amesh_test(
+                        mocker,
+                        place,
+                        image_content=picture_file.read(),
+                        json_content=json_file.read(),
+                        liden_json_content=liden_json_file.read(),
+                    )
+                    self.assertEqual(client1.get_filename(), "amesh.png")
 
     def test_amesh_with_no_params(self):
         """
