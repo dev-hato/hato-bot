@@ -72,6 +72,7 @@ def timestamp2jst(timestamp: str) -> str:
         .strftime("%Y-%m-%d %H:%M")
     )
 
+
 def get_jma_image_server(timestamp: str) -> str:
     """気象庁雨雲レーダー画像を取得する"""
     return f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png"  # noqa: E501
@@ -131,7 +132,7 @@ def jma_amesh(
             LineTrace(
                 coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
             )
-             for d in range(10, 60, 10)
+            for d in range(10, 60, 10)
         ]
         + [
             MarkerTrace(
