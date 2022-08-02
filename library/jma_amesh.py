@@ -24,7 +24,6 @@ import numpy as np
 import requests
 
 
-
 @dataclass
 class TimeJsonElement:
     """targetTimesの要素"""
