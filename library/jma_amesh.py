@@ -14,6 +14,7 @@ from typing import List, Optional, Tuple
 
 import requests
 from PIL import Image, ImageEnhance
+
 from slackbot_settings import VERSION
 
 

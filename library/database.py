@@ -3,6 +3,7 @@ DBを操作するためのベースクラス
 """
 
 import psycopg2
+
 import slackbot_settings as conf
 
 
