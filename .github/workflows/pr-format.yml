@@ -64,12 +64,14 @@ jobs:
         run: pipenv --version
       - name: Install dependencies
         run: pipenv install --dev
-      # autopep8でformatする
+      # formatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
         id: format
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
+          pipenv run black --config .python-black --check .
+          pipenv run isort --sp .isort.cfg .
         continue-on-error: true
       - uses: dev-hato/actions-diff-pr-management@v1.0.1
         with:
