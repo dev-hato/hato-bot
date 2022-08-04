@@ -3,6 +3,11 @@ name: pr-check-npm
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   push:
     branches:
       - master

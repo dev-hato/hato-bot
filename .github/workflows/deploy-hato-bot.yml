@@ -6,6 +6,11 @@ on:
     types:
       - published
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   push:
     branches:
       - master
@@ -20,7 +25,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    if: github.event_name == 'release' || github.repository == github.event.pull_request.head.repo.full_name
+    if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
     steps:
       - uses: actions/checkout@v3.0.2
         with:
@@ -87,6 +92,7 @@ jobs:
     env:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
+    if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
       - uses: actions/checkout@v3.0.2
         with:
@@ -200,7 +206,7 @@ jobs:
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))))) }}
         run: exit 1
