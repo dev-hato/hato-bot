@@ -10,7 +10,8 @@ on:
       - closed
   push:
     branches:
-      - main
+      - develop
+      - master
 
 permissions:
   contents: write
