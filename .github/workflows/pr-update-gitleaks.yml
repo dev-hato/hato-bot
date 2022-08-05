@@ -3,6 +3,11 @@ name: pr-update-gitleaks
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   push:
     branches:
       - master
