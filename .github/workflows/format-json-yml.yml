@@ -1,0 +1,31 @@
+---
+name: format-json-yml
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  push:
+    branches:
+      - develop
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format-json-yml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: dev-hato/actions-format-json-yml@v0.0.4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          repo-name: dev-hato/hato-bot
