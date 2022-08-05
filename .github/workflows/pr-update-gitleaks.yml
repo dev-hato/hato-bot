@@ -36,4 +36,4 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           super-linter-yml-file: .github/workflows/pr-test.yml
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/hato-bot

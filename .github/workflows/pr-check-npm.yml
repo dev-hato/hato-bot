@@ -52,7 +52,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
           pr-title-prefix: nodeをアップデートしてあげたよ！
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/hato-bot
 
   # package.jsonに差分があれば、package.jsonからpackage-lock.jsonを作り出す
   pr-check-npm:
@@ -80,7 +80,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
           pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/hato-bot
 
   pr-check-npm-complete:
     runs-on: ubuntu-latest
