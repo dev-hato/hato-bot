@@ -37,7 +37,7 @@ jobs:
                                              -exec rm -f {} \;
 
           for f in $(find hato-bot/${worklows_path} -type f \
-                                                    -not -name "*hato-bot.yml" | sed -e "s:${worklows_path}/::g"); do
+                                                    -not -name "*hato-bot.yml" | sed -e "s:hato-bot/${worklows_path}/::g"); do
             yq '(.jobs.*.steps.[].with | select(has("repo-name")).repo-name) = "dev-hato/sudden-death"' "hato-bot/${worklows_path}/${f}" > "sudden-death/${worklows_path}/${f}"
           done
 
