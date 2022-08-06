@@ -1,6 +1,5 @@
 ---
 name: pr-update-gitleaks
-
 on:
   pull_request:
     types:
@@ -11,11 +10,9 @@ on:
   push:
     branches:
       - master
-
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
   pr-update-gitleaks:
     runs-on: ubuntu-latest
