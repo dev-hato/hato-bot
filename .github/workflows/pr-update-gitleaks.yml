@@ -32,5 +32,4 @@ jobs:
       - uses: dev-hato/actions-update-gitleaks@v0.0.10
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          super-linter-yml-file: .github/workflows/pr-test.yml
           repo-name: dev-hato/hato-bot
