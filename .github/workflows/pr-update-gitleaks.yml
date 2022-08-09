@@ -29,7 +29,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm ci --prefer-offline
-      - uses: dev-hato/actions-update-gitleaks@v0.0.9
+      - uses: dev-hato/actions-update-gitleaks@v0.0.10
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           super-linter-yml-file: .github/workflows/pr-test.yml
