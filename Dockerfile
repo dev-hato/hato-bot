@@ -6,7 +6,7 @@ RUN apt-get update \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py \
     && sed -i "s/^\(VERSION = \).*\$/\1'$(git describe --abbrev=0)'/" slackbot_settings.py
 
-FROM python:3.10.5-slim-bullseye
+FROM python:3.10.6-slim-bullseye
 
 WORKDIR /usr/src/app
 
@@ -17,7 +17,7 @@ COPY Pipfile Pipfile
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
-    pip install pipenv==2022.7.24 --no-cache-dir && \
+    pip install pipenv==2022.8.5 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \

@@ -5,6 +5,7 @@ import json
 import unittest
 
 import requests_mock
+
 import slackbot_settings as conf
 from library.geo import get_geo_data
 

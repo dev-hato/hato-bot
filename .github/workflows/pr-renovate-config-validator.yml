@@ -1,16 +1,13 @@
 ---
 name: pr-renovate-config-validator
-
 on:
   push:
     branches:
       - master
   pull_request:
-
 jobs:
   pr-renovate-config-validator:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.0.2
       - name: Set up Node.js ${{ env.NODE_VERSION }}
