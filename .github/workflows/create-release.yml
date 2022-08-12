@@ -23,6 +23,6 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: dev-hato/actions-create-release@v0.0.3
+      - uses: dev-hato/actions-create-release@v0.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
