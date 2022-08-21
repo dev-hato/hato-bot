@@ -1,0 +1,20 @@
+name: Add to Task List
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+  issues:
+    types:
+      - opened
+
+jobs:
+  add-to-task-list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dev-hato/actions-add-to-projects@v0.0.1
+        with:
+          github_app_id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          github_app_private_key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          project-url: https://github.com/orgs/dev-hato/projects/1
