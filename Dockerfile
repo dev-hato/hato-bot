@@ -16,7 +16,7 @@ COPY Pipfile Pipfile
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
-    pip install pipenv==2022.9.2 --no-cache-dir && \
+    pip install pipenv==2022.9.4 --no-cache-dir && \
     pipenv install --system --skip-lock && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
