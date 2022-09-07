@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.10.6-slim-bullseye
+FROM python:3.11.0rc1-slim-bullseye
 
 WORKDIR /usr/src/app
 
