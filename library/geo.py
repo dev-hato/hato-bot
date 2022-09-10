@@ -85,7 +85,7 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
 
     for entry in res.json():
         res_place = entry.get("properties", {}).get("title", "")
-        lat, lon = entry.get("geometry", {}).get("coordinates", [None, None])
+        lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
         if place in res_place and lat is not None and lon is not None:
             return {"place": res_place, "lat": lat, "lon": lon}
 
