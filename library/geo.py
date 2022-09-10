@@ -71,6 +71,7 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
 
     return None
 
+
 def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     """
     地名から座標を取得する(国土地理院版)
