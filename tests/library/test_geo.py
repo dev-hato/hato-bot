@@ -109,10 +109,10 @@ class TestGetGsiGeoData(unittest.TestCase):
     """
 
     def test_valid_place(self):
-        """正しい地名を指定した場合"""
+        """完全一致のある地名を指定した場合"""
 
         with requests_mock.Mocker() as mocker:
-            place = "高ボッチ"
+            place = "高ボッチ山"
             result = {
                 "place": "高ボッチ山",
                 "lat": "138.040319506908",
