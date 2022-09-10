@@ -4,8 +4,8 @@
 amesh
 """
 
-from random import choice
 import re
+from random import choice
 from typing import Dict, Optional
 
 import requests
