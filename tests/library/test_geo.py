@@ -93,7 +93,8 @@ def set_gsi_mock(place: str, mocker: requests_mock.Mocker, content=None):
     :param content: req.contentの内容
     """
 
-    mocker.get("https://msearch.gsi.go.jp/address-search/AddressSearch?q=" + "?" + query, content=json.dumps(content).encode())
+    mocker.get("https://msearch.gsi.go.jp/address-search/AddressSearch?q=" +
+               "?" + query, content=json.dumps(content).encode())
 
 
 class TestGetGsiGeoData(unittest.TestCase):
@@ -143,6 +144,7 @@ class TestGetGsiGeoData(unittest.TestCase):
             place = "hoge"
             set_gsi_mock(place, mocker)
             self.assertIsNone(get_gsi_geo_data(place))
+
 
 if __name__ == "__main__":
     unittest.main()
