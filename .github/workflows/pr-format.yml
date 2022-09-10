@@ -71,7 +71,7 @@ jobs:
         id: format
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
-          pipenv run black --config .python-black --check .
+          pipenv run black --config .python-black .
           pipenv run isort --sp .isort.cfg .
         continue-on-error: true
       - uses: dev-hato/actions-diff-pr-management@v1.0.3
