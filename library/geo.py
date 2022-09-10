@@ -5,6 +5,7 @@ amesh
 """
 
 import re
+from random import choice
 from typing import Dict, Optional
 
 import requests
@@ -71,7 +72,7 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
 def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     """
     地名から座標を取得する(国土地理院版)
-    場所名が部分一致しているものを見つけて返すことで確度を上げている
+    場所名が完全一致で優先して返し、部分一致のうちランダム返すことでそれっぽい挙動にしている
     :param place: 地名・住所
     :return: place: 地名, lat: 緯度, lon: 経度
     """
@@ -83,10 +84,19 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     if res.status_code != 200:
         return None
 
+    candidates = []
     for entry in res.json():
         res_place = entry.get("properties", {}).get("title", "")
         lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
-        if place in res_place and lat is not None and lon is not None:
-            return {"place": res_place, "lat": str(lat), "lon": str(lon)}
+        if lon is None or lat is None:
+            continue
 
-    return None
+        if place == res_place:
+            return {"place": res_place, "lat": str(lat), "lon": str(lon)}
+        if place in res_place:
+            candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
+
+    if not candidates:
+        return None
+
+    return choice(candidates)
