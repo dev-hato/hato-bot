@@ -7,10 +7,12 @@ import unittest
 import requests_mock
 
 import slackbot_settings as conf
-from library.geo import get_yahoo_geo_data, get_gsi_geo_data
+from library.geo import get_gsi_geo_data, get_yahoo_geo_data
 
 
-def set_yahoo_mock(place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None):
+def set_yahoo_mock(
+    place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None
+):
     """
     Mockを設定する
     :param place: 地名・住所・郵便番号
@@ -95,8 +97,10 @@ def set_gsi_mock(place: str, mocker: requests_mock.Mocker, content=None):
     if content is None:
         content = {}
 
-    mocker.get("https://msearch.gsi.go.jp/address-search/AddressSearch" +
-               "?q=" + place, content=json.dumps(content).encode())
+    mocker.get(
+        "https://msearch.gsi.go.jp/address-search/AddressSearch" + "?q=" + place,
+        content=json.dumps(content).encode(),
+    )
 
 
 class TestGetGsiGeoData(unittest.TestCase):
@@ -109,33 +113,60 @@ class TestGetGsiGeoData(unittest.TestCase):
 
         with requests_mock.Mocker() as mocker:
             place = "高ボッチ"
-            result = {"place": "高ボッチ山", "lat": "138.040319506908", "lon": "36.1321653109996"}
+            result = {
+                "place": "高ボッチ山",
+                "lat": "138.040319506908",
+                "lon": "36.1321653109996",
+            }
             content = [
                 {
-                    'geometry': {'coordinates': [140.37767, 35.885433], 'type': 'Point'},
-                    'type': 'Feature',
-                    'properties': {'addressCode': '', 'title': '千葉県成田市高'}
+                    "geometry": {
+                        "coordinates": [140.37767, 35.885433],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "千葉県成田市高"},
                 },
                 {
-                    'geometry': {'coordinates': [140.560532, 35.681522], 'type': 'Point'},
-                    'type': 'Feature',
-                    'properties': {'addressCode': '', 'title': '千葉県匝瑳市高'}
+                    "geometry": {
+                        "coordinates": [140.560532, 35.681522],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "千葉県匝瑳市高"},
                 },
                 {
-                    'geometry': {'coordinates': [135.702744, 34.553802], 'type': 'Point'},
-                    'type': 'Feature',
-                    'properties': {'addressCode': '', 'title': '奈良県香芝市高'}
+                    "geometry": {
+                        "coordinates": [135.702744, 34.553802],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "奈良県香芝市高"},
                 },
                 {
-                    'geometry': {'coordinates': [result["lat"], result["lon"]], 'type': 'Point'},
-                    'type': 'Feature',
-                    'properties': {'addressCode': '20204', 'title': result["place"], 'dataSource': '4'}
+                    "geometry": {
+                        "coordinates": [result["lat"], result["lon"]],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {
+                        "addressCode": "20204",
+                        "title": result["place"],
+                        "dataSource": "4",
+                    },
                 },
                 {
-                    'geometry': {'coordinates': [138.032837199722, 36.1328983561111], 'type': 'Point'},
-                    'type': 'Feature',
-                    'properties': {'addressCode': '20215', 'title': '高ボッチ牧場', 'dataSource': '1'}
-                }
+                    "geometry": {
+                        "coordinates": [138.032837199722, 36.1328983561111],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {
+                        "addressCode": "20215",
+                        "title": "高ボッチ牧場",
+                        "dataSource": "1",
+                    },
+                },
             ]
             set_gsi_mock(place, mocker, content)
             self.assertEqual(get_gsi_geo_data(place), result)
