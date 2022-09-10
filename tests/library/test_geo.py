@@ -145,7 +145,7 @@ class TestGetGsiGeoData(unittest.TestCase):
                 },
                 {
                     "geometry": {
-                        "coordinates": [result["lat"], result["lon"]],
+                        "coordinates": [result["lon"], result["lat"]],
                         "type": "Point",
                     },
                     "type": "Feature",
