@@ -44,30 +44,32 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
         url, {"appid": conf.YAHOO_API_TOKEN, "query": place, "output": "json"}
     )
 
-    if res.status_code == 200:
-        geo_data = json.loads(res.content)
-        if "Feature" in geo_data:
-            for feature in geo_data["Feature"]:
-                if "Geometry" in feature and feature["Geometry"]:
-                    geometry = feature["Geometry"]
-                    res_place = None
+    if res.status_code != 200:
+        return None
 
-                    if (
-                        is_zip_code
-                        and "Property" in feature
-                        and "Address" in feature["Property"]
-                        and feature["Property"]["Address"]
-                    ):
-                        res_place = feature["Property"]["Address"]
-                    elif not is_zip_code and "Name" in feature and feature["Name"]:
-                        res_place = feature["Name"]
-                    else:
-                        return None
+    geo_data = json.loads(res.content)
+    if "Feature" in geo_data:
+        for feature in geo_data["Feature"]:
+            if "Geometry" in feature and feature["Geometry"]:
+                geometry = feature["Geometry"]
+                res_place = None
 
-                    if "Coordinates" in geometry and geometry["Coordinates"]:
-                        coordinates = geometry["Coordinates"]
-                        lon, lat = coordinates.split(",", maxsplit=2)
-                        return {"place": res_place, "lat": lat, "lon": lon}
+                if (
+                    is_zip_code
+                    and "Property" in feature
+                    and "Address" in feature["Property"]
+                    and feature["Property"]["Address"]
+                ):
+                    res_place = feature["Property"]["Address"]
+                elif not is_zip_code and "Name" in feature and feature["Name"]:
+                    res_place = feature["Name"]
+                else:
+                    return None
+
+                if "Coordinates" in geometry and geometry["Coordinates"]:
+                    coordinates = geometry["Coordinates"]
+                    lon, lat = coordinates.split(",", maxsplit=2)
+                    return {"place": res_place, "lat": lat, "lon": lon}
 
     return None
 
@@ -86,10 +88,11 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
 
     if res.status_code != 200:
         return None
-        for entry in res.json():
-            res_place = entry.get("properties", {}).get("title", "")
-            lat, lon = entry.get("geometry", {}).get("coordinates", [None, None])
-            if place in res_place and lat is not None and lon is not None:
-                return {"place": res_place, "lat": lat, "lon": lon}
+
+    for entry in res.json():
+        res_place = entry.get("properties", {}).get("title", "")
+        lat, lon = entry.get("geometry", {}).get("coordinates", [None, None])
+        if place in res_place and lat is not None and lon is not None:
+            return {"place": res_place, "lat": lat, "lon": lon}
 
     return None
