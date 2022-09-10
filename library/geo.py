@@ -100,4 +100,3 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
         return None
 
     return choice(candidates)
-
