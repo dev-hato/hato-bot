@@ -84,7 +84,8 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
         "https://msearch.gsi.go.jp/address-search/AddressSearch", {"q": place}
     )
 
-    if res.status_code == 200:
+    if res.status_code != 200:
+        return None
         for entry in res.json():
             res_place = entry.get("properties", {}).get("title", "")
             lat, lon = entry.get("geometry", {}).get("coordinates", [None, None])
