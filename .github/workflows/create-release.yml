@@ -1,0 +1,28 @@
+---
+name: create-release
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - .github/workflows/create-release.yml
+      - library/**
+      - plugins/**
+      - postgres/**
+      - .dockerignore
+      - .python-version
+      - build.docker-compose.yml
+      - docker-compose.yml
+      - Dockerfile
+      - Pipfile*
+      - runtime.txt
+      - '**/*.py'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dev-hato/actions-create-release@v0.0.4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}

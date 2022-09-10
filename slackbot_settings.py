@@ -36,4 +36,4 @@ PLUGINS = ["plugins"]
 
 GIT_COMMIT_HASH = os.environ.get("GIT_COMMIT_HASH")
 
-VERSION = "2.4.1"
+VERSION = ""

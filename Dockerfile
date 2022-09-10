@@ -3,7 +3,8 @@ FROM debian:bullseye-slim AS commit-hash
 COPY . /
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
-    && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
+    && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py \
+    && sed -i "s/^\(VERSION = \).*\$/\1'$(git describe --abbrev=0)'/" slackbot_settings.py
 
 FROM python:3.10.7-slim-bullseye
 
