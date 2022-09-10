@@ -72,7 +72,7 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
 def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     """
     地名から座標を取得する(国土地理院版)
-    場所名が完全一致で優先して返し、部分一致は来た順に返すことで確度を上げている
+    場所名が完全一致で優先して返し、部分一致のうちランダム返すことでそれっぽい挙動にしている
     :param place: 地名・住所
     :return: place: 地名, lat: 緯度, lon: 経度
     """
