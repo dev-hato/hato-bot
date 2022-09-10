@@ -15,6 +15,7 @@ mypy = "==0.971"
 flake8 = "*"
 black = "*"
 isort = "*"
+pre-commit = "*"
 
 [packages]
 python-dotenv = "==0.21.0"

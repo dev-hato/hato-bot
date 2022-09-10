@@ -102,8 +102,12 @@ npm run lint
 
 #### コミットする前に行うこと
 
-<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
-これにより、[.pre-commit-config.yaml](.pre-commit-config.yaml)の設定に基づいて、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
+開発に必要なパッケージと `pre-commit` のインストールを行います。
+
+```sh
+pipenv install --dev
+pipenv run pre-commit install
+```
 
 #### 補足
 
