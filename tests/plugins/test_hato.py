@@ -18,7 +18,7 @@ from plugins.hato import (
     split_command,
     yoshiyoshi,
 )
-from tests.library.test_geo import set_mock
+from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
 
 
@@ -123,7 +123,7 @@ class TestAmesh(unittest.TestCase):
                     }
                 ]
             }
-            set_mock("東京", mocker, False, content)
+            set_yahoo_mock("東京", mocker, False, content)
             self.amesh_upload_png_test(mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！")
 
     def test_amesh_with_params(self):
@@ -184,7 +184,7 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            set_mock("東京", mocker, False, geo_content)
+            set_yahoo_mock("東京", mocker, False, geo_content)
             altitude_setagaya = 35.4
             altitude_content = {
                 "Feature": [{"Property": {"Altitude": altitude_setagaya}}]
