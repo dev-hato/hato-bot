@@ -7,7 +7,7 @@ import unittest
 import requests_mock
 
 import slackbot_settings as conf
-from library.geo import get_geo_data
+from library.geo import get_yahoo_geo_data, get_gsi_geo_data
 
 
 def set_yahoo_mock(place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None):
@@ -75,7 +75,7 @@ class TestGetYahooGeoData(unittest.TestCase):
                 ]
             }
             set_yahoo_mock(place, mocker, True, content)
-            self.assertEqual(get_geo_data(place), result)
+            self.assertEqual(get_yahoo_geo_data(place), result)
 
     def test_invalid_place(self):
         """正しくない地名を指定した場合"""
@@ -92,9 +92,11 @@ def set_gsi_mock(place: str, mocker: requests_mock.Mocker, content=None):
     :param mocker: requestsのMocker
     :param content: req.contentの内容
     """
+    if content is None:
+        content = {}
 
-    mocker.get("https://msearch.gsi.go.jp/address-search/AddressSearch?q=" +
-               "?" + query, content=json.dumps(content).encode())
+    mocker.get("https://msearch.gsi.go.jp/address-search/AddressSearch" +
+               "?q=" + place, content=json.dumps(content).encode())
 
 
 class TestGetGsiGeoData(unittest.TestCase):
@@ -136,7 +138,7 @@ class TestGetGsiGeoData(unittest.TestCase):
                 }
             ]
             set_gsi_mock(place, mocker, content)
-            self.assertEqual(get_gsi_go_data(place), result)
+            self.assertEqual(get_gsi_geo_data(place), result)
 
     def test_invalid_place(self):
         """正しくない地名を指定した場合"""
