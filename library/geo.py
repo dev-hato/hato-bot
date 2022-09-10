@@ -4,7 +4,6 @@
 amesh
 """
 
-import json
 import re
 from typing import Dict, Optional
 
@@ -47,10 +46,7 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
     if res.status_code != 200:
         return None
 
-    geo_data = json.loads(res.content)
-
-    features = geo_data.get("Feature", [])
-    for feature in features:
+    for feature in res.json().get("Feature", []):
         coordinates = feature.get("Geometry", {}).get("Coordinates")
         if coordinates is None:
             continue
