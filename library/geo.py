@@ -48,28 +48,26 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
         return None
 
     geo_data = json.loads(res.content)
-    if "Feature" in geo_data:
-        for feature in geo_data["Feature"]:
-            if "Geometry" in feature and feature["Geometry"]:
-                geometry = feature["Geometry"]
-                res_place = None
 
-                if (
-                    is_zip_code
-                    and "Property" in feature
-                    and "Address" in feature["Property"]
-                    and feature["Property"]["Address"]
-                ):
-                    res_place = feature["Property"]["Address"]
-                elif not is_zip_code and "Name" in feature and feature["Name"]:
-                    res_place = feature["Name"]
-                else:
-                    return None
+    features = geo_data.get("Feature", [])
+    for feature in features:
+        coordinates = feature.get("Geometry", {}).get("Coordinates")
+        if coordinates is None:
+            continue
 
-                if "Coordinates" in geometry and geometry["Coordinates"]:
-                    coordinates = geometry["Coordinates"]
-                    lon, lat = coordinates.split(",", maxsplit=2)
-                    return {"place": res_place, "lat": lat, "lon": lon}
+        res_place = None
+        address = feature.get("Property", {}).get("Address")
+        name = feature.get("Name")
+
+        if is_zip_code and address is not None:
+            res_place = address
+        elif not is_zip_code and name is not None:
+            res_place = name
+        else:
+            return None
+
+        lon, lat = coordinates.split(",", maxsplit=2)
+        return {"place": res_place, "lat": lat, "lon": lon}
 
     return None
 
