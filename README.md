@@ -120,7 +120,7 @@ pipenv run pre-commit install
     ```text
     amesh ... 東京のameshを表示する。
     amesh [text] ... 指定した地名・住所・郵便番号[text]のameshを表示する。
-    amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。
+    amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
     電力 ... 東京電力管内の電力使用率を表示する。
     標高 ... 東京の標高を表示する。
     標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
