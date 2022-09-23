@@ -32,7 +32,9 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
         return None
 
     latest_datetime = datetime.datetime.fromisoformat(latest_datetime_res.text)
-    amedas_url = latest_datetime.strftime("https://www.jma.go.jp/bosai/amedas/data/map/%Y%m%d%H%M%S.json")
+    amedas_url = latest_datetime.strftime(
+        "https://www.jma.go.jp/bosai/amedas/data/map/%Y%m%d%H%M%S.json"
+    )
     amedas_res = requests.get(amedas_url)
 
     if amedas_res.status_code != 200:
