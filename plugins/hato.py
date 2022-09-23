@@ -234,35 +234,48 @@ def amedas(client: BaseClient, place: str):
         client.post("気象状況を取得できなかったっぽ......")
         return
 
-    res = [
-        f"{amedas_data['datetime']}現在の{amedas_data['place']}の気象状況をお知らせするっぽ！",
-        '```'
-    ]
+    res = [f"{amedas_data['datetime']}現在の{amedas_data['place']}の気象状況をお知らせするっぽ！", "```"]
 
-    if 'temp' in amedas_data:
+    if "temp" in amedas_data:
         res.append(f"気温: {amedas_data['temp'][0]}℃")
 
-    if 'precipitation1h' in amedas_data:
+    if "precipitation1h" in amedas_data:
         res.append(f"降水量 (前1時間): {amedas_data['precipitation1h'][0]}mm")
 
-    if 'windDirection' in amedas_data:
-        directions = ['北北東', '北東', '東北東', '東', '東南東', '南東', '南南東', '南',
-                      '南南西', '南西', '西南西', '西', '西北西', '北西', '北北西', '北']
+    if "windDirection" in amedas_data:
+        directions = [
+            "北北東",
+            "北東",
+            "東北東",
+            "東",
+            "東南東",
+            "南東",
+            "南南東",
+            "南",
+            "南南西",
+            "南西",
+            "西南西",
+            "西",
+            "西北西",
+            "北西",
+            "北北西",
+            "北",
+        ]
         res.append(f"風向: {directions[amedas_data['windDirection'][0] - 1]}")
 
-    if 'wind' in amedas_data:
+    if "wind" in amedas_data:
         res.append(f"風速: {amedas_data['wind'][0]}m/s")
 
-    if 'sun1h' in amedas_data:
+    if "sun1h" in amedas_data:
         res.append(f"日照時間 (前1時間): {amedas_data['sun1h'][0]}時間")
 
-    if 'humidity' in amedas_data:
+    if "humidity" in amedas_data:
         res.append(f"湿度: {amedas_data['humidity'][0]}%")
 
-    if 'normalPressure' in amedas_data:
+    if "normalPressure" in amedas_data:
         res.append(f"海面気圧: {amedas_data['normalPressure'][0]}hPa")
 
-    res.append('```')
+    res.append("```")
     client.post(os.linesep.join(res))
 
 
