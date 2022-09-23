@@ -23,6 +23,7 @@ from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.hukidasi import generator
+from library.jma_amedas import get_jma_amedas
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults
 from library.omikuji import draw as omikuji_draw
@@ -76,6 +77,9 @@ def help_message():
         "amesh ... 東京のamesh(雨雲情報)を表示する。",
         "amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。",
         "amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のameshを表示する。",
+        "amedas ... 東京のamedas(気象情報)を表示する。",
+        "amedas [text] ... 指定した地名・住所・郵便番号[text]のamedas(気象情報)を表示する。",
+        "amedas [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamedas(気象情報)を表示する。",
         "電力 ... 東京電力管内の電力使用率を表示する。",
         "標高 ... 東京の標高を表示する。",
         "標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。",
@@ -202,6 +206,64 @@ def amesh(client: BaseClient, place: str):
         client.upload(
             file=weather_map_file.name, filename=os.path.extsep.join(filename)
         )
+
+
+@action("amedas", with_client=True)
+def amedas(client: BaseClient, place: str):
+    """気象情報を表示する"""
+
+    lat = None
+    lon = None
+    place_list = split_command(place, 2)
+
+    if len(place_list) == 2:
+        lat, lon = place_list
+    else:
+        geo_data = get_geo_data(place_list[0] or "東京")
+        if geo_data is not None:
+            lat = float(geo_data["lat"])
+            lon = float(geo_data["lon"])
+
+    if lat is None or lon is None:
+        client.post("座標を特定できなかったっぽ......")
+        return
+
+    amedas_data = get_jma_amedas(lat, lon)
+
+    if amedas_data is None:
+        client.post("気象状況を取得できなかったっぽ......")
+        return
+
+    res = [
+        f"{amedas_data['datetime']}現在の{amedas_data['place']}の気象状況をお知らせするっぽ！",
+        '```'
+    ]
+
+    if 'temp' in amedas_data:
+        res.append(f"気温: {amedas_data['temp'][0]}℃")
+
+    if 'precipitation1h' in amedas_data:
+        res.append(f"降水量 (前1時間): {amedas_data['precipitation1h'][0]}mm")
+
+    if 'windDirection' in amedas_data:
+        directions = ['北北東', '北東', '東北東', '東', '東南東', '南東', '南南東', '南',
+                      '南南西', '南西', '西南西', '西', '西北西', '北西', '北北西', '北']
+        res.append(f"風向: {directions[amedas_data['windDirection'][0] - 1]}")
+
+    if 'wind' in amedas_data:
+        res.append(f"風速: {amedas_data['wind'][0]}m/s")
+
+    if 'sun1h' in amedas_data:
+        res.append(f"日照時間 (前1時間): {amedas_data['sun1h'][0]}時間")
+
+    if 'humidity' in amedas_data:
+        res.append(f"湿度: {amedas_data['humidity'][0]}%")
+
+    if 'normalPressure' in amedas_data:
+        res.append(f"海面気圧: {amedas_data['normalPressure'][0]}hPa")
+
+    res.append('```')
+    client.post(os.linesep.join(res))
 
 
 @action("電力", with_client=True)

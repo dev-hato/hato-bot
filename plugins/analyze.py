@@ -28,6 +28,7 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "text": lambda m: hato.show_random_text,
         ">< ": lambda m: partial(hato.totuzensi, message=m[len(">< ") :]),
         "amesh": lambda m: partial(hato.amesh, place=m[len("amesh") :].strip()),
+        "amedas": lambda m: partial(hato.amedas, place=m[len("amedas") :].strip()),
         "電力": lambda m: hato.electricity_demand,
         "標高": lambda m: partial(hato.altitude, place=m[len("標高") :].strip()),
         "version": lambda m: hato.version,
