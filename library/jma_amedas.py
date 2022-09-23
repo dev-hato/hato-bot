@@ -6,7 +6,7 @@ import requests
 
 
 def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
-    nearest_place: Optional[Dict[str, any]] = None
+    nearest_place: Dict[str, int | float | str] = {}
     place_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"
     )
@@ -17,12 +17,15 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     for code, place in place_res.json().items():
         decimal_lat = place["lat"][0] + float(place["lat"][1]) / 60
         decimal_lon = place["lon"][0] + float(place["lon"][1]) / 60
-        place["distance"] = math.sqrt(
+        distance = math.sqrt(
             (decimal_lat - lat) ** 2 + (decimal_lon - lon) ** 2
         )
-        if nearest_place is None or place["distance"] < nearest_place["distance"]:
-            place["code"] = code
-            nearest_place = place
+        if "distance" not in nearest_place or distance < nearest_place["distance"]:
+            nearest_place = {
+                "code": code,
+                "distance": distance,
+                "place": place["kjName"]
+            }
 
     latest_datetime_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt"
