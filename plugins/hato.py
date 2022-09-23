@@ -217,7 +217,8 @@ def amedas(client: BaseClient, place: str):
     place_list = split_command(place, 2)
 
     if len(place_list) == 2:
-        lat, lon = place_list
+        lat = float(place_list[0])
+        lon = float(place_list[1])
     else:
         geo_data = get_geo_data(place_list[0] or "東京")
         if geo_data is not None:
