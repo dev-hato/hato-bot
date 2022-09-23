@@ -29,6 +29,9 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
         if nearest_place is None or distance < nearest_place.distance:
             nearest_place = Place(code=code, distance=distance, place=place["kjName"])
 
+    if nearest_place is None:
+        return None
+
     latest_datetime_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt"
     )
