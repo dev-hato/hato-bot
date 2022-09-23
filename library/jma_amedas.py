@@ -45,7 +45,7 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     if amedas_res.status_code != 200:
         return None
 
-    amedas_data: Dict = amedas_res.json()
+    amedas_data = amedas_res.json()
 
     if nearest_place.code not in amedas_data:
         return None
