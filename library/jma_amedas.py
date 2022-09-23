@@ -6,7 +6,7 @@ import requests
 
 
 def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
-    nearest_place: Optional[Dict] = None
+    nearest_place: Optional[Dict[str, any]] = None
     place_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"
     )

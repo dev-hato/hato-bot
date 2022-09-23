@@ -9,7 +9,7 @@ import re
 from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -212,8 +212,8 @@ def amesh(client: BaseClient, place: str):
 def amedas(client: BaseClient, place: str):
     """気象情報を表示する"""
 
-    lat = None
-    lon = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
     place_list = split_command(place, 2)
 
     if len(place_list) == 2:
