@@ -17,14 +17,12 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     for code, place in place_res.json().items():
         decimal_lat = place["lat"][0] + float(place["lat"][1]) / 60
         decimal_lon = place["lon"][0] + float(place["lon"][1]) / 60
-        distance = math.sqrt(
-            (decimal_lat - lat) ** 2 + (decimal_lon - lon) ** 2
-        )
+        distance = math.sqrt((decimal_lat - lat) ** 2 + (decimal_lon - lon) ** 2)
         if "distance" not in nearest_place or distance < nearest_place["distance"]:
             nearest_place = {
                 "code": code,
                 "distance": distance,
-                "place": place["kjName"]
+                "place": place["kjName"],
             }
 
     latest_datetime_res = requests.get(
