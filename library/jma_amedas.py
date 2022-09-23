@@ -6,7 +6,7 @@ import requests
 
 
 def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
-    nearest_place = None
+    nearest_place: Optional[Dict] = None
     place_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"
     )
@@ -40,7 +40,7 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     if amedas_res.status_code != 200:
         return None
 
-    amedas_data = amedas_res.json()
+    amedas_data: Dict = amedas_res.json()
 
     if nearest_place["code"] not in amedas_data:
         return None
