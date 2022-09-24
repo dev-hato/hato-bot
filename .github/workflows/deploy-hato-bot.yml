@@ -89,6 +89,14 @@ jobs:
         with:
           push: true
           files: docker-compose.yml
+      - name: Build and push (dev) (latest)
+        uses: docker/bake-action@v2.2.0
+        if: ${{ github.event_name == 'release' }}
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml,dev.docker-compose.yml
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
