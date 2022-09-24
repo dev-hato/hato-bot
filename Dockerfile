@@ -7,8 +7,8 @@ RUN apt-get update \
 
 FROM python:3.10.7-slim-bullseye
 
-ARG PIPENV_ADDITIONAL_OPTIONS
-ENV PIPENV_ADDITIONAL_OPTIONS="${PIPENV_ADDITIONAL_OPTIONS}"
+ARG PIPENV_OPTION
+ENV PIPENV_OPTION="${PIPENV_OPTION}"
 
 WORKDIR /usr/src/app
 
@@ -20,7 +20,7 @@ COPY Pipfile Pipfile
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.9.21 --no-cache-dir && \
-    pipenv install --system --skip-lock ${PIPENV_ADDITIONAL_OPTIONS} && \
+    pipenv install --system --skip-lock "${PIPENV_OPTION}" && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
@@ -28,7 +28,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
     find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
-    useradd -l -m -s /bin/bash -N -u "1000" "nonroot" # shellcheck disable=SC2086
+    useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
 USER nonroot
 
 COPY *.py ./
