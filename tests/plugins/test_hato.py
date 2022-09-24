@@ -17,6 +17,7 @@ from plugins.hato import (
     omikuji_results,
     split_command,
     yoshiyoshi,
+    amedas,
 )
 from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
@@ -133,6 +134,76 @@ class TestAmesh(unittest.TestCase):
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
             self.amesh_upload_png_test(mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
+
+
+class TestAmedas(unittest.TestCase):
+    """
+    amedasが正しく動作しているかテストする
+    """
+
+    def get_amedas_test(self, mocker: requests_mock.Mocker, place: str, msg: str):
+        """
+        amedasを取得できるかテスト
+        :param mocker requestsのMock
+        :param place: コマンドの引数
+        :param msg: Slackに投稿されて欲しいメッセージ
+        """
+        for mock_data in [
+            {"file_name": "test_amedas_latest_time.txt",
+             "url": "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt"},
+            {"file_name": "test_amedastable.json", "url": "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"},
+            {"file_name": "test_amedas_map.json",
+             "url": "https://www.jma.go.jp/bosai/amedas/data/map/20220924134000.json"}
+        ]:
+            with open(os.path.join(os.path.dirname(__file__), mock_data["file_name"]), mode="rb") as mock_file:
+                mocker.get(mock_data["url"], content=mock_file.read())
+
+        client1 = TestClient()
+        actual = amedas(client1, place=place)
+        self.assertEqual(None, actual)
+        self.assertEqual(client1.get_post_message(), msg)
+
+    def test_amedas_with_no_params(self):
+        """
+        引数なしでamedasコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            content = {
+                "Feature": [
+                    {
+                        "Name": "東京都世田谷区",
+                        "Geometry": {"Coordinates": "139.65324950,35.64657460"},
+                    }
+                ]
+            }
+            set_yahoo_mock("東京", mocker, False, content)
+            self.get_amedas_test(
+                mocker,
+                "",
+                os.linesep.join([
+                    "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                    "```",
+                    "降水量 (前1時間): 0.5mm",
+                    "```"
+                ])
+            )
+
+    def test_amedas_with_params(self):
+        """
+        引数ありでamedasコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            coordinate = ["35.64657460", "139.65324950"]
+            self.get_amedas_test(
+                mocker,
+                " ".join(coordinate),
+                os.linesep.join([
+                    "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                    "```",
+                    "降水量 (前1時間): 0.5mm",
+                    "```"
+                ])
+            )
 
 
 class TestAltitude(unittest.TestCase):
