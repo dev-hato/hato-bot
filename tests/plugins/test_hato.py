@@ -65,26 +65,24 @@ class TestAmesh(unittest.TestCase):
         self,
         mocker: requests_mock.Mocker,
         place: str,
-        image_content=None,
-        json_content=None,
     ):
         """
         ameshを取得できるかテスト
         :param mocker requestsのMock
         :param place: コマンドの引数
-        :param coordinate: [緯度, 経度]
-        :param content: req.contentで返すデータ
         """
         client1 = TestClient()
 
-        jma_image_url = re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png")
-        osm_image_url = re.compile(r"tile\.openstreetmap\.org/.+\.png")
-        jma_json_url = (
-            "https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json"
-        )
-        mocker.get(jma_image_url, content=image_content)
-        mocker.get(osm_image_url, content=image_content)
-        mocker.get(jma_json_url, content=json_content)
+        with open(os.path.join(os.path.dirname(__file__), "test.png"), mode="rb") as picture_file:
+            image_content = picture_file.read()
+            for image_url in [re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                              re.compile(r"tile\.openstreetmap\.org/.+\.png")]:
+                mocker.get(image_url, content=image_content)
+
+        with open(os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"), mode="rb") as json_file:
+            jma_json_url = "https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json"
+            mocker.get(jma_json_url, content=json_file.read())
+
         actual = amesh(client1, place=place)
         self.assertEqual(None, actual)
         return client1
@@ -94,21 +92,11 @@ class TestAmesh(unittest.TestCase):
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
         :param mocker requestsのMock
         :param place: コマンドの引数
-        :param coordinate: [緯度, 経度]
         :param msg: Slackに投稿されて欲しいメッセージ
         """
-        with open(
-            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
-        ) as picture_file:
-            with open(
-                os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
-                mode="rb",
-            ) as json_file:
-                client1 = self.get_amesh_test(
-                    mocker, place, picture_file.read(), json_file.read()
-                )
-                self.assertEqual(client1.get_post_message(), msg)
-                self.assertEqual(client1.get_filename(), "amesh.png")
+        client1 = self.get_amesh_test(mocker, place)
+        self.assertEqual(client1.get_post_message(), msg)
+        self.assertEqual(client1.get_filename(), "amesh.png")
 
     def test_amesh_with_no_params(self):
         """
