@@ -69,7 +69,7 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
 def help_message():
     """「hato help」を見つけたら、使い方を表示する"""
 
-    with open('commands.txt', 'r') as f:
+    with open("commands.txt", "r") as f:
         str_help = [
             "",
             "使い方",
