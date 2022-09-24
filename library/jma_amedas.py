@@ -56,4 +56,26 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     amedas = amedas_data[nearest_place.code]
     amedas["place"] = nearest_place.place
     amedas["datetime"] = latest_datetime.strftime("%Y/%m/%d %H:%M:%S")
+
+    if 'windDirection' in amedas_data:
+        directions = [
+            "北北東",
+            "北東",
+            "東北東",
+            "東",
+            "東南東",
+            "南東",
+            "南南東",
+            "南",
+            "南南西",
+            "南西",
+            "西南西",
+            "西",
+            "西北西",
+            "北西",
+            "北北西",
+            "北",
+        ]
+        amedas['windDirectionJP'] = directions[amedas_data['windDirection'][0] - 1]
+
     return amedas

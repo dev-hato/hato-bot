@@ -243,26 +243,8 @@ def amedas(client: BaseClient, place: str):
     if "precipitation1h" in amedas_data:
         res.append(f"降水量 (前1時間): {amedas_data['precipitation1h'][0]}mm")
 
-    if "windDirection" in amedas_data:
-        directions = [
-            "北北東",
-            "北東",
-            "東北東",
-            "東",
-            "東南東",
-            "南東",
-            "南南東",
-            "南",
-            "南南西",
-            "南西",
-            "西南西",
-            "西",
-            "西北西",
-            "北西",
-            "北北西",
-            "北",
-        ]
-        res.append(f"風向: {directions[amedas_data['windDirection'][0] - 1]}")
+    if "windDirectionJP" in amedas_data:
+        res.append(f"風向: {amedas_data['windDirectionJP']}")
 
     if "wind" in amedas_data:
         res.append(f"風速: {amedas_data['wind'][0]}m/s")
