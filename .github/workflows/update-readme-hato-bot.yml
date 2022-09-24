@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - run: cat README.template.md | perl -pe "s/{commands}/$(sed -e '2,$s/^/    /' commands.txt)/g" > README.md
+      - run: perl -pe "s/{commands}/$(sed -e '2,$s/^/    /' commands.txt)/g" < README.template.md > README.md
       - uses: dev-hato/actions-diff-pr-management@v1.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
