@@ -64,6 +64,13 @@ jobs:
         with:
           push: true
           files: docker-compose.yml
+      - name: Build and push (dev)
+        uses: docker/bake-action@v2.2.0
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml,dev.docker-compose.yml
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)

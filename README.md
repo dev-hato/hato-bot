@@ -37,6 +37,7 @@
 ### 自分のPC上で動かす
 
 自分のPCで動かすこともできます。
+Docker内で開発用のPythonライブラリを使用したい場合は `docker compose` を `docker compose -f docker-compose.yml -f dev.docker-compose.yml` と読み替えてください。
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
 2. hadolintをインストールします。
