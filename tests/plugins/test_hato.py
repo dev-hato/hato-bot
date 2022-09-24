@@ -12,12 +12,12 @@ import requests_mock
 import slackbot_settings as conf
 from plugins.hato import (
     altitude,
+    amedas,
     amesh,
     omikuji,
     omikuji_results,
     split_command,
     yoshiyoshi,
-    amedas,
 )
 from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
@@ -149,13 +149,23 @@ class TestAmedas(unittest.TestCase):
         :param msg: Slackに投稿されて欲しいメッセージ
         """
         for mock_data in [
-            {"file_name": "test_amedas_latest_time.txt",
-             "url": "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt"},
-            {"file_name": "test_amedastable.json", "url": "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"},
-            {"file_name": "test_amedas_map.json",
-             "url": "https://www.jma.go.jp/bosai/amedas/data/map/20220924134000.json"}
+            {
+                "file_name": "test_amedas_latest_time.txt",
+                "url": "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt",
+            },
+            {
+                "file_name": "test_amedastable.json",
+                "url": "https://www.jma.go.jp/bosai/amedas/const/amedastable.json",
+            },
+            {
+                "file_name": "test_amedas_map.json",
+                "url": "https://www.jma.go.jp/bosai/amedas/data/map/20220924134000.json",
+            },
         ]:
-            with open(os.path.join(os.path.dirname(__file__), mock_data["file_name"]), mode="rb") as mock_file:
+            with open(
+                os.path.join(os.path.dirname(__file__), mock_data["file_name"]),
+                mode="rb",
+            ) as mock_file:
                 mocker.get(mock_data["url"], content=mock_file.read())
 
         client1 = TestClient()
@@ -180,12 +190,14 @@ class TestAmedas(unittest.TestCase):
             self.get_amedas_test(
                 mocker,
                 "",
-                os.linesep.join([
-                    "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
-                    "```",
-                    "降水量 (前1時間): 0.5mm",
-                    "```"
-                ])
+                os.linesep.join(
+                    [
+                        "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                        "```",
+                        "降水量 (前1時間): 0.5mm",
+                        "```",
+                    ]
+                ),
             )
 
     def test_amedas_with_params(self):
@@ -197,12 +209,14 @@ class TestAmedas(unittest.TestCase):
             self.get_amedas_test(
                 mocker,
                 " ".join(coordinate),
-                os.linesep.join([
-                    "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
-                    "```",
-                    "降水量 (前1時間): 0.5mm",
-                    "```"
-                ])
+                os.linesep.join(
+                    [
+                        "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                        "```",
+                        "降水量 (前1時間): 0.5mm",
+                        "```",
+                    ]
+                ),
             )
 
 
