@@ -14,7 +14,6 @@ COPY Pipfile Pipfile
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
-# shellcheck disable=SC2086
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.9.21 --no-cache-dir && \
@@ -26,7 +25,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
     find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
-    useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+    useradd -l -m -s /bin/bash -N -u "1000" "nonroot" # shellcheck disable=SC2086
 USER nonroot
 
 COPY *.py ./
