@@ -14,10 +14,10 @@ COPY Pipfile Pipfile
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
+# shellcheck disable=SC2086
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.9.21 --no-cache-dir && \
-    # shellcheck disable=SC2086
     pipenv install --system --skip-lock ${PIPENV_ADDITIONAL_OPTIONS} && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
