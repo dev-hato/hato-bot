@@ -8,8 +8,8 @@ services:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
+      args:
+        - PIPENV_ADDITIONAL_OPTIONS="--dev"
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
     env_file:
       - .env
-    environment:
-      PIPENV_ADDITIONAL_OPTIONS: "--dev"
