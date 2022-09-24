@@ -16,10 +16,9 @@ COPY Pipfile Pipfile
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
-    pip install pipenv==2022.9.21 --no-cache-dir && \
-    # shellcheck disable=SC2086
-    pipenv install --system --skip-lock ${PIPENV_ADDITIONAL_OPTIONS} && \
-    pip uninstall -y pipenv virtualenv && \
+    pip install pipenv==2022.9.21 --no-cache-dir
+RUN pipenv install --system --skip-lock ${PIPENV_ADDITIONAL_OPTIONS} # shellcheck disable=SC2086
+RUN pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
