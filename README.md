@@ -71,7 +71,7 @@
     cd ..
     ```
 
-   Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
@@ -86,7 +86,7 @@
     docker compose restart
     ```
 
-   Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
