@@ -19,7 +19,7 @@ COPY Pipfile Pipfile
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
-    pip install pipenv==2022.9.21 --no-cache-dir && \
+    pip install pipenv==2022.9.24 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
