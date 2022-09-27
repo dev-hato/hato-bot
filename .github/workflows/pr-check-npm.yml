@@ -37,14 +37,14 @@ jobs:
           DEPENDABOT_NPM_VERSION="${{steps.get_dependabot_npm_version.outputs.npm_version}}"
           NPM_PATTERN_PACKAGE="s/\"npm\": \".*\"/\"npm\": \"^${DEPENDABOT_NPM_VERSION}\"/g"
           sed -i -e "${NPM_PATTERN_PACKAGE}" package.json
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.0
         with:
           cache: npm
       - run: |
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
-      - uses: dev-hato/actions-diff-pr-management@v1.0.3
+      - uses: dev-hato/actions-diff-pr-management@v1.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -62,7 +62,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.0
         with:
           cache: npm
       - name: Install dependencies
@@ -70,7 +70,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
-      - uses: dev-hato/actions-diff-pr-management@v1.0.3
+      - uses: dev-hato/actions-diff-pr-management@v1.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm

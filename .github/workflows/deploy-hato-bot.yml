@@ -116,7 +116,7 @@ jobs:
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      - uses: dev-hato/actions-diff-pr-management@v1.0.3
+      - uses: dev-hato/actions-diff-pr-management@v1.0.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
@@ -158,7 +158,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@v0.0.11
+      - uses: dev-hato/actions-update-dockle@v0.0.14
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: dev-hato/hato-bot

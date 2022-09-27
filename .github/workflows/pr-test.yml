@@ -54,7 +54,7 @@ jobs:
           DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
           cp -r ${{ env.venv_path }} "${DEST_PATH}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.0
         with:
           cache: npm
       - name: Install dependencies
