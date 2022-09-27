@@ -69,32 +69,17 @@ def split_command(command: str, maxsplit: int = 0) -> List[str]:
 def help_message():
     """「hato help」を見つけたら、使い方を表示する"""
 
-    str_help = [
-        "",
-        "使い方",
-        "```",
-        "amesh ... 東京のamesh(雨雲情報)を表示する。",
-        "amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。",
-        "amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。",
-        "電力 ... 東京電力管内の電力使用率を表示する。",
-        "標高 ... 東京の標高を表示する。",
-        "標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。",
-        "標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。",
-        "eq ... 最新の地震情報を3件表示する。",
-        "text list ... パワーワード一覧を表示する。 ",
-        "text random ... パワーワードをひとつ、ランダムで表示する。 ",
-        "text show [int] ... 指定した番号[int]のパワーワードを表示する。 ",
-        "text add [text] ... パワーワードに[text]を登録する。 ",
-        "text delete [int] ... 指定した番号[int]のパワーワードを削除する。 ",
-        ">< [text] ... 文字列[text]を吹き出しで表示する。",
-        "にゃーん ... 「よしよし」と返す。",
-        "おみくじ ... おみくじを引いて返す。",
-        "version ... バージョン情報を表示する。",
-        "",
-        "詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!",
-        "```",
-    ]
-    return os.linesep.join(str_help)
+    with open("commands.txt", "r") as f:
+        str_help = [
+            "",
+            "使い方",
+            "```",
+            f.read().strip(),
+            "",
+            "詳細はドキュメント(https://github.com/dev-hato/hato-bot/wiki)も見てくれっぽ!",
+            "```",
+        ]
+        return os.linesep.join(str_help)
 
 
 @action("default")
