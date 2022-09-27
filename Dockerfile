@@ -7,6 +7,9 @@ RUN apt-get update \
 
 FROM python:3.10.7-slim-bullseye
 
+ARG ENV
+ENV ENV="${ENV}"
+
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
@@ -17,7 +20,11 @@ COPY Pipfile Pipfile
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.9.24 --no-cache-dir && \
-    pipenv install --system --skip-lock && \
+    if [ "${ENV}" = 'dev' ]; then \
+      pipenv install --system --skip-lock --dev; \
+    else \
+      pipenv install --system --skip-lock; \
+    fi && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
