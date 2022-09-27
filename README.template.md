@@ -71,26 +71,11 @@
     cd ..
     ```
 
-   Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
-
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose -f docker-compose.yml -f dev.docker-compose.yml up -d --wait
-    cd ..
-    ```
-
 7. コードの変更はdocker composeの再起動で適用できます。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker compose restart
-    ```
-
-   Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
-
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose -f docker-compose.yml -f dev.docker-compose.yml restart
     ```
 
 #### lintをかける方法
@@ -133,23 +118,7 @@ pipenv run pre-commit install
 - 鳩botで使用可能なコマンドは次の通りです。
 
     ```text
-    amesh ... 東京のamesh(雨雲情報)を表示する。
-    amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
-    amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
-    電力 ... 東京電力管内の電力使用率を表示する。
-    標高 ... 東京の標高を表示する。
-    標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
-    標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
-    eq ... 最新の地震情報を3件表示する。
-    text list ... パワーワード一覧を表示する。
-    text random ... パワーワードをひとつ、ランダムで表示する。
-    text show [int] ... 指定した番号[int]のパワーワードを表示する。
-    text add [text] ... パワーワードに[text]を登録する。
-    text delete [int] ... 指定した番号[int]のパワーワードを削除する。
-    >< [text] ... 文字列[text]を吹き出しで表示する。
-    にゃーん ... 「よしよし」と返す。
-    おみくじ ... おみくじを引いて返す。
-    version ... バージョン情報を表示する。
+    {commands}
     ```
 
 ## バージョンアップによる変更点
