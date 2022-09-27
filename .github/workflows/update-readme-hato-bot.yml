@@ -1,0 +1,30 @@
+---
+name: update-readme-hato-bot
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  push:
+    branches:
+      - master
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: perl -pe "s/{commands}/$(sed -e '2,$s/^/    /' commands.txt)/g" < README.template.md > README.md
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      - uses: dev-hato/actions-diff-pr-management@v1.0.4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-format
+          pr-title-prefix: READMEを更新してあげたよ！
+          repo-name: dev-hato/hato-bot

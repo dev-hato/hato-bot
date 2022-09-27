@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set org name
-        uses: actions/github-script@v6.2.0
+        uses: actions/github-script@v6.3.0
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -25,7 +25,7 @@ jobs:
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
-        uses: actions/github-script@v6.2.0
+        uses: actions/github-script@v6.3.0
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -42,7 +42,7 @@ jobs:
                                                 pulls_list_params)
             return pulls.length
       - name: Create PullRequest
-        uses: actions/github-script@v6.2.0
+        uses: actions/github-script@v6.3.0
         if: ${{ steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
