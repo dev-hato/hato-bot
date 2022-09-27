@@ -123,7 +123,7 @@ pipenv run pre-commit install
 
 ## バージョンアップによる変更点
 
-- バージョンアップによる変更点については[CHANGELOG](./CHANGELOG.md) を参照してください。
+- バージョンアップによる変更点については[GitHubのReleases](https://github.com/dev-hato/hato-bot/releases) を参照してください。
 
 ## バグ報告や機能の要望について
 
