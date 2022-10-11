@@ -71,11 +71,26 @@
     cd ..
     ```
 
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+
+    ```sh
+    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
+    docker compose -f docker-compose.yml -f dev.docker-compose.yml up -d --wait
+    cd ..
+    ```
+
 7. コードの変更はdocker composeの再起動で適用できます。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
     docker compose restart
+    ```
+
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+
+    ```sh
+    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
+    docker compose -f docker-compose.yml -f dev.docker-compose.yml restart
     ```
 
 #### lintをかける方法
@@ -121,6 +136,9 @@ pipenv run pre-commit install
     amesh ... 東京のamesh(雨雲情報)を表示する。
     amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
     amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
+    amedas ... 東京のamedas(気象情報)を表示する。
+    amedas [text] ... 指定した地名・住所・郵便番号[text]のamedas(気象情報)を表示する。
+    amedas [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamedas(気象情報)を表示する。
     電力 ... 東京電力管内の電力使用率を表示する。
     標高 ... 東京の標高を表示する。
     標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。

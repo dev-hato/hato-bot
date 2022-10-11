@@ -27,7 +27,7 @@ jobs:
       packages: write
     if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Set .env
@@ -64,6 +64,13 @@ jobs:
         with:
           push: true
           files: docker-compose.yml
+      - name: Build and push (dev)
+        uses: docker/bake-action@v2.2.0
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml,dev.docker-compose.yml
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
@@ -82,6 +89,14 @@ jobs:
         with:
           push: true
           files: docker-compose.yml
+      - name: Build and push (dev) (latest)
+        uses: docker/bake-action@v2.2.0
+        if: ${{ github.event_name == 'release' }}
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        with:
+          push: true
+          files: docker-compose.yml,dev.docker-compose.yml
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
@@ -94,7 +109,7 @@ jobs:
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -116,7 +131,7 @@ jobs:
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      - uses: dev-hato/actions-diff-pr-management@v1.0.4
+      - uses: dev-hato/actions-diff-pr-management@v1.0.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
@@ -129,7 +144,7 @@ jobs:
       DOCKER_CONTENT_TRUST: 1
     needs: deploy_docker_image
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Set .env
@@ -154,11 +169,11 @@ jobs:
   update-dockle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@v0.0.14
+      - uses: dev-hato/actions-update-dockle@v0.0.19
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: dev-hato/hato-bot
@@ -171,7 +186,7 @@ jobs:
     env:
       DOCKER_CONTENT_TRUST: 1
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
       - name: Set .env
         run: cp .env.example .env
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"

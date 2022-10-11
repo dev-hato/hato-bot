@@ -19,7 +19,7 @@ jobs:
   pr-format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
@@ -74,7 +74,7 @@ jobs:
           pipenv run black --config .python-black .
           pipenv run isort --sp .isort.cfg .
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v1.0.4
+      - uses: dev-hato/actions-diff-pr-management@v1.0.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
