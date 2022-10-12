@@ -51,21 +51,21 @@ jobs:
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build and push (build)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: build.docker-compose.yml
       - name: Build and push (main)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml
       - name: Build and push (dev)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
@@ -74,7 +74,7 @@ jobs:
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -82,7 +82,7 @@ jobs:
           push: true
           files: build.docker-compose.yml
       - name: Build and push (main) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -90,7 +90,7 @@ jobs:
           push: true
           files: docker-compose.yml
       - name: Build and push (dev) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
