@@ -80,7 +80,7 @@ jobs:
         working-directory: sudden-death
         run: |
           git add -A
-          echo "diff=$(git diff --cached)" >> $GITHUB_OUTPUT
+          echo "diff=$(git diff --cached)" >> "${GITHUB_OUTPUT}"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death

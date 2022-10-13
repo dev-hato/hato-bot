@@ -22,7 +22,7 @@ jobs:
           echo "${result}"
           result="${result//$'\n'/'%0A'}"
           result="${result//$'\r'/'%0D'}"
-          echo "result=${result}" >> $GITHUB_OUTPUT
+          echo "result=${result}" >> "${GITHUB_OUTPUT}"
       - name: Set org name
         uses: actions/github-script@v6.3.2
         id: set_org_name
