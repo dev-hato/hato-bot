@@ -31,7 +31,7 @@ jobs:
           DOCKER_CMD="npm --version"
           npm_version="$(docker run ghcr.io/dependabot/dependabot-core sh -c "${DOCKER_CMD}")"
           echo "npm version:" "${npm_version}"
-          echo "::set-output name=npm_version::${npm_version}"
+          echo "npm_version=${npm_version}" >> $GITHUB_OUTPUT
       - name: Update version
         run: |
           DEPENDABOT_NPM_VERSION="${{steps.get_dependabot_npm_version.outputs.npm_version}}"
