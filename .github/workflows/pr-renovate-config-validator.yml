@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.5.0
+        uses: actions/setup-node@v3.5.1
         with:
           cache: npm
       - run: |
