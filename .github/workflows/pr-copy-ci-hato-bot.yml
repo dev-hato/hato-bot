@@ -80,7 +80,11 @@ jobs:
         working-directory: sudden-death
         run: |
           git add -A
-          echo "diff=$(git diff --cached)" >> "${GITHUB_OUTPUT}"
+          result="$(git diff --cached)"
+          result="${result//'%'/'%25'}"
+          result="${result//$'\n'/'%0A'}"
+          result="${result//$'\r'/'%0D'}"
+          echo "diff=${result}" >> "${GITHUB_OUTPUT}"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death
