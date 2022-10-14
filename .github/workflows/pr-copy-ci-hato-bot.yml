@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6.3.2
+        uses: actions/github-script@v6.3.3
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -50,7 +50,7 @@ jobs:
           PATTERN="s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g"
           sed -i -e "${PATTERN}" sudden-death/Pipfile
       - name: Copy package.json
-        uses: actions/github-script@v6.3.2
+        uses: actions/github-script@v6.3.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
