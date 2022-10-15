@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6.3.2
+        uses: actions/github-script@v6.3.3
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -50,7 +50,7 @@ jobs:
           PATTERN="s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g"
           sed -i -e "${PATTERN}" sudden-death/Pipfile
       - name: Copy package.json
-        uses: actions/github-script@v6.3.2
+        uses: actions/github-script@v6.3.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -80,7 +80,11 @@ jobs:
         working-directory: sudden-death
         run: |
           git add -A
-          echo "::set-output name=diff::$(git diff --cached)"
+          result="$(git diff --cached)"
+          result="${result//'%'/'%25'}"
+          result="${result//$'\n'/'%0A'}"
+          result="${result//$'\r'/'%0D'}"
+          echo "diff=${result}" >> "${GITHUB_OUTPUT}"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death

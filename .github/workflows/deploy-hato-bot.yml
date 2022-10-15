@@ -51,21 +51,21 @@ jobs:
         if: ${{ github.event_name == 'release' }}
       - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build and push (build)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: build.docker-compose.yml
       - name: Build and push (main)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml
       - name: Build and push (dev)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
@@ -74,7 +74,7 @@ jobs:
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -82,7 +82,7 @@ jobs:
           push: true
           files: build.docker-compose.yml
       - name: Build and push (main) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -90,7 +90,7 @@ jobs:
           push: true
           files: docker-compose.yml
       - name: Build and push (dev) (latest)
-        uses: docker/bake-action@v2.2.0
+        uses: docker/bake-action@v2.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -126,12 +126,12 @@ jobs:
           DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
           python_version=$(docker compose run hato-bot sh -c "${DOCKER_CMD}")
           echo "Python version:" "${python_version}"
-          echo "::set-output name=python_version::${python_version}"
+          echo "python_version=${python_version}" >> "${GITHUB_OUTPUT}"
       - name: Update versions
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      - uses: dev-hato/actions-diff-pr-management@v1.0.5
+      - uses: dev-hato/actions-diff-pr-management@v1.0.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
@@ -173,7 +173,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@v0.0.19
+      - uses: dev-hato/actions-update-dockle@v0.0.23
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: dev-hato/hato-bot
