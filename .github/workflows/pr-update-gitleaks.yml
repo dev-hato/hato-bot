@@ -29,7 +29,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm ci --prefer-offline
-      - uses: dev-hato/actions-update-gitleaks@v0.0.19
+      - uses: dev-hato/actions-update-gitleaks@v0.0.21
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: dev-hato/hato-bot
