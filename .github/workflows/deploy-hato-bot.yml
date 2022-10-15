@@ -131,7 +131,7 @@ jobs:
         run: |
           PYTHON_VERSION="${{steps.get_python_version.outputs.python_version}}"
           echo "${PYTHON_VERSION}" > .python-version
-      - uses: dev-hato/actions-diff-pr-management@v1.0.5
+      - uses: dev-hato/actions-diff-pr-management@v1.0.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
