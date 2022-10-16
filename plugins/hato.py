@@ -27,6 +27,7 @@ from library.jma_amedas import get_jma_amedas
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults
 from library.omikuji import draw as omikuji_draw
+from library.textlint import get_textlint_result
 from library.vocabularydb import (
     add_vocabulary,
     delete_vocabulary,
@@ -101,6 +102,21 @@ def earth_quake():
         msg = msg + generate_quake_info_for_slack(data, 3)
 
     return msg
+
+
+def textlint(text: str):
+    """文章を校正する"""
+
+    def ret(client: BaseClient):
+        msg = "完璧な文章っぽ!"
+        res = get_textlint_result(text)
+
+        if res:
+            msg = "文章の修正点をリストアップしたっぽ!\n" + res
+
+        client.post(msg)
+
+    return ret
 
 
 @action("text list")
