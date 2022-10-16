@@ -61,8 +61,15 @@ class WebMercatorPixelCoord:
 
     def to_geocoord(self) -> GeoCoord:
         lng = (360 * self.pixel_x) / (1 << self.zoom_level * 256) - 180
-        lat = math.asin(math.tanh(
-            math.pi * (1 - 2 * self.pixel_y / (1 << self.zoom_level * 256)))) * 180 / math.pi
+        lat = (
+            math.asin(
+                math.tanh(
+                    math.pi * (1 - 2 * self.pixel_y / (1 << self.zoom_level * 256))
+                )
+            )
+            * 180
+            / math.pi
+        )
         return GeoCoord(lat, lng)
 
     def belongs_tile(self) -> WebMercatorTilePixel:
@@ -202,7 +209,8 @@ class RasterTileServer:
 
         concated = np.concatenate(
             [
-                np.concatenate(imgs[i:i + tile_height_cnt], axis=0) for i in range(0, len(imgs), tile_height_cnt)
+                np.concatenate(imgs[i : i + tile_height_cnt], axis=0)
+                for i in range(0, len(imgs), tile_height_cnt)
             ],
             axis=1,
         )

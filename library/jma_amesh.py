@@ -3,15 +3,6 @@
 """
 jma_amesh
 """
-from PIL import Image
-from library.hatomap import (
-    GeoCoord,
-    HatoMap,
-    LineTrace,
-    MapBox,
-    MarkerTrace,
-    RasterLayer,
-)
 import datetime
 import json
 import math
@@ -22,6 +13,14 @@ import numpy as np
 import requests
 from PIL import Image, ImageEnhance
 
+from library.hatomap import (
+    GeoCoord,
+    HatoMap,
+    LineTrace,
+    MapBox,
+    MarkerTrace,
+    RasterLayer,
+)
 from slackbot_settings import VERSION
 
 
