@@ -27,6 +27,7 @@ from library.jma_amedas import get_jma_amedas
 from library.jma_amesh import jma_amesh
 from library.omikuji import OmikujiResult, OmikujiResults
 from library.omikuji import draw as omikuji_draw
+from library.textlint import get_textlint_result
 from library.vocabularydb import (
     add_vocabulary,
     delete_vocabulary,
@@ -35,7 +36,6 @@ from library.vocabularydb import (
     show_vocabulary,
 )
 
-from library.textlint import get_textlint_result
 logger = getLogger(__name__)
 
 
