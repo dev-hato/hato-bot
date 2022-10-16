@@ -20,12 +20,15 @@ COPY Pipfile Pipfile
 # * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
     pip install pipenv==2022.10.12 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
       pipenv install --system --skip-lock; \
     fi && \
+    npm install && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
