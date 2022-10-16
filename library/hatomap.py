@@ -218,14 +218,17 @@ class LineTrace:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
         if self.coords_two_dim_geo_coord is not None:
             coords = [
-                np.array([[g.lat, g.lng] for g in coords]) for coords in self.coords_two_dim_geo_coord
+                np.array([[g.lat, g.lng] for g in coords])
+                for coords in self.coords_two_dim_geo_coord
             ]
             px_coords = bbox.geocoords2pixel_list_ndarray(coords)
         elif self.coords_list_ndarray is not None:
             coords = self.coords_list_ndarray
             px_coords = bbox.geocoords2pixel_list_ndarray(coords)
         else:
-            raise TypeError("You should give coords_ndarray or coords_two_dim_geo_coord")
+            raise TypeError(
+                "You should give coords_ndarray or coords_two_dim_geo_coord"
+            )
 
         cv2.polylines(
             img,
@@ -251,7 +254,10 @@ class MarkerTrace:
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
 
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
-        if (self.coords_list_geo_cooord is not None and len(self.coords_list_geo_cooord) == 0) or (self.coords_ndarray is not None and len(self.coords_ndarray) == 0):
+        if (
+            self.coords_list_geo_cooord is not None
+            and len(self.coords_list_geo_cooord) == 0
+        ) or (self.coords_ndarray is not None and len(self.coords_ndarray) == 0):
             return img
         if self.coords_list_geo_cooord is not None:
             coords = np.array([[g.lat, g.lng] for g in self.coords_list_geo_cooord])

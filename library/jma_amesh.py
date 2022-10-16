@@ -140,13 +140,16 @@ def jma_amesh(
         ]
         + [
             LineTrace(
-                coords_list_ndarray=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
+                coords_list_ndarray=[get_circle(lat, lng, d * 1000)],
+                color=(100, 100, 100, 255),
             )
             for d in range(10, 60, 10)
         ]
         + [
             MarkerTrace(
-                coords_list_geo_cooord=[GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
+                coords_list_geo_cooord=[
+                    GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])
+                ],
                 size=14,
                 symbol="thunder",
                 fill_color=(0, 255, 255, 255),
