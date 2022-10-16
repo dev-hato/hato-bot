@@ -79,8 +79,8 @@ class TestAmesh(unittest.TestCase):
         ) as picture_file:
             image_content = picture_file.read()
             for image_url in [
-                re.compile(r'www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png'),
-                re.compile(r'tile\.openstreetmap\.org/.+\.png'),
+                re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                re.compile(r"tile\.openstreetmap\.org/.+\.png"),
             ]:
                 mocker.get(image_url, content=image_content)
 
