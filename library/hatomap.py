@@ -443,15 +443,13 @@ class HatoMap:
 
         return basemaps["open-street-map"]
 
-    def get_image(self, height: int = None, width: int = None) -> np.ndarray:
+    def get_image(self, height: int, width: int) -> np.ndarray:
         offset_top = 0
         if self.title is not None:
             offset_top = 16
 
-        if height is not None:
-            self.mapbox.height = height - offset_top
-        if width is not None:
-            self.mapbox.width = width
+        self.mapbox.height = height - offset_top
+        self.mapbox.width = width
         none_body_img_shape = (0, 0, 0)
         body_img = np.zeros(none_body_img_shape)
         layers = [self.basemap_layer]
@@ -468,7 +466,7 @@ class HatoMap:
                     1 - layer_img[..., 3:] / 255
                 ) + layer_img[..., :3] * (layer_img[..., 3:] / 255)
 
-        img = np.zeros((height or 0, width or 0, 3), np.uint8)
+        img = np.zeros((height, width, 3), np.uint8)
         img.fill(255)
         img[offset_top:, :] = body_img
         img = cv2_putText_3(
