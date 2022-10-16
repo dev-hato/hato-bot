@@ -234,7 +234,7 @@ class LineTrace(Layer):
             coords = self.coords_list_ndarray
             px_coords = bbox.geocoords2pixel_list_ndarray(coords)
         else:
-            raise TypeError(
+            raise ValueError(
                 "You should give coords_ndarray or coords_two_dim_geo_coord"
             )
 
@@ -274,7 +274,7 @@ class MarkerTrace(Layer):
             coords = self.coords_ndarray
             px_coords = bbox.geocoords2pixel_ndarray(coords)
         else:
-            raise TypeError("You should give coords_ndarray or coords_list_geo_cooord")
+            raise ValueError("You should give coords_ndarray or coords_list_geo_cooord")
 
         symbols = {
             "thunder": np.array(
