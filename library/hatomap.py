@@ -362,6 +362,8 @@ class RasterLayer(Layer):
             url = random.choice(self.url_list)
         elif self.url is not None:
             url = self.url
+        else:
+            raise ValueError("You should give url_list or url")
         layer_img = RasterTileServer(url).request(bbox)
 
         if self.brightness != 1.0 or self.chroma != 1.0:
