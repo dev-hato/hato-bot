@@ -13,7 +13,7 @@ def get_textlint_result(text: str) -> Optional[str]:
     """textlintを使って文章校正を行う"""
     # pylint: disable=W1510
     process = subprocess.run(
-        ["node_modules/.bin/textlint", "--stdin"],
+        ["/usr/src/app/node_modules/.bin/textlint", "--stdin"],
         input=text,
         encoding="UTF-8",
         stdout=subprocess.PIPE,

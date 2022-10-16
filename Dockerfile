@@ -7,6 +7,8 @@ RUN apt-get update \
 
 FROM python:3.10.7-slim-bullseye
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG ENV
 ENV ENV="${ENV}"
 
