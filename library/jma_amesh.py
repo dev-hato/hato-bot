@@ -15,8 +15,6 @@ from typing import List, Optional, Tuple
 import requests
 from PIL import Image, ImageEnhance
 
-from slackbot_settings import VERSION
-
 
 @dataclass
 class WebMercatorTile:
@@ -100,7 +98,7 @@ def get_tile_image(
             Image.open(
                 BytesIO(
                     requests.get(
-                        url, headers={"user-agent": f"hato-bot/{VERSION}"}
+                        url
                     ).content
                 )
             )
