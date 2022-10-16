@@ -5,7 +5,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.10.5-slim-bullseye
+FROM python:3.10.7-slim-bullseye
+
+ARG ENV
+ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
@@ -17,8 +20,12 @@ COPY Pipfile Pipfile
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git libopencv-dev curl && \
-    pip install pipenv==2022.7.24 --no-cache-dir && \
-    pipenv install --system --skip-lock && \
+    pip install pipenv==2022.10.12 --no-cache-dir && \
+    if [ "${ENV}" = 'dev' ]; then \
+      pipenv install --system --skip-lock --dev; \
+    else \
+      pipenv install --system --skip-lock; \
+    fi && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \

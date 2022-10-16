@@ -3,6 +3,7 @@
 """
 
 import psycopg2
+
 from library.database import Database
 
 

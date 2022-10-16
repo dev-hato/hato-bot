@@ -1,24 +1,25 @@
 ---
 name: pr-format
-
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   push:
     branches:
       - master
-
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
@@ -64,16 +65,18 @@ jobs:
         run: pipenv --version
       - name: Install dependencies
         run: pipenv install --dev
-      # autopep8でformatする
+      # formatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
         id: format
         run: |
           pipenv run autopep8 --exit-code --in-place --recursive .
+          pipenv run black --config .python-black .
+          pipenv run isort --sp .isort.cfg .
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v0.0.11
+      - uses: dev-hato/actions-diff-pr-management@v1.0.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
           pr-title-prefix: formatが間違ってたので直してあげたよ！
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/hato-bot

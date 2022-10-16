@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Set org name
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -25,7 +25,7 @@ jobs:
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         id: get_pull_requests
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -42,7 +42,7 @@ jobs:
                                                 pulls_list_params)
             return pulls.length
       - name: Create PullRequest
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         if: ${{ steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
