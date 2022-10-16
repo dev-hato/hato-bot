@@ -11,7 +11,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 import requests
-from PIL import Image, ImageEnhance
+from PIL import Image
 
 from library.hatomap import (
     GeoCoord,
@@ -21,7 +21,6 @@ from library.hatomap import (
     MarkerTrace,
     RasterLayer,
 )
-from slackbot_settings import VERSION
 
 
 @dataclass

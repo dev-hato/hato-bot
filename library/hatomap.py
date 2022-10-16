@@ -187,7 +187,7 @@ class RasterTileServer:
             np.asarray(bytearray(requests.get(url).content), dtype=np.uint8), -1
         )
 
-    def request(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
+    def request(self, bbox: WebMercatorPixelBBox = None) -> Optional[np.ndarray]:
         if bbox is None:
             return None
 
@@ -257,7 +257,7 @@ class MarkerTrace:
     coords: Union["np.ndarray", List[GeoCoord]]
     symbol: str = "circle"
     size: int = 4
-    border_color: Tuple[int, int, int] = (255, 0, 255, 255)
+    border_color: Tuple[int, int, int, int] = (255, 0, 255, 255)
     border_width: int = 1
     fill_color: Optional[Tuple[int, int, int, int]] = None
 
@@ -460,7 +460,7 @@ class HatoMap:
             self.mapbox.height = height - offset_top
         if width is not None:
             self.mapbox.width = width
-        body_img = None
+        body_img: Optional[np.ndarray] = None
 
         for layer in [self.basemap_layer] + self.layers:
             layer_img = layer.get_image(self.mapbox.pixelbbox())
