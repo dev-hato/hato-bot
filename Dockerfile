@@ -15,6 +15,8 @@ ENV ENV="${ENV}"
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
