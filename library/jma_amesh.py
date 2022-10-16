@@ -140,14 +140,14 @@ def jma_amesh(
         ]
         + [
             LineTrace(
-                coords_list_ndarray=[get_circle(lat, lng, d * 1000)],
+                coords=[get_circle(lat, lng, d * 1000)],
                 color=(100, 100, 100, 255),
             )
             for d in range(10, 60, 10)
         ]
         + [
             MarkerTrace(
-                coords_list_geo_cooord=[
+                coords=[
                     GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])
                 ],
                 size=14,

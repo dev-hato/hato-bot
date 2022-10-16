@@ -227,27 +227,15 @@ class Layer(metaclass=ABCMeta):
 
 @dataclass
 class LineTrace(Layer):
-    coords_list_ndarray: Optional[List["np.ndarray"]] = None
-    coords_two_dim_geo_coord: Optional[List[List[GeoCoord]]] = None
+    coords: List["np.ndarray"]
     width: int = 1
     color: Tuple[int, int, int, int] = (255, 0, 255, 255)
 
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
-        if self.coords_two_dim_geo_coord is not None:
-            coords = [
-                np.array([[g.lat, g.lng] for g in coords])
-                for coords in self.coords_two_dim_geo_coord
-            ]
-            px_coords = bbox.geocoords2pixel_list_ndarray(coords)
-        elif self.coords_list_ndarray is not None:
-            coords = self.coords_list_ndarray
-            px_coords = bbox.geocoords2pixel_list_ndarray(coords)
-        else:
-            raise ValueError(
-                "You should give coords_ndarray or coords_two_dim_geo_coord"
-            )
+        coords = self.coords
 
+        px_coords = bbox.geocoords2pixel_list_ndarray(coords)
         cv2.polylines(
             img,
             px_coords,
@@ -261,8 +249,7 @@ class LineTrace(Layer):
 
 @dataclass
 class MarkerTrace(Layer):
-    coords_ndarray: Optional[np.ndarray] = None
-    coords_list_geo_cooord: Optional[List[GeoCoord]] = None
+    coords: List[GeoCoord]
     symbol: str = "circle"
     size: int = 4
     border_color: Tuple[int, int, int, int] = (255, 0, 255, 255)
@@ -272,19 +259,11 @@ class MarkerTrace(Layer):
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
 
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
-        if (
-            self.coords_list_geo_cooord is not None
-            and len(self.coords_list_geo_cooord) == 0
-        ) or (self.coords_ndarray is not None and len(self.coords_ndarray) == 0):
+        if len(self.coords) == 0:
             return img
-        if self.coords_list_geo_cooord is not None:
-            coords = np.array([[g.lat, g.lng] for g in self.coords_list_geo_cooord])
-            px_coords = bbox.geocoords2pixel_ndarray(coords)
-        elif self.coords_ndarray is not None:
-            coords = self.coords_ndarray
-            px_coords = bbox.geocoords2pixel_ndarray(coords)
         else:
-            raise ValueError("You should give coords_ndarray or coords_list_geo_cooord")
+            coords = np.array([[g.lat, g.lng] for g in self.coords])
+            px_coords = bbox.geocoords2pixel_ndarray(coords)
 
         symbols = {
             "thunder": np.array(
