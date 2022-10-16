@@ -377,7 +377,7 @@ def cv2_putText_3(img, text, org, fontFace, fontScale, color):
     imgPIL = Image.fromarray(img)
     draw = ImageDraw.Draw(imgPIL)
     fontPIL = ImageFont.truetype(font=fontFace, size=fontScale)
-    w, h = draw.textsize(text, font=fontPIL)
+    _, _, w, h = draw.textbbox((0, 0), text, font=fontPIL)
     draw.text(xy=(x, y - h), text=text, fill=color, font=fontPIL)
     return np.array(imgPIL, dtype=np.uint8)
 
