@@ -94,15 +94,7 @@ def get_tile_image(
         )
     res = []
     for url in urls:
-        res.append(
-            Image.open(
-                BytesIO(
-                    requests.get(
-                        url
-                    ).content
-                )
-            )
-        )
+        res.append(Image.open(BytesIO(requests.get(url).content)))
     dst_image = Image.new(
         "RGBA", (256 * (2 * around_tiles + 1), 256 * (2 * around_tiles + 1))
     )
