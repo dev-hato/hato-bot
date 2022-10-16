@@ -263,7 +263,8 @@ class MarkerTrace(Layer):
             return img
         else:
             coords = np.array([[g.lat, g.lng] for g in self.coords])
-            px_coords = bbox.geocoords2pixel_ndarray(coords)
+
+        px_coords = bbox.geocoords2pixel_ndarray(coords)
 
         symbols = {
             "thunder": np.array(
