@@ -88,7 +88,7 @@ def get_jma_image_server(timestamp: str) -> str:
     return f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png"  # noqa: E501
 
 
-def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
+def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
     """気象庁落雷JSONを取得する"""
     liden_json_url = f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson"  # noqa: E501
     response = requests.get(liden_json_url)
@@ -102,7 +102,7 @@ def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
             )
             for e in json.loads(response.text)["features"]
         ]
-    return None
+    return [(0.0, 0.0, 0)]
 
 
 def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
@@ -140,13 +140,13 @@ def jma_amesh(
         ]
         + [
             LineTrace(
-                coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
+                coords_list_ndarray=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
             )
             for d in range(10, 60, 10)
         ]
         + [
             MarkerTrace(
-                [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
+                coords_list_geo_cooord=[GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
                 size=14,
                 symbol="thunder",
                 fill_color=(0, 255, 255, 255),
