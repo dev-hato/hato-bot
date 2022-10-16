@@ -7,25 +7,33 @@ RUN apt-get update \
 
 FROM python:3.10.7-slim-bullseye
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG ENV
 ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
+# * nodejs: textlintを使用する際に必要
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git libopencv-dev curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
     pip install pipenv==2022.10.12 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
       pipenv install --system --skip-lock; \
     fi && \
+    npm install && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
     apt-get autoremove -y && \
@@ -40,6 +48,7 @@ COPY *.py ./
 COPY library library
 COPY plugins plugins
 COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
+COPY .textlintrc .textlintrc
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
