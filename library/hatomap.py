@@ -453,7 +453,7 @@ class HatoMap:
         if width is not None:
             self.mapbox.width = width
         none_body_img_shape = (0, 0, 0)
-        body_img: np.ndarray = np.zeros(none_body_img_shape)
+        body_img = np.zeros(none_body_img_shape)
         layers = [self.basemap_layer]
 
         if self.layers is not None:
