@@ -360,7 +360,7 @@ class RasterLayer(Layer):
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         if self.url_list is not None:
             url = random.choice(self.url_list)
-        else:
+        elif self.url is not None:
             url = self.url
         layer_img = RasterTileServer(url).request(bbox)
 
@@ -460,7 +460,7 @@ class HatoMap:
             self.mapbox.height = height - offset_top
         if width is not None:
             self.mapbox.width = width
-        body_img: Optional[np.ndarray] = None
+        body_img: np.ndarray = np.zeros()
         layers = [self.basemap_layer]
 
         if self.layers is not None:
@@ -468,11 +468,10 @@ class HatoMap:
 
         for layer in layers:
             layer_img = layer.get_image(self.mapbox.pixelbbox())
-            if body_img is None:
+            if body_img == np.zeros():
                 body_img = layer_img[..., :3]
             else:
-                body_img_: np.ndarray = body_img
-                body_img = body_img_[..., :3] * (
+                body_img = body_img[..., :3] * (
                     1 - layer_img[..., 3:] / 255
                 ) + layer_img[..., :3] * (layer_img[..., 3:] / 255)
 
