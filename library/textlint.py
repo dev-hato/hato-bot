@@ -22,3 +22,5 @@ def get_textlint_result(text: str) -> Optional[str]:
         res = fd.strip()
         if res:
             return "```" + res + "```"
+
+    return None
