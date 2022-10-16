@@ -35,6 +35,7 @@ from library.vocabularydb import (
     show_vocabulary,
 )
 
+from library.textlint import get_textlint_result
 logger = getLogger(__name__)
 
 
@@ -101,6 +102,21 @@ def earth_quake():
         msg = msg + generate_quake_info_for_slack(data, 3)
 
     return msg
+
+
+def textlint(text: str):
+    """文章を校正する"""
+
+    def ret(client: BaseClient):
+        msg = "完璧な文章っぽ!"
+        res = get_textlint_result(text)
+
+        if res:
+            msg = "文章の修正点をリストアップしたっぽ!\n" + res
+
+        client.post(msg)
+
+    return ret
 
 
 @action("text list")

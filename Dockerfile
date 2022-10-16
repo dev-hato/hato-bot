@@ -17,6 +17,7 @@ COPY Pipfile Pipfile
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
+# * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.10.12 --no-cache-dir && \
@@ -39,6 +40,7 @@ COPY *.py ./
 COPY library library
 COPY plugins plugins
 COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
+COPY .textlintrc .textlintrc
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
