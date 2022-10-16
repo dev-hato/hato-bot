@@ -147,7 +147,7 @@ def jma_amesh(
         ]
         + [
             MarkerTrace(
-                coords=[
+                [
                     GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])
                 ],
                 size=14,
