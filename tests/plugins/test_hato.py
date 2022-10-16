@@ -8,16 +8,18 @@ import unittest
 from typing import List
 
 import requests_mock
+
 import slackbot_settings as conf
 from plugins.hato import (
     altitude,
+    amedas,
     amesh,
     omikuji,
     omikuji_results,
     split_command,
     yoshiyoshi,
 )
-from tests.library.test_geo import set_mock
+from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
 
 
@@ -64,32 +66,42 @@ class TestAmesh(unittest.TestCase):
         self,
         mocker: requests_mock.Mocker,
         place: str,
-        image_content=None,
-        json_content=None,
-        liden_json_content=None
     ):
         """
         ameshを取得できるかテスト
         :param mocker requestsのMock
         :param place: コマンドの引数
-        :param coordinate: [緯度, 経度]
-        :param content: req.contentで返すデータ
         """
         client1 = TestClient()
 
-        jma_image_url = re.compile(r'www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png')
-        osm_image_url = re.compile(r'tile\.openstreetmap\.org/.+\.png')
-        jma_json_url = re.compile(
-            r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json'
-        )
-        liden_json_url = re.compile(
-            r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson'
-        )
+        with open(
+            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
+        ) as picture_file:
+            image_content = picture_file.read()
+            for image_url in [
+                re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                re.compile(r"tile\.openstreetmap\.org/.+\.png"),
+            ]:
+                mocker.get(image_url, content=image_content)
 
-        mocker.get(jma_image_url, content=image_content)
-        mocker.get(osm_image_url, content=image_content)
-        mocker.get(jma_json_url, content=json_content)
-        mocker.get(liden_json_url, content=liden_json_content)
+        with open(
+            os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
+            mode="rb",
+        ) as json_file:
+            jma_json_url = re.compile(
+                r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json'
+            )
+            mocker.get(jma_json_url, content=json_file.read())
+
+        with open(
+                os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
+                mode="rb",
+        ) as liden_file:
+            jma_liden_url = re.compile(
+                r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson'
+            )
+            mocker.get(jma_liden_url, content=liden_file.read())
+
         actual = amesh(client1, place=place)
         self.assertEqual(None, actual)
         return client1
@@ -101,25 +113,9 @@ class TestAmesh(unittest.TestCase):
         :param place: コマンドの引数
         :param msg: Slackに投稿されて欲しいメッセージ
         """
-        with open(
-            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
-        ) as picture_file:
-            with open(
-                os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
-                mode="rb",
-            ) as json_file:
-                with open(
-                    os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
-                    mode="rb",
-                ) as liden_json_file:
-                    client1 = self.get_amesh_test(
-                        mocker,
-                        place,
-                        image_content=picture_file.read(),
-                        json_content=json_file.read(),
-                        liden_json_content=liden_json_file.read(),
-                    )
-                    self.assertEqual(client1.get_filename(), "amesh.png")
+        client1 = self.get_amesh_test(mocker, place)
+        self.assertEqual(client1.get_post_message(), msg)
+        self.assertEqual(client1.get_filename(), "amesh.png")
 
     def test_amesh_with_no_params(self):
         """
@@ -134,7 +130,7 @@ class TestAmesh(unittest.TestCase):
                     }
                 ]
             }
-            set_mock("東京", mocker, False, content)
+            set_yahoo_mock("東京", mocker, False, content)
             self.amesh_upload_png_test(mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！")
 
     def test_amesh_with_params(self):
@@ -144,6 +140,90 @@ class TestAmesh(unittest.TestCase):
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
             self.amesh_upload_png_test(mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
+
+
+class TestAmedas(unittest.TestCase):
+    """
+    amedasが正しく動作しているかテストする
+    """
+
+    def get_amedas_test(self, mocker: requests_mock.Mocker, place: str, msg: str):
+        """
+        amedasを取得できるかテスト
+        :param mocker requestsのMock
+        :param place: コマンドの引数
+        :param msg: Slackに投稿されて欲しいメッセージ
+        """
+        for mock_data in [
+            {
+                "file_name": "test_amedas_latest_time.txt",
+                "url": "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt",
+            },
+            {
+                "file_name": "test_amedastable.json",
+                "url": "https://www.jma.go.jp/bosai/amedas/const/amedastable.json",
+            },
+            {
+                "file_name": "test_amedas_map.json",
+                "url": "https://www.jma.go.jp/bosai/amedas/data/map/20220924134000.json",
+            },
+        ]:
+            with open(
+                os.path.join(os.path.dirname(__file__), mock_data["file_name"]),
+                mode="rb",
+            ) as mock_file:
+                mocker.get(mock_data["url"], content=mock_file.read())
+
+        client1 = TestClient()
+        actual = amedas(client1, place=place)
+        self.assertEqual(None, actual)
+        self.assertEqual(client1.get_post_message(), msg)
+
+    def test_amedas_with_no_params(self):
+        """
+        引数なしでamedasコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            content = {
+                "Feature": [
+                    {
+                        "Name": "東京都世田谷区",
+                        "Geometry": {"Coordinates": "139.65324950,35.64657460"},
+                    }
+                ]
+            }
+            set_yahoo_mock("東京", mocker, False, content)
+            self.get_amedas_test(
+                mocker,
+                "",
+                os.linesep.join(
+                    [
+                        "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                        "```",
+                        "降水量 (前1時間): 0.5mm",
+                        "```",
+                    ]
+                ),
+            )
+
+    def test_amedas_with_params(self):
+        """
+        引数ありでamedasコマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            coordinate = ["35.64657460", "139.65324950"]
+            self.get_amedas_test(
+                mocker,
+                " ".join(coordinate),
+                os.linesep.join(
+                    [
+                        "2022/09/24 13:40:00現在の世田谷の気象状況をお知らせするっぽ！",
+                        "```",
+                        "降水量 (前1時間): 0.5mm",
+                        "```",
+                    ]
+                ),
+            )
 
 
 class TestAltitude(unittest.TestCase):
@@ -195,7 +275,7 @@ class TestAltitude(unittest.TestCase):
                     }
                 ]
             }
-            set_mock("東京", mocker, False, geo_content)
+            set_yahoo_mock("東京", mocker, False, geo_content)
             altitude_setagaya = 35.4
             altitude_content = {
                 "Feature": [{"Property": {"Altitude": altitude_setagaya}}]

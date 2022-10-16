@@ -3,9 +3,10 @@ from __future__ import annotations
 import math
 import random
 import string
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from multiprocessing import Pool
-from typing import Any, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -61,8 +62,15 @@ class WebMercatorPixelCoord:
 
     def to_geocoord(self) -> GeoCoord:
         lng = (360 * self.pixel_x) / (1 << self.zoom_level * 256) - 180
-        lat = math.asin(math.tanh(
-            math.pi * (1 - 2 * self.pixel_y / (1 << self.zoom_level * 256)))) * 180 / math.pi
+        lat = (
+            math.asin(
+                math.tanh(
+                    math.pi * (1 - 2 * self.pixel_y / (1 << self.zoom_level * 256))
+                )
+            )
+            * 180
+            / math.pi
+        )
         return GeoCoord(lat, lng)
 
     def belongs_tile(self) -> WebMercatorTilePixel:
@@ -108,7 +116,7 @@ class WebMercatorPixelBBox:
             int(round(wmp_coord.pixel_y - self.pixel_y_north)),
         )
 
-    def _ndarray_geocoords2pixel(self, geocoords: np.ndarray) -> np.ndarray:
+    def geocoords2pixel_ndarray(self, geocoords: np.ndarray) -> np.ndarray:
         return (
             np.array(
                 [
@@ -130,24 +138,11 @@ class WebMercatorPixelBBox:
             .T
         )
 
-    def geocoords2pixel(
+    def geocoords2pixel_list_ndarray(
         self,
-        geocoords: Union[
-            np.ndarray, List[np.ndarray], List[GeoCoord], List[List[GeoCoord]]
-        ],
-    ) -> Any:
-
-        if type(geocoords) is np.ndarray:
-            return self._ndarray_geocoords2pixel(geocoords)
-        if type(geocoords) is not list:
-            return None
-        if type(geocoords[0]) is np.ndarray:
-            return [self._ndarray_geocoords2pixel(g) for g in geocoords]
-
-        if type(geocoords[0]) is GeoCoord:
-            return [self.geocoord2pixel(g) for g in geocoords]
-        if type(geocoords[0]) is list and type(geocoords[0][0]) is GeoCoord:
-            return [[self.geocoord2pixel(g) for g in gg] for gg in geocoords]
+        geocoords: List[np.ndarray],
+    ) -> List[np.ndarray]:
+        return [self.geocoords2pixel_ndarray(g) for g in geocoords]
 
 
 @dataclass
@@ -180,10 +175,7 @@ class RasterTileServer:
             np.asarray(bytearray(requests.get(url).content), dtype=np.uint8), -1
         )
 
-    def request(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
-        if bbox is None:
-            return None
-
+    def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
 
         request_urls = []
@@ -202,7 +194,8 @@ class RasterTileServer:
 
         concated = np.concatenate(
             [
-                np.concatenate(imgs[i:i + tile_height_cnt], axis=0) for i in range(0, len(imgs), tile_height_cnt)
+                np.concatenate(imgs[i : i + tile_height_cnt], axis=0)
+                for i in range(0, len(imgs), tile_height_cnt)
             ],
             axis=1,
         )
@@ -216,23 +209,23 @@ class RasterTileServer:
 
 
 @dataclass
-class LineTrace:
-    coords: Union[List["np.ndarray"], List[List[GeoCoord]]]
+class Layer(metaclass=ABCMeta):
+    @abstractmethod
+    def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
+        pass
+
+
+@dataclass
+class LineTrace(Layer):
+    coords: List["np.ndarray"]
     width: int = 1
     color: Tuple[int, int, int, int] = (255, 0, 255, 255)
 
-    def get_image(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
+    def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
-        if type(self.coords[0][0]) is GeoCoord:
-            coords = [
-                np.array([[g.lat, g.lng] for g in coords]) for coords in self.coords
-            ]
-        elif type(self.coords[0][0][0]) is np.float64:
-            coords = self.coords
-        else:
-            raise TypeError("coords should be List[np.ndarray] or List[List[GeoCoord]]")
+        coords = self.coords
 
-        px_coords = bbox.geocoords2pixel(coords)
+        px_coords = bbox.geocoords2pixel_list_ndarray(coords)
         cv2.polylines(
             img,
             px_coords,
@@ -245,27 +238,23 @@ class LineTrace:
 
 
 @dataclass
-class MarkerTrace:
-    coords: Union["np.ndarray", List[GeoCoord]]
+class MarkerTrace(Layer):
+    coords: List[GeoCoord]
     symbol: str = "circle"
     size: int = 4
-    border_color: Tuple[int, int, int] = (255, 0, 255, 255)
+    border_color: Tuple[int, int, int, int] = (255, 0, 255, 255)
     border_width: int = 1
     fill_color: Optional[Tuple[int, int, int, int]] = None
 
-    def get_image(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
+    def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
 
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
         if len(self.coords) == 0:
             return img
-        if type(self.coords[0]) is GeoCoord:
-            coords = np.array([[g.lat, g.lng] for g in self.coords])
-        elif type(self.coords[0][0]) is np.float64:
-            coords = self.coords
         else:
-            raise TypeError("coords should be List[np.ndarray] or List[List[GeoCoord]]")
+            coords = np.array([[g.lat, g.lng] for g in self.coords])
 
-        px_coords = bbox.geocoords2pixel(coords)
+        px_coords = bbox.geocoords2pixel_ndarray(coords)
 
         symbols = {
             "thunder": np.array(
@@ -337,8 +326,9 @@ class MarkerTrace:
 
 
 @dataclass
-class RasterLayer:
-    url: Union[List[str], str]
+class RasterLayer(Layer):
+    url: Optional[str] = None
+    url_list: Optional[List[str]] = None
     opacity: float = 1.0
     brightness: float = 1.0
     chroma: float = 1.0
@@ -347,11 +337,13 @@ class RasterLayer:
         if not (0 <= self.opacity <= 1.0):
             raise ValueError("Opacity is out of range.")
 
-    def get_image(self, bbox: WebMercatorPixelBBox = None) -> np.ndarray:
-        if type(self.url) is list:
-            url = random.choice(self.url)
-        else:
+    def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
+        if self.url_list is not None:
+            url = random.choice(self.url_list)
+        elif self.url is not None:
             url = self.url
+        else:
+            raise ValueError("You should give url_list or url")
         layer_img = RasterTileServer(url).request(bbox)
 
         if self.brightness != 1.0 or self.chroma != 1.0:
@@ -392,13 +384,11 @@ class HatoMap:
 
     mapbox: MapBox = MapBox()
     basemap: str = "open-street-map"
-    extra_basemap_server: str = None
-    layers: List[Union[RasterLayer, LineTrace]] = None
-    title: str = None
+    extra_basemap_server: Optional[str] = None
+    layers: Optional[List[Layer]] = None
+    title: Optional[str] = None
 
-    def update_layout(
-        self, mapbox: MapBox = None, layers: List[Union[RasterLayer, LineTrace]] = None
-    ) -> None:
+    def update_layout(self, mapbox: MapBox = None, layers: List[Layer] = None) -> None:
         if mapbox is not None:
             self.mapbox = mapbox
         if layers is not None:
@@ -408,14 +398,14 @@ class HatoMap:
     def basemap_layer(self):
         basemaps = {
             "open-street-map": RasterLayer(
-                [
+                url_list=[
                     "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
                     "https://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
                     "https://c.tile.openstreetmap.org/${z}/${x}/${y}.png",
                 ]
             ),
             "open-street-map-dim": RasterLayer(
-                [
+                url_list=[
                     "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
                     "https://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
                     "https://c.tile.openstreetmap.org/${z}/${x}/${y}.png",
@@ -424,18 +414,18 @@ class HatoMap:
                 chroma=0.6,
             ),
             "carto-light": RasterLayer(
-                [
+                url_list=[
                     "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/${z}/${x}/${y}.png",
                     "https://cartodb-basemaps-c.global.ssl.fastly.net/light_all/${z}/${x}/${y}.png",
                 ]
             ),
             "carto-dark": RasterLayer(
-                [
+                url_list=[
                     "https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/${z}/${x}/${y}.png",
                     "https://cartodb-basemaps-d.global.ssl.fastly.net/dark_all/${z}/${x}/${y}.png",
                 ]
             ),
-            "extra": RasterLayer([self.extra_basemap_server]),
+            "extra": RasterLayer(url_list=[self.extra_basemap_server]),
         }
 
         if self.basemap in basemaps.keys():
@@ -443,20 +433,23 @@ class HatoMap:
 
         return basemaps["open-street-map"]
 
-    def get_image(self, height: int = None, width: int = None) -> np.ndarray:
+    def get_image(self, height: int, width: int) -> np.ndarray:
         offset_top = 0
         if self.title is not None:
             offset_top = 16
 
-        if height is not None:
-            self.mapbox.height = height - offset_top
-        if width is not None:
-            self.mapbox.width = width
-        body_img = None
+        self.mapbox.height = height - offset_top
+        self.mapbox.width = width
+        none_body_img_shape = (0, 0, 0)
+        body_img = np.zeros(none_body_img_shape)
+        layers = [self.basemap_layer]
 
-        for layer in [self.basemap_layer] + self.layers:
+        if self.layers is not None:
+            layers += self.layers
+
+        for layer in layers:
             layer_img = layer.get_image(self.mapbox.pixelbbox())
-            if body_img is None:
+            if body_img.shape == none_body_img_shape:
                 body_img = layer_img[..., :3]
             else:
                 body_img = body_img[..., :3] * (

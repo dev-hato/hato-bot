@@ -3,15 +3,6 @@
 """
 jma_amesh
 """
-from PIL import Image
-from library.hatomap import (
-    GeoCoord,
-    HatoMap,
-    LineTrace,
-    MapBox,
-    MarkerTrace,
-    RasterLayer,
-)
 import datetime
 import json
 import math
@@ -20,6 +11,25 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 import requests
+from PIL import Image
+
+from library.hatomap import (
+    GeoCoord,
+    HatoMap,
+    LineTrace,
+    MapBox,
+    MarkerTrace,
+    RasterLayer,
+)
+
+
+@dataclass
+class WebMercatorTile:
+    """Webメルカトル座標上のタイル"""
+
+    tile_x: int = 0
+    tile_y: int = 0
+    zoom_level: int = 10
 
 
 @dataclass
@@ -78,7 +88,7 @@ def get_jma_image_server(timestamp: str) -> str:
     return f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png"  # noqa: E501
 
 
-def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
+def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
     """気象庁落雷JSONを取得する"""
     liden_json_url = f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson"  # noqa: E501
     response = requests.get(liden_json_url)
@@ -92,7 +102,7 @@ def get_liden(timestamp: str) -> Optional[List[Tuple[float, float, int]]]:
             )
             for e in json.loads(response.text)["features"]
         ]
-    return None
+    return [(0.0, 0.0, 0)]
 
 
 def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
@@ -136,7 +146,9 @@ def jma_amesh(
         ]
         + [
             MarkerTrace(
-                [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
+                [
+                    GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])
+                ],
                 size=14,
                 symbol="thunder",
                 fill_color=(0, 255, 255, 255),
