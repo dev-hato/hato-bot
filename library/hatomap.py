@@ -3,9 +3,10 @@ from __future__ import annotations
 import math
 import random
 import string
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from multiprocessing import Pool
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -174,7 +175,7 @@ class RasterTileServer:
             np.asarray(bytearray(requests.get(url).content), dtype=np.uint8), -1
         )
 
-    def request(self, bbox: WebMercatorPixelBBox) -> Optional[np.ndarray]:
+    def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
 
         request_urls = []
@@ -208,9 +209,16 @@ class RasterTileServer:
 
 
 @dataclass
-class LineTrace:
-    coords_list_ndarray: List["np.ndarray"]
-    coords_two_dim_geo_coord: List[List[GeoCoord]]
+class Layer(metaclass=ABCMeta):
+    @abstractmethod
+    def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
+        pass
+
+
+@dataclass
+class LineTrace(Layer):
+    coords_list_ndarray: Optional[List["np.ndarray"]] = None
+    coords_two_dim_geo_coord: Optional[List[List[GeoCoord]]] = None
     width: int = 1
     color: Tuple[int, int, int, int] = (255, 0, 255, 255)
 
@@ -242,9 +250,9 @@ class LineTrace:
 
 
 @dataclass
-class MarkerTrace:
-    coords_ndarray: np.ndarray
-    coords_list_geo_cooord: List[GeoCoord]
+class MarkerTrace(Layer):
+    coords_ndarray: Optional[np.ndarray] = None
+    coords_list_geo_cooord: Optional[List[GeoCoord]] = None
     symbol: str = "circle"
     size: int = 4
     border_color: Tuple[int, int, int, int] = (255, 0, 255, 255)
@@ -338,9 +346,9 @@ class MarkerTrace:
 
 
 @dataclass
-class RasterLayer:
-    url: str
-    url_list: List[str]
+class RasterLayer(Layer):
+    url: Optional[str] = None
+    url_list: Optional[List[str]] = None
     opacity: float = 1.0
     brightness: float = 1.0
     chroma: float = 1.0
@@ -395,11 +403,11 @@ class HatoMap:
     mapbox: MapBox = MapBox()
     basemap: str = "open-street-map"
     extra_basemap_server: Optional[str] = None
-    layers: Optional[List[Union[RasterLayer, LineTrace, MarkerTrace]]] = None
+    layers: Optional[List[Layer]] = None
     title: Optional[str] = None
 
     def update_layout(
-        self, mapbox: MapBox = None, layers: List[Union[RasterLayer, LineTrace]] = None
+        self, mapbox: MapBox = None, layers: List[Layer] = None
     ) -> None:
         if mapbox is not None:
             self.mapbox = mapbox
@@ -455,13 +463,17 @@ class HatoMap:
         if width is not None:
             self.mapbox.width = width
         body_img: Optional[np.ndarray] = None
+        layers = [self.basemap_layer]
 
-        for layer in [self.basemap_layer] + self.layers:
+        if self.layers is not None:
+            layers += self.layers
+
+        for layer in layers:
             layer_img = layer.get_image(self.mapbox.pixelbbox())
             if body_img is None:
                 body_img = layer_img[..., :3]
             else:
-                body_img_: np.array = body_img
+                body_img_: np.ndarray = body_img
                 body_img = body_img_[..., :3] * (
                     1 - layer_img[..., 3:] / 255
                 ) + layer_img[..., :3] * (layer_img[..., 3:] / 255)
