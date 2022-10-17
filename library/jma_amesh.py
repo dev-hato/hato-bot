@@ -140,8 +140,7 @@ def jma_amesh(
         ]
         + [
             LineTrace(
-                coords=[get_circle(lat, lng, d * 1000)],
-                color=(100, 100, 100, 255),
+                coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
             )
             for d in range(10, 60, 10)
         ]
