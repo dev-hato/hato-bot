@@ -74,7 +74,7 @@ jobs:
           pipenv run black --config .python-black .
           pipenv run isort --sp .isort.cfg .
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v1.0.6
+      - uses: dev-hato/actions-diff-pr-management@v1.0.7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
