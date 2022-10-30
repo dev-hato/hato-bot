@@ -12,7 +12,7 @@ ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
-COPY Pipfile* ./
+COPY Pipfile Pipfile
 
 # 必要なパッケージ
 # * git: Pythonライブラリのインストールの際に必要
