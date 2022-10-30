@@ -21,9 +21,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git curl && \
     pip install pipenv==2022.10.25 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system --dev; \
+      pipenv install --system --skip-lock --dev; \
     else \
-      pipenv install --system; \
+      pipenv install --system --skip-lock; \
     fi && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git && \
