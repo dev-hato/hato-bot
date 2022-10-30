@@ -63,7 +63,10 @@ jobs:
           fi
       - name: pipenv version
         run: pipenv --version
-      - run: yq -i -I 4 -o json '._meta.requires.python_version="${{env.PYTHON_VERSION }}"' Pipfile.lock
+      - run: |
+          version=$(echo ${{env.PYTHON_VERSION }} | sed -e 's/\.[0-9]*$//g')
+          sed -e "s/python_version = .*/python_version = \"${version}\"/g" Pipfile
+          yq -i -I 4 -o json "._meta.requires.python_version=\"${version}\"" Pipfile.lock
       - name: Install dependencies
         run: pipenv install --dev
       # formatする
