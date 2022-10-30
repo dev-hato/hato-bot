@@ -63,6 +63,7 @@ jobs:
           fi
       - name: pipenv version
         run: pipenv --version
+      - run: yq -i -I 4 -o json '._meta.requires.python_version="${{env.PYTHON_VERSION }}"' Pipfile.lock
       - name: Install dependencies
         run: pipenv install --dev
       # formatする
