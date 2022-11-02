@@ -44,7 +44,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
-      - uses: dev-hato/actions-diff-pr-management@v1.0.7
+      - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -70,7 +70,7 @@ jobs:
           npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
           npm install --prefer-offline --location=global "npm@${npm_version}"
           npm install
-      - uses: dev-hato/actions-diff-pr-management@v1.0.7
+      - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
