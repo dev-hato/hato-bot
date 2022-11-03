@@ -35,7 +35,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/get_pull_requests.js`)
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/get_pull_requests.js`)
             return await script({github, context})
       - name: Create PullRequest
         uses: actions/github-script@v6.3.3
