@@ -98,6 +98,8 @@ jobs:
           push: true
           files: docker-compose.yml,dev.docker-compose.yml
       - name: Start docker
+        env:
+          DOCKER_CONTENT_TRUST: 1
         run: docker compose up -d --wait
       # Dockerコンテナに疎通できるかテストする
       - name: Test
