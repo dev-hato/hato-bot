@@ -15,7 +15,7 @@ WORKDIR /usr/src/app
 COPY Pipfile Pipfile
 
 # 必要なパッケージ
-# * git, gcc libc6-dev: Pythonライブラリのインストールの際に必要
+# * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev curl && \
