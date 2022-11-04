@@ -22,6 +22,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
+      REPOSITORY: ${{github:repository}}
     permissions:
       contents: read
       packages: write
@@ -49,7 +50,6 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build and push (build)
         uses: docker/bake-action@v2.3.0
         env:
@@ -113,6 +113,7 @@ jobs:
       pull-requests: write
     env:
       DOCKER_CONTENT_TRUST: 1
+      REPOSITORY: ${{github:repository}}
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
@@ -125,7 +126,6 @@ jobs:
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker compose pull
       - name: Get Python version
         id: get_python_version
@@ -160,6 +160,7 @@ jobs:
       - deploy_docker_image
     env:
       DOCKER_CONTENT_TRUST: 1
+      REPOSITORY: ${{github:repository}}
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Set .env
@@ -167,7 +168,6 @@ jobs:
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/install_dockle.sh"
       - run: docker compose pull
       - run: docker compose up -d
