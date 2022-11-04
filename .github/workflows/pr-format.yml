@@ -35,33 +35,7 @@ jobs:
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
-        run: |
-          file_name=Dockerfile
-          package_name=pipenv
-
-          if [ -f ${file_name} ]
-          then
-            PATTERN="${package_name}[^ ]+"
-            package_name_with_version=$(grep -oE "${PATTERN}" ${file_name})
-          else
-            package_name_with_version=${package_name}
-          fi
-
-          pip install ${package_name_with_version}
-
-          if [ -f ${file_name} ]
-          then
-            new_version="$(pip list --outdated | grep pipenv || true)"
-            new_version="$(echo -e "${new_version}" | awk '{print $3}')"
-            if [ -n "${new_version}" ]
-            then
-              PATTERN_BEFORE="${package_name}[^ ]+"
-              PATTERN_AFTER="${package_name}==${new_version}"
-              sed -i -E "s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g" ${file_name}
-              pip install "${package_name}==${new_version}"
-              exit 1
-            fi
-          fi
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
@@ -70,10 +44,7 @@ jobs:
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
         id: format
-        run: |
-          pipenv run autopep8 --exit-code --in-place --recursive .
-          pipenv run black --config .python-black .
-          pipenv run isort --sp .isort.cfg .
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
         continue-on-error: true
       - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
