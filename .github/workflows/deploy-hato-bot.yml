@@ -22,7 +22,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
-      REPOSITORY: ${{github:repository}}
+      REPOSITORY: ${{github.repository}}
     permissions:
       contents: read
       packages: write
@@ -113,7 +113,7 @@ jobs:
       pull-requests: write
     env:
       DOCKER_CONTENT_TRUST: 1
-      REPOSITORY: ${{github:repository}}
+      REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
@@ -160,7 +160,7 @@ jobs:
       - deploy_docker_image
     env:
       DOCKER_CONTENT_TRUST: 1
-      REPOSITORY: ${{github:repository}}
+      REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Set .env
