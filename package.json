@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "lint": "npm run lint:markdown && npm run lint:text && npm run lint:python && npm run lint:python-type && npm run lint:dockerfile && npm run lint:secret",
+    "lint": "npm run lint:markdown && npm run lint:text && npm run lint:sql && npm run lint:python && npm run lint:python-type && npm run lint:dockerfile && npm run lint:secret",
     "lint:markdown": "markdownlint -c .markdown-lint.yml -i node_modules .",
     "lint:text": "textlint -c .textlintrc $(find . -name '*.md' | grep -v node_modules)",
+    "lint:sql": "pipenv run sqlfluff lint --config .sqlfluff",
     "lint:python": "pipenv run pylint --rcfile .python-lint *.py",
     "lint:python-type": "pipenv run mypy --config-file .mypy.ini --install-types --non-interactive *.py",
     "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile",
