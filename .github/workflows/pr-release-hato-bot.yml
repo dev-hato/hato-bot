@@ -17,12 +17,7 @@ jobs:
           fetch-depth: 0
       - name: Get diff
         id: get_diff
-        run: |
-          result=$(git diff origin/develop origin/master)
-          echo "${result}"
-          result="${result//$'\n'/'%0A'}"
-          result="${result//$'\r'/'%0D'}"
-          echo "result=${result}" >> "${GITHUB_OUTPUT}"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/get_diff.sh"
       - name: Set org name
         uses: actions/github-script@v6.3.3
         id: set_org_name
@@ -35,60 +30,21 @@ jobs:
         uses: actions/github-script@v6.3.3
         if: ${{ steps.get_diff.outputs.result != '' }}
         id: get_pull_requests
+        env:
+          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const pulls_list_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "${{steps.set_org_name.outputs.result}}:develop",
-              base: "master",
-              state: "open"
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list,
-                                                pulls_list_params)
-            return pulls.length
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/get_pull_requests.js`)
+            return await script({github, context})
       - name: Create PullRequest
         uses: actions/github-script@v6.3.3
         if: ${{ steps.get_diff.outputs.result != ''
           && steps.get_pull_requests.outputs.result == 0 }}
+        env:
+          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const common_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pulls_create_params = {
-              head: "${{steps.set_org_name.outputs.result}}:develop",
-              base: "master",
-              title: "リリース",
-              body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
-              draft: true,
-              ...common_params
-            }
-            console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = await github.rest.pulls.create(
-                                      pulls_create_params
-                                    )
-            const number = create_pull_res.data.number
-            const release_users = ["nakkaa"]
-            const pulls_request_reviews_params = {
-              pull_number: number,
-              reviewers: release_users,
-              ...common_params
-            }
-            console.log("call pulls.requestReviewers:")
-            console.log(pulls_request_reviews_params)
-            await github.rest.pulls.requestReviewers(
-              pulls_request_reviews_params
-            )
-            const issues_add_assignees_params = {
-              issue_number: number,
-              assignees: release_users,
-              ...common_params
-            }
-            console.log("call issues.addAssignees:")
-            console.log(issues_add_assignees_params)
-            await github.rest.issues.addAssignees(issues_add_assignees_params)
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/create_pull_request.js`)
+            await script({github, context})
