@@ -6,7 +6,7 @@ RUN apt-get update \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py \
     && sed -i "s/^\(VERSION = \).*\$/\1'$(git describe --abbrev=0)'/" slackbot_settings.py
 
-FROM python:3.10.7-slim-bullseye
+FROM python:3.11.0-slim-bullseye
 
 ARG ENV
 ENV ENV="${ENV}"
@@ -16,18 +16,18 @@ WORKDIR /usr/src/app
 COPY Pipfile Pipfile
 
 # 必要なパッケージ
-# * git: Pythonライブラリのインストールの際に必要
+# * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git curl && \
-    pip install pipenv==2022.10.12 --no-cache-dir && \
+    apt-get install -y --no-install-recommends git gcc libc6-dev curl && \
+    pip install pipenv==2022.10.25 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
       pipenv install --system --skip-lock; \
     fi && \
     pip uninstall -y pipenv virtualenv && \
-    apt-get remove -y git && \
+    apt-get remove -y git gcc libc6-dev && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
