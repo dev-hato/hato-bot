@@ -22,6 +22,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
+      REPOSITORY: ${{github.repository}}
     permissions:
       contents: read
       packages: write
@@ -49,7 +50,6 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - name: Build and push (build)
         uses: docker/bake-action@v2.3.0
         env:
@@ -97,6 +97,13 @@ jobs:
         with:
           push: true
           files: docker-compose.yml,dev.docker-compose.yml
+      - name: Start docker
+        env:
+          DOCKER_CONTENT_TRUST: 1
+        run: docker compose up -d --wait
+      # Dockerコンテナに疎通できるかテストする
+      - name: Test
+        run: curl http://localhost:3000/status
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
@@ -106,6 +113,7 @@ jobs:
       pull-requests: write
     env:
       DOCKER_CONTENT_TRUST: 1
+      REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
@@ -118,7 +126,6 @@ jobs:
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: docker compose pull
       - name: Get Python version
         id: get_python_version
@@ -133,34 +140,6 @@ jobs:
           branch-name-prefix: fix-version-python-version
           pr-title-prefix: .python-versionを直してあげたよ！
           repo-name: dev-hato/hato-bot
-
-  pr-docker:
-    runs-on: ubuntu-latest
-    env:
-      DOCKER_CONTENT_TRUST: 1
-    needs: deploy_docker_image
-    steps:
-      - uses: actions/checkout@v3.1.0
-        with:
-          fetch-depth: 0
-      - name: Set .env
-        run: cp .env.example .env
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2.1.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
-        env:
-          HEAD_REF: ${{github.head_ref}}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
-      - run: docker compose pull
-      - name: Start docker
-        run: docker compose up -d --wait
-      # Dockerコンテナに疎通できるかテストする
-      - name: Test
-        run: curl http://localhost:3000/status
 
   update-dockle:
     runs-on: ubuntu-latest
@@ -181,6 +160,7 @@ jobs:
       - deploy_docker_image
     env:
       DOCKER_CONTENT_TRUST: 1
+      REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Set .env
@@ -188,7 +168,6 @@ jobs:
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - run: echo "REPOSITORY=${{github.repository}}" >> "${GITHUB_ENV}"
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/install_dockle.sh"
       - run: docker compose pull
       - run: docker compose up -d
@@ -199,11 +178,10 @@ jobs:
     if: always()
     needs:
       - update-version-python-version
-      - pr-docker
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-docker.result == 'success' && needs.dockle.result == 'success'))))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))) }}
         run: exit 1
