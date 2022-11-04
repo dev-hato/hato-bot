@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2972757a3b716d7fae11f6558bb07d265253429eaf184cf0d10cf3d043e0269c"
+            "sha256": "101064b41472fae4f28e0962417fbc386d8fa04a6e7ec0828ee7b278f6a0c000"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.10"
+            "python_version": "3.11"
         },
         "sources": [
             {
@@ -895,7 +895,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "9881e307e02edaa00d6325c95ba5affdbf84d04b"
+            "ref": "a86ebec998d8f1b16dd9556040531691a923dc6b"
         },
         "typing-extensions": {
             "hashes": [
@@ -1711,7 +1711,7 @@
                 "sha256:ee6acae74a2b91865910eef5e7de37dc6895ad96fa23603d1d27ea69df545015",
                 "sha256:ef3f72c9666bba2bab70d2a8b79f2c6d2c1a42a7f7e2b0ec83bb2f9e383950af"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version >= '3.11'",
             "version": "==1.14.1"
         }
     }
