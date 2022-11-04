@@ -30,7 +30,7 @@ jobs:
           repository: ${{steps.set_org_name.outputs.result}}/sudden-death
           path: sudden-death
       - name: Copy CI
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
+        run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
       - name: Copy package.json
         uses: actions/github-script@v6.3.3
         with:
@@ -41,11 +41,11 @@ jobs:
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/show_diff.sh"
+        run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/show_diff.sh"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death
         env:
           SUDDEN_DEATH_CI_PRIVATE_KEY: ${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}
           ORG_NAME: ${{steps.set_org_name.outputs.result}}
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/push.sh"
+        run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/push.sh"
