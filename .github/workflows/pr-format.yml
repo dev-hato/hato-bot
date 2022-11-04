@@ -26,7 +26,7 @@ jobs:
       - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: fix-version
+          branch-name-prefix: fix-python-version
           pr-title-prefix: Pythonのバージョンが間違ってたので直してあげたよ！
           repo-name: dev-hato/hato-bot
 
