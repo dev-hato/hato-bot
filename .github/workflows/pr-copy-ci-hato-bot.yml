@@ -34,7 +34,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_package.js`)
+            const script = require(`${process.env.GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_package.js`)
             script()
       - name: Show diff
         id: show_diff
