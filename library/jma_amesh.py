@@ -23,11 +23,6 @@ from library.hatomap import (
 )
 
 
-import numpy as np
-import requests
-from PIL import Image
-
-
 @dataclass
 class WebMercatorTile:
     """Webメルカトル座標上のタイル"""
@@ -151,9 +146,7 @@ def jma_amesh(
         ]
         + [
             MarkerTrace(
-                [
-                    GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])
-                ],
+                [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
                 size=14,
                 symbol="thunder",
                 fill_color=(0, 255, 255, 255),
