@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+pwd
 git add -A
 result="$(git diff --cached)"
 result="${result//'%'/'%25'}"
