@@ -392,7 +392,7 @@ class HatoMap:
     title: タイトル
     """
 
-    mapbox: MapBox = MapBox()
+    mapbox: MapBox = field(default_factory=MapBox)
     basemap: str = "open-street-map"
     extra_basemap_server: Optional[str] = None
     layers: Optional[List[Layer]] = None
