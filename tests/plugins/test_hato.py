@@ -89,16 +89,16 @@ class TestAmesh(unittest.TestCase):
             mode="rb",
         ) as json_file:
             jma_json_url = re.compile(
-                r'www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json'
+                r"www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json"
             )
             mocker.get(jma_json_url, content=json_file.read())
 
         with open(
-                os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
-                mode="rb",
+            os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
+            mode="rb",
         ) as liden_file:
             jma_liden_url = re.compile(
-                r'www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson'
+                r"www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson"
             )
             mocker.get(jma_liden_url, content=liden_file.read())
 

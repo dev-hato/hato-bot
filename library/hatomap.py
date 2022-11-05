@@ -174,10 +174,15 @@ class RasterTileServer:
     @staticmethod
     def _get_image_content(url):
         return cv2.imdecode(
-            np.asarray(bytearray(requests.get(
-                url,
-                headers={"user-agent": f"hato-bot/{VERSION}"}
-            ).content), dtype=np.uint8), -1
+            np.asarray(
+                bytearray(
+                    requests.get(
+                        url, headers={"user-agent": f"hato-bot/{VERSION}"}
+                    ).content
+                ),
+                dtype=np.uint8,
+            ),
+            -1,
         )
 
     def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
