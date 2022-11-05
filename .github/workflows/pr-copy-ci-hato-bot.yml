@@ -12,88 +12,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
           repository: ${{steps.set_org_name.outputs.result}}/sudden-death
           path: sudden-death
       - name: Copy CI
-        run: |
-          worklows_path=.github/workflows
-          find sudden-death/${worklows_path} -type f \
-                                             -not -name "*sudden-death.yml" \
-                                             -exec rm -f {} \;
-          DEST_PATH="sudden-death/${worklows_path}/"
-          find hato-bot/${worklows_path} -type f \
-                                         -not -name "*hato-bot.yml" \
-                                         -exec cp {} "${DEST_PATH}" \;
-          for f in .markdown-lint.yml .python-lint .textlintrc .gitleaks.toml .mypy.ini .pre-commit-config.yaml .python-version .pep8 .flake8 renovate.json
-          do
-            cp hato-bot/${f} sudden-death/
-          done
-          PATTERN_BEFORE="$(grep '^click' sudden-death/Pipfile)"
-          PATTERN_AFTER="$(grep '^click' hato-bot/Pipfile)"
-          PATTERN="s/${PATTERN_BEFORE}/${PATTERN_AFTER}/g"
-          sed -i -e "${PATTERN}" sudden-death/Pipfile
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
       - name: Copy package.json
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const fs = require('fs');
-            const hatoBotPackage = require('./hato-bot/package.json');
-            const hatoBotPackageLock = require('./hato-bot/package-lock.json');
-            const suddenDeathPackage = require('./sudden-death/package.json');
-            const suddenDeathPackageLock = require('./sudden-death/package-lock.json');
-
-            delete hatoBotPackage.scripts;
-
-            for (const packageKey of Object.keys(hatoBotPackage)) {
-                suddenDeathPackage[packageKey] = hatoBotPackage[packageKey];
-            }
-
-            fs.writeFileSync('./sudden-death/package.json', JSON.stringify(suddenDeathPackage, null, "  ") + "\n", 'utf8');
-
-            delete hatoBotPackageLock.name;
-
-            for (const packageLockKey of Object.keys(hatoBotPackageLock)) {
-                suddenDeathPackageLock[packageLockKey] = hatoBotPackageLock[packageLockKey];
-            }
-
-            fs.writeFileSync('./sudden-death/package-lock.json', JSON.stringify(suddenDeathPackageLock, null, "  ") + "\n", 'utf8');
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_package.js`)
+            script()
       - name: Show diff
         id: show_diff
         working-directory: sudden-death
-        run: |
-          git add -A
-          echo "::set-output name=diff::$(git diff --cached)"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/show_diff.sh"
       - name: Push
         if: ${{ steps.show_diff.outputs.diff != '' }}
         working-directory: sudden-death
-        run: |
-          git config user.name "github-actions[bot]"
-          EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.email "${EMAIL}"
-          git commit -m "鳩は唐揚げ！(hato-botのCIを反映するよ！)"
-          echo "${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}" > deploy_key.pem
-          chmod 600 deploy_key.pem
-          REPO_URL="git@github.com:${{steps.set_org_name.outputs.result}}/sudden-death.git"
-          GITHUB_HEAD="HEAD:refs/heads/pr-copy-ci"
-          GIT_SSH_COMMAND="ssh"
-          GIT_SSH_COMMAND+=" -i deploy_key.pem"
-          GIT_SSH_COMMAND+=" -o StrictHostKeyChecking=no"
-          GIT_SSH_COMMAND+=" -F /dev/null"
-          export GIT_SSH_COMMAND
-          git push -f "${REPO_URL}" "${GITHUB_HEAD}"
+        env:
+          SUDDEN_DEATH_CI_PRIVATE_KEY: ${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}
+          ORG_NAME: ${{steps.set_org_name.outputs.result}}
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/push.sh"

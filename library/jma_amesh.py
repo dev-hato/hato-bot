@@ -20,6 +20,16 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 import requests
+from PIL import Image
+
+
+@dataclass
+class WebMercatorTile:
+    """Webメルカトル座標上のタイル"""
+
+    tile_x: int = 0
+    tile_y: int = 0
+    zoom_level: int = 10
 
 
 @dataclass

@@ -1,24 +1,18 @@
 ---
 name: pr-renovate-config-validator
-
 on:
   push:
     branches:
       - master
   pull_request:
-
 jobs:
   pr-renovate-config-validator:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: |
-          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
-          npm install --prefer-offline --location=global "npm@${npm_version}"
-          npm ci --prefer-offline
+      - run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
       - run: npx renovate-config-validator
