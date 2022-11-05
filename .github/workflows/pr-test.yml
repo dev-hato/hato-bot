@@ -1,88 +1,61 @@
 ---
 name: pr-test
-
 on:
   pull_request:
   push:
     branches:
       - master
       - develop
-
 jobs:
   pr-super-lint:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           submodules: "recursive"
           fetch-depth: 0
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4.3.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
       - name: Install pipenv
-        run: |
-          file_name=Dockerfile
-          package_name=pipenv
-
-          if [ -f ${file_name} ]
-          then
-            package_name_v=$(grep -oE "${package_name}[^ ]+" ${file_name})
-          else
-            package_name_v=${package_name}
-          fi
-
-          pip install ${package_name_v}
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
       - name: pipenv version
         run: pipenv --version
       - name: Install dependencies
-        run: |
-          pipenv install --dev
-
-        # 環境ファイルを使ってenvにsetしている
-        # 参考URL: https://bit.ly/2KJhjqk
+        run: pipenv install --dev
       - name: Set venv_path
-        run: |
-          venv_path=$(pipenv --venv)
-          echo "${venv_path}"
-          echo "venv_path=${venv_path}" >> "${GITHUB_ENV}"
-
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/set_venv_path.sh"
         # https://github.com/github/super-linter/issues/157#issuecomment-648850330
         # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
         # ここに cp -r することで、super-linterのなかに.venvを配置できる
         # また、元ディレクトリにも残っているので、キャッシュが作られる
       - name: Move the dependencies
-        run: |
-          DEST_PATH="/home/runner/work/_temp/_github_workflow/.venv"
-          cp -r ${{ env.venv_path }} "${DEST_PATH}"
+        env:
+          VENV_PATH: ${{ env.venv_path }}
+          DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
+        run: cp -r "${VENV_PATH}" "${DEST_PATH}"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.1
         with:
           cache: npm
       - name: Install dependencies
-        run: |
-          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
-          npm install --prefer-offline --location=global "npm@${npm_version}"
-          npm ci --prefer-offline
-      - run: |
-          echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
+        run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
+      - run: echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
       - name: Lint files
-        uses: github/super-linter/slim@v4.9.5
+        uses: github/super-linter/slim@v4.9.7
         env:
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_JSCPD: false
+          VALIDATE_SQLFLUFF: false
           LINTER_RULES_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
           PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
-
   pr-dotenv-linter:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
         with:

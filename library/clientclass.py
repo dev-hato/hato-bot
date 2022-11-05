@@ -6,8 +6,9 @@ clientに使うclass
 import os
 from abc import ABCMeta, abstractmethod
 
-import slackbot_settings as conf
 from slack import WebClient
+
+import slackbot_settings as conf
 
 
 class BaseClient(metaclass=ABCMeta):

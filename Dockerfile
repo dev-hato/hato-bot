@@ -5,22 +5,29 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.10.5-slim-bullseye
+FROM python:3.11.0-slim-bullseye
+
+ARG ENV
+ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
 
 # 必要なパッケージ
-# * git: Pythonライブラリのインストールの際に必要
+# * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git libopencv-dev curl && \
-    pip install pipenv==2022.7.24 --no-cache-dir && \
-    pipenv install --system --skip-lock && \
+    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev curl && \
+    pip install pipenv==2022.10.25 --no-cache-dir && \
+    if [ "${ENV}" = 'dev' ]; then \
+      pipenv install --system --skip-lock --dev; \
+    else \
+      pipenv install --system --skip-lock; \
+    fi && \
     pip uninstall -y pipenv virtualenv && \
-    apt-get remove -y git && \
+    apt-get remove -y git gcc libc6-dev && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
