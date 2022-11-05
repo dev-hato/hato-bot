@@ -149,7 +149,7 @@ class WebMercatorPixelBBox:
 
 @dataclass
 class MapBox:
-    center: GeoCoord = GeoCoord(5, 40)
+    center: GeoCoord = field(default_factory=lambda: GeoCoord(5, 40))
     zoom: int = 3
     width: int = 800
     height: int = 800
@@ -387,7 +387,7 @@ class HatoMap:
     title: タイトル
     """
 
-    mapbox: MapBox = MapBox()
+    mapbox: MapBox = field(default_factory=MapBox)
     basemap: str = "open-street-map"
     extra_basemap_server: Optional[str] = None
     layers: Optional[List[Layer]] = None
