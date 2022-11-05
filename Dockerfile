@@ -20,7 +20,7 @@ COPY Pipfile Pipfile
 # * libopencv-dev: OpenCV
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev curl && \
-    pip install pipenv==2022.10.25 --no-cache-dir && \
+    pip install pipenv==2022.11.4 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
