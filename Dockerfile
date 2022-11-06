@@ -18,9 +18,10 @@ COPY Pipfile Pipfile
 # 必要なパッケージ
 # * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
+# * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git gcc libc6-dev curl && \
-    pip install pipenv==2022.10.25 --no-cache-dir && \
+    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl && \
+    pip install pipenv==2022.11.5 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \

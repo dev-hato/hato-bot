@@ -88,10 +88,19 @@ class TestAmesh(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
             mode="rb",
         ) as json_file:
-            jma_json_url = (
-                "https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json"
+            jma_json_url = re.compile(
+                r"www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json"
             )
             mocker.get(jma_json_url, content=json_file.read())
+
+        with open(
+            os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
+            mode="rb",
+        ) as liden_file:
+            jma_liden_url = re.compile(
+                r"www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson"
+            )
+            mocker.get(jma_liden_url, content=liden_file.read())
 
         actual = amesh(client1, place=place)
         self.assertEqual(None, actual)
