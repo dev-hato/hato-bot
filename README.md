@@ -1,8 +1,6 @@
 # 鳩bot - 愛嬌のあるSlack Bot
 
 ![badge](https://github.com/dev-hato/hato-bot/workflows/pr-test/badge.svg)
-  
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 鳩botでは主に次のことができます。
 
@@ -15,24 +13,15 @@
 
 ## 鳩botを動かす
 
-鳩botを動かす方法は主に2種類あります。  
-簡単でおすすめなHerokuで動かす方法と自分のPC上で動かす方法です。
+鳩botは自分のPC上で動かすことができます。
 
 ### 必要なもの
 
 鳩botを使うには以下が必要です。
 
-- Herokuアカウント(またはDockerが動作するPC)
+- Dockerが動作するPC
 - Slack API Token ([Slack API Tokenの取得手順](./doc/01_Get_Slack_API_Token.md))
 - Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/02_Get_Yahoo_API_Token.md))
-
-### Herokuで動かす
-
-すぐに鳩botを動かしたい場合はHerokuを使うと簡単です。
-
-1. Slack API TokenとYahoo API Tokenを取得する。
-1. [Herokuへデプロイする。](./doc/03_Deploy_to_Heroku.md)
-1. [Slack Event URLを設定する。](./doc/04_Setting_to_Event_URL.md)
 
 ### 自分のPC上で動かす
 
