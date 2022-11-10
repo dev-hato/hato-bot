@@ -49,3 +49,7 @@ jobs:
           SUDDEN_DEATH_CI_PRIVATE_KEY: ${{secrets.SUDDEN_DEATH_CI_PRIVATE_KEY}}
           ORG_NAME: ${{steps.set_org_name.outputs.result}}
         run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/push.sh"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

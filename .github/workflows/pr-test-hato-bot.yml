@@ -35,3 +35,7 @@ jobs:
         run: cp .env.example .env
       - name: Test
         run: pipenv run python -m unittest
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

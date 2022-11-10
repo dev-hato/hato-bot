@@ -16,3 +16,6 @@ jobs:
           cache: npm
       - run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
       - run: npx renovate-config-validator
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
