@@ -35,6 +35,6 @@
     "textlint-rule-terminology": "3.0.4"
   },
   "engines": {
-    "npm": "^8.19.2"
+    "npm": "^9.0.0"
   }
 }
