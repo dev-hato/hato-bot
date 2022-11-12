@@ -44,3 +44,7 @@ jobs:
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_merge_develop_hato_bot/pr_master_to_develop/create_pull_request.js`)
             await script({github, context})
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
