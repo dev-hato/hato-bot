@@ -53,14 +53,12 @@ def generate_map_img(
         LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255))
         for d in range(10, 60, 10)
     ]
-    layers += [
-        MarkerTrace(
-            coords=[GeoCoord(lat, lng)],
-            size=14,
-            border_color=(0, 0, 255, 255),
-            fill_color=(0, 0, 255, 255),
-        )
-    ]
+    layers.append(MarkerTrace(
+        coords=[GeoCoord(lat, lng)],
+        size=14,
+        border_color=(0, 0, 255, 255),
+        fill_color=(0, 0, 255, 255),
+    ))
     h = HatoMap(
         basemap="open-street-map-dim",
         title=f"地震 (発生時刻: {time}, 震源地: {hypocenter}, マグニチュード: {magnitude}, 最大震度: {earthquake_intensity})",
