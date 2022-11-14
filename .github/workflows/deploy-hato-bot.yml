@@ -148,7 +148,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@v0.0.27
+      - uses: dev-hato/actions-update-dockle@v0.0.29
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           repo-name: dev-hato/hato-bot
@@ -185,3 +185,7 @@ jobs:
         run: exit 0
       - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))) }}
         run: exit 1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
