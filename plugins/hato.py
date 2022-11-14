@@ -103,7 +103,7 @@ def earth_quake(client: BaseClient):
 
     msg: str = "地震情報を取得したっぽ!\n"
     msg += "```\n"
-    msg += "出典: https://www.p2pquake.net/dev/json-api/ \n"
+    msg += "出典: https://github.com/p2pquake/epsp-specifications \n"
     msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"
     msg += "```"
     client.post(msg)
