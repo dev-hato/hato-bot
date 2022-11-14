@@ -129,7 +129,6 @@ def earth_quake(client: BaseClient):
             earthquake_intensity = str(earthquake_intensity)
 
         msg = "```\n"
-        msg += f"({cnt})\n"
         msg += f"発生時刻: {time}\n"
         msg += f"震源地: {hypocenter}\n"
         msg += f"マグニチュード: {magnitude}\n"
@@ -146,7 +145,6 @@ def earth_quake(client: BaseClient):
                 lng=float(lng),
                 zoom=10,
                 around_tiles=2,
-                cnt=cnt,
                 time=time,
                 hypocenter=hypocenter,
                 magnitude=magnitude,

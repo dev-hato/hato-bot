@@ -37,7 +37,6 @@ def generate_map_img(
     lng: float,
     zoom: int,
     around_tiles: int,
-    cnt: int,
     time: str,
     hypocenter: str,
     magnitude: str,
@@ -50,7 +49,7 @@ def generate_map_img(
 
     h = HatoMap(
         basemap="open-street-map-dim",
-        title=f"({cnt}) 地震 (発生時刻: {time}, 震源地: {hypocenter}, マグニチュード: {magnitude}, 最大震度: {earthquake_intensity})",
+        title=f"地震 (発生時刻: {time}, 震源地: {hypocenter}, マグニチュード: {magnitude}, 最大震度: {earthquake_intensity})",
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
             LineTrace(
