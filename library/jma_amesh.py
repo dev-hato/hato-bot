@@ -5,11 +5,9 @@ jma_amesh
 """
 import datetime
 import json
-import math
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-import numpy as np
 import requests
 from PIL import Image
 
@@ -20,6 +18,7 @@ from library.hatomap import (
     MapBox,
     MarkerTrace,
     RasterLayer,
+    get_circle,
 )
 
 
@@ -103,21 +102,6 @@ def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
             for e in json.loads(response.text)["features"]
         ]
     return [(0.0, 0.0, 0)]
-
-
-def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
-    """指定した地点から半径radiusメートルの正360角形の頂点を列挙する"""
-    earth_radius = 6378137
-    earth_f = 298.257222101
-    earth_e_sq = (2 * earth_f - 1) / earth_f**2
-    c = 1 - (earth_e_sq * math.sin(lat) ** 2)
-    meter_1deg_lat = math.pi * earth_radius * (1 - earth_e_sq) / (180 * c**1.5)
-    meter_1deg_lng = (
-        math.pi * earth_radius * math.cos(lat * math.pi / 180) / (180 * math.sqrt(c))
-    )
-    lats = np.sin(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lat + lat
-    lngs = np.cos(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lng + lng
-    return np.array([lats, lngs]).T
 
 
 def jma_amesh(

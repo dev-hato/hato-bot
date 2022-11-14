@@ -14,8 +14,8 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
 
     conditions = {
         "help": lambda m: hato.help_message,
-        "eq": lambda m: hato.earth_quake,
-        "地震": lambda m: hato.earth_quake,
+        "eq": lambda m: partial(hato.earth_quake),
+        "地震": lambda m: partial(hato.earth_quake),
         "text list": lambda m: hato.get_text_list,
         "text add ": lambda m: partial(hato.add_text, word=m[len("text add ") :]),
         "text show ": lambda m: partial(

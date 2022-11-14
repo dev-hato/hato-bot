@@ -90,17 +90,20 @@ def default_action():
     return conf.DEFAULT_REPLY
 
 
-@action("eq")
-def earth_quake():
+@action("eq", with_client=True)
+def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
     msg = "地震情報を取得できなかったっぽ!"
     data = get_quake_list()
-    if data is not None:
-        msg = "地震情報を取得したっぽ!\n"
-        msg = msg + generate_quake_info_for_slack(data, 3)
 
-    return msg
+    if data is None:
+        client.post(msg)
+        return
+
+    msg = "地震情報を取得したっぽ!"
+    client.post(msg)
+    generate_quake_info_for_slack(data, client, 3)
 
 
 @action("text list")
