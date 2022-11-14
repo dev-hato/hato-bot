@@ -4,16 +4,12 @@
 地震情報
 """
 
-import imghdr
 import json
-import os
-from tempfile import NamedTemporaryFile
 from typing import Any, Optional
 
 import requests
 from PIL import Image
 
-from library.clientclass import BaseClient
 from library.hatomap import (
     GeoCoord,
     HatoMap,
@@ -74,71 +70,3 @@ def generate_map_img(
     width = (2 * around_tiles + 1) * 256
     i = h.get_image(width=width, height=width)
     return Image.fromarray(i[:, :, ::-1])  # OpenCV形式からPIL形式に変換
-
-
-def generate_quake_info_for_slack(
-    data: Any, client: BaseClient, max_cnt: int = 1
-) -> str:
-    """
-    地震情報をslack表示用に加工する
-    """
-    cnt = 1
-    msg: str = "```\n"
-    msg += "出典: https://www.p2pquake.net/dev/json-api/ \n"
-    msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"
-    msg += "```"
-    client.post(msg)
-    for row in data:
-        code = int(row["code"])
-        if code == 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
-            time = row["earthquake"]["time"]
-            singenti = row["earthquake"]["hypocenter"]["name"]
-            magnitude = row["earthquake"]["hypocenter"]["magnitude"]
-            sindo = row["earthquake"]["maxScale"]
-
-            if sindo is None:
-                sindo = ""
-            else:
-                sindo /= 10
-                sindo = str(sindo)
-
-            msg = "```\n"
-            msg += f"({cnt})\n"
-            msg += f"発生時刻: {time}\n"
-            msg += f"震源地: {singenti}\n"
-            msg += f"マグニチュード: {magnitude}\n"
-            msg += f"最大震度: {sindo}\n"
-            msg += "```"
-            client.post(msg)
-
-            lat = row["earthquake"]["hypocenter"]["latitude"].replace("N", "")
-            lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
-
-            if lat != "" and lng != "":
-                map_img = generate_map_img(
-                    lat=float(lat),
-                    lng=float(lng),
-                    zoom=10,
-                    around_tiles=2,
-                    cnt=cnt,
-                    time=time,
-                    singenti=singenti,
-                    magnitude=magnitude,
-                    sindo=sindo,
-                )
-                with NamedTemporaryFile() as map_file:
-                    map_img.save(map_file, format="PNG")
-
-                    filename = ["map"]
-                    ext = imghdr.what(map_file.name)
-
-                    if ext:
-                        filename.append(ext)
-
-                    client.upload(
-                        file=map_file.name, filename=os.path.extsep.join(filename)
-                    )
-            if max_cnt <= cnt:
-                break
-            cnt += 1
-    return msg

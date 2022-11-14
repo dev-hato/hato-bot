@@ -19,7 +19,7 @@ from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
 from library.clientclass import BaseClient
-from library.earthquake import generate_quake_info_for_slack, get_quake_list
+from library.earthquake import get_quake_list, generate_map_img
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.hukidasi import generator
@@ -101,9 +101,70 @@ def earth_quake(client: BaseClient):
         client.post(msg)
         return
 
-    msg = "地震情報を取得したっぽ!"
+    msg: str = "地震情報を取得したっぽ!\n"
+    msg += "```\n"
+    msg += "出典: https://www.p2pquake.net/dev/json-api/ \n"
+    msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"
+    msg += "```"
     client.post(msg)
-    generate_quake_info_for_slack(data, client, 3)
+
+    cnt = 1
+
+    for row in data:
+        code = int(row["code"])
+        if code == 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
+            time = row["earthquake"]["time"]
+            singenti = row["earthquake"]["hypocenter"]["name"]
+            magnitude = row["earthquake"]["hypocenter"]["magnitude"]
+            sindo = row["earthquake"]["maxScale"]
+
+            if sindo is None:
+                sindo = ""
+            else:
+                sindo /= 10
+                sindo = str(sindo)
+
+            msg = "```\n"
+            msg += f"({cnt})\n"
+            msg += f"発生時刻: {time}\n"
+            msg += f"震源地: {singenti}\n"
+            msg += f"マグニチュード: {magnitude}\n"
+            msg += f"最大震度: {sindo}\n"
+            msg += "```"
+            client.post(msg)
+
+            lat = row["earthquake"]["hypocenter"]["latitude"].replace("N", "")
+            lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
+
+            if lat != "" and lng != "":
+                map_img = generate_map_img(
+                    lat=float(lat),
+                    lng=float(lng),
+                    zoom=10,
+                    around_tiles=2,
+                    cnt=cnt,
+                    time=time,
+                    singenti=singenti,
+                    magnitude=magnitude,
+                    sindo=sindo,
+                )
+                with NamedTemporaryFile() as map_file:
+                    map_img.save(map_file, format="PNG")
+
+                    filename = ["map"]
+                    ext = imghdr.what(map_file.name)
+
+                    if ext:
+                        filename.append(ext)
+
+                    client.upload(
+                        file=map_file.name, filename=os.path.extsep.join(filename)
+                    )
+
+            if 3 <= cnt:
+                break
+
+            cnt += 1
 
 
 @action("text list")
