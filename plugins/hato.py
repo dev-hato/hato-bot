@@ -112,59 +112,62 @@ def earth_quake(client: BaseClient):
 
     for row in data:
         code = int(row["code"])
-        if code == 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
-            time = row["earthquake"]["time"]
-            singenti = row["earthquake"]["hypocenter"]["name"]
-            magnitude = row["earthquake"]["hypocenter"]["magnitude"]
-            sindo = row["earthquake"]["maxScale"]
 
-            if sindo is None:
-                sindo = ""
-            else:
-                sindo /= 10
-                sindo = str(sindo)
+        if code != 551:  # 551は地震情報 https://www.p2pquake.net/dev/json-api/#i-6
+            continue
 
-            msg = "```\n"
-            msg += f"({cnt})\n"
-            msg += f"発生時刻: {time}\n"
-            msg += f"震源地: {singenti}\n"
-            msg += f"マグニチュード: {magnitude}\n"
-            msg += f"最大震度: {sindo}\n"
-            msg += "```"
-            client.post(msg)
+        time = row["earthquake"]["time"]
+        singenti = row["earthquake"]["hypocenter"]["name"]
+        magnitude = row["earthquake"]["hypocenter"]["magnitude"]
+        sindo = row["earthquake"]["maxScale"]
 
-            lat = row["earthquake"]["hypocenter"]["latitude"].replace("N", "")
-            lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
+        if sindo is None:
+            sindo = ""
+        else:
+            sindo /= 10
+            sindo = str(sindo)
 
-            if lat != "" and lng != "":
-                map_img = generate_map_img(
-                    lat=float(lat),
-                    lng=float(lng),
-                    zoom=10,
-                    around_tiles=2,
-                    cnt=cnt,
-                    time=time,
-                    singenti=singenti,
-                    magnitude=magnitude,
-                    sindo=sindo,
+        msg = "```\n"
+        msg += f"({cnt})\n"
+        msg += f"発生時刻: {time}\n"
+        msg += f"震源地: {singenti}\n"
+        msg += f"マグニチュード: {magnitude}\n"
+        msg += f"最大震度: {sindo}\n"
+        msg += "```"
+        client.post(msg)
+
+        lat = row["earthquake"]["hypocenter"]["latitude"].replace("N", "")
+        lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
+
+        if lat != "" and lng != "":
+            map_img = generate_map_img(
+                lat=float(lat),
+                lng=float(lng),
+                zoom=10,
+                around_tiles=2,
+                cnt=cnt,
+                time=time,
+                singenti=singenti,
+                magnitude=magnitude,
+                sindo=sindo,
+            )
+            with NamedTemporaryFile() as map_file:
+                map_img.save(map_file, format="PNG")
+
+                filename = ["map"]
+                ext = imghdr.what(map_file.name)
+
+                if ext:
+                    filename.append(ext)
+
+                client.upload(
+                    file=map_file.name, filename=os.path.extsep.join(filename)
                 )
-                with NamedTemporaryFile() as map_file:
-                    map_img.save(map_file, format="PNG")
 
-                    filename = ["map"]
-                    ext = imghdr.what(map_file.name)
+        if 3 <= cnt:
+            break
 
-                    if ext:
-                        filename.append(ext)
-
-                    client.upload(
-                        file=map_file.name, filename=os.path.extsep.join(filename)
-                    )
-
-            if 3 <= cnt:
-                break
-
-            cnt += 1
+        cnt += 1
 
 
 @action("text list")
