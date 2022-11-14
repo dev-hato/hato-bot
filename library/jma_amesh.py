@@ -18,6 +18,7 @@ from library.hatomap import (
     MapBox,
     MarkerTrace,
     RasterLayer,
+    Layer,
     get_circle,
 )
 
@@ -113,30 +114,31 @@ def jma_amesh(
     """
 
     jma_timestamp = get_latest_timestamps()
+    layers: List[Layer] = [
+        RasterLayer(
+            url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
+        )
+    ]
+    layers += [
+        LineTrace(
+            coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
+        )
+        for d in range(10, 60, 10)
+    ]
+    layers += [
+        MarkerTrace(
+            [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
+            size=14,
+            symbol="thunder",
+            fill_color=(0, 255, 255, 255),
+            border_color=(0, 64, 64, 255),
+        )
+    ]
     h = HatoMap(
         basemap="open-street-map-dim",
         title=f'雨雲:{timestamp2jst(jma_timestamp["hrpns_nd"])} 雷:{timestamp2jst(jma_timestamp["liden"])}',
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
-        layers=[
-            RasterLayer(
-                url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
-            )
-        ]
-        + [
-            LineTrace(
-                coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
-            )
-            for d in range(10, 60, 10)
-        ]
-        + [
-            MarkerTrace(
-                [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
-                size=14,
-                symbol="thunder",
-                fill_color=(0, 255, 255, 255),
-                border_color=(0, 64, 64, 255),
-            )
-        ],
+        layers=layers,
     )
     width = (2 * around_tiles + 1) * 256
     i = h.get_image(width=width, height=width)
