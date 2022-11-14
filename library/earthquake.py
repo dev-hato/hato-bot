@@ -14,7 +14,14 @@ import requests
 from PIL import Image
 
 from library.clientclass import BaseClient
-from library.hatomap import HatoMap, MapBox, GeoCoord, LineTrace, MarkerTrace, get_circle
+from library.hatomap import (
+    GeoCoord,
+    HatoMap,
+    LineTrace,
+    MapBox,
+    MarkerTrace,
+    get_circle,
+)
 
 
 def get_quake_list(limit: int = 10) -> Optional[Any]:
@@ -30,8 +37,15 @@ def get_quake_list(limit: int = 10) -> Optional[Any]:
 
 
 def generate_map_img(
-        lat: float, lng: float, zoom: int, around_tiles: int, cnt: int, time: str, singenti: str, magnitude: str,
-        sindo: str
+    lat: float,
+    lng: float,
+    zoom: int,
+    around_tiles: int,
+    cnt: int,
+    time: str,
+    singenti: str,
+    magnitude: str,
+    sindo: str,
 ) -> Optional[Image.Image]:
     """
     OpenStreetMap画像を取得してMap画像を組み立てる
@@ -40,29 +54,31 @@ def generate_map_img(
 
     h = HatoMap(
         basemap="open-street-map-dim",
-        title=f'({cnt}) 地震 (発生時刻: {time}, 震源地: {singenti}, マグニチュード: {magnitude}, 最大震度: {sindo})',
+        title=f"({cnt}) 地震 (発生時刻: {time}, 震源地: {singenti}, マグニチュード: {magnitude}, 最大震度: {sindo})",
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
-                   LineTrace(
-                       coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
-                   )
-                   for d in range(10, 60, 10)
-               ]
-               + [
-                   MarkerTrace(
-                       coords=[GeoCoord(lat, lng)],
-                       size=14,
-                       border_color=(0, 0, 255, 255),
-                       fill_color=(0, 0, 255, 255),
-                   )
-               ],
+            LineTrace(
+                coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
+            )
+            for d in range(10, 60, 10)
+        ]
+        + [
+            MarkerTrace(
+                coords=[GeoCoord(lat, lng)],
+                size=14,
+                border_color=(0, 0, 255, 255),
+                fill_color=(0, 0, 255, 255),
+            )
+        ],
     )
     width = (2 * around_tiles + 1) * 256
     i = h.get_image(width=width, height=width)
     return Image.fromarray(i[:, :, ::-1])  # OpenCV形式からPIL形式に変換
 
 
-def generate_quake_info_for_slack(data: Any, client: BaseClient, max_cnt: int = 1) -> str:
+def generate_quake_info_for_slack(
+    data: Any, client: BaseClient, max_cnt: int = 1
+) -> str:
     """
     地震情報をslack表示用に加工する
     """
@@ -99,8 +115,17 @@ def generate_quake_info_for_slack(data: Any, client: BaseClient, max_cnt: int = 
             lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
 
             if lat != "" and lng != "":
-                map_img = generate_map_img(lat=float(lat), lng=float(lng), zoom=10, around_tiles=2, cnt=cnt, time=time,
-                                           singenti=singenti, magnitude=magnitude, sindo=sindo)
+                map_img = generate_map_img(
+                    lat=float(lat),
+                    lng=float(lng),
+                    zoom=10,
+                    around_tiles=2,
+                    cnt=cnt,
+                    time=time,
+                    singenti=singenti,
+                    magnitude=magnitude,
+                    sindo=sindo,
+                )
                 with NamedTemporaryFile() as map_file:
                     map_img.save(map_file, format="PNG")
 
