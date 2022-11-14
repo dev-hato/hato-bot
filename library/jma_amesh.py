@@ -124,7 +124,7 @@ def jma_amesh(
     lat: float, lng: float, zoom: int, around_tiles: int
 ) -> Optional[Image.Image]:
     """
-    気象庁雨雲レーダーとOpenStreatMap画像を取得して結合する
+    気象庁雨雲レーダーとOpenStreetMap画像を取得して結合する
     Usage: jma_amesh(lat=37, lng=139, zoom=8, around_tiles=2).save('res2.png')
     """
 
