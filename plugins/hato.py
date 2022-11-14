@@ -19,7 +19,7 @@ from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
 from library.clientclass import BaseClient
-from library.earthquake import get_quake_list, generate_map_img
+from library.earthquake import generate_map_img, get_quake_list
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.hukidasi import generator
