@@ -398,7 +398,7 @@ class HatoMap:
     layers: Optional[List[Layer]] = None
     title: Optional[str] = None
 
-    def update_layout(self, mapbox: MapBox = None, layers: List[Layer] = None) -> None:
+    def update_layout(self, mapbox: Optional[MapBox] = None, layers: Optional[List[Layer]] = None) -> None:
         if mapbox is not None:
             self.mapbox = mapbox
         if layers is not None:
