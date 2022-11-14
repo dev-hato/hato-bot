@@ -117,22 +117,22 @@ def earth_quake(client: BaseClient):
             continue
 
         time = row["earthquake"]["time"]
-        singenti = row["earthquake"]["hypocenter"]["name"]
+        hypocenter = row["earthquake"]["hypocenter"]["name"]
         magnitude = row["earthquake"]["hypocenter"]["magnitude"]
-        sindo = row["earthquake"]["maxScale"]
+        earthquake_intensity = row["earthquake"]["maxScale"]
 
-        if sindo is None:
-            sindo = ""
+        if earthquake_intensity is None:
+            earthquake_intensity = ""
         else:
-            sindo /= 10
-            sindo = str(sindo)
+            earthquake_intensity /= 10
+            earthquake_intensity = str(earthquake_intensity)
 
         msg = "```\n"
         msg += f"({cnt})\n"
         msg += f"発生時刻: {time}\n"
-        msg += f"震源地: {singenti}\n"
+        msg += f"震源地: {hypocenter}\n"
         msg += f"マグニチュード: {magnitude}\n"
-        msg += f"最大震度: {sindo}\n"
+        msg += f"最大震度: {earthquake_intensity}\n"
         msg += "```"
         client.post(msg)
 
@@ -147,9 +147,9 @@ def earth_quake(client: BaseClient):
                 around_tiles=2,
                 cnt=cnt,
                 time=time,
-                singenti=singenti,
+                hypocenter=hypocenter,
                 magnitude=magnitude,
-                sindo=sindo,
+                earthquake_intensity=earthquake_intensity,
             )
             with NamedTemporaryFile() as map_file:
                 map_img.save(map_file, format="PNG")

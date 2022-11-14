@@ -39,18 +39,18 @@ def generate_map_img(
     around_tiles: int,
     cnt: int,
     time: str,
-    singenti: str,
+    hypocenter: str,
     magnitude: str,
-    sindo: str,
+    earthquake_intensity: str,
 ) -> Optional[Image.Image]:
     """
     OpenStreetMap画像を取得してMap画像を組み立てる
-    Usage: generate_map_img(lat=37, lng=139, zoom=8, around_tiles=2, cnt=1, time="14日22時28分", singenti="石川県能登地方", magnitude="4.2", sindo="4.0").save('res2.png')
+    Usage: generate_map_img(lat=37, lng=139, zoom=8, around_tiles=2, cnt=1, time="14日22時28分", hypocenter="石川県能登地方", magnitude="4.2", earthquake_intensity="4.0").save('res2.png')
     """
 
     h = HatoMap(
         basemap="open-street-map-dim",
-        title=f"({cnt}) 地震 (発生時刻: {time}, 震源地: {singenti}, マグニチュード: {magnitude}, 最大震度: {sindo})",
+        title=f"({cnt}) 地震 (発生時刻: {time}, 震源地: {hypocenter}, マグニチュード: {magnitude}, 最大震度: {earthquake_intensity})",
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
         layers=[
             LineTrace(
