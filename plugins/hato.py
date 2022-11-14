@@ -113,7 +113,9 @@ def earth_quake(client: BaseClient):
     for row in data:
         code = int(row["code"])
 
-        if code != 551:  # 551は地震情報 https://github.com/p2pquake/epsp-specifications/blob/a77dcb0cb31bc3b69e2f6635590e17f692522589/json-api-v1.md#%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9
+        if (
+            code != 551
+        ):  # 551は地震情報 https://github.com/p2pquake/epsp-specifications/blob/a77dcb0cb31bc3b69e2f6635590e17f692522589/json-api-v1.md#%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9
             continue
 
         time = row["earthquake"]["time"]
