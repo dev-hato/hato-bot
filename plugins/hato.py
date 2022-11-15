@@ -94,14 +94,14 @@ def default_action():
 def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
-    msg = "地震情報を取得できなかったっぽ!"
+    msg: str = "地震情報を取得できなかったっぽ!"
     data = get_quake_list()
 
     if data is None:
         client.post(msg)
         return
 
-    msg: str = "地震情報を取得したっぽ!\n"
+    msg = "地震情報を取得したっぽ!\n"
     msg += "```\n"
     msg += "出典: https://github.com/p2pquake/epsp-specifications \n"
     msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"

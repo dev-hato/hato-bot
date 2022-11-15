@@ -42,7 +42,7 @@ def generate_map_img(
     hypocenter: str,
     magnitude: str,
     earthquake_intensity: str,
-) -> Optional[Image.Image]:
+) -> Image.Image:
     """
     OpenStreetMap画像を取得してMap画像を組み立てる
     Usage: generate_map_img(lat=37, lng=139, zoom=8, around_tiles=2, time="14日22時28分",
