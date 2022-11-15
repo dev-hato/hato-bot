@@ -14,11 +14,11 @@ from plugins.hato import (
     altitude,
     amedas,
     amesh,
+    earth_quake,
     omikuji,
     omikuji_results,
     split_command,
     yoshiyoshi,
-    earth_quake,
 )
 from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
@@ -70,11 +70,21 @@ class TestEarthQuake(unittest.TestCase):
         """
         client1 = TestClient()
 
-        with open(os.path.join(os.path.dirname(__file__), "test.png"), mode="rb") as picture_file:
-            mocker.get(re.compile(r"tile\.openstreetmap\.org/.+\.png"), content=picture_file.read())
+        with open(
+            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
+        ) as picture_file:
+            mocker.get(
+                re.compile(r"tile\.openstreetmap\.org/.+\.png"),
+                content=picture_file.read(),
+            )
 
-        with open(os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb") as json_file:
-            mocker.get("https://api.p2pquake.net/v1/human-readable?limit=10", content=json_file.read())
+        with open(
+            os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb"
+        ) as json_file:
+            mocker.get(
+                "https://api.p2pquake.net/v1/human-readable?limit=10",
+                content=json_file.read(),
+            )
 
         actual = earth_quake(client1)
         self.assertEqual(None, actual)
@@ -95,12 +105,15 @@ class TestEarthQuake(unittest.TestCase):
         引数なしで地震コマンドが実行できるかテスト
         """
         with requests_mock.Mocker() as mocker:
-            self.earth_quake_upload_png_test(mocker, "```\n"
-                                             + "発生時刻: 15日8時09分\n"
-                                             + "震源地: 福島県沖\n"
-                                             + "マグニチュード: 3.9\n"
-                                             + "最大震度: 1.0\n"
-                                             + "```")
+            self.earth_quake_upload_png_test(
+                mocker,
+                "```\n"
+                + "発生時刻: 15日8時09分\n"
+                + "震源地: 福島県沖\n"
+                + "マグニチュード: 3.9\n"
+                + "最大震度: 1.0\n"
+                + "```",
+            )
 
 
 class TestAmesh(unittest.TestCase):
