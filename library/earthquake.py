@@ -42,13 +42,13 @@ def generate_map_img(
     around_tiles: int,
     time: str,
     hypocenter: str,
-    magnitude: str,
+    magnitude: float,
     earthquake_intensity: str,
 ) -> Image.Image:
     """
     OpenStreetMap画像を取得してMap画像を組み立てる
-    Usage: generate_map_img(lat=37, lng=139, zoom=8, around_tiles=2, time="14日22時28分",
-                            hypocenter="石川県能登地方", magnitude="4.2", earthquake_intensity="4.0").save('res2.png')
+    Usage: generate_map_img(lat=37, lng=139, zoom=8, around_tiles=2, time="2022/11/15 10:55:00",
+                            hypocenter="石川県能登地方", magnitude=4.2, earthquake_intensity="4.0").save('res2.png')
     """
 
     layers: List[Layer] = [
