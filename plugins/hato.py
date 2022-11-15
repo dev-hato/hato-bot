@@ -114,7 +114,9 @@ def earth_quake(client: BaseClient):
         magnitude = row["earthquake"]["hypocenter"]["magnitude"]
         earthquake_intensity = row["earthquake"]["maxScale"]
 
-        if earthquake_intensity is None:
+        # 震源情報が存在しない場合は-1になる
+        # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
+        if earthquake_intensity == -1:
             earthquake_intensity = ""
         else:
             earthquake_intensity /= 10
