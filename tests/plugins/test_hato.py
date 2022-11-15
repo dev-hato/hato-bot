@@ -108,7 +108,7 @@ class TestEarthQuake(unittest.TestCase):
             self.earth_quake_upload_png_test(
                 mocker,
                 "```\n"
-                + "発生時刻: 15日8時09分\n"
+                + "発生時刻: 2022/11/15 08:09:00\n"
                 + "震源地: 福島県沖\n"
                 + "マグニチュード: 3.9\n"
                 + "最大震度: 1.0\n"
