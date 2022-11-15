@@ -133,7 +133,7 @@ def earth_quake(client: BaseClient):
 
         # 震源情報が存在しない場合は-200になる
         # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
-        if -200<lat and -200<lng:
+        if -200 < lat and -200 < lng:
             map_img = generate_map_img(
                 lat=float(lat),
                 lng=float(lng),
