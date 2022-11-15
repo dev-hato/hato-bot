@@ -22,8 +22,9 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          script:
-            return process.env.GITHUB_REPOSITORY.split('/')[0]
+          script: |
+            const script = require(`${process.env.GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_package.js`)
+            return script()
       - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
@@ -31,13 +32,6 @@ jobs:
           path: sudden-death
       - name: Copy CI
         run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
-      - name: Copy package.json
-        uses: actions/github-script@v6.3.3
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_package.js`)
-            script()
       - name: Show diff
         id: show_diff
         working-directory: sudden-death

@@ -100,10 +100,7 @@ jobs:
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
-        run: docker compose up -d --wait
-      # Dockerコンテナに疎通できるかテストする
-      - name: Test
-        run: curl http://localhost:3000/status
+        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/deploy_docker_image/test.sh"
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
@@ -121,19 +118,11 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set .env
-        run: cp .env.example .env
-      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
-        env:
-          HEAD_REF: ${{github.head_ref}}
-      - run: docker compose pull
       - name: Get Python version
         id: get_python_version
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
-      - name: Update versions
         env:
-          PYTHON_VERSION: ${{steps.get_python_version.outputs.python_version}}
-        run: echo "${PYTHON_VERSION}" > .python-version
+          HEAD_REF: ${{github.head_ref}}
       - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -163,15 +152,9 @@ jobs:
       REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: Set .env
-        run: cp .env.example .env
-      - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
+      - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/install_dockle.sh"
-      - run: docker compose pull
-      - run: docker compose up -d
-      - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
 
   deploy-complete:
     runs-on: ubuntu-latest
