@@ -18,6 +18,7 @@ from plugins.hato import (
     omikuji_results,
     split_command,
     yoshiyoshi,
+    earth_quake,
 )
 from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
@@ -55,6 +56,51 @@ class TestSplitCommand(unittest.TestCase):
     def test_maxsplit(self):
         """空白が間に2つ以上ある場合"""
         self.assertEqual(split_command(" text add テスト", 1), ["text", "add テスト"])
+
+
+class TestEarthQuake(unittest.TestCase):
+    """
+    地震コマンドが正しく動作しているかテストする
+    """
+
+    def get_earth_quake_test(self, mocker: requests_mock.Mocker):
+        """
+        地震情報を取得できるかテスト
+        :param mocker requestsのMock
+        """
+        client1 = TestClient()
+
+        with open(os.path.join(os.path.dirname(__file__), "test.png"), mode="rb") as picture_file:
+            mocker.get(re.compile(r"tile\.openstreetmap\.org/.+\.png"), content=picture_file.read())
+
+        with open(os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb") as json_file:
+            mocker.get("https://api.p2pquake.net/v1/human-readable?limit=10", content=json_file.read())
+
+        actual = earth_quake(client1)
+        self.assertEqual(None, actual)
+        return client1
+
+    def earth_quake_upload_png_test(self, mocker: requests_mock.Mocker, msg: str):
+        """
+        地震コマンドを実行し、png画像を「map.png」としてuploadできるかテスト
+        :param mocker requestsのMock
+        :param msg: Slackに投稿されて欲しいメッセージ
+        """
+        client1 = self.get_earth_quake_test(mocker)
+        self.assertEqual(client1.get_post_message(), msg)
+        self.assertEqual(client1.get_filename(), "map.png")
+
+    def test_earth_quake_with_no_params(self):
+        """
+        引数なしで地震コマンドが実行できるかテスト
+        """
+        with requests_mock.Mocker() as mocker:
+            self.earth_quake_upload_png_test(mocker, "```\n"
+                                             + "発生時刻: 15日8時09分\n"
+                                             + "震源地: 福島県沖\n"
+                                             + "マグニチュード: 3.9\n"
+                                             + "最大震度: 1.0\n"
+                                             + "```")
 
 
 class TestAmesh(unittest.TestCase):
