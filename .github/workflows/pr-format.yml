@@ -34,7 +34,7 @@ jobs:
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/test.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/pipenv_install.sh"
       # formatする
