@@ -82,7 +82,7 @@ class TestEarthQuake(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb"
         ) as json_file:
             mocker.get(
-                "https://api.p2pquake.net/v1/human-readable?limit=10",
+                "https://api.p2pquake.net/v2/history?codes=551&limit=3",
                 content=json_file.read(),
             )
 

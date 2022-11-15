@@ -25,7 +25,9 @@ def get_quake_list(limit: int = 10) -> Optional[Any]:
     """
     地震リストを取得
     """
-    quake_url = f"https://api.p2pquake.net/v1/human-readable?limit={limit}"
+    # 551は地震情報
+    # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
+    quake_url = f"https://api.p2pquake.net/v2/history?codes=551&limit={limit}"
     response = requests.get(quake_url)
     if response.status_code == 200:
         data = json.loads(response.text)

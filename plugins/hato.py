@@ -95,7 +95,7 @@ def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
     msg: str = "地震情報を取得できなかったっぽ!"
-    data = get_quake_list()
+    data = get_quake_list(3)
 
     if data is None:
         client.post(msg)
@@ -103,21 +103,12 @@ def earth_quake(client: BaseClient):
 
     msg = "地震情報を取得したっぽ!\n"
     msg += "```\n"
-    msg += "出典: https://github.com/p2pquake/epsp-specifications \n"
+    msg += "出典: https://www.p2pquake.net/json_api_v2/ \n"
     msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"
     msg += "```"
     client.post(msg)
 
-    cnt = 1
-
     for row in data:
-        code = int(row["code"])
-
-        # 551は地震情報
-        # https://github.com/p2pquake/epsp-specifications/blob/master/json-api-v1.md#%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9
-        if code != 551:
-            continue
-
         time = row["earthquake"]["time"]
         hypocenter = row["earthquake"]["hypocenter"]["name"]
         magnitude = row["earthquake"]["hypocenter"]["magnitude"]
@@ -137,10 +128,12 @@ def earth_quake(client: BaseClient):
         msg += "```"
         client.post(msg)
 
-        lat = row["earthquake"]["hypocenter"]["latitude"].replace("N", "")
-        lng = row["earthquake"]["hypocenter"]["longitude"].replace("E", "")
+        lat = row["earthquake"]["hypocenter"]["latitude"]
+        lng = row["earthquake"]["hypocenter"]["longitude"]
 
-        if lat != "" and lng != "":
+        # 震源情報が存在しない場合は-200になる
+        # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
+        if -200<lat and -200<lng:
             map_img = generate_map_img(
                 lat=float(lat),
                 lng=float(lng),
@@ -163,11 +156,6 @@ def earth_quake(client: BaseClient):
                 client.upload(
                     file=map_file.name, filename=os.path.extsep.join(filename)
                 )
-
-        if 3 <= cnt:
-            break
-
-        cnt += 1
 
 
 @action("text list")
