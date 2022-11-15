@@ -25,17 +25,12 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get Dependabot npm version
-        id: get_dependabot_npm_version
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
-      - name: Update version
-        env:
-          DEPENDABOT_NPM_VERSION: ${{steps.get_dependabot_npm_version.outputs.npm_version}}
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/update_version.sh"
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
+      - name: Get Dependabot npm version
+        id: get_dependabot_npm_version
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
       - uses: dev-hato/actions-diff-pr-management@v1.0.8
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -53,7 +48,7 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3.5.1
         with:
           cache: npm

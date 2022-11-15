@@ -26,15 +26,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
       - name: Install pipenv
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test_hato_bot/pr_test/install_pipenv.sh"
-      - name: pipenv version
-        run: pipenv --version
-      - name: Install dependencies
-        run: pipenv install --dev
-      - name: Set .env
-        run: cp .env.example .env
-      - name: Test
-        run: pipenv run python -m unittest
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test_hato_bot/pr_test/test.sh"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

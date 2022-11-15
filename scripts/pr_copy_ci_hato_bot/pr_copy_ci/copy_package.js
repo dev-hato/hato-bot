@@ -20,4 +20,6 @@ module.exports = () => {
   }
 
   fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/sudden-death/package-lock.json`, JSON.stringify(suddenDeathPackageLock, null, '  ') + '\n', 'utf8')
+
+  return process.env.GITHUB_REPOSITORY.split('/')[0]
 }
