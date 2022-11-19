@@ -31,7 +31,7 @@ jobs:
       - name: Get Dependabot npm version
         id: get_dependabot_npm_version
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.0.8
+      - uses: dev-hato/actions-diff-pr-management@v1.0.9
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -54,7 +54,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.0.8
+      - uses: dev-hato/actions-diff-pr-management@v1.0.9
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
