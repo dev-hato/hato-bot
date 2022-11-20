@@ -11,3 +11,7 @@ else
 fi
 
 pip install ${package_name_with_version}
+pipenv --version
+pipenv install --dev
+cp .env.example .env
+pipenv run python -m unittest
