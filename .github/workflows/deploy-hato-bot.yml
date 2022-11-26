@@ -128,7 +128,6 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
           pr-title-prefix: .python-versionを直してあげたよ！
-          repo-name: dev-hato/hato-bot
 
   update-dockle:
     runs-on: ubuntu-latest
