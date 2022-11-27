@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.593,
+          41.471
+        ]
+      },
+      "properties": {
+        "id": "nowc_20220507064500_20220507064500_liden_0",
+        "obstimeJST": "2022/05/07 15:40:31.220",
+        "type": 1
+      }
+    }
+  ]
+}

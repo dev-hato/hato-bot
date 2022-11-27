@@ -10,12 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: Set up Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: |
-          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
-          npm install --prefer-offline --location=global "npm@${npm_version}"
-          npm ci --prefer-offline
-      - run: npx renovate-config-validator
+      - run: bash "${GITHUB_WORKSPACE}/scripts/pr_renovate_config_validator/pr_renovate_config_validator/run_validator.sh"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
