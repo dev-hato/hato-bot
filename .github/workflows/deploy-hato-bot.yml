@@ -123,7 +123,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref}}
-      - uses: dev-hato/actions-diff-pr-management@v1.1.0
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
