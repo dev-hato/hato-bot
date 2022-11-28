@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Set org name
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -25,60 +25,26 @@ jobs:
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         id: get_pull_requests
+        env:
+          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const pulls_list_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "${{steps.set_org_name.outputs.result}}:master",
-              base: "develop",
-              state: "open"
-            }
-            console.log("call pulls.list:", pulls_list_params)
-            const pulls = await github.paginate(github.rest.pulls.list,
-                                                pulls_list_params)
-            return pulls.length
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/get_pull_requests_hato_bot.js`)
+            return await script({github, context})
       - name: Create PullRequest
-        uses: actions/github-script@v6.1.0
+        uses: actions/github-script@v6.3.3
         if: ${{ steps.get_pull_requests.outputs.result == 0 }}
+        env:
+          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const common_params = {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }
-            const pulls_create_params = {
-              head: "${{steps.set_org_name.outputs.result}}:master",
-              base: "develop",
-              title: "master -> develop",
-              body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",
-              ...common_params
-            }
-            console.log("call pulls.create:", pulls_create_params)
-            const create_pull_res = await github.rest.pulls.create(
-                                      pulls_create_params
-                                    )
-            const number = create_pull_res.data.number
-            const release_users = ["nakkaa"]
-            const pulls_request_reviews_params = {
-              pull_number: number,
-              reviewers: release_users,
-              ...common_params
-            }
-            console.log("call pulls.requestReviewers:")
-            console.log(pulls_request_reviews_params)
-            await github.rest.pulls.requestReviewers(
-              pulls_request_reviews_params
-            )
-            const issues_add_assignees_params = {
-              issue_number: number,
-              assignees: release_users,
-              ...common_params
-            }
-            console.log("call issues.addAssignees:")
-            console.log(issues_add_assignees_params)
-            await github.rest.issues.addAssignees(issues_add_assignees_params)
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_merge_develop_hato_bot/pr_master_to_develop/create_pull_request.js`)
+            await script({github, context})
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

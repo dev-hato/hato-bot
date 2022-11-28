@@ -22,8 +22,7 @@
     "ng-word": true,
     "no-dead-link": {
         "ignore": [
-            "https://github.com/dev-hato/hato-bot/releases/latest",
-            "https://heroku.com/deploy"
+            "https://github.com/dev-hato/hato-bot/releases/latest"
         ]
     },
     "no-mixed-zenkaku-and-hankaku-alphabet": true,

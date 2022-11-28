@@ -16,37 +16,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           submodules: "recursive"
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4.3.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
       - name: Install pipenv
-        run: |
-          file_name=Dockerfile
-          package_name=pipenv
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test_hato_bot/pr_test/test.sh"
 
-          if [ -f ${file_name} ]
-          then
-            PATTERN="${package_name}[^ ]+"
-            package_name_with_version=$(grep -oE "${PATTERN}" ${file_name})
-          else
-            package_name_with_version=${package_name}
-          fi
-
-          pip install ${package_name_with_version}
-      - name: pipenv version
-        run: pipenv --version
-      - name: Install dependencies
-        run: |
-          pipenv install --dev
-      - name: Set .env
-        run: |
-          cp .env.example .env
-      - name: Test
-        run: |
-          pipenv run python -m unittest
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

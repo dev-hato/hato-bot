@@ -1,75 +1,35 @@
 ---
 name: pr-update-gitleaks
-
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   push:
     branches:
       - master
-
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
   pr-update-gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
       - name: Install packages
-        run: |
-          npm_version=$(jq -r '.engines.npm | ltrimstr("^")' package.json)
-          npm install --prefer-offline --location=global "npm@${npm_version}"
-          npm ci --prefer-offline
-      - name: Update .gitleaks.toml
-        run: |
-          version="$(grep super-linter .github/workflows/pr-test.yml | grep uses | sed -e 's/.*@//g')"
-          curl "https://raw.githubusercontent.com/github/super-linter/${version}/TEMPLATES/.gitleaks.toml" > .gitleaks.toml
-      - name: Update .pre-commit-config.yaml
-        uses: actions/github-script@v6.1.0
+        run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
+      - uses: dev-hato/actions-update-gitleaks@v0.0.31
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const fs = require('fs')
-            const yaml = require('js-yaml')
-
-            const config_filename = '.pre-commit-config.yaml'
-            const config = yaml.load(fs.readFileSync(config_filename, 'utf8'))
-            const common_params = {
-                owner: 'zricethezav',
-                repo: 'gitleaks'
-            }
-            console.log("call repos.getLatestRelease:", common_params)
-            const latest_release = await github.rest.repos.getLatestRelease(
-                                     common_params
-                                   )
-            config.repos = config.repos.map(repo => {
-                let repo_name = 'https://github.com/'
-                repo_name += common_params.owner + '/' + common_params.repo
-
-                if (repo.repo === repo_name) {
-                    repo.rev = latest_release.data.tag_name
-                }
-
-                return repo;
-            })
-            const content = '---\n' + yaml.dump(config)
-
-            try {
-                fs.writeFileSync(config_filename, content, 'utf8')
-            } catch (err) {
-                console.error(err.message)
-                process.exit(1)
-            }
-      - uses: dev-hato/actions-diff-pr-management@v0.0.8
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: fix-version-pre-commit-config
-          pr-title-prefix: gitleaksをアップデートしてあげたよ！
-          repo-name: ${{ github.event.pull_request.head.repo.full_name }}
+          repo-name: dev-hato/hato-bot
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

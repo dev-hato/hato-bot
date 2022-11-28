@@ -10,13 +10,13 @@
 
 1. 左側にある `OAuth & Permissions` をクリックします。
 
-1. `Bot Token Scopes` で以下の権限を付与します。
+1. `Bot Token Scopes` で次の権限を付与します。
     * app_mentions:read
     * chat:write
     * files:write
     * users:read
 
-1. `User Token Scopes` で以下の権限を付与します。
+1. `User Token Scopes` で次の権限を付与します。
     * chat:write
 
 1. ページ上部にある `Install App to Workspace` をクリックします。
