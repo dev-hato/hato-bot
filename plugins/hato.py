@@ -104,6 +104,7 @@ def earth_quake():
     return msg
 
 
+@action("textlint")
 def textlint(text: str):
     """文章を校正する"""
 
