@@ -21,29 +21,15 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
       - name: Install pipenv
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
-      - name: pipenv version
-        run: pipenv --version
-      - name: Install dependencies
-        run: pipenv install --dev
-      - name: Set venv_path
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/set_venv_path.sh"
-        # https://github.com/github/super-linter/issues/157#issuecomment-648850330
-        # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
-        # ここに cp -r することで、super-linterのなかに.venvを配置できる
-        # また、元ディレクトリにも残っているので、キャッシュが作られる
-      - name: Move the dependencies
         env:
-          VENV_PATH: ${{ env.venv_path }}
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
-        run: cp -r "${VENV_PATH}" "${DEST_PATH}"
-      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
+      - name: Set up Node.js
         uses: actions/setup-node@v3.5.1
         with:
           cache: npm
       - name: Install dependencies
-        run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - run: echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(echo 'import sys; print(".".join(map(str, sys.version_info[0:2])))' | python)/site-packages" >> "${GITHUB_ENV}"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
         uses: github/super-linter/slim@v4.9.7
         env:

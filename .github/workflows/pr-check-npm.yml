@@ -25,23 +25,17 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get Dependabot npm version
-        id: get_dependabot_npm_version
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
-      - name: Update version
-        env:
-          DEPENDABOT_NPM_VERSION: ${{steps.get_dependabot_npm_version.outputs.npm_version}}
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/update_version.sh"
       - uses: actions/setup-node@v3.5.1
         with:
           cache: npm
-      - run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.0.8
+      - name: Get Dependabot npm version
+        id: get_dependabot_npm_version
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
           pr-title-prefix: nodeをアップデートしてあげたよ！
-          repo-name: dev-hato/hato-bot
   # package.jsonに差分があれば、package.jsonからpackage-lock.jsonを作り出す
   pr-check-npm:
     runs-on: ubuntu-latest
@@ -53,18 +47,17 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3.5.1
         with:
           cache: npm
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.0.8
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
           pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
-          repo-name: dev-hato/hato-bot
   pr-check-npm-complete:
     runs-on: ubuntu-latest
     if: always()

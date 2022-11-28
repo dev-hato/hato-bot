@@ -8,25 +8,33 @@ RUN apt-get update \
 
 FROM python:3.11.0-slim-bullseye
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG ENV
 ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
 COPY Pipfile Pipfile
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
 # * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
+# * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl && \
-    pip install pipenv==2022.11.11 --no-cache-dir && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    pip install pipenv==2022.11.25 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
       pipenv install --system --skip-lock; \
     fi && \
+    npm install && \
     pip uninstall -y pipenv virtualenv && \
     apt-get remove -y git gcc libc6-dev && \
     apt-get autoremove -y && \
@@ -41,8 +49,10 @@ COPY *.py ./
 COPY library library
 COPY plugins plugins
 COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
+COPY .textlintrc .textlintrc
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
+ENV NODE_OPTIONS="--max-old-space-size=512"
 HEALTHCHECK --interval=5s --retries=20 CMD ["curl", "-s", "-S", "-o", "/dev/null", "http://localhost:3000/status"]
 CMD ["python", "entrypoint.py"]

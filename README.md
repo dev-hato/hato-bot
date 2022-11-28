@@ -59,7 +59,7 @@
     docker compose up -d --wait
     ```
 
-    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに次のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
@@ -73,7 +73,7 @@
     docker compose restart
     ```
 
-    Docker内で開発用のPythonライブラリを使用したい場合は代わりに以下のコマンドを実行します。
+    Docker内で開発用のPythonライブラリを使用したい場合は代わりに次のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
@@ -131,6 +131,7 @@ pipenv run pre-commit install
     標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
     標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
     eq ... 最新の地震情報を3件表示する。
+    textlint [text] ... 文字列[text]を校正する。
     text list ... パワーワード一覧を表示する。
     text random ... パワーワードをひとつ、ランダムで表示する。
     text show [int] ... 指定した番号[int]のパワーワードを表示する。
