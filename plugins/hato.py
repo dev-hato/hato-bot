@@ -104,19 +104,17 @@ def earth_quake():
     return msg
 
 
+@action("textlint")
 def textlint(text: str):
     """文章を校正する"""
 
-    def ret(client: BaseClient):
-        msg = "完璧な文章っぽ!"
-        res = get_textlint_result(text)
+    msg = "完璧な文章っぽ!"
+    res = get_textlint_result(text)
 
-        if res:
-            msg = "文章の修正点をリストアップしたっぽ!\n" + res
+    if res:
+        msg = "文章の修正点をリストアップしたっぽ!\n" + res
 
-        client.post(msg)
-
-    return ret
+    return msg
 
 
 @action("text list")
