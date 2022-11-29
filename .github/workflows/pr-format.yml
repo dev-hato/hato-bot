@@ -43,12 +43,11 @@ jobs:
         id: format
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v1.0.9
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
           pr-title-prefix: formatが間違ってたので直してあげたよ！
-          repo-name: dev-hato/hato-bot
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

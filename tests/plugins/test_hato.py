@@ -137,11 +137,15 @@ class TestAmesh(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
         ) as picture_file:
             image_content = picture_file.read()
-            for image_url in [
+            mocker.get(
                 re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                content=image_content,
+            )
+            mocker.get(
                 re.compile(r"tile\.openstreetmap\.org/.+\.png"),
-            ]:
-                mocker.get(image_url, content=image_content)
+                request_headers={"user-agent": f"hato-bot/{conf.VERSION}"},
+                content=image_content,
+            )
 
         with open(
             os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
