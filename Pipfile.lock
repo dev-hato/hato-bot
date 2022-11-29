@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ebf8f82931a5b31539e87d5cb5452f628d7344766c8b4f97a40aa67c1643e56f"
+            "sha256": "11f4d54dec018617b92b8e466d5448ef3143e616a2d456b4baa92a1cdf952eae"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -927,7 +927,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "90d906a81ab4a7afadf02b670e51177102d0ec29"
+            "ref": "9db916d8f29e4bf42acd378014ee3af86110de17"
         },
         "typing-extensions": {
             "hashes": [
@@ -1128,11 +1128,11 @@
         },
         "diff-cover": {
             "hashes": [
-                "sha256:38435447dad32abb7e01d1c3942539021a522388a3b585d583a6e207cc133497",
-                "sha256:c0a08229edca5aa46da061e193d3d163ed9853ba119c6a6dd332c25f874b0ffc"
+                "sha256:d4f5ca086ba73dab3df1709500057b9fb8a18ba516923abf42fe65b6681e7ba6",
+                "sha256:f6761f00725a10e0193491ba746d6462bf2c6b443a54fd5af7b6fa99a40126a3"
             ],
             "markers": "python_full_version >= '3.7.2' and python_full_version < '4.0.0'",
-            "version": "==7.0.2"
+            "version": "==7.1.1"
         },
         "dill": {
             "hashes": [
@@ -1400,11 +1400,11 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:15060cc22ed6830a4049cf40bc24977744df2e554d38da1b2657591de5bcd052",
-                "sha256:25b13ddcf5af7d112cf96935e21806c1da60e676f952efb650130f2a4483421c"
+                "sha256:1d561d1d3e8be9dd880edc685162fbdaa0409c88b9b7400873c0cf345602e326",
+                "sha256:91e4776dbcb4b4d921a3e4b6fec669551107ba11f29d9199154a01622e460a57"
             ],
             "index": "pypi",
-            "version": "==2.15.6"
+            "version": "==2.15.7"
         },
         "pyparsing": {
             "hashes": [
@@ -1660,11 +1660,11 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:8691e3ff9387f743e00f6bb20f70121f5e4f596cae754531f2b3b3a1b1ac696e",
-                "sha256:efd66b00386fdb7dbe4822d172303f40cd05e50e01740b19ea42425cbe653e29"
+                "sha256:40a7e06a98728fd5769e1af6fd1a706005b4bb7e16176a272ed4292473180389",
+                "sha256:7d6a8d55b2f73b617f684ee40fd85740f062e1f2e379412cb1879c7136f05902"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==20.16.7"
+            "version": "==20.17.0"
         },
         "wrapt": {
             "hashes": [
