@@ -27,7 +27,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2022.11.25 --no-cache-dir && \
+    pip install pipenv==2022.11.30 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
@@ -41,7 +41,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
     find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
-    useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+    useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
+    chown -R nonroot /usr/src/app
 USER nonroot
 
 COPY *.py ./
