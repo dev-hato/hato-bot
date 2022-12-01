@@ -122,7 +122,7 @@ jobs:
         id: get_python_version
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
-          HEAD_REF: ${{github.head_ref}}
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
       - uses: dev-hato/actions-diff-pr-management@v1.1.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -153,7 +153,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
         env:
-          HEAD_REF: ${{github.head_ref}}
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
 
   deploy-complete:
     runs-on: ubuntu-latest
