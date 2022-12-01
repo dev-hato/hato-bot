@@ -42,7 +42,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp && \
     find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
-    useradd -l -m -s /bin/bash -N -u "1000" "nonroot"
+    useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
+    chown -R nonroot /usr/src/app
 USER nonroot
 
 COPY *.py ./
