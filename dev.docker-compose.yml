@@ -11,5 +11,5 @@ services:
       args:
         - ENV=dev
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
-    env_file:
-      - .env
+    volumes:
+      - .:/usr/src/app

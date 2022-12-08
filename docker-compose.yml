@@ -45,9 +45,6 @@ services:
     env_file:
       - .env
     restart: always
-    # 本番環境ではコメントアウトする
-    volumes:
-      - .:/usr/src/app
     ports:
       - 3000:3000
     depends_on:
