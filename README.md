@@ -2,7 +2,7 @@
 
 ![badge](https://github.com/dev-hato/hato-bot/workflows/pr-test/badge.svg)
 
-鳩botでは主に次のことができます。
+鳩botでは主に次のことができます......。
 
 - 雨雲情報 ... `amesh [text]` で指定した地名・住所[text]の雨雲情報を画像で表示します。
 - 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
