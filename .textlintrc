@@ -32,7 +32,8 @@
       "ja-no-successive-word": {
         "allow": [
             "人人",
-            "よし"
+            "よし",
+            "..."
         ]
       }
     },
