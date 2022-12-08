@@ -29,7 +29,6 @@ jobs:
       - uses: dev-hato/actions-update-gitleaks@v0.0.31
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: dev-hato/hato-bot
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
