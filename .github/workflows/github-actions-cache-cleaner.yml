@@ -15,12 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.1.0
-      - uses: actions/github-script@v6.3.3
+      - uses: dev-hato/github-actions-cache-cleaner@v0.0.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/clean_cache/clean_cache/clean-cache.js`)
-            await script({github, context})
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
