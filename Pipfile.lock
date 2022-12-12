@@ -654,7 +654,7 @@
                 "sha256:f063b69b090c9d918f9df0a12116029e274daf0181df392839661c4c7ec9018a",
                 "sha256:f9a909a8bae284d46bbfdefbdd4a262ba19d3bc9921b1e76126b1d21c3c34135"
             ],
-            "markers": "python_version >= '3.10'",
+            "markers": "python_version >= '3.8'",
             "version": "==1.23.5"
         },
         "opencv-python": {
@@ -942,7 +942,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "b33ce857f29224886e6cf6e24f9d9a75c3fc2427"
+            "ref": "2e7484a4226802d24cd17a9f7d3f81fedc1923b0"
         },
         "typing-extensions": {
             "hashes": [
@@ -1149,11 +1149,11 @@
         },
         "diff-cover": {
             "hashes": [
-                "sha256:16bd4cb5f90afcc5372b668974a33a560e0030df8c2fef425a82d83b15d4662c",
-                "sha256:309bcfddbc13650b121462252f3f6967ac196816f8b91e965a2e0c02ba15cc92"
+                "sha256:02c77c97b2952a6900d12239db6ce1b5e1c400798aee768102e4d492d5341500",
+                "sha256:a9b1f2bbd14962cd5279d7358a3ba8d726b9a6cc03dbf409f89cc2076a424234"
             ],
-            "markers": "python_full_version >= '3.7.2' and python_full_version < '4.0.0'",
-            "version": "==7.2.0"
+            "markers": "python_version < '4' and python_full_version >= '3.7.2'",
+            "version": "==7.3.0"
         },
         "dill": {
             "hashes": [
@@ -1211,11 +1211,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
-                "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
+                "sha256:7c5bd998504826b6f1e6f2f98b533976b066baba29b8bae83fdeefd0b89c6b70",
+                "sha256:bf02c95f1fe615ebbe13a619cfed1619ddfe8941274c9e3de3143adca406cb02"
             ],
             "index": "pypi",
-            "version": "==5.10.1"
+            "version": "==5.11.1"
         },
         "jinja2": {
             "hashes": [
@@ -1365,11 +1365,11 @@
         },
         "pathspec": {
             "hashes": [
-                "sha256:88c2606f2c1e818b978540f73ecc908e13999c6c3a383daf3705652ae79807a5",
-                "sha256:8f6bf73e5758fd365ef5d58ce09ac7c27d2833a8d7da51712eac6e27e35141b0"
+                "sha256:3c95343af8b756205e2aba76e843ba9520a24dd84f68c22b9f93251507509dd6",
+                "sha256:56200de4077d9d0791465aa9095a01d421861e405b5096955051deefd697d6f6"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==0.10.2"
+            "version": "==0.10.3"
         },
         "platformdirs": {
             "hashes": [
