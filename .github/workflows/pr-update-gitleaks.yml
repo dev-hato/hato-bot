@@ -17,7 +17,7 @@ jobs:
   pr-update-gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -26,10 +26,9 @@ jobs:
           cache: npm
       - name: Install packages
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - uses: dev-hato/actions-update-gitleaks@v0.0.31
+      - uses: dev-hato/actions-update-gitleaks@v0.0.33
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: dev-hato/hato-bot
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
