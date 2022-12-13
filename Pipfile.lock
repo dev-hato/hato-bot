@@ -654,7 +654,7 @@
                 "sha256:f063b69b090c9d918f9df0a12116029e274daf0181df392839661c4c7ec9018a",
                 "sha256:f9a909a8bae284d46bbfdefbdd4a262ba19d3bc9921b1e76126b1d21c3c34135"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_version >= '3.11'",
             "version": "==1.23.5"
         },
         "opencv-python": {
@@ -942,7 +942,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "2e7484a4226802d24cd17a9f7d3f81fedc1923b0"
+            "ref": "ccaa06ddd45b87a4df1e8f800e7a13503f64ee04"
         },
         "typing-extensions": {
             "hashes": [
@@ -1152,7 +1152,7 @@
                 "sha256:02c77c97b2952a6900d12239db6ce1b5e1c400798aee768102e4d492d5341500",
                 "sha256:a9b1f2bbd14962cd5279d7358a3ba8d726b9a6cc03dbf409f89cc2076a424234"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.7.2'",
+            "markers": "python_full_version >= '3.7.2' and python_full_version < '4.0.0'",
             "version": "==7.3.0"
         },
         "dill": {
@@ -1211,11 +1211,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:7c5bd998504826b6f1e6f2f98b533976b066baba29b8bae83fdeefd0b89c6b70",
-                "sha256:bf02c95f1fe615ebbe13a619cfed1619ddfe8941274c9e3de3143adca406cb02"
+                "sha256:dd8bbc5c0990f2a095d754e50360915f73b4c26fc82733eb5bfc6b48396af4d2",
+                "sha256:e486966fba83f25b8045f8dd7455b0a0d1e4de481e1d7ce4669902d9fb85e622"
             ],
             "index": "pypi",
-            "version": "==5.11.1"
+            "version": "==5.11.2"
         },
         "jinja2": {
             "hashes": [
