@@ -10,7 +10,7 @@ else
   package_name_with_version=${package_name}
 fi
 
-pip install ${package_name_with_version}
+pip install "${package_name_with_version}"
 
 if [ -f ${file_name} ]; then
   new_version="$(pip list --outdated | grep pipenv || true)"
