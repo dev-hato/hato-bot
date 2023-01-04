@@ -10,7 +10,7 @@ else
   package_name_with_version=${package_name}
 fi
 
-pip install ${package_name_with_version}
+pip install "${package_name_with_version}"
 pipenv --version
 pipenv install --dev
 cp .env.example .env
