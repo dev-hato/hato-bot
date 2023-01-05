@@ -17,16 +17,16 @@ jobs:
   pr-update-gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.2.0
+      - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@v3.6.0
         with:
           cache: npm
       - name: Install packages
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - uses: dev-hato/actions-update-gitleaks@v0.0.33
+      - uses: dev-hato/actions-update-gitleaks@v0.0.34
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:

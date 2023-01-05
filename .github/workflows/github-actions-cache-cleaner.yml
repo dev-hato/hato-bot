@@ -14,8 +14,8 @@ jobs:
   github-actions-cache-cleaner:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.2.0
-      - uses: dev-hato/github-actions-cache-cleaner@v0.0.4
+      - uses: actions/checkout@v3.3.0
+      - uses: dev-hato/github-actions-cache-cleaner@v0.0.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 

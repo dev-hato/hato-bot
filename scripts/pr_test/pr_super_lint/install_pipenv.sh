@@ -9,7 +9,7 @@ else
   package_name_v=${package_name}
 fi
 
-pip install ${package_name_v}
+pip install "${package_name_v}"
 pipenv --version
 pipenv install --dev
 
