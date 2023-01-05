@@ -25,7 +25,7 @@ jobs:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           cache: npm
       - name: Install dependencies
