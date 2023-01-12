@@ -19,7 +19,7 @@ pre-commit = "*"
 
 [packages]
 python-dotenv = "==0.21.0"
-requests = "==2.28.1"
+requests = "==2.28.2"
 Pillow = ">=7.1.2"
 opencv-python = "==4.7.0.68"
 pyperclip = "==1.8.2"
