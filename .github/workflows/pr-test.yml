@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: github/super-linter/slim@v4.10.0
+        uses: github/super-linter/slim@v4.10.1
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
