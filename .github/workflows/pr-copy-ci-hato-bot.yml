@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6.3.3
+        uses: actions/github-script@v6.4.0
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -32,7 +32,7 @@ jobs:
       - name: Copy CI
         run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
       - name: Copy package.json
-        uses: actions/github-script@v6.3.3
+        uses: actions/github-script@v6.4.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |

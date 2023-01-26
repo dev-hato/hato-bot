@@ -43,7 +43,7 @@ jobs:
         id: format
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v1.1.1
+      - uses: dev-hato/actions-diff-pr-management@v1.1.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
