@@ -18,14 +18,13 @@ jobs:
   format-json-yml:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-format-json-yml@v0.0.27
+      - uses: dev-hato/actions-format-json-yml@v0.0.33
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          repo-name: dev-hato/hato-bot
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

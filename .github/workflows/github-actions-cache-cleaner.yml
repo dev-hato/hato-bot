@@ -1,0 +1,24 @@
+---
+name: github-actions-cache-cleaner
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  schedule:
+    - cron: '0 21 * * *' # 06:00 JST
+  workflow_dispatch:
+
+jobs:
+  github-actions-cache-cleaner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - uses: dev-hato/github-actions-cache-cleaner@v0.0.9
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

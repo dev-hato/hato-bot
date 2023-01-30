@@ -19,7 +19,7 @@ jobs:
   pr-format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
@@ -27,7 +27,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/get_version.sh"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: ${{env.PYTHON_VERSION }}
           cache: pipenv
@@ -43,7 +43,7 @@ jobs:
         id: format
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
         continue-on-error: true
-      - uses: dev-hato/actions-diff-pr-management@v1.1.1
+      - uses: dev-hato/actions-diff-pr-management@v1.1.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-format
