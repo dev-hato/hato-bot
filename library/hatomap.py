@@ -257,7 +257,6 @@ class MarkerTrace(Layer):
     fill_color: Optional[Tuple[int, int, int, int]] = None
 
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
-
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
         if len(self.coords) == 0:
             return img
