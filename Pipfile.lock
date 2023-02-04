@@ -146,7 +146,7 @@
                 "sha256:5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845",
                 "sha256:83e9a75d1911279afd89352c68b45348559d1fc0506b054b346651b5e7fee29f"
             ],
-            "markers": "python_full_version >= '3.6.0'",
+            "markers": "python_version >= '3.6'",
             "version": "==2.1.1"
         },
         "click": {
@@ -954,7 +954,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "70d5a6c8bad06f8fa29a980db36830494ad8baed"
+            "ref": "731539e21f1ed05f8ea131cbc3a026ef920a7d01"
         },
         "typing-extensions": {
             "hashes": [
@@ -1153,7 +1153,7 @@
                 "sha256:5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845",
                 "sha256:83e9a75d1911279afd89352c68b45348559d1fc0506b054b346651b5e7fee29f"
             ],
-            "markers": "python_full_version >= '3.6.0'",
+            "markers": "python_version >= '3.6'",
             "version": "==2.1.1"
         },
         "click": {
@@ -1177,7 +1177,7 @@
                 "sha256:3d98800ea3198ab8450733050dd98dec802c9028c7164aace990f2f13a160e98",
                 "sha256:e1bfc69e7f9d5ed6e0239013a220fee78af0c490b89dc5f177293bb9de6a55bb"
             ],
-            "markers": "python_full_version >= '3.7.2' and python_full_version < '4.0.0'",
+            "markers": "python_version < '4' and python_full_version >= '3.7.2'",
             "version": "==7.4.0"
         },
         "dill": {
@@ -1442,11 +1442,11 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:4187e74fda38f0f700256fb2f757774385503b04292047d0899fc913207f314b",
-                "sha256:83e2e8cc5cbb3691cff9474494816918d865120768aa36c9eda6185126667d21"
+                "sha256:9e3255edb0c9e7fe9b4f328cb3dc86069f8fdc38026f1bf521018a05eaf4d67b",
+                "sha256:bc4687478d55578c4ac37272fe96df66f73d9b5cf81be6f28627d4e712e752d5"
             ],
             "index": "pypi",
-            "version": "==3.0.3"
+            "version": "==3.0.4"
         },
         "pycodestyle": {
             "hashes": [
