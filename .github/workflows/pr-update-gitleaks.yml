@@ -26,7 +26,7 @@ jobs:
           cache: npm
       - name: Install packages
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - uses: dev-hato/actions-update-gitleaks@v0.0.37
+      - uses: dev-hato/actions-update-gitleaks@v0.0.38
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
