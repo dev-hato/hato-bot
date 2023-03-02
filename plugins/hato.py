@@ -18,6 +18,7 @@ from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
+from library.chat_gpt import chat_gpt
 from library.clientclass import BaseClient
 from library.earthquake import generate_quake_info_for_slack, get_quake_list
 from library.geo import get_geo_data
@@ -35,7 +36,6 @@ from library.vocabularydb import (
     show_random_vocabulary,
     show_vocabulary,
 )
-from library.chat_gpt import chat_gpt
 
 logger = getLogger(__name__)
 
