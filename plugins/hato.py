@@ -35,6 +35,7 @@ from library.vocabularydb import (
     show_random_vocabulary,
     show_vocabulary,
 )
+from library.chat_gpt import chat_gpt
 
 logger = getLogger(__name__)
 
@@ -409,3 +410,12 @@ def omikuji():
     """
 
     return omikuji_draw(omikuji_results)[1].message
+
+
+@action("chat")
+def chat(message: str):
+    """
+    chat-gptに聞く
+    """
+
+    return chat_gpt(message=message)

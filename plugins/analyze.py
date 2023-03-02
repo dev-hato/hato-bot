@@ -35,6 +35,7 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "version": lambda m: hato.version,
         "にゃーん": lambda m: hato.yoshiyoshi,
         "おみくじ": lambda m: hato.omikuji,
+        "chat": lambda m: partial(hato.chat, message=m[len("chat") :].strip()),
     }
 
     for key, method in conditions.items():
