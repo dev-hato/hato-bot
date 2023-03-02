@@ -19,7 +19,7 @@ from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
 from library.clientclass import BaseClient
-from library.earthquake import generate_quake_info_for_slack, get_quake_list
+from library.earthquake import generate_map_img, get_quake_list
 from library.geo import get_geo_data
 from library.hatokaraage import hato_ha_karaage
 from library.hukidasi import generator
@@ -91,17 +91,74 @@ def default_action():
     return conf.DEFAULT_REPLY
 
 
-@action("eq")
-def earth_quake():
+@action("eq", with_client=True)
+def earth_quake(client: BaseClient):
     """地震 地震情報を取得する"""
 
-    msg = "地震情報を取得できなかったっぽ!"
-    data = get_quake_list()
-    if data is not None:
-        msg = "地震情報を取得したっぽ!\n"
-        msg = msg + generate_quake_info_for_slack(data, 3)
+    msg: str = "地震情報を取得できなかったっぽ!"
+    data = get_quake_list(3)
 
-    return msg
+    if data is None:
+        client.post(msg)
+        return
+
+    msg = "地震情報を取得したっぽ!\n"
+    msg += "```\n"
+    msg += "出典: https://www.p2pquake.net/json_api_v2/ \n"
+    msg += "気象庁HP: https://www.jma.go.jp/jp/quake/\n"
+    msg += "```"
+    client.post(msg)
+
+    for row in data:
+        time = row["earthquake"]["time"]
+        hypocenter = row["earthquake"]["hypocenter"]["name"]
+        magnitude = row["earthquake"]["hypocenter"]["magnitude"]
+        earthquake_intensity = row["earthquake"]["maxScale"]
+
+        # 震源情報が存在しない場合は-1になる
+        # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
+        if earthquake_intensity == -1:
+            earthquake_intensity = ""
+        else:
+            earthquake_intensity /= 10
+            earthquake_intensity = str(earthquake_intensity)
+
+        msg = "```\n"
+        msg += f"発生時刻: {time}\n"
+        msg += f"震源地: {hypocenter}\n"
+        msg += f"マグニチュード: {magnitude}\n"
+        msg += f"最大震度: {earthquake_intensity}\n"
+        msg += "```"
+        client.post(msg)
+
+        lat = row["earthquake"]["hypocenter"]["latitude"]
+        lng = row["earthquake"]["hypocenter"]["longitude"]
+
+        # 震源情報が存在しない場合は-200になる
+        # https://www.p2pquake.net/json_api_v2/#/P2P%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1%20API/get_history
+        if -200 < lat and -200 < lng:
+            map_img = generate_map_img(
+                lat=float(lat),
+                lng=float(lng),
+                zoom=10,
+                around_tiles=2,
+                time=time,
+                hypocenter=hypocenter,
+                magnitude=magnitude,
+                earthquake_intensity=earthquake_intensity,
+            )
+            with NamedTemporaryFile() as map_file:
+                map_img.save(map_file, format="PNG")
+
+                filename = ["map"]
+                ext = imghdr.what(map_file.name)
+
+                if ext:
+                    filename.append(ext)
+
+                client.upload(
+                    file=map_file.name, filename=os.path.extsep.join(filename)
+                )
 
 
 @action("textlint")

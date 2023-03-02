@@ -5,21 +5,21 @@ jma_amesh
 """
 import datetime
 import json
-import math
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-import numpy as np
 import requests
 from PIL import Image
 
 from library.hatomap import (
     GeoCoord,
     HatoMap,
+    Layer,
     LineTrace,
     MapBox,
     MarkerTrace,
     RasterLayer,
+    get_circle,
 )
 
 
@@ -105,21 +105,6 @@ def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
     return [(0.0, 0.0, 0)]
 
 
-def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
-    """指定した地点から半径radiusメートルの正360角形の頂点を列挙する"""
-    earth_radius = 6378137
-    earth_f = 298.257222101
-    earth_e_sq = (2 * earth_f - 1) / earth_f**2
-    c = 1 - (earth_e_sq * math.sin(lat) ** 2)
-    meter_1deg_lat = math.pi * earth_radius * (1 - earth_e_sq) / (180 * c**1.5)
-    meter_1deg_lng = (
-        math.pi * earth_radius * math.cos(lat * math.pi / 180) / (180 * math.sqrt(c))
-    )
-    lats = np.sin(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lat + lat
-    lngs = np.cos(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lng + lng
-    return np.array([lats, lngs]).T
-
-
 def jma_amesh(
     lat: float, lng: float, zoom: int, around_tiles: int
 ) -> Optional[Image.Image]:
@@ -129,30 +114,29 @@ def jma_amesh(
     """
 
     jma_timestamp = get_latest_timestamps()
+    layers: List[Layer] = [
+        RasterLayer(
+            url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
+        )
+    ]
+    layers += [
+        LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255))
+        for d in range(10, 60, 10)
+    ]
+    layers.append(
+        MarkerTrace(
+            [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
+            size=14,
+            symbol="thunder",
+            fill_color=(0, 255, 255, 255),
+            border_color=(0, 64, 64, 255),
+        )
+    )
     h = HatoMap(
         basemap="open-street-map-dim",
         title=f'雨雲:{timestamp2jst(jma_timestamp["hrpns_nd"])} 雷:{timestamp2jst(jma_timestamp["liden"])}',
         mapbox=MapBox(center=GeoCoord(lat, lng), zoom=zoom),
-        layers=[
-            RasterLayer(
-                url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
-            )
-        ]
-        + [
-            LineTrace(
-                coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)
-            )
-            for d in range(10, 60, 10)
-        ]
-        + [
-            MarkerTrace(
-                [GeoCoord(e[0], e[1]) for e in get_liden(jma_timestamp["liden"])],
-                size=14,
-                symbol="thunder",
-                fill_color=(0, 255, 255, 255),
-                border_color=(0, 64, 64, 255),
-            )
-        ],
+        layers=layers,
     )
     width = (2 * around_tiles + 1) * 256
     i = h.get_image(width=width, height=width)

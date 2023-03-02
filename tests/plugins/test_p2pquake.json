@@ -1,0 +1,134 @@
+[
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 10,
+        "latitude": 37.5,
+        "longitude": 137.4,
+        "magnitude": 1.6,
+        "name": "能登半島沖"
+      },
+      "maxScale": 10,
+      "time": "2022/11/15 10:55:00"
+    },
+    "id": "6372f2f251d38bb17b2e7dea",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2022/11/15 11:01:19",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "珠洲市正院町",
+        "isArea": false,
+        "pref": "石川県",
+        "scale": 10
+      }
+    ],
+    "time": "2022/11/15 11:01:22.011",
+    "timestamp": {
+      "convert": "2022/11/15 11:01:22.005",
+      "register": "2022/11/15 11:01:22.011"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 60,
+        "latitude": 39.4,
+        "longitude": 141.9,
+        "magnitude": 3.2,
+        "name": "岩手県沿岸北部"
+      },
+      "maxScale": 10,
+      "time": "2022/11/15 08:54:00"
+    },
+    "id": "6372d5dd51d38bb17b2e7de9",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2022/11/15 08:57:16",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "一関市大東町",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      },
+      {
+        "addr": "一関市室根町",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      }
+    ],
+    "time": "2022/11/15 08:57:17.505",
+    "timestamp": {
+      "convert": "2022/11/15 08:57:17.502",
+      "register": "2022/11/15 08:57:17.505"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 50,
+        "latitude": 37.8,
+        "longitude": 141.7,
+        "magnitude": 3.9,
+        "name": "福島県沖"
+      },
+      "maxScale": 10,
+      "time": "2022/11/15 08:09:00"
+    },
+    "id": "6372cb6e51d38bb17b2e7de8",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2022/11/15 08:12:46",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "角田市角田",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "石巻市桃生町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "大熊町大川原",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      }
+    ],
+    "time": "2022/11/15 08:12:46.59",
+    "timestamp": {
+      "convert": "2022/11/15 08:12:46.586",
+      "register": "2022/11/15 08:12:46.59"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  }
+]
