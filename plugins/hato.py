@@ -18,6 +18,7 @@ from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
+from library.chat_gpt import chat_gpt
 from library.clientclass import BaseClient
 from library.earthquake import generate_map_img, get_quake_list
 from library.geo import get_geo_data
@@ -466,3 +467,12 @@ def omikuji():
     """
 
     return omikuji_draw(omikuji_results)[1].message
+
+
+@action("chat")
+def chat(message: str):
+    """
+    chat-gptに聞く
+    """
+
+    return chat_gpt(message=message)
