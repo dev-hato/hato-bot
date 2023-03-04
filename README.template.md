@@ -52,6 +52,12 @@
 
     `.env.example` をコピーして使うとよいでしょう
 
+    MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+    DISCORD_API_TOKENにDiscordのBot Tokenを指定します。
+
+    DISCORD_API_TOKENには `READ MESSAGES/VIEW CHANNELS` と、 `Send Messages` の権限が必要です。
+
 6. docker composeで鳩botとPostgreSQLを起動します。
 
     ```sh
