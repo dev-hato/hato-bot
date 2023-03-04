@@ -7,8 +7,8 @@ import asyncio
 import os
 from abc import ABCMeta, abstractmethod
 
-from slack import WebClient
 import discord
+from slack import WebClient
 
 import slackbot_settings as conf
 
@@ -111,6 +111,7 @@ class ApiClient(BaseClient):
         """api"""
         return "api"
 
+
 class DisscordClient(BaseClient):
     """
     Discordを操作するClient
@@ -124,10 +125,11 @@ class DisscordClient(BaseClient):
         """Discordにポストする"""
         asyncio.create_task(self.message.channel.send(message))
 
-
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        asyncio.create_task(self.message.channel.send(file=discord.File(file, filename=filename)))
+        asyncio.create_task(
+            self.message.channel.send(file=discord.File(file, filename=filename))
+        )
 
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""
