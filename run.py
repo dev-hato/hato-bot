@@ -3,6 +3,7 @@
 """
 BotのMain関数
 """
+import asyncio
 import logging
 import logging.config
 import sys
@@ -13,12 +14,11 @@ from flask import Flask, escape, jsonify, request
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, SlackClient
+from library.clientclass import ApiClient, SlackClient, DisscordClient
 from library.database import Database
 from plugins import analyze
 
 app = Flask(__name__)
-
 
 slack_events_adapter = SlackEventAdapter(
     signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app
@@ -92,9 +92,9 @@ def on_app_mention(event_data):
                     if block_element["type"] == "rich_text_section":
                         block_element_elements = block_element["elements"]
                         if (
-                            len(block_element_elements) > 0
-                            and block_element_elements[0]["type"] == "user"
-                            and block_element_elements[0]["user_id"] in authed_users
+                                len(block_element_elements) > 0
+                                and block_element_elements[0]["type"] == "user"
+                                and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
                                 analyze_slack_message(block_element_elements[1:]),
@@ -151,8 +151,31 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
+import discord
+
+intents = discord.Intents.all()
+discordClient = discord.Client(intents=intents)
+
+
+@discordClient.event
+async def on_ready():
+    logging.error(f'We have logged in as {discordClient.user}')
+
+
+@discordClient.event
+async def on_message(message):
+    if message.author == discordClient.user:
+        return
+
+    if discordClient.user in message.mentions:
+        # `message.content.split(" ", 1)[1]` は、メンション先を除いた文字列
+        analyze.analyze_message(message.content.split(" ", 1)[1])(DisscordClient(discordClient, message))
+
+
 def main():
     """メイン関数"""
+
+    discordClient.run(token=conf.DISCORD_API_TOKEN)
 
     app.run(host="0.0.0.0", port=conf.PORT)
 

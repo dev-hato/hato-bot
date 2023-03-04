@@ -3,10 +3,12 @@
 """
 clientに使うclass
 """
+import asyncio
 import os
 from abc import ABCMeta, abstractmethod
 
 from slack import WebClient
+import discord
 
 import slackbot_settings as conf
 
@@ -108,3 +110,33 @@ class ApiClient(BaseClient):
     def get_type():
         """api"""
         return "api"
+
+class DisscordClient(BaseClient):
+    """
+    Discordを操作するClient
+    """
+
+    def __init__(self, discord_client, message: discord.Message):
+        self.client = discord_client
+        self.message = message
+
+    def post(self, message):
+        """Discordにポストする"""
+        asyncio.create_task(self.message.channel.send(message))
+
+
+    def upload(self, file, filename):
+        """ファイルを投稿する"""
+        asyncio.create_task(self.message.channel.send(file=discord.File(file, filename=filename)))
+
+    def get_send_user(self):
+        """botを呼び出したユーザーを返す"""
+        return self.message.author.id
+
+    def get_send_user_name(self):
+        return self.message.author.name
+
+    @staticmethod
+    def get_type():
+        """discord"""
+        return "discord"
