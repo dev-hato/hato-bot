@@ -112,7 +112,7 @@ class ApiClient(BaseClient):
         return "api"
 
 
-class DisscordClient(BaseClient):
+class DiscordClient(BaseClient):
     """
     Discordを操作するClient
     """

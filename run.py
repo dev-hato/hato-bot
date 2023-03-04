@@ -14,7 +14,7 @@ from flask import Flask, escape, jsonify, request
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, DisscordClient, SlackClient
+from library.clientclass import ApiClient, DiscordClient, SlackClient
 from library.database import Database
 from plugins import analyze
 
@@ -163,7 +163,7 @@ async def on_message(message):
     if discordClient.user in message.mentions:
         # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
         analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
-            DisscordClient(discordClient, message)
+            DiscordClient(discordClient, message)
         )
 
 
