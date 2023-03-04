@@ -56,7 +56,7 @@
 
     DISCORD_API_TOKENにDiscordのBot Tokenを指定します。
 
-    DISCORD_API_TOKENには `READ MESSAGES/VIEW CHANNELS` と、 `Send Messages` の権限が必要です。
+    DISCORD_API_TOKENには `Read Messages/View Channels` と、 `Send Messages` の権限が必要です。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
