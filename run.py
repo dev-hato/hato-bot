@@ -161,7 +161,7 @@ async def on_message(message):
         return
 
     if discordClient.user in message.mentions:
-        # `message.content.split(" ", 1)[1]` は、メンション先を除いた文字列
+        # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
         analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
             DisscordClient(discordClient, message)
         )
