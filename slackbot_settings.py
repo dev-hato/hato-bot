@@ -37,6 +37,11 @@ PLUGINS = ["plugins"]
 # ChatGPT用の設定
 OPENAI_API_KEY = str(os.environ["OPENAI_API_KEY"])
 
+# Discord用の設定
+DISCORD_API_TOKEN = str(os.environ["DISCORD_API_TOKEN"])
+
+MODE = str(os.environ["MODE"])
+
 GIT_COMMIT_HASH = os.environ.get("GIT_COMMIT_HASH")
 
 VERSION = "2.4.4"

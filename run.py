@@ -9,16 +9,16 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
+import discord
 from flask import Flask, escape, jsonify, request
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, SlackClient
+from library.clientclass import ApiClient, DisscordClient, SlackClient
 from library.database import Database
 from plugins import analyze
 
 app = Flask(__name__)
-
 
 slack_events_adapter = SlackEventAdapter(
     signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app
@@ -151,10 +151,29 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
+intents = discord.Intents.all()
+discordClient = discord.Client(intents=intents)
+
+
+@discordClient.event
+async def on_message(message):
+    if message.author == discordClient.user:
+        return
+
+    if discordClient.user in message.mentions:
+        # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
+        analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
+            DisscordClient(discordClient, message)
+        )
+
+
 def main():
     """メイン関数"""
 
-    app.run(host="0.0.0.0", port=conf.PORT)
+    if conf.MODE == "discord":
+        discordClient.run(token=conf.DISCORD_API_TOKEN)
+    else:
+        app.run(host="0.0.0.0", port=conf.PORT)
 
 
 if __name__ == "__main__":
