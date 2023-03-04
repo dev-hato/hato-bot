@@ -10,11 +10,12 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
+import discord
 from flask import Flask, escape, jsonify, request
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, SlackClient, DisscordClient
+from library.clientclass import ApiClient, DisscordClient, SlackClient
 from library.database import Database
 from plugins import analyze
 
@@ -92,9 +93,9 @@ def on_app_mention(event_data):
                     if block_element["type"] == "rich_text_section":
                         block_element_elements = block_element["elements"]
                         if (
-                                len(block_element_elements) > 0
-                                and block_element_elements[0]["type"] == "user"
-                                and block_element_elements[0]["user_id"] in authed_users
+                            len(block_element_elements) > 0
+                            and block_element_elements[0]["type"] == "user"
+                            and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
                                 analyze_slack_message(block_element_elements[1:]),
@@ -151,15 +152,13 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
-import discord
-
 intents = discord.Intents.all()
 discordClient = discord.Client(intents=intents)
 
 
 @discordClient.event
 async def on_ready():
-    logging.error(f'We have logged in as {discordClient.user}')
+    logging.error(f"We have logged in as {discordClient.user}")
 
 
 @discordClient.event
@@ -169,7 +168,9 @@ async def on_message(message):
 
     if discordClient.user in message.mentions:
         # `message.content.split(" ", 1)[1]` は、メンション先を除いた文字列
-        analyze.analyze_message(message.content.split(" ", 1)[1])(DisscordClient(discordClient, message))
+        analyze.analyze_message(message.content.split(" ", 1)[1])(
+            DisscordClient(discordClient, message)
+        )
 
 
 def main():
