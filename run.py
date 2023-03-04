@@ -157,11 +157,6 @@ discordClient = discord.Client(intents=intents)
 
 
 @discordClient.event
-async def on_ready():
-    logging.error(f"We have logged in as {discordClient.user}")
-
-
-@discordClient.event
 async def on_message(message):
     if message.author == discordClient.user:
         return
@@ -176,9 +171,10 @@ async def on_message(message):
 def main():
     """メイン関数"""
 
-    discordClient.run(token=conf.DISCORD_API_TOKEN)
-
-    app.run(host="0.0.0.0", port=conf.PORT)
+    if conf.MODE == "discord":
+        discordClient.run(token=conf.DISCORD_API_TOKEN)
+    else:
+        app.run(host="0.0.0.0", port=conf.PORT)
 
 
 if __name__ == "__main__":
