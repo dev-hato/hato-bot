@@ -18,7 +18,12 @@ from misskey import Misskey
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, DiscordClient, SlackClient, MisskeyClient
+from library.clientclass import (
+    ApiClient,
+    DiscordClient,
+    MisskeyClient,
+    SlackClient,
+)
 from library.database import Database
 from plugins import analyze
 
@@ -175,22 +180,23 @@ misskey_client = Misskey(conf.MISSKEY_URL, i=conf.MISSKEY_API_TOKEN)
 
 
 async def discord_runner():
-    async with websockets.connect('wss://' + misskey_client.address + '/streaming?i=' + misskey_client.token) as ws:
-        await ws.send(json.dumps({
-            "type": "connect",
-            "body": {
-                "channel": "main",
-                "id": "main"
-            }
-        }))
+    async with websockets.connect(
+        "wss://" + misskey_client.address + "/streaming?i=" + misskey_client.token
+    ) as ws:
+        await ws.send(
+            json.dumps({"type": "connect", "body": {"channel": "main", "id": "main"}})
+        )
         while True:
             data = json.loads(await ws.recv())
-            if data['type'] == 'channel' and data['body']['type'] == 'mention':
-                note = data['body']['body']
-                if note.get('mentions') and misskey_client.i()['id'] in note['mentions']:
-                    analyze.analyze_message(note['text'].replace("\xa0", " ").split(" ", 1)[1])(
-                        MisskeyClient(misskey_client, note)
-                    )
+            if data["type"] == "channel" and data["body"]["type"] == "mention":
+                note = data["body"]["body"]
+                if (
+                    note.get("mentions")
+                    and misskey_client.i()["id"] in note["mentions"]
+                ):
+                    analyze.analyze_message(
+                        note["text"].replace("\xa0", " ").split(" ", 1)[1]
+                    )(MisskeyClient(misskey_client, note))
 
 
 def main():
