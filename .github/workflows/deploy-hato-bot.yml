@@ -100,7 +100,7 @@ jobs:
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
-        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/deploy_docker_image/test.sh"
+        run: docker compose up -d --wait
 
   # .python-version をDockerイメージと同期させる
   update-version-python-version:
