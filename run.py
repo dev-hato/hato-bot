@@ -186,7 +186,8 @@ def main():
 
         async def discord_runner():
             async with websockets.connect(
-                    "wss://" + misskey_client.address + "/streaming?i=" + misskey_client.token
+                    "wss://" + misskey_client.address + "/streaming"
+                    + "?i=" + misskey_client.token
             ) as ws:
                 await ws.send(
                     json.dumps({"type": "connect", "body": {"channel": "main", "id": "main"}})
