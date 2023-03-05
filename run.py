@@ -193,9 +193,10 @@ def main():
                 + misskey_client.token
             ) as ws:
                 await ws.send(
-                    json.dumps(
-                        {"type": "connect", "body": {"channel": "main", "id": "main"}}
-                    )
+                    json.dumps({
+                        "type": "connect",
+                        "body": {"channel": "main", "id": "main"}
+                    })
                 )
                 while True:
                     data = json.loads(await ws.recv())
