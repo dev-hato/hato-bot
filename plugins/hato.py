@@ -479,9 +479,15 @@ def chat(message: str):
 
 
 @action("画像生成")
-def image_generate(message: str):
+def image_generate(client: BaseClient, message: str):
     """
     画像生成を行う
     """
 
-    return image_create(message=message)
+    url = image_create(message=message)
+
+    """
+    urlから画像ファイルをダウンロードして、画像を返す
+    """
+    res = requests.get(url, stream=True)
+    client.upload(file=res.raw, filename="image.png")
