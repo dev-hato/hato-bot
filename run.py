@@ -185,6 +185,7 @@ def main():
         misskey_client = Misskey(conf.MISSKEY_URL, i=conf.MISSKEY_API_TOKEN)
 
         async def discord_runner():
+            # pylint: disable=E1101
             async with websockets.connect(
                 "wss://"
                 + misskey_client.address
