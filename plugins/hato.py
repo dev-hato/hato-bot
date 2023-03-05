@@ -18,7 +18,7 @@ from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
 
 import slackbot_settings as conf
-from library.chat_gpt import chat_gpt
+from library.chat_gpt import chat_gpt, image_create
 from library.clientclass import BaseClient
 from library.earthquake import generate_map_img, get_quake_list
 from library.geo import get_geo_data
@@ -476,3 +476,12 @@ def chat(message: str):
     """
 
     return chat_gpt(message=message)
+
+
+@action("画像生成")
+def image_generate(message: str):
+    """
+    画像生成を行う
+    """
+
+    return image_create(message=message)
