@@ -217,7 +217,7 @@ def totuzensi(message: str):
 
     word = hato_ha_karaage(message)
     msg = generator(word)
-    return "```" + msg + "```"
+    return "```\n" + msg + "\n```"
 
 
 @action("amesh", with_client=True)
