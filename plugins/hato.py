@@ -478,7 +478,7 @@ def chat(message: str):
     return chat_gpt(message=message)
 
 
-@action("画像生成")
+@action("画像生成", with_client=True)
 def image_generate(client: BaseClient, message: str):
     """
     画像生成を行う
@@ -489,5 +489,9 @@ def image_generate(client: BaseClient, message: str):
     """
     urlから画像ファイルをダウンロードして、画像を返す
     """
-    res = requests.get(url, stream=True)
-    client.upload(file=res.raw, filename="image.png")
+    with NamedTemporaryFile() as generated_file:
+        generated_file.write(requests.get(url).content)
+        client.upload(
+            file=generated_file.name,
+            filename="image.png",
+        )

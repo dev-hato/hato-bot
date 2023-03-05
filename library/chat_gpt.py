@@ -19,6 +19,6 @@ def image_create(message: str) -> str:
     response = openai.Image.create(
         prompt=message,
         n=1,
-        size="1024x1024"
+        size="256x256"
     )
     return response['data'][0]['url']
