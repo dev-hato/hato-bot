@@ -16,5 +16,5 @@ def chat_gpt(message: str) -> str:
 
 
 def image_create(message: str) -> str:
-    response = openai.Image.create(prompt=message, n=1, size="256x256")
+    response = openai.Image.create(prompt=message, n=1, size="512x512")
     return response["data"][0]["url"]
