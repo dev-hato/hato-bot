@@ -3,6 +3,8 @@
 """
 BotのMain関数
 """
+import asyncio
+import json
 import logging
 import logging.config
 import sys
@@ -10,11 +12,13 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
 import discord
+import websockets
 from flask import Flask, escape, jsonify, request
+from misskey import Misskey
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, DiscordClient, SlackClient
+from library.clientclass import ApiClient, DiscordClient, SlackClient, MisskeyClient
 from library.database import Database
 from plugins import analyze
 
@@ -167,11 +171,35 @@ async def on_message(message):
         )
 
 
+misskey_client = Misskey(conf.MISSKEY_URL, i=conf.MISSKEY_API_TOKEN)
+
+
+async def discord_runner():
+    async with websockets.connect('wss://' + misskey_client.address + '/streaming?i=' + misskey_client.token) as ws:
+        await ws.send(json.dumps({
+            "type": "connect",
+            "body": {
+                "channel": "main",
+                "id": "main"
+            }
+        }))
+        while True:
+            data = json.loads(await ws.recv())
+            if data['type'] == 'channel' and data['body']['type'] == 'mention':
+                note = data['body']['body']
+                if note.get('mentions') and misskey_client.i()['id'] in note['mentions']:
+                    analyze.analyze_message(note['text'].replace("\xa0", " ").split(" ", 1)[1])(
+                        MisskeyClient(misskey_client, note)
+                    )
+
+
 def main():
     """メイン関数"""
 
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
+    elif conf.MODE == "misskey":
+        asyncio.get_event_loop().run_until_complete(discord_runner())
     else:
         app.run(host="0.0.0.0", port=conf.PORT)
 

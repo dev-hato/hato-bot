@@ -40,6 +40,10 @@ OPENAI_API_KEY = str(os.environ["OPENAI_API_KEY"])
 # Discord用の設定
 DISCORD_API_TOKEN = str(os.environ["DISCORD_API_TOKEN"])
 
+# Misskey用の設定
+MISSKEY_URL = str(os.environ["MISSKEY_URL"])
+MISSKEY_API_TOKEN = str(os.environ["MISSKEY_API_TOKEN"])
+
 MODE = str(os.environ["MODE"])
 
 GIT_COMMIT_HASH = os.environ.get("GIT_COMMIT_HASH")
