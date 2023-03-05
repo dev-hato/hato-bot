@@ -185,9 +185,8 @@ def main():
         misskey_client = Misskey(conf.MISSKEY_URL, i=conf.MISSKEY_API_TOKEN)
 
         async def discord_runner():
-            async with websockets.connect(
-                    "wss://" + misskey_client.address + "/streaming?i=" + misskey_client.token
-            ) as ws:
+            url = "wss://" + misskey_client.address + "/streaming?i=" + misskey_client.token
+            async with websockets.connect(url) as ws:
                 await ws.send(
                     json.dumps({"type": "connect", "body": {"channel": "main", "id": "main"}})
                 )
