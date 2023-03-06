@@ -202,11 +202,12 @@ def main():
                     data = json.loads(await ws.recv())
                     if data["type"] == "channel" and data["body"]["type"] == "mention":
                         note = data["body"]["body"]
-                        host = note['user'].get('host')
+                        host = note["user"].get("host")
                         mentions = note.get("mentions")
                         if (
                             (host is None or host == conf.MISSKEY_URL)
-                            and mentions and misskey_client.i()["id"] in mentions
+                            and mentions
+                            and misskey_client.i()["id"] in mentions
                         ):
                             analyze.analyze_message(
                                 note["text"].replace("\xa0", " ").split(" ", 1)[1]
