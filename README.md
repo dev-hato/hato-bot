@@ -58,11 +58,11 @@
 
     DISCORD_API_TOKENには `Read Messages/View Channels` と、 `Send Messages` の権限が必要です。
 
-   MODEに `misskey` を指定すると、MisskeyのBotとして動作します。
+   MODEに `misskey` を指定すると、自分のサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
-   MISSKEY_URLに対象のMisskeyサーバーのURLを指定します。
+   MISSKEY_URLにBotのいるMisskeyサーバーのURL ( `https://hoge.com/` なら `hoge.com` ) を指定します。
 
-   MISSKEY_API_TOKENにMisskeyのアクセストークンを指定します。
+   MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
