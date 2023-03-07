@@ -62,7 +62,7 @@
 
    MISSKEY_URLにBotのいるMisskeyサーバーのドメインを指定します。
 
-   MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
+   MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。アクセストークンには `ドライブを操作する` と `ノートを作成・削除する` の権限を付与します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
