@@ -36,6 +36,9 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "にゃーん": lambda m: hato.yoshiyoshi,
         "おみくじ": lambda m: hato.omikuji,
         "chat": lambda m: partial(hato.chat, message=m[len("chat") :].strip()),
+        "画像生成": lambda m: partial(
+            hato.image_generate, message=m[len("画像生成") :].strip()
+        ),
     }
 
     for key, method in conditions.items():
