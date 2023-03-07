@@ -38,7 +38,7 @@ RUN apt-get update && \
     apt-get remove -y git gcc libc6-dev && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists ~/.cache /tmp && \
+    rm -rf /var/lib/apt/lists ~/.cache /tmp /root/.npm /usr/src/app/node_modules/re2/.github/actions/*/Dockerfile && \
     find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
@@ -54,5 +54,4 @@ COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
 ENV NODE_OPTIONS="--max-old-space-size=512"
-HEALTHCHECK --interval=5s --retries=20 CMD ["curl", "-s", "-S", "-o", "/dev/null", "http://localhost:3000/status"]
 CMD ["python", "entrypoint.py"]
