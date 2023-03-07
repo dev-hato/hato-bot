@@ -190,30 +190,38 @@ def main():
                 try:
                     # pylint: disable=E1101
                     async with websockets.connect(
-                            "wss://"
-                            + misskey_client.address
-                            + "/streaming"
-                            + "?i="
-                            + misskey_client.token
+                        "wss://"
+                        + misskey_client.address
+                        + "/streaming"
+                        + "?i="
+                        + misskey_client.token
                     ) as ws:
                         await ws.send(
                             json.dumps(
-                                {"type": "connect", "body": {"channel": "main", "id": "main"}}
+                                {
+                                    "type": "connect",
+                                    "body": {"channel": "main", "id": "main"},
+                                }
                             )
                         )
                         while True:
                             data = json.loads(await ws.recv())
-                            if data["type"] == "channel" and data["body"]["type"] == "mention":
+                            if (
+                                data["type"] == "channel"
+                                and data["body"]["type"] == "mention"
+                            ):
                                 note = data["body"]["body"]
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                        (host is None or host == conf.MISSKEY_DOMAIN)
-                                        and mentions
-                                        and misskey_client.i()["id"] in mentions
+                                    (host is None or host == conf.MISSKEY_DOMAIN)
+                                    and mentions
+                                    and misskey_client.i()["id"] in mentions
                                 ):
                                     analyze.analyze_message(
-                                        note["text"].replace("\xa0", " ").split(" ", 1)[1]
+                                        note["text"]
+                                        .replace("\xa0", " ")
+                                        .split(" ", 1)[1]
                                     )(MisskeyClient(misskey_client, note))
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
