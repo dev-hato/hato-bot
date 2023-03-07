@@ -13,3 +13,8 @@ def chat_gpt(message: str) -> str:
         ],
     )
     return result.get("choices")[0].message.content
+
+
+def image_create(message: str) -> str:
+    response = openai.Image.create(prompt=message, n=1, size="512x512")
+    return response["data"][0]["url"]
