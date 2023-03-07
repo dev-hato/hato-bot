@@ -60,7 +60,7 @@
 
    MODEに `misskey` を指定すると、自分のサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
-   MISSKEY_URLにBotのいるMisskeyサーバーのURL ( `https://hoge.com/` なら `hoge.com` ) を指定します。
+   MISSKEY_URLにBotのいるMisskeyサーバーのドメインを指定します。
 
    MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
 
