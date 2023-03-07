@@ -8,6 +8,7 @@ import json
 import logging
 import logging.config
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
@@ -185,33 +186,37 @@ def main():
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
 
         async def discord_runner():
-            # pylint: disable=E1101
-            async with websockets.connect(
-                "wss://"
-                + misskey_client.address
-                + "/streaming"
-                + "?i="
-                + misskey_client.token
-            ) as ws:
-                await ws.send(
-                    json.dumps(
-                        {"type": "connect", "body": {"channel": "main", "id": "main"}}
-                    )
-                )
-                while True:
-                    data = json.loads(await ws.recv())
-                    if data["type"] == "channel" and data["body"]["type"] == "mention":
-                        note = data["body"]["body"]
-                        host = note["user"].get("host")
-                        mentions = note.get("mentions")
-                        if (
-                            (host is None or host == conf.MISSKEY_DOMAIN)
-                            and mentions
-                            and misskey_client.i()["id"] in mentions
-                        ):
-                            analyze.analyze_message(
-                                note["text"].replace("\xa0", " ").split(" ", 1)[1]
-                            )(MisskeyClient(misskey_client, note))
+            while True:
+                try:
+                    # pylint: disable=E1101
+                    async with websockets.connect(
+                            "wss://"
+                            + misskey_client.address
+                            + "/streaming"
+                            + "?i="
+                            + misskey_client.token
+                    ) as ws:
+                        await ws.send(
+                            json.dumps(
+                                {"type": "connect", "body": {"channel": "main", "id": "main"}}
+                            )
+                        )
+                        while True:
+                            data = json.loads(await ws.recv())
+                            if data["type"] == "channel" and data["body"]["type"] == "mention":
+                                note = data["body"]["body"]
+                                host = note["user"].get("host")
+                                mentions = note.get("mentions")
+                                if (
+                                        (host is None or host == conf.MISSKEY_DOMAIN)
+                                        and mentions
+                                        and misskey_client.i()["id"] in mentions
+                                ):
+                                    analyze.analyze_message(
+                                        note["text"].replace("\xa0", " ").split(" ", 1)[1]
+                                    )(MisskeyClient(misskey_client, note))
+                except websockets.ConnectionClosedError:
+                    time.sleep(1)
 
         asyncio.get_event_loop().run_until_complete(discord_runner())
     else:
