@@ -182,7 +182,7 @@ def main():
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
-        misskey_client = Misskey(conf.MISSKEY_URL, i=conf.MISSKEY_API_TOKEN)
+        misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
 
         async def discord_runner():
             # pylint: disable=E1101
@@ -205,7 +205,7 @@ def main():
                         host = note["user"].get("host")
                         mentions = note.get("mentions")
                         if (
-                            (host is None or host == conf.MISSKEY_URL)
+                            (host is None or host == conf.MISSKEY_DOMAIN)
                             and mentions
                             and misskey_client.i()["id"] in mentions
                         ):
