@@ -8,9 +8,36 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/workflows/pr-format.yml
+      - library/**
+      - plugins/**
+      - scripts/pr_format/**
+      - tests/**
+      - .flake8
+      - .isort.cfg
+      - .pep8
+      - .python-black
+      - .python-version
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
   push:
     branches:
       - master
+    paths:
+      - .github/workflows/pr-format.yml
+      - library/**
+      - plugins/**
+      - scripts/pr_format/**
+      - tests/**
+      - .flake8
+      - .isort.cfg
+      - .pep8
+      - .python-black
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
 permissions:
   contents: write
   pull-requests: write

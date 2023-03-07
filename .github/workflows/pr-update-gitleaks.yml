@@ -7,9 +7,23 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/workflows/pr-update-gitleaks.yml
+      - .pre-commit-config.yaml
+      - .npmrc
+      - package.json
+      - package-lock.json
+      - scripts/npm_ci.sh
   push:
     branches:
       - master
+    paths:
+      - .github/workflows/pr-update-gitleaks.yml
+      - .pre-commit-config.yaml
+      - .npmrc
+      - package.json
+      - package-lock.json
+      - scripts/npm_ci.sh
 permissions:
   contents: write
   pull-requests: write

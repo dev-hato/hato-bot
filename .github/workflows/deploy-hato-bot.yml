@@ -11,10 +11,46 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/workflows/deploy-hato-bot.yml
+      - library/**
+      - plugins/**
+      - postgres/**
+      - scripts/deploy_hato_bot/**
+      - .dockerignore
+      - .dockle-version
+      - .env.example
+      - .python-version
+      - build.docker-compose.yml
+      - docker-compose.yml
+      - Dockerfile
+      - package.json
+      - package-lock.json
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
   push:
     branches:
       - master
       - develop
+    paths:
+      - .github/workflows/deploy-hato-bot.yml
+      - library/**
+      - plugins/**
+      - postgres/**
+      - scripts/deploy_hato_bot/**
+      - .dockerignore
+      - .dockle-version
+      - .env.example
+      - .python-version
+      - build.docker-compose.yml
+      - docker-compose.yml
+      - Dockerfile
+      - package.json
+      - package-lock.json
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
 
 jobs:
   deploy_docker_image:

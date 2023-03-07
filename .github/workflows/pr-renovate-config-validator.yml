@@ -4,7 +4,23 @@ on:
   push:
     branches:
       - master
+    paths:
+      - .github/workflows/pr-renovate-config-validator.yml
+      - scripts/pr_renovate_config_validator/**
+      - scripts/npm_ci.sh
+      - .npmrc
+      - package.json
+      - package-lock.json
+      - renovate.json
   pull_request:
+    paths:
+      - .github/workflows/pr-renovate-config-validator.yml
+      - scripts/pr_renovate_config_validator/**
+      - scripts/npm_ci.sh
+      - .npmrc
+      - package.json
+      - package-lock.json
+      - renovate.json
 jobs:
   pr-renovate-config-validator:
     runs-on: ubuntu-latest

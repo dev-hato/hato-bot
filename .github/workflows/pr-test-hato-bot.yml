@@ -4,10 +4,32 @@ name: pr-test-hato-bot
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
+    paths:
+      - .github/workflows/pr-test-hato-bot.yml
+      - library/**
+      - plugins/**
+      - scripts/pr_test_hato_bot/**
+      - tests/**
+      - .python-version
+      - Dockerfile
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
   push:
     branches:
       - master
       - develop
+    paths:
+      - .github/workflows/pr-test-hato-bot.yml
+      - library/**
+      - plugins/**
+      - scripts/pr_test_hato_bot/**
+      - tests/**
+      - .python-version
+      - Dockerfile
+      - Pipfile
+      - Pipfile.lock
+      - '*.py'
 
 jobs:
   # unittestを行う

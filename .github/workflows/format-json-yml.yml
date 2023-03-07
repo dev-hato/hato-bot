@@ -7,10 +7,20 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/**
+      - tests/plugins/**
+      - '*.yaml'
+      - '*.yml'
   push:
     branches:
       - develop
       - master
+    paths:
+      - .github/**
+      - tests/plugins/**
+      - '*.yaml'
+      - '*.yml'
 permissions:
   contents: write
   pull-requests: write

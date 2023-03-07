@@ -7,10 +7,24 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/workflows/pr-check-npm.yml
+      - scripts/pr_check_npm/**
+      - scripts/install_npm.sh
+      - .npmrc
+      - package.json
+      - package-lock.json
   push:
     branches:
       - master
       - develop
+    paths:
+      - .github/workflows/pr-check-npm.yml
+      - scripts/pr_check_npm/**
+      - scripts/install_npm.sh
+      - .npmrc
+      - package.json
+      - package-lock.json
 permissions:
   contents: write
   pull-requests: write

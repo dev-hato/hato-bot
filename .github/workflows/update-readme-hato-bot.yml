@@ -7,9 +7,19 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - .github/workflows/update-readme-hato-bot.yml
+      - commands.txt
+      - README.md
+      - README.template.md
   push:
     branches:
       - master
+    paths:
+      - .github/workflows/update-readme-hato-bot.yml
+      - commands.txt
+      - README.md
+      - README.template.md
 
 jobs:
   update-readme:
