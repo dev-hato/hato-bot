@@ -400,7 +400,7 @@ def altitude(place: str):
 def version():
     """versionを表示する"""
 
-    str_ver = "バージョン情報\n```" f"Version {conf.VERSION}"
+    str_ver = "バージョン情報\n```\n" f"Version {conf.VERSION}"
 
     if conf.GIT_COMMIT_HASH:
         str_ver += f" (Commit {conf.GIT_COMMIT_HASH[:7]})"
@@ -414,7 +414,7 @@ def version():
     str_ver += (
         "\n"
         "Copyright (C) 2022 hato-bot Development team\n"
-        "https://github.com/dev-hato/hato-bot ```"
+        "https://github.com/dev-hato/hato-bot\n```"
     )
     return str_ver
 
