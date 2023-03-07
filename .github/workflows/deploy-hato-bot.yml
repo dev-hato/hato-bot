@@ -20,6 +20,7 @@ on:
       - .dockerignore
       - .dockle-version
       - .env.example
+      - .npmrc
       - .python-version
       - build.docker-compose.yml
       - docker-compose.yml
@@ -42,6 +43,7 @@ on:
       - .dockerignore
       - .dockle-version
       - .env.example
+      - .npmrc
       - .python-version
       - build.docker-compose.yml
       - docker-compose.yml
