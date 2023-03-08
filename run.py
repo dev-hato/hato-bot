@@ -171,14 +171,15 @@ async def on_message(message):
         return
 
     if discordClient.user in message.mentions:
-
         async with message.channel.typing():
             await asyncio.get_event_loop().run_in_executor(
                 None,
                 # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
-                analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1]),
+                analyze.analyze_message(
+                    message.content.replace("\xa0", " ").split(" ", 1)[1]
+                ),
                 DiscordClient(discordClient, message),
-                )
+            )
 
 
 def main():
