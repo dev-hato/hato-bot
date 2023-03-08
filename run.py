@@ -171,11 +171,11 @@ async def on_message(message):
         return
 
     if discordClient.user in message.mentions:
-        await message.channel.typing()
-        # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
-        analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
-            DiscordClient(discordClient, message)
-        )
+        async with message.channel.typing():
+            # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
+            analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
+                DiscordClient(discordClient, message)
+            )
 
 
 def main():
