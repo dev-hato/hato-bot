@@ -4,6 +4,7 @@
 BotのMain関数
 """
 import asyncio
+import concurrent
 import json
 import logging
 import logging.config
@@ -102,9 +103,9 @@ def on_app_mention(event_data):
                     if block_element["type"] == "rich_text_section":
                         block_element_elements = block_element["elements"]
                         if (
-                            len(block_element_elements) > 0
-                            and block_element_elements[0]["type"] == "user"
-                            and block_element_elements[0]["user_id"] in authed_users
+                                len(block_element_elements) > 0
+                                and block_element_elements[0]["type"] == "user"
+                                and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
                                 analyze_slack_message(block_element_elements[1:]),
@@ -171,11 +172,16 @@ async def on_message(message):
         return
 
     if discordClient.user in message.mentions:
+        async def async_coroutine():
+            loop = asyncio.get_running_loop()
+            with concurrent.futures.ThreadPoolExecutor() as pool:
+                await loop.run_in_executor(pool, analyze.analyze_message(
+                    # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
+                    message.content.replace("\xa0", " ").split(" ", 1)[1]),
+                                           DiscordClient(discordClient, message))
+
         async with message.channel.typing():
-            # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
-            analyze.analyze_message(message.content.replace("\xa0", " ").split(" ", 1)[1])(
-                DiscordClient(discordClient, message)
-            )
+            await async_coroutine()
 
 
 def main():
@@ -191,11 +197,11 @@ def main():
                 try:
                     # pylint: disable=E1101
                     async with websockets.connect(
-                        "wss://"
-                        + misskey_client.address
-                        + "/streaming"
-                        + "?i="
-                        + misskey_client.token
+                            "wss://"
+                            + misskey_client.address
+                            + "/streaming"
+                            + "?i="
+                            + misskey_client.token
                     ) as ws:
                         await ws.send(
                             json.dumps(
@@ -208,16 +214,16 @@ def main():
                         while True:
                             data = json.loads(await ws.recv())
                             if (
-                                data["type"] == "channel"
-                                and data["body"]["type"] == "mention"
+                                    data["type"] == "channel"
+                                    and data["body"]["type"] == "mention"
                             ):
                                 note = data["body"]["body"]
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                    (host is None or host == conf.MISSKEY_DOMAIN)
-                                    and mentions
-                                    and misskey_client.i()["id"] in mentions
+                                        (host is None or host == conf.MISSKEY_DOMAIN)
+                                        and mentions
+                                        and misskey_client.i()["id"] in mentions
                                 ):
                                     analyze.analyze_message(
                                         note["text"]
