@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "63705a57c4bd06f3f22ac31d6dab4258eb5bab70cd52f94db70cb590ce714ab1"
+            "sha256": "e388da55ff5dd12b093e22312c78c5fcc5ccfa6d60008e6250ccff8da381f173"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -219,7 +219,7 @@
                 "sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df",
                 "sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.1.0"
         },
         "click": {
@@ -312,7 +312,7 @@
                 "sha256:38fc52a784727b8e5e5749267089400035b187a009028eddfabeb182abcc6d52",
                 "sha256:b9944056bcb5711b2d04088848fd004466cf117c15c84fa798bf55470f28275f"
             ],
-            "markers": "python_full_version >= '3.8.0'",
+            "markers": "python_version >= '3.8'",
             "version": "==2.2.2"
         },
         "flask": {
@@ -751,11 +751,10 @@
         },
         "openai": {
             "hashes": [
-                "sha256:0efa486016283607cb72c23eac346ac739a22613ff4bff101df72a138cb2de60",
-                "sha256:7d4066ea529658a1f1696a8766912b3f3b7139faca860dc530bf102f0b19d42c"
+                "sha256:11a8eb9b609653295be6cc67febecd5189f17b22ef015462c5003d8959567fd7"
             ],
             "index": "pypi",
-            "version": "==0.27.0"
+            "version": "==0.27.1"
         },
         "opencv-python": {
             "hashes": [
@@ -1058,7 +1057,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "1456e932b526440956175689c1100308710b33d5"
+            "ref": "949229e1835a5596549f6d284edaff4a34f7cfde"
         },
         "tqdm": {
             "hashes": [
@@ -1413,7 +1412,7 @@
                 "sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df",
                 "sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.1.0"
         },
         "click": {
@@ -1473,11 +1472,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:89e144fa560cc4cffb6ef2ab5e9fb18ed9f9b3cb054384bab4b95c12f6c309fe",
-                "sha256:93aac7ecf2f6abf879b8f29a8002d3c6de7086b8c28d88e1ad15045a15ab63f9"
+                "sha256:3ee3533e7f6f5023157fbebbd5687bb4b698ce6f305259e0d24b2d7d9efb72bc",
+                "sha256:4102ecd051f6884449e7359e55b38ba6cd7aafb6ef27b8e2b38495a5723ea106"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.5.18"
+            "version": "==2.5.19"
         },
         "idna": {
             "hashes": [
