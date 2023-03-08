@@ -3,7 +3,6 @@
 """
 clientに使うclass
 """
-import asyncio
 import os
 from abc import ABCMeta, abstractmethod
 
