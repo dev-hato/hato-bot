@@ -3,7 +3,6 @@
 """
 clientに使うclass
 """
-import asyncio
 import os
 from abc import ABCMeta, abstractmethod
 
@@ -123,11 +122,11 @@ class DiscordClient(BaseClient):
 
     def post(self, message):
         """Discordにポストする"""
-        asyncio.create_task(self.message.channel.send(message))
+        self.client.loop.create_task(self.message.channel.send(message))
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        asyncio.create_task(
+        self.client.loop.create_task(
             self.message.channel.send(file=discord.File(file, filename=filename))
         )
 
