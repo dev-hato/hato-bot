@@ -23,7 +23,7 @@ from library.clientclass import (
     ApiClient,
     DiscordClient,
     MisskeyClient,
-    SlackClient, BaseClient,
+    SlackClient,
 )
 from library.database import Database
 from plugins import analyze
