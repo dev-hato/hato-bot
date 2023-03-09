@@ -48,4 +48,4 @@ MODE = str(os.environ["MODE"])
 
 GIT_COMMIT_HASH = os.environ.get("GIT_COMMIT_HASH")
 
-VERSION = "2.4.4"
+VERSION = "3.0.0"
