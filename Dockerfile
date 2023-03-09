@@ -50,6 +50,7 @@ COPY library library
 COPY plugins plugins
 COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY .textlintrc .textlintrc
+COPY commands.txt commands.txt
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
