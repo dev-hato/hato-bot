@@ -3,22 +3,32 @@
 """
 BotのMain関数
 """
+import asyncio
+import json
 import logging
 import logging.config
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
+import discord
+import websockets
 from flask import Flask, escape, jsonify, request
+from misskey import Misskey
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
-from library.clientclass import ApiClient, SlackClient
+from library.clientclass import (
+    ApiClient,
+    DiscordClient,
+    MisskeyClient,
+    SlackClient,
+)
 from library.database import Database
 from plugins import analyze
 
 app = Flask(__name__)
-
 
 slack_events_adapter = SlackEventAdapter(
     signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app
@@ -151,10 +161,79 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
+intents = discord.Intents.all()
+discordClient = discord.Client(intents=intents)
+
+
+@discordClient.event
+async def on_message(message):
+    if message.author == discordClient.user:
+        return
+
+    if discordClient.user in message.mentions:
+        async with message.channel.typing():
+            await asyncio.get_event_loop().run_in_executor(
+                None,
+                analyze.analyze_message(
+                    # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
+                    message.content.replace("\xa0", " ").split(" ", 1)[1]
+                ),
+                DiscordClient(discordClient, message),
+            )
+
+
 def main():
     """メイン関数"""
 
-    app.run(host="0.0.0.0", port=conf.PORT)
+    if conf.MODE == "discord":
+        discordClient.run(token=conf.DISCORD_API_TOKEN)
+    elif conf.MODE == "misskey":
+        misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
+
+        async def discord_runner():
+            while True:
+                try:
+                    # pylint: disable=E1101
+                    async with websockets.connect(
+                        "wss://"
+                        + misskey_client.address
+                        + "/streaming"
+                        + "?i="
+                        + misskey_client.token
+                    ) as ws:
+                        await ws.send(
+                            json.dumps(
+                                {
+                                    "type": "connect",
+                                    "body": {"channel": "main", "id": "main"},
+                                }
+                            )
+                        )
+                        while True:
+                            data = json.loads(await ws.recv())
+                            if (
+                                data["type"] == "channel"
+                                and data["body"]["type"] == "mention"
+                            ):
+                                note = data["body"]["body"]
+                                host = note["user"].get("host")
+                                mentions = note.get("mentions")
+                                if (
+                                    (host is None or host == conf.MISSKEY_DOMAIN)
+                                    and mentions
+                                    and misskey_client.i()["id"] in mentions
+                                ):
+                                    analyze.analyze_message(
+                                        note["text"]
+                                        .replace("\xa0", " ")
+                                        .split(" ", 1)[1]
+                                    )(MisskeyClient(misskey_client, note))
+                except websockets.ConnectionClosedError:
+                    time.sleep(1)
+
+        asyncio.get_event_loop().run_until_complete(discord_runner())
+    else:
+        app.run(host="0.0.0.0", port=conf.PORT)
 
 
 if __name__ == "__main__":

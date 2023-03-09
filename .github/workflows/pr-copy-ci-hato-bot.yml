@@ -12,19 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
           path: hato-bot
       - name: Set org name
-        uses: actions/github-script@v6.3.3
+        uses: actions/github-script@v6.4.0
         id: set_org_name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
           repository: ${{steps.set_org_name.outputs.result}}/sudden-death
@@ -32,7 +32,7 @@ jobs:
       - name: Copy CI
         run: bash "${GITHUB_WORKSPACE}/hato-bot/scripts/pr_copy_ci_hato_bot/pr_copy_ci/copy_ci.sh"
       - name: Copy package.json
-        uses: actions/github-script@v6.3.3
+        uses: actions/github-script@v6.4.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |

@@ -18,8 +18,6 @@
     "ja-hiragana-fukushi": true,
     "ja-hiragana-hojodoushi": true,
     "ja-hiragana-keishikimeishi": true,
-    "ja-unnatural-alphabet": true,
-    "ng-word": true,
     "no-dead-link": {
         "ignore": [
             "https://github.com/dev-hato/hato-bot/releases/latest"

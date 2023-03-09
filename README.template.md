@@ -52,6 +52,20 @@
 
     `.env.example` をコピーして使うとよいでしょう
 
+    MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+    DISCORD_API_TOKENにDiscordのBot Tokenを指定します。
+
+    DISCORD_API_TOKENには `Read Messages/View Channels` と、 `Send Messages` の権限が必要です。
+
+    MODEに `misskey` を指定すると、自分のサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+
+    MISSKEY_URLにBotのいるMisskeyサーバーのドメインを指定します。
+
+    MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
+
+    MISSKEY_API_TOKENには `ドライブを操作する` と、 `ノートを作成・削除する` の権限が必要です。
+
 6. docker composeで鳩botとPostgreSQLを起動します。
 
     ```sh
@@ -59,7 +73,7 @@
     docker compose up -d --wait
     ```
 
-    Docker内で開発用のPythonライブラリを使用したい場合は代わりに次のコマンドを実行します。
+    開発時は代わりに次のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
@@ -73,7 +87,7 @@
     docker compose restart
     ```
 
-    Docker内で開発用のPythonライブラリを使用したい場合は代わりに次のコマンドを実行します。
+   開発時は代わりに次のコマンドを実行します。
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")

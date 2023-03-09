@@ -34,6 +34,18 @@ YAHOO_API_TOKEN = str(os.environ["YAHOO_API_TOKEN"])
 DEFAULT_REPLY = "使い方がわからない時は `help` とメンションするっぽ!"
 PLUGINS = ["plugins"]
 
+# ChatGPT用の設定
+OPENAI_API_KEY = str(os.environ["OPENAI_API_KEY"])
+
+# Discord用の設定
+DISCORD_API_TOKEN = str(os.environ["DISCORD_API_TOKEN"])
+
+# Misskey用の設定
+MISSKEY_DOMAIN = str(os.environ["MISSKEY_DOMAIN"])
+MISSKEY_API_TOKEN = str(os.environ["MISSKEY_API_TOKEN"])
+
+MODE = str(os.environ["MODE"])
+
 GIT_COMMIT_HASH = os.environ.get("GIT_COMMIT_HASH")
 
-VERSION = "2.4.4"
+VERSION = "3.0.0"

@@ -6,6 +6,7 @@ clientに使うclass
 import os
 from abc import ABCMeta, abstractmethod
 
+import discord
 from slack import WebClient
 
 import slackbot_settings as conf
@@ -108,3 +109,72 @@ class ApiClient(BaseClient):
     def get_type():
         """api"""
         return "api"
+
+
+class DiscordClient(BaseClient):
+    """
+    Discordを操作するClient
+    """
+
+    def __init__(self, discord_client, message: discord.Message):
+        self.client = discord_client
+        self.message = message
+
+    def post(self, message):
+        """Discordにポストする"""
+        self.client.loop.create_task(self.message.channel.send(message))
+
+    def upload(self, file, filename):
+        """ファイルを投稿する"""
+        self.client.loop.create_task(
+            self.message.channel.send(file=discord.File(file, filename=filename))
+        )
+
+    def get_send_user(self):
+        """botを呼び出したユーザーを返す"""
+        return self.message.author.id
+
+    def get_send_user_name(self):
+        return self.message.author.name
+
+    @staticmethod
+    def get_type():
+        """discord"""
+        return "discord"
+
+
+class MisskeyClient(BaseClient):
+    """
+    Misskeyを操作するClient
+    """
+
+    def __init__(self, misskey_client, message):
+        self.client = misskey_client
+        self.message = message
+
+    def post(self, text):
+        """Discordにポストする"""
+        self._post(text=text)
+
+    def upload(self, file, filename=None):
+        """ファイルを投稿する"""
+        with open(file, "rb") as f:
+            drive_file = self.client.drive_files_create(file=f)
+            self._post(file_ids=[drive_file["id"]])
+
+    def _post(self, text=None, file_ids=None):
+        self.client.notes_create(
+            text=text, reply_id=self.message["id"], file_ids=file_ids
+        )
+
+    def get_send_user(self):
+        """botを呼び出したユーザーを返す"""
+        return self.message["user"]["username"]
+
+    def get_send_user_name(self):
+        return self.message["user"]["name"]
+
+    @staticmethod
+    def get_type():
+        """misskey"""
+        return "misskey"

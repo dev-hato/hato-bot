@@ -10,13 +10,13 @@ jobs:
   pr-super-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           submodules: "recursive"
           fetch-depth: 0
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
@@ -25,13 +25,13 @@ jobs:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           cache: npm
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: github/super-linter/slim@v4.9.7
+        uses: github/super-linter/slim@v4.10.1
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
@@ -48,7 +48,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@v2.16.0
+        uses: dotenv-linter/action-dotenv-linter@v2.17.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

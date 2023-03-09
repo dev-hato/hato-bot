@@ -14,8 +14,8 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
 
     conditions = {
         "help": lambda m: hato.help_message,
-        "eq": lambda m: hato.earth_quake,
-        "地震": lambda m: hato.earth_quake,
+        "eq": lambda m: partial(hato.earth_quake),
+        "地震": lambda m: partial(hato.earth_quake),
         "textlint": lambda m: partial(hato.textlint, text=m[len("textlint ") :]),
         "text list": lambda m: hato.get_text_list,
         "text add ": lambda m: partial(hato.add_text, word=m[len("text add ") :]),
@@ -35,6 +35,10 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "version": lambda m: hato.version,
         "にゃーん": lambda m: hato.yoshiyoshi,
         "おみくじ": lambda m: hato.omikuji,
+        "chat": lambda m: partial(hato.chat, message=m[len("chat") :].strip()),
+        "画像生成": lambda m: partial(
+            hato.image_generate, message=m[len("画像生成") :].strip()
+        ),
     }
 
     for key, method in conditions.items():

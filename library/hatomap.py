@@ -257,7 +257,6 @@ class MarkerTrace(Layer):
     fill_color: Optional[Tuple[int, int, int, int]] = None
 
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
-
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
         if len(self.coords) == 0:
             return img
@@ -481,3 +480,18 @@ class HatoMap:
         )
 
         return img
+
+
+def get_circle(lat: float, lng: float, radius: float) -> np.ndarray:
+    """指定した地点から半径radiusメートルの正360角形の頂点を列挙する"""
+    earth_radius = 6378137
+    earth_f = 298.257222101
+    earth_e_sq = (2 * earth_f - 1) / earth_f**2
+    c = 1 - (earth_e_sq * math.sin(lat) ** 2)
+    meter_1deg_lat = math.pi * earth_radius * (1 - earth_e_sq) / (180 * c**1.5)
+    meter_1deg_lng = (
+        math.pi * earth_radius * math.cos(lat * math.pi / 180) / (180 * math.sqrt(c))
+    )
+    lats = np.sin(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lat + lat
+    lngs = np.cos(np.radians(np.arange(0, 361, 1))) * radius / meter_1deg_lng + lng
+    return np.array([lats, lngs]).T
