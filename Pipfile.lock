@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "02e5cc2e1452bf4b5a014786d7cc7550557fab38a84bc886700e0e1d8f769313"
+            "sha256": "27f9dde40ebd497038fa3dfc8acf8d2b75ceb7ce19de0a574ea5359aec495382"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1058,7 +1058,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "d691497ea2044452ba16f536557925bfe98784af"
+            "ref": "d10ffb0d964ce1c4322adbe508d153f30d71d4af"
         },
         "tqdm": {
             "hashes": [
@@ -1473,11 +1473,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:3ee3533e7f6f5023157fbebbd5687bb4b698ce6f305259e0d24b2d7d9efb72bc",
-                "sha256:4102ecd051f6884449e7359e55b38ba6cd7aafb6ef27b8e2b38495a5723ea106"
+                "sha256:5dfef8a745ca4f2c95f27e9db74cb4c8b6d9916383988e8791f3595868f78a33",
+                "sha256:c8b288552bc5f05a08aff09af2f58e6976bf8ac87beb38498a0e3d98ba64eb18"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.5.19"
+            "version": "==2.5.20"
         },
         "idna": {
             "hashes": [
@@ -1919,11 +1919,11 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:10b193ee009046f8fe3af9d1895f767b691635653cccc8698bc01eee2ccb69df",
-                "sha256:68a8abde2fa22b76a20d908e22087e2e12b0e4a2085be2ea955ff6305b0fea30"
+                "sha256:8dad3cde858fb752d64f7c834d88bd3cc8b656bfcd24e9a6ebb576bb31f584ef",
+                "sha256:caeab9886e661151e4cf828e9629fa7228129e6bb544cbbd8087b2b88c42d70c"
             ],
             "index": "pypi",
-            "version": "==1.4.5"
+            "version": "==2.0.0"
         },
         "tblib": {
             "hashes": [
@@ -1932,14 +1932,6 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==1.7.0"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
-                "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
-            ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==0.10.2"
         },
         "tomlkit": {
             "hashes": [
@@ -1975,11 +1967,11 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:3c22fa5a7c7aa106ced59934d2c20a2ecb7f49b4130b8bf444178a16b880fa45",
-                "sha256:a8a4b8ca1e28f864b7514a253f98c1d62b64e31e77325ba279248c65fb4fcef4"
+                "sha256:31712f8f2a17bd06234fa97fdf19609e789dd4e3e4bf108c3da71d710651adbc",
+                "sha256:f50e3e60f990a0757c9b68333c9fdaa72d7188caa417f96af9e52407831a3b68"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==20.20.0"
+            "version": "==20.21.0"
         },
         "wrapt": {
             "hashes": [
