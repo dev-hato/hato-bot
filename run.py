@@ -190,7 +190,7 @@ def main():
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
 
-        async def discord_runner():
+        async def misskey_runner():
             while True:
                 try:
                     # pylint: disable=E1101
@@ -231,7 +231,7 @@ def main():
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
 
-        asyncio.get_event_loop().run_until_complete(discord_runner())
+        asyncio.get_event_loop().run_until_complete(misskey_runner())
     else:
         app.run(host="0.0.0.0", port=conf.PORT)
 
