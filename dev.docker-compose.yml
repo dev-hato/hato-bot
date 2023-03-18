@@ -12,4 +12,6 @@ services:
         - ENV=dev
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
     volumes:
-      - .:/usr/src/app
+      - type: bind
+        source: .
+        target: /usr/src/app
