@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2b3ebe002a1856add124ee788e8de9592b2d5ec051fe7e0dfa9ad3a00a1576dc"
+            "sha256": "5b924dd371abf413db6c90482b93dddaf465d57cea4905dd5666acc10b87fee1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1036,7 +1036,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "ea40afa2c61ab5666b8a618e3dd5d1709d4596fc"
+            "ref": "31ffd98206e494ca6532ca5cd7da8f69f76d361b"
         },
         "tqdm": {
             "hashes": [
@@ -1878,11 +1878,11 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:d705419ac989a0fbc39b9c4caa9def7a23cde3d3f1b5a8c9ce18d17a34df16d1",
-                "sha256:d8333b2f32ee2a14ac7f033584f056d3efdbaa4d9c289df159540b9e7ccb5254"
+                "sha256:3fe168e6a7d44133bb4cc23852587ce6b0ce85c27b60e8e5a0200d89e734197a",
+                "sha256:ccfe91536f79929c7540acb8f16ff62ae3cf95e97e88da810315613000d7d356"
             ],
             "index": "pypi",
-            "version": "==2.0.2"
+            "version": "==2.0.3"
         },
         "tblib": {
             "hashes": [
