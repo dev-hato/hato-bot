@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.11.2-slim-bullseye
+FROM python:3.11.3-slim-bullseye
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -27,7 +27,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2023.2.18 --no-cache-dir && \
+    pip install pipenv==2023.3.20 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
@@ -50,6 +50,7 @@ COPY library library
 COPY plugins plugins
 COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
 COPY .textlintrc .textlintrc
+COPY commands.txt commands.txt
 COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet

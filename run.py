@@ -185,12 +185,13 @@ async def on_message(message):
 def main():
     """メイン関数"""
 
+    logger = logging.getLogger(__name__)
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
 
-        async def discord_runner():
+        async def misskey_runner():
             while True:
                 try:
                     # pylint: disable=E1101
@@ -223,15 +224,20 @@ def main():
                                     and mentions
                                     and misskey_client.i()["id"] in mentions
                                 ):
-                                    analyze.analyze_message(
-                                        note["text"]
-                                        .replace("\xa0", " ")
-                                        .split(" ", 1)[1]
-                                    )(MisskeyClient(misskey_client, note))
+                                    client = MisskeyClient(misskey_client, note)
+                                    try:
+                                        analyze.analyze_message(
+                                            note["text"]
+                                            .replace("\xa0", " ")
+                                            .split(" ", 1)[1]
+                                        )(client)
+                                    except Exception as e:
+                                        logger.exception(e)
+                                        client.post("エラーが発生したっぽ......")
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
 
-        asyncio.get_event_loop().run_until_complete(discord_runner())
+        asyncio.get_event_loop().run_until_complete(misskey_runner())
     else:
         app.run(host="0.0.0.0", port=conf.PORT)
 

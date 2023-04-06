@@ -23,7 +23,9 @@ services:
     restart: always
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - type: bind
+        source: ./postgres/docker-entrypoint-initdb.d
+        target: /docker-entrypoint-initdb.d
     ports:
       - 5432:5432
   hato-bot:

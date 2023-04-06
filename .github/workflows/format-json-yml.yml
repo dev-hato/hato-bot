@@ -18,11 +18,11 @@ jobs:
   format-json-yml:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.5.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-format-json-yml@v0.0.34
+      - uses: dev-hato/actions-format-json-yml@v0.0.36
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
