@@ -27,7 +27,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/get_version.sh"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v4.6.0
         with:
           python-version: ${{env.PYTHON_VERSION }}
           cache: pipenv
