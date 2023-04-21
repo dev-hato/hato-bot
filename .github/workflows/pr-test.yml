@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
       - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v4.6.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pipenv
