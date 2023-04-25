@@ -31,7 +31,7 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pipenv
-      - run: echo {{ steps.setup_python.outputs.python-version }}
+      - run: echo ${{ steps.setup_python.outputs.python-version }}
       - name: Install pipenv
         id: install_pipenv
         continue-on-error: true
