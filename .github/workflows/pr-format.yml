@@ -28,6 +28,7 @@ jobs:
       - run: sed -i -e "s/python_version = \".*\"/python_version = \"$(sed -e 's/\([0-9]*\.[0-9]*\).*/\1/g' .python-version)\"/g" Pipfile
       - name: Set up Python
         uses: actions/setup-python@v4.6.0
+        id: setup_python
         with:
           python-version-file: .python-version
           cache: pipenv
