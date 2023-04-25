@@ -14,11 +14,10 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
+      - name: Set up Python
         uses: actions/setup-python@v4.6.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: .python-version
           cache: pipenv
       - name: Install pipenv
         env:
