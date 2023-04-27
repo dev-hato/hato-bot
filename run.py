@@ -14,7 +14,8 @@ from typing import Callable, List
 
 import discord
 import websockets
-from flask import Flask, escape, jsonify, request
+from flask import Flask, jsonify, request
+from markupsafe import escape
 from misskey import Misskey
 from slackeventsapi import SlackEventAdapter
 
