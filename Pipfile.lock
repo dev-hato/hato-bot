@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "350bac3e253faebae4aec44747a87f90bdf9abf9326ac19076f38a38a91acb87"
+            "sha256": "81478edc4e1759903624c9e35739bd42db1640155001a821c9203ac54013897c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -307,20 +307,12 @@
             "markers": "python_version >= '3.6'",
             "version": "==0.11.0"
         },
-        "discord": {
-            "hashes": [
-                "sha256:1c6af76ed703d07159149e5406d2857419970925454867e145a228cc0996045e",
-                "sha256:d6b9c3420150cea67fc72f0aa2f0bd885c37406cf3d13def8fdf77cc59ca510a"
-            ],
-            "index": "pypi",
-            "version": "==2.2.2"
-        },
         "discord.py": {
             "hashes": [
                 "sha256:38fc52a784727b8e5e5749267089400035b187a009028eddfabeb182abcc6d52",
                 "sha256:b9944056bcb5711b2d04088848fd004466cf117c15c84fa798bf55470f28275f"
             ],
-            "markers": "python_full_version >= '3.8.0'",
+            "index": "pypi",
             "version": "==2.2.2"
         },
         "flask": {
@@ -1044,7 +1036,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "328961d4b16a2eafa9f6dc66876eb6e071885066"
+            "ref": "fed88f4fe6422fe3d08b05c4dc3b54e1f6f0ffd7"
         },
         "tqdm": {
             "hashes": [
@@ -1156,11 +1148,11 @@
         },
         "werkzeug": {
             "hashes": [
-                "sha256:2d35a28a75ae03727eae14ea7d13627c0f77aed6b9998441e6dae0b387f697fc",
-                "sha256:69a4b8fcbb30a4c3fa81a5cebd961541273e4d222a4c08593b0b18312e14f64a"
+                "sha256:2f3278e9ef61511cdf82cc28fc5da0f5b501dd8f01ecf5ef6a5d810048f68702",
+                "sha256:b7b8bc1609f35ae8e45d48a9b58d7a4eb1e41eec148d37e977e5df6ebf3398b2"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.3.1"
+            "version": "==2.3.2"
         },
         "yarl": {
             "hashes": [
@@ -1473,6 +1465,14 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.4"
+        },
+        "importlib-metadata": {
+            "hashes": [
+                "sha256:43dd286a2cd8995d5eaef7fee2066340423b818ed3fd70adf0bad5f1fac53fed",
+                "sha256:92501cdf9cc66ebd3e612f1b4f0c0765dfa42f0fa38ffb319b6bd84dd675d705"
+            ],
+            "index": "pypi",
+            "version": "==6.6.0"
         },
         "iniconfig": {
             "hashes": [
@@ -1892,6 +1892,14 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==1.7.0"
         },
+        "toml": {
+            "hashes": [
+                "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
+                "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+            ],
+            "index": "pypi",
+            "version": "==0.10.2"
+        },
         "tomlkit": {
             "hashes": [
                 "sha256:8c726c4c202bdb148667835f68d68780b9a003a9ec34167b6c673b38eff2a171",
@@ -2012,6 +2020,14 @@
             ],
             "markers": "python_version >= '3.11'",
             "version": "==1.15.0"
+        },
+        "zipp": {
+            "hashes": [
+                "sha256:112929ad649da941c23de50f356a2b5570c954b65150642bccdd66bf194d224b",
+                "sha256:48904fc76a60e542af151aded95726c1a5c34ed43ab4134b597665c86d7ad556"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==3.15.0"
         }
     }
 }
