@@ -1,0 +1,32 @@
+---
+name: add-missing-pipfile-package
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - develop
+jobs:
+  add-missing-pipfile-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v4.6.0
+        with:
+          python-version-file: .python-version
+          cache: pipenv
+      - run: pipenv install --dev
+      - run: pipenv run python "${GITHUB_WORKSPACE}/scripts/add_missing_pipfile_package/add_missing_pipfile_package/add_missing_pipfile_package.py"
+      - run: pipenv install --dev
+      - uses: dev-hato/actions-diff-pr-management@v1.1.3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: add-missing-pipfile-package
+          pr-title-prefix: Pipfileが間違ってたので直してあげたよ！
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
