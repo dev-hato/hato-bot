@@ -18,7 +18,7 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pipenv
-      - run: pipenv install --dev
+      - run: bash "${GITHUB_WORKSPACE}/scripts/add_missing_pipfile_package/add_missing_pipfile_package/install_pipenv.sh"
       - run: pipenv run python "${GITHUB_WORKSPACE}/scripts/add_missing_pipfile_package/add_missing_pipfile_package/add_missing_pipfile_package.py"
       - run: pipenv install --dev
       - uses: dev-hato/actions-diff-pr-management@v1.1.3
