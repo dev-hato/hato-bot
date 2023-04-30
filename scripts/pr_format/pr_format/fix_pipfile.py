@@ -8,7 +8,8 @@ import importlib_metadata
 import toml
 
 PipfilePackages = dict[str, str | dict[str, str]]
-Pipfile=dict[str, list[dict[str, str | bool]] | PipfilePackages]
+Pipfile = dict[str, list[dict[str, str | bool]] | PipfilePackages]
+
 
 def get_package_version(package_name: str) -> str:
     try:
@@ -19,9 +20,7 @@ def get_package_version(package_name: str) -> str:
     return f"=={dist.version}"
 
 
-def fix_package_version(
-        packages: PipfilePackages
-) -> PipfilePackages:
+def fix_package_version(packages: PipfilePackages) -> PipfilePackages:
     for package_name in packages.keys():
         if packages[package_name] == "*":
             packages[package_name] = get_package_version(package_name)
@@ -78,7 +77,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
 
             with open(os.path.join(dir_path, file_name), "r") as python_file:
                 for imported_package in re.findall(
-                        r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+                    r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
                 ):
                     if not is_std_or_local_lib(project_root, imported_package):
                         imported_packages.add(imported_package)
@@ -86,9 +85,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
     return imported_packages
 
 
-def get_pipfile_packages(
-        pipfile: Pipfile
-) -> set[str]:
+def get_pipfile_packages(pipfile: Pipfile) -> set[str]:
     pipfile_packages: set[str] = set()
 
     for key in ["packages", "dev-packages"]:
@@ -107,7 +104,7 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 
 def get_missing_packages(
-        imported_packages: set[str], pipfile_packages: set[str]
+    imported_packages: set[str], pipfile_packages: set[str]
 ) -> dict[str, str]:
     distributions = importlib_metadata.packages_distributions()
     missing_packages: dict[str, str] = dict()
