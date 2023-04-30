@@ -13,7 +13,7 @@ Pipfile = dict[str, PipfileValue]
 
 
 def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackages]:
-    if type(pipfile_value) is list:
+    if not isinstance(pipfile_value, dict):
         return False
 
     for k, v in pipfile_value.items():
@@ -150,13 +150,13 @@ def get_missing_packages(
 
 
 def main():
-    project_root: Path = Path.cwd()
+    project_root = Path.cwd()
     pipfile_path = project_root / "Pipfile"
 
     if not pipfile_path.exists():
         raise FileNotFoundError("Pipfile not found.")
 
-    pipfile: Pipfile = toml.load(pipfile_path)
+    pipfile = toml.load(pipfile_path)
 
     for key in ["packages", "dev-packages"]:
         if not is_pipfile_packages(pipfile[key]):
