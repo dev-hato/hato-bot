@@ -18,7 +18,7 @@ def get_package_version(package_name: str) -> str:
     return f'=={dist.version}'
 
 
-def fix_package_version(packages: Dict[str, str]) -> Dict[str, str]:
+def fix_package_version(packages: Dict[str, any]) -> Dict[str, str]:
     for package_name in packages.keys():
         if packages[package_name] == '*':
             packages[package_name] = get_package_version(package_name)
@@ -83,7 +83,7 @@ def get_imported_packages(project_root: Path) -> Set[str]:
     return imported_packages
 
 
-def get_pipfile_packages(pipfile: Dict[str, Dict[str, str]]) -> Set[str]:
+def get_pipfile_packages(pipfile: Dict[str, Dict[str, any]]) -> Set[str]:
     pipfile_packages: Set[str] = set()
 
     for key in ["packages", "dev-packages"]:
@@ -119,20 +119,20 @@ def get_missing_packages(imported_packages: Set[str], pipfile_packages: Set[str]
             )
 
         if not exist_package_in_pipfile(packages, pipfile_packages):
-            package_name = packages[0]
+            package_name: str = packages[0]
             missing_packages[package_name] = get_package_version(package_name)
 
     return missing_packages
 
 
 def main():
-    project_root = Path.cwd()
+    project_root: Path = Path.cwd()
     pipfile_path = project_root / "Pipfile"
 
     if not pipfile_path.exists():
         raise FileNotFoundError("Pipfile not found.")
 
-    pipfile = toml.load(pipfile_path)
+    pipfile: Dict[str, Dict[str, any]] = toml.load(pipfile_path)
 
     for key in ["packages", "dev-packages"]:
         pipfile[key] = fix_package_version(pipfile[key])
