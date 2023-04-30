@@ -7,7 +7,7 @@ import os
 from abc import ABCMeta, abstractmethod
 
 import discord
-from slack import WebClient
+from slack_sdk import WebClient
 
 import slackbot_settings as conf
 
