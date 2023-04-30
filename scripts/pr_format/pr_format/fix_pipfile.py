@@ -3,7 +3,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import TypeGuard
+from typing import TypeGuard, NoReturn
 
 import importlib_metadata
 import toml
@@ -105,7 +105,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
     return imported_packages
 
 
-def get_pipfile_packages(pipfile: Pipfile) -> set[str]:
+def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
     pipfile_packages: set[str] = set()
 
     for key in ["packages", "dev-packages"]:
@@ -130,7 +130,7 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 def get_missing_packages(
     imported_packages: set[str], pipfile_packages: set[str]
-) -> dict[str, str]:
+) -> dict[str, str] | NoReturn:
     distributions = importlib_metadata.packages_distributions()
     missing_packages: dict[str, str] = dict()
 
