@@ -7,12 +7,22 @@ from typing import NoReturn, TypeGuard
 import importlib_metadata
 import toml
 
+# Pipfileの「packages」「dev-packages」セクションのデータ型
 PipfilePackages = dict[str, str | dict[str, str]]
+
+# Pipfileのいずれかのセクションのデータ型
 PipfileValue = PipfilePackages | list[dict[str, str | bool]]
+
+# Pipfileのデータ型
 Pipfile = dict[str, PipfileValue]
 
 
 def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackages]:
+    """
+    PipfileValue型 のデータがPipfilePackages型であるかを判定する
+    :param pipfile_value: 判定対象のデータ
+    :return: PipfilePackages型であるか
+    """
     if not isinstance(pipfile_value, dict):
         return False
 
@@ -31,6 +41,11 @@ def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackage
 
 
 def get_package_version(package_name: str) -> str:
+    """
+    メタデータからパッケージのバージョンを取得する
+    :param package_name: 取得対象のパッケージ名
+    :return: パッケージのバージョン (「==X.Y.Z」形式)。バージョンを取得できなかった場合は「*」を返す。
+    """
     try:
         dist = importlib_metadata.distribution(package_name)
     except importlib_metadata.PackageNotFoundError:
@@ -40,6 +55,11 @@ def get_package_version(package_name: str) -> str:
 
 
 def fix_package_version(packages: PipfilePackages) -> PipfilePackages:
+    """
+    Pipfileでのバージョン指定が「*」となっているパッケージについて、バージョン指定を実際にインストールされるものに修正する
+    :param packages: パッケージ一覧
+    :return: パッケージ一覧
+    """
     for package_name in packages.keys():
         if packages[package_name] == "*":
             packages[package_name] = get_package_version(package_name)
@@ -48,42 +68,60 @@ def fix_package_version(packages: PipfilePackages) -> PipfilePackages:
 
 
 def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
+    """
+    与えられたパッケージが標準パッケージ or 独自に定義したものであるかを判定する
+    :param project_root: プロジェクトのルートディレクトリのパス
+    :param package_name: 判定対象のパッケージ名
+    :return: 与えられたパッケージが標準パッケージ or 独自に定義したものであるか
+    """
+    # 与えられたパッケージがビルドインのモジュールならば標準パッケージと判定する
     if package_name in sys.builtin_module_names:
         return True
 
+    # Finderを使ってパッケージ情報 (Spec) を取得する
     try:
-        module_spec = importlib.util.find_spec(package_name)
+        package_spec = importlib.util.find_spec(package_name)
     except (AttributeError, ValueError, ModuleNotFoundError):
-        module_spec = None
+        package_spec = None
 
-    if module_spec is None:
+    if package_spec is None:
         for finder in sys.meta_path:
             try:
-                module_spec = finder.find_spec(package_name, ".")
+                package_spec = finder.find_spec(package_name, ".")
             except (AttributeError, ValueError, ModuleNotFoundError):
                 pass
 
-            if module_spec:
+            if package_spec:
                 break
 
-    if module_spec is None:
+    # パッケージ情報がないならばPipfileによってインストールされたものと判定する
+    if package_spec is None:
         return False
 
-    module_origin = module_spec.origin
+    # パッケージのファイルパス
+    package_origin = package_spec.origin
 
-    if not module_origin:
+    # パッケージのファイルパスが取得できないならばPipfileによってインストールされたものと判定する
+    if not package_origin:
         return False
 
-    if project_root.resolve() in Path(module_origin).resolve().parents:
+    # パッケージのファイルパスがプロジェクト内のものであれば独自に定義したものと判定する
+    if project_root.resolve() in Path(package_origin).resolve().parents:
         return True
 
-    if module_origin.startswith(sys.base_prefix):
+    # パッケージのファイルパスがPythonのシステムのパスと一致するならば標準パッケージと判定する
+    if package_origin.startswith(sys.base_prefix):
         return True
 
     return False
 
 
 def get_imported_packages(project_root: Path) -> set[str]:
+    """
+    プロジェクト内のPythonファイルからimportされているパッケージの一覧 (標準パッケージや独自に定義したものを除く) を取得する
+    :param project_root: プロジェクトのルートディレクトリのパス
+    :return: プロジェクト内のPythonファイル内でimportされているパッケージの一覧 (標準パッケージや独自に定義したものを除く)
+    """
     imported_packages: set[str] = set()
 
     for file in project_root.glob("**/*.py"):
@@ -101,6 +139,11 @@ def get_imported_packages(project_root: Path) -> set[str]:
 
 
 def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
+    """
+    Pipfileからパッケージ一覧を取得する
+    :param pipfile: Pipfileの中身
+    :return: Pipfile内のパッケージ一覧
+    """
     pipfile_packages: set[str] = set()
 
     for key in ["packages", "dev-packages"]:
@@ -115,6 +158,12 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
 
 
 def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) -> bool:
+    """
+    与えられたパッケージ群のいずれかがPipfile内に存在するかを判定する
+    :param packages: パッケージ群
+    :param pipfile_packages: Pipfile内のパッケージ一覧
+    :return: 与えられたパッケージ群のいずれかがPipfile内に存在するか
+    """
     for package_name in packages:
         for pn in [package_name, package_name.lower()]:
             if pn in pipfile_packages:
@@ -126,7 +175,15 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 def get_missing_packages(
     imported_packages: set[str], pipfile_packages: set[str]
 ) -> dict[str, str] | NoReturn:
+    """
+    プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージ一覧を取得する
+    :param imported_packages: プロジェクト内のPythonファイルからimportされているパッケージ一覧
+    :param pipfile_packages: Pipfile内のパッケージ一覧
+    :return: プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージ一覧。Pipfile内でのパッケージ名がkey、バージョンがvalueになっている。
+    """
+    # import時のパッケージ名とPipfile内でのパッケージ名の対応表
     distributions = importlib_metadata.packages_distributions()
+
     missing_packages: dict[str, str] = dict()
 
     for imported_package in imported_packages:
