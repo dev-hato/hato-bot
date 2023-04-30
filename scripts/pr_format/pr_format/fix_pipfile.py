@@ -1,5 +1,4 @@
 import importlib.util
-import os
 import re
 import sys
 from pathlib import Path
@@ -87,20 +86,16 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
 def get_imported_packages(project_root: Path) -> set[str]:
     imported_packages: set[str] = set()
 
-    for dir_path, _, file_list in os.walk(project_root):
-        if "node_modules" in dir_path:
+    for file in project_root.glob('**/*.py'):
+        if "node_modules" in str(file):
             continue
 
-        for file_name in file_list:
-            if not file_name.endswith(".py"):
-                continue
-
-            with open(os.path.join(dir_path, file_name), "r") as python_file:
-                for imported_package in re.findall(
+        with open(str(file), "r") as python_file:
+            for imported_package in re.findall(
                     r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
-                ):
-                    if not is_std_or_local_lib(project_root, imported_package):
-                        imported_packages.add(imported_package)
+            ):
+                if not is_std_or_local_lib(project_root, imported_package):
+                    imported_packages.add(imported_package)
 
     return imported_packages
 
