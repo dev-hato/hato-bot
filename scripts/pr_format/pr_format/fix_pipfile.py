@@ -3,7 +3,6 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Set
 
 import importlib_metadata
 import toml
@@ -19,8 +18,8 @@ def get_package_version(package_name: str) -> str:
 
 
 def fix_package_version(
-    packages: Dict[str, str | Dict[str, str]]
-) -> Dict[str, str | Dict[str, str]]:
+    packages: dict[str, str | dict[str, str]]
+) -> dict[str, str | dict[str, str]]:
     for package_name in packages.keys():
         if packages[package_name] == "*":
             packages[package_name] = get_package_version(package_name)
@@ -64,8 +63,8 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     return False
 
 
-def get_imported_packages(project_root: Path) -> Set[str]:
-    imported_packages: Set[str] = set()
+def get_imported_packages(project_root: Path) -> set[str]:
+    imported_packages: set[str] = set()
 
     for dir_path, _, file_list in os.walk(project_root):
         if "node_modules" in dir_path:
@@ -86,9 +85,9 @@ def get_imported_packages(project_root: Path) -> Set[str]:
 
 
 def get_pipfile_packages(
-    pipfile: Dict[str, List[Dict[str, str | bool]] | Dict[str, str | Dict[str, str]]]
-) -> Set[str]:
-    pipfile_packages: Set[str] = set()
+    pipfile: dict[str, list[dict[str, str | bool]] | dict[str, str | dict[str, str]]]
+) -> set[str]:
+    pipfile_packages: set[str] = set()
 
     for key in ["packages", "dev-packages"]:
         pipfile_packages |= set(pipfile[key].keys())
@@ -96,7 +95,7 @@ def get_pipfile_packages(
     return pipfile_packages
 
 
-def exist_package_in_pipfile(packages: List[str], pipfile_packages: Set[str]) -> bool:
+def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) -> bool:
     for package_name in packages:
         for pn in [package_name, package_name.lower()]:
             if pn in pipfile_packages:
@@ -106,10 +105,10 @@ def exist_package_in_pipfile(packages: List[str], pipfile_packages: Set[str]) ->
 
 
 def get_missing_packages(
-    imported_packages: Set[str], pipfile_packages: Set[str]
-) -> Dict[str, str]:
+    imported_packages: set[str], pipfile_packages: set[str]
+) -> dict[str, str]:
     distributions = importlib_metadata.packages_distributions()
-    missing_packages: Dict[str, str] = dict()
+    missing_packages: dict[str, str] = dict()
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
@@ -138,12 +137,12 @@ def main():
     if not pipfile_path.exists():
         raise FileNotFoundError("Pipfile not found.")
 
-    pipfile: Dict[
-        str, List[Dict[str, str | bool]] | Dict[str, str | Dict[str, str]]
+    pipfile: dict[
+        str, list[dict[str, str | bool]] | dict[str, str | dict[str, str]]
     ] = toml.load(pipfile_path)
 
     for key in ["packages", "dev-packages"]:
-        if pipfile[key] is Dict[str, str | Dict[str, str]]:
+        if type(pipfile[key]) is dict[str, str | dict[str, str]]:
             pipfile[key] = fix_package_version(pipfile[key])
 
         if key == "packages":
