@@ -1,3 +1,9 @@
+"""
+Pipfileに対して以下の修正を行う。
+
+* Pipfileでのバージョン指定が「*」となっているパッケージについて、バージョン指定を実際にインストールされるものに修正する
+* プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージをPipfileの「packages」セクションに追加する
+"""
 import importlib.util
 import re
 import sys
@@ -221,6 +227,7 @@ def main():
 
         pipfile[key] = fix_package_version(pipfile[key])
 
+        # プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージをPipfileの「packages」セクションに追加する
         if key == "packages":
             pipfile[key] |= get_missing_packages(
                 get_imported_packages(project_root), get_pipfile_packages(pipfile)
