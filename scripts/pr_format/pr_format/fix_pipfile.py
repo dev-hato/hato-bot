@@ -8,9 +8,8 @@ from typing import TypeGuard
 import importlib_metadata
 import toml
 
-Packages = dict[str, str]
-PipfilePackages = dict[str, str | Packages]
-PipfileValue = list[dict[str, str | bool]] | PipfilePackages
+PipfilePackages = dict[str, str | dict[str, str]]
+PipfileValue = PipfilePackages | list[dict[str, str | bool]]
 Pipfile = dict[str, PipfileValue]
 
 
@@ -126,9 +125,9 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 def get_missing_packages(
     imported_packages: set[str], pipfile_packages: set[str]
-) -> Packages:
+) -> dict[str, str]:
     distributions = importlib_metadata.packages_distributions()
-    missing_packages: Packages = dict()
+    missing_packages: dict[str, str] = dict()
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
