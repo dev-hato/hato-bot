@@ -139,7 +139,7 @@ def main():
     pipfile: Pipfile = toml.load(pipfile_path)
 
     for key in ["packages", "dev-packages"]:
-        if type(pipfile[key]) is PipfilePackages:
+        if type(pipfile[key]) is not list:
             pipfile[key] = fix_package_version(pipfile[key])
 
         if key == "packages":
