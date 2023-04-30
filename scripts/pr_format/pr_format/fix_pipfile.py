@@ -3,12 +3,33 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import TypeGuard
 
 import importlib_metadata
 import toml
 
-PipfilePackages = dict[str, str | dict[str, str]]
-Pipfile = dict[str, list[dict[str, str | bool]] | PipfilePackages]
+Packages = dict[str, str]
+PipfilePackages = dict[str, str | Packages]
+PipfileValue = list[dict[str, str | bool]] | PipfilePackages
+Pipfile = dict[str, PipfileValue]
+
+
+def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackages]:
+    if type(pipfile_value) is list:
+        return False
+
+    for k, v in pipfile_value.items():
+        if not isinstance(k, str):
+            return False
+
+        if isinstance(v, str):
+            continue
+
+        for k2, v2 in v.items():
+            if not isinstance(k2, str) or not isinstance(v2, str):
+                return False
+
+    return True
 
 
 def get_package_version(package_name: str) -> str:
@@ -105,9 +126,9 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 def get_missing_packages(
     imported_packages: set[str], pipfile_packages: set[str]
-) -> dict[str, str]:
+) -> Packages:
     distributions = importlib_metadata.packages_distributions()
-    missing_packages: dict[str, str] = dict()
+    missing_packages: Packages = dict()
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
@@ -139,7 +160,7 @@ def main():
     pipfile: Pipfile = toml.load(pipfile_path)
 
     for key in ["packages", "dev-packages"]:
-        if type(pipfile[key]) is not list:
+        if is_pipfile_packages(pipfile[key]):
             pipfile[key] = fix_package_version(pipfile[key])
 
         if key == "packages":
