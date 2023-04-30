@@ -112,7 +112,9 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str]:
         pipfile_value = pipfile[key]
 
         if not is_pipfile_packages(pipfile_value):
-            raise TypeError("Failed to convert to PipfilePackages: " + str(pipfile_value))
+            raise TypeError(
+                "Failed to convert to PipfilePackages: " + str(pipfile_value)
+            )
 
         pipfile_packages |= set(pipfile_value.keys())
 
@@ -165,7 +167,9 @@ def main():
 
     for key in ["packages", "dev-packages"]:
         if not is_pipfile_packages(pipfile[key]):
-            raise TypeError("Failed to convert to PipfilePackages: " + str(pipfile[key]))
+            raise TypeError(
+                "Failed to convert to PipfilePackages: " + str(pipfile[key])
+            )
 
         pipfile[key] = fix_package_version(pipfile[key])
 
