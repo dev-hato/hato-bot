@@ -2,7 +2,7 @@ import importlib.util
 import re
 import sys
 from pathlib import Path
-from typing import TypeGuard, NoReturn
+from typing import NoReturn, TypeGuard
 
 import importlib_metadata
 import toml
@@ -86,13 +86,13 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
 def get_imported_packages(project_root: Path) -> set[str]:
     imported_packages: set[str] = set()
 
-    for file in project_root.glob('**/*.py'):
+    for file in project_root.glob("**/*.py"):
         if "node_modules" in str(file):
             continue
 
         with open(str(file), "r") as python_file:
             for imported_package in re.findall(
-                    r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+                r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
             ):
                 if not is_std_or_local_lib(project_root, imported_package):
                     imported_packages.add(imported_package)
