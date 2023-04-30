@@ -109,7 +109,9 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str]:
     pipfile_packages: set[str] = set()
 
     for key in ["packages", "dev-packages"]:
-        pipfile_packages |= set(pipfile[key].keys())
+        pipfile_value = pipfile[key]
+        if is_pipfile_packages(pipfile_value):
+            pipfile_packages |= set(pipfile_value.keys())
 
     return pipfile_packages
 
