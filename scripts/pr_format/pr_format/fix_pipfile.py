@@ -1,14 +1,32 @@
 import importlib.util
 import os
-import pathlib
 import re
 import sys
+from pathlib import Path
+from typing import Set, List, Dict
 
 import importlib_metadata
 import toml
 
 
-def is_std_or_local_lib(project_root, package_name):
+def get_package_version(package_name: str) -> str:
+    try:
+        dist = importlib_metadata.distribution(package_name)
+    except importlib_metadata.PackageNotFoundError:
+        return "*"
+
+    return f'=={dist.version}'
+
+
+def fix_package_version(packages: Dict[str, str]) -> Dict[str, str]:
+    for package_name in packages.keys():
+        if packages[package_name] == '*':
+            packages[package_name] = get_package_version(package_name)
+
+    return packages
+
+
+def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     if package_name in sys.builtin_module_names:
         return True
 
@@ -35,7 +53,7 @@ def is_std_or_local_lib(project_root, package_name):
     if not module_origin:
         return False
 
-    if project_root.resolve() in pathlib.Path(module_origin).resolve().parents:
+    if project_root.resolve() in Path(module_origin).resolve().parents:
         return True
 
     if module_origin.startswith(sys.base_prefix):
@@ -44,8 +62,8 @@ def is_std_or_local_lib(project_root, package_name):
     return False
 
 
-def get_imported_packages(project_root):
-    imported_packages = set()
+def get_imported_packages(project_root: Path) -> Set[str]:
+    imported_packages: Set[str] = set()
 
     for dir_path, _, file_list in os.walk(project_root):
         if "node_modules" in dir_path:
@@ -57,7 +75,7 @@ def get_imported_packages(project_root):
 
             with open(os.path.join(dir_path, file_name), "r") as python_file:
                 for imported_package in re.findall(
-                    r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+                        r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
                 ):
                     if not is_std_or_local_lib(project_root, imported_package):
                         imported_packages.add(imported_package)
@@ -65,8 +83,8 @@ def get_imported_packages(project_root):
     return imported_packages
 
 
-def get_pipfile_packages(pipfile):
-    pipfile_packages = set()
+def get_pipfile_packages(pipfile: Dict[str, Dict[str, str]]) -> Set[str]:
+    pipfile_packages: Set[str] = set()
 
     for key in ["packages", "dev-packages"]:
         pipfile_packages |= set(pipfile[key].keys())
@@ -74,7 +92,7 @@ def get_pipfile_packages(pipfile):
     return pipfile_packages
 
 
-def exist_package_in_pipfile(packages, pipfile_packages):
+def exist_package_in_pipfile(packages: List[str], pipfile_packages: Set[str]) -> bool:
     for package_name in packages:
         for pn in [package_name, package_name.lower()]:
             if pn in pipfile_packages:
@@ -83,9 +101,9 @@ def exist_package_in_pipfile(packages, pipfile_packages):
     return False
 
 
-def get_missing_packages(imported_packages, pipfile_packages):
+def get_missing_packages(imported_packages: Set[str], pipfile_packages: Set[str]) -> Dict[str, str]:
     distributions = importlib_metadata.packages_distributions()
-    missing_packages = dict()
+    missing_packages: Dict[str, str] = dict()
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
@@ -102,29 +120,26 @@ def get_missing_packages(imported_packages, pipfile_packages):
 
         if not exist_package_in_pipfile(packages, pipfile_packages):
             package_name = packages[0]
-
-            try:
-                dist = importlib_metadata.distribution(package_name)
-            except importlib_metadata.PackageNotFoundError:
-                missing_packages[package_name] = "*"
-                continue
-
-            missing_packages[package_name] = dist.version
+            missing_packages[package_name] = get_package_version(package_name)
 
     return missing_packages
 
 
 def main():
-    project_root = pathlib.Path.cwd()
+    project_root = Path.cwd()
     pipfile_path = project_root / "Pipfile"
 
     if not pipfile_path.exists():
         raise FileNotFoundError("Pipfile not found.")
 
     pipfile = toml.load(pipfile_path)
-    pipfile["packages"] |= get_missing_packages(
-        get_imported_packages(project_root), get_pipfile_packages(pipfile)
-    )
+
+    for key in ["packages", "dev-packages"]:
+        pipfile[key] = fix_package_version(pipfile[key])
+        if key == 'packages':
+            pipfile[key] |= get_missing_packages(
+                get_imported_packages(project_root), get_pipfile_packages(pipfile)
+            )
 
     with open(pipfile_path, "w") as f:
         toml.dump(pipfile, f)
