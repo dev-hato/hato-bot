@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e8c28d3ed57e934f881acc1d2cdde2773eab1389bd2ce7fa1360d5052627e0d3"
+            "sha256": "3becf2d175e567f5352cf306d5a7f1d105068686572e1e047a944796178002a9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -227,7 +227,7 @@
                 "sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df",
                 "sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.1.0"
         },
         "click": {
@@ -309,19 +309,19 @@
         },
         "discord": {
             "hashes": [
-                "sha256:1c6af76ed703d07159149e5406d2857419970925454867e145a228cc0996045e",
-                "sha256:d6b9c3420150cea67fc72f0aa2f0bd885c37406cf3d13def8fdf77cc59ca510a"
+                "sha256:a8de4ed7529930fb655ac0fb73e016f7e647165de5877ff66dbcb395717b7690",
+                "sha256:b170972fc97e0582f2e4cbb1e2774f1324aae43d451a4f094212e88f22e564a5"
             ],
             "index": "pypi",
-            "version": "==2.2.2"
+            "version": "==2.2.3"
         },
         "discord.py": {
             "hashes": [
-                "sha256:38fc52a784727b8e5e5749267089400035b187a009028eddfabeb182abcc6d52",
-                "sha256:b9944056bcb5711b2d04088848fd004466cf117c15c84fa798bf55470f28275f"
+                "sha256:792bdcfe71cfe013c446cf379b2e83e08b5050604322ad6fb592864e63511abd",
+                "sha256:f9df95795c6f52c5db43b7ab43634993e12ef233288636a759166dd9c134d077"
             ],
-            "markers": "python_full_version >= '3.8.0'",
-            "version": "==2.2.2"
+            "markers": "python_version >= '3.8'",
+            "version": "==2.2.3"
         },
         "flask": {
             "hashes": [
@@ -1400,7 +1400,7 @@
                 "sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df",
                 "sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.1.0"
         },
         "click": {
