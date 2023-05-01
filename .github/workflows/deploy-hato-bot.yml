@@ -115,11 +115,13 @@ jobs:
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
       - uses: actions/checkout@v3.5.2
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Get Python version
         id: get_python_version
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
@@ -133,6 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.2
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
