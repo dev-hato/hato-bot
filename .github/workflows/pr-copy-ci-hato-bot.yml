@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
           path: hato-bot
@@ -24,7 +24,7 @@ jobs:
           result-encoding: string
           script:
             return process.env.GITHUB_REPOSITORY.split('/')[0]
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
           repository: ${{steps.set_org_name.outputs.result}}/sudden-death
