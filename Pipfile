@@ -8,7 +8,7 @@ python_version = "3.11"
 
 [dev-packages]
 autopep8 = "==2.0.2"
-requests-mock = "==1.10.0"
+requests-mock = "==1.11.0"
 pylint = "==2.17.4"
 sqlfluff = "==2.1.1"
 mypy = "==1.3.0"
