@@ -47,7 +47,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@v2.17.0
+        uses: dotenv-linter/action-dotenv-linter@v2.18.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
