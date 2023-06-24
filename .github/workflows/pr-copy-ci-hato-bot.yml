@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
 
 jobs:
   pr-copy-ci:
