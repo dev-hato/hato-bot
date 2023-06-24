@@ -2,9 +2,7 @@
 name: pr-copy-ci-hato-bot
 
 on:
-  push:
-    branches:
-      - develop
+  pull_request:
 
 jobs:
   pr-copy-ci:
