@@ -125,7 +125,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@v1.1.4
+      - uses: dev-hato/actions-diff-pr-management@v1.1.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
@@ -139,7 +139,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@v0.0.57
+      - uses: dev-hato/actions-update-dockle@v0.0.58
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 
