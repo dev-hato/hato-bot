@@ -17,7 +17,7 @@ jobs:
           result-encoding: string
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.js`)
-            script()
+            await script(github, context)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
