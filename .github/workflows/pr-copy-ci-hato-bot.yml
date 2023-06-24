@@ -16,7 +16,7 @@ jobs:
       - uses: actions/github-script@v6.4.1
         id: set_org_name
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.SUDDEN_DEATH_CI_TOKEN}}
           result-encoding: string
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.js`)
