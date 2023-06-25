@@ -30,10 +30,10 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
-      - name: Get Dependabot npm version
-        id: get_dependabot_npm_version
+      - name: Get npm version
+        id: get_npm_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_dependabot_npm_version.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_npm_version.sh"
       - uses: dev-hato/actions-diff-pr-management@v1.1.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
