@@ -1,7 +1,7 @@
 module.exports = async ({ github, context }) => {
   const reposCreateDispatchEventParams = {
     owner: context.repo.owner,
-    repo: context.repo.repo,
+    repo: 'sudden-death',
     event_type: 'pr-copy-ci'
   }
   console.log('call repos.createDispatchEvent:')
