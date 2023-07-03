@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dfc84cdae0eb60a277df36a565eaf4ad2147a93deccd34c20eef6be0d7d3105f"
+            "sha256": "887d9da47b2b4650f61d6ce1f06ba5367dd3d6d434a4b64641948d28045cc158"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1046,7 +1046,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "b9a8c755aa7085e287b2cab4e592e0d7812ce59c"
+            "ref": "9b0198aa0062beb7b7274cd863bede54aec39477"
         },
         "tqdm": {
             "hashes": [
@@ -1058,11 +1058,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:5d8c9dac95c27d20df12fb1d97b9793ab8b2af8a3a525e68c80e21060c161771",
-                "sha256:935ccf31549830cda708b42289d44b6f74084d616a00be651601a4f968e77c82"
+                "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36",
+                "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==4.7.0"
+            "version": "==4.7.1"
         },
         "tzdata": {
             "hashes": [
@@ -1916,11 +1916,11 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:7f303189ba3d1e50df5782c0bea974de8a25db0e6d1f0d1238f75b848c8d3f27",
-                "sha256:974a2eecb91ab3236b73097ea6c7532a96dd0dcafd4394fa2305b2845ef4d7d2"
+                "sha256:3273425afd36f07afc6782f031e7f2864539853dee2e7fa3f3aedd7caa262125",
+                "sha256:70efa82c01e0361039c6a098f00d901aee85f7d16be094753b301510aecadbc0"
             ],
             "index": "pypi",
-            "version": "==2.1.1"
+            "version": "==2.1.2"
         },
         "tblib": {
             "hashes": [
@@ -1964,11 +1964,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:5d8c9dac95c27d20df12fb1d97b9793ab8b2af8a3a525e68c80e21060c161771",
-                "sha256:935ccf31549830cda708b42289d44b6f74084d616a00be651601a4f968e77c82"
+                "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36",
+                "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==4.7.0"
+            "version": "==4.7.1"
         },
         "urllib3": {
             "hashes": [
