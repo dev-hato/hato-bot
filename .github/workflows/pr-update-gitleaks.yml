@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v3.6.0
+      - uses: actions/setup-node@v3.7.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
