@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "174fdf876fa3799bc4a0daf6b8f25659fca04d03a123f264a21f201a8df52c6f"
+            "sha256": "eeb4f7dd576b3c8f16bfb5cd9a88290cac0a8eb3c395e4c7745b99dcb51b77d2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -967,7 +967,7 @@
                 "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
                 "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.8.2"
         },
         "python-dotenv": {
@@ -1006,7 +1006,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
         },
         "slack-sdk": {
@@ -1035,7 +1035,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "c167fee1b644e482b32d531ebbd99f1235856abf"
+            "ref": "b65ee3b1bf1baa63b9e8310e82f4d5f2d521dd29"
         },
         "tqdm": {
             "hashes": [
@@ -1897,16 +1897,16 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:309ad491564c5f18a5dea959d0e699dfbfcabc507b1b3384fa99fbb8cb09010f",
-                "sha256:d2563aa8635b1eb3a493e8a0ab88db6bd8a8725ebcb83e7647611e369aaaa353"
+                "sha256:3884e375b9a884485263cf156b21ff55a38adadb7be6451e27ee6b8f1a75f018",
+                "sha256:86ee197cb6919e50962c4def5f64ba8bafb35b1ffab943b2e87fca137e3df2a2"
             ],
             "index": "pypi",
-            "version": "==2.1.3"
+            "version": "==2.1.4"
         },
         "tblib": {
             "hashes": [
@@ -1966,11 +1966,11 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:01aacf8decd346cf9a865ae85c0cdc7f64c8caa07ff0d8b1dfc1733d10677442",
-                "sha256:2ef6a237c31629da6442b0bcaa3999748108c7166318d1f55cc9f8d7294e97bd"
+                "sha256:43a3052be36080548bdee0b42919c88072037d50d56c28bd3f853cbe92b953ff",
+                "sha256:fd8a78f46f6b99a67b7ec5cf73f92357891a7b3a40fd97637c27f854aae3b9e0"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==20.24.1"
+            "version": "==20.24.2"
         },
         "wrapt": {
             "hashes": [
