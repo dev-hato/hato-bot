@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3afa09a24af7c6980c2d411fd3c78b113498d3b590b820a1c27ddaa4d4b8f2c0"
+            "sha256": "7458f6d23132da60486c79e5a5595fc5a35610d350d4565362e769ddb91e3a64"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -227,7 +227,7 @@
                 "sha256:f779d3ad205f108d14e99bb3859aa7dd8e9c68874617c72354d7ecaec2a054ac",
                 "sha256:f87f746ee241d30d6ed93969de31e5ffd09a2961a051e60ae6bddde9ec3583aa"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.2.0"
         },
         "click": {
@@ -759,7 +759,10 @@
         },
         "opencv-python": {
             "hashes": [
+                "sha256:48eb3121d809a873086d6677565e3ac963e6946110d13cd115533fa70e2aa2eb",
                 "sha256:56d84c43ce800938b9b1ec74b33942b2edbcef3f70c2754eb9bfe5dff1ee3ace",
+                "sha256:67bce4b9aad307c98a9a07c6afb7de3a4e823c1f4991d6d8e88e229e7dfeee59",
+                "sha256:93871871b1c9d6b125cddd45b0638a2fa01ee9fd37f5e428823f750e404f2f15",
                 "sha256:9bcb4944211acf13742dbfd9d3a11dc4e36353ffa1746f2c7dcd6a01c32d1376",
                 "sha256:b2349dc9f97ed6c9ba163d0a7a24bcef9695a3e216cd143e92f1b9659c5d9a49",
                 "sha256:ba32cfa75a806abd68249699d34420737d27b5678553387fc5768747a6492147"
@@ -1383,7 +1386,7 @@
                 "sha256:f779d3ad205f108d14e99bb3859aa7dd8e9c68874617c72354d7ecaec2a054ac",
                 "sha256:f87f746ee241d30d6ed93969de31e5ffd09a2961a051e60ae6bddde9ec3583aa"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.2.0"
         },
         "click": {
@@ -1897,11 +1900,11 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:0187da866f232add88038811c1b959af5176bfe2e2ded63a920dd1e413e65f2a",
-                "sha256:abe02f237cd228e0385233c79937750b3d00cbb58dfe2c96191cc1dd7cb8855d"
+                "sha256:86b3f85388e10c69eeea12ccaa169f66248e9240d57f22b66e84048cc7333b08",
+                "sha256:93b4c49a6640e15fa5fddbc022d0544675b9d4ac382d68da029d07c713cb6e7e"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         },
         "tblib": {
             "hashes": [
