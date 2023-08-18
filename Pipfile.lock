@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b468d8e6a5bf7a1ae38308d0edbf05a340920b11f15d7885858bfe34a39f64a8"
+            "sha256": "c027e72c53ac2781874e991001358e0d06f8f5b1fb6d5ab0182b4bb65dbeb0c3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -232,11 +232,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd",
-                "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"
+                "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28",
+                "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
             ],
             "index": "pypi",
-            "version": "==8.1.6"
+            "version": "==8.1.7"
         },
         "contourpy": {
             "hashes": [
@@ -1033,7 +1033,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "3fac1308c35fc6512395b6eeb8f5e28a7af60c4d"
+            "ref": "c33660a7507983e42c5d03642e4e6cc7b600f028"
         },
         "tqdm": {
             "hashes": [
@@ -1391,11 +1391,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd",
-                "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"
+                "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28",
+                "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
             ],
             "index": "pypi",
-            "version": "==8.1.6"
+            "version": "==8.1.7"
         },
         "colorama": {
             "hashes": [
