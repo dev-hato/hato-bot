@@ -1,4 +1,4 @@
-# 鳩bot - 愛嬌のあるBot
+# 鳩bot - 愛嬌のあるSlack Bot
 
 ![badge](https://github.com/dev-hato/hato-bot/workflows/pr-test/badge.svg)
 
