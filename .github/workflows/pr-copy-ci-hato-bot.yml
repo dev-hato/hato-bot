@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.6.0
       - uses: actions/github-script@v6.4.1
         with:
           github-token: ${{secrets.SUDDEN_DEATH_CI_TOKEN}}
