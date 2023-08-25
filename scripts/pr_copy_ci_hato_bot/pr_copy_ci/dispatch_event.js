@@ -3,7 +3,7 @@ module.exports = async ({ github, context }) => {
     owner: context.repo.owner,
     repo: 'sudden-death',
     workflow_id: 2448946,
-    ref: 'main',
+    ref: 'main'
   }
   console.log('call actions.createWorkflowDispatch:')
   console.log(actionsCreateWorkflowDispatchParams)
