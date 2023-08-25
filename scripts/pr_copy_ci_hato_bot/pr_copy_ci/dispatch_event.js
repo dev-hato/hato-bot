@@ -1,12 +1,13 @@
 module.exports = async ({ github, context }) => {
-  const reposCreateDispatchEventParams = {
+  const actionsCreateWorkflowDispatchParams = {
     owner: context.repo.owner,
     repo: 'sudden-death',
-    event_type: 'pr-copy-ci'
+    workflow_id: 2452313,
+    ref: 'master'
   }
-  console.log('call repos.createDispatchEvent:')
-  console.log(reposCreateDispatchEventParams)
-  await github.rest.repos.createDispatchEvent({
-    ...reposCreateDispatchEventParams
+  console.log('call actions.createWorkflowDispatch:')
+  console.log(actionsCreateWorkflowDispatchParams)
+  await github.rest.actions.createWorkflowDispatch({
+    ...actionsCreateWorkflowDispatchParams
   })
 }
