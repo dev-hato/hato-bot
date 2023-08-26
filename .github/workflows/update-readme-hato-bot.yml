@@ -10,7 +10,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   update-readme:
     runs-on: ubuntu-latest
@@ -27,7 +26,6 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: update-readme
           pr-title-prefix: READMEを更新してあげたよ！
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
