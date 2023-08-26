@@ -1,17 +1,14 @@
 ---
 name: pr-master-to-develop-hato-bot
-
 on:
   push:
     branches:
       - master
-
 jobs:
   # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
   # masterとdevelopの間でコミットログに差異が出ないようにする
   pr-master-to-develop:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.6.0
         with:
@@ -22,8 +19,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          script:
-            return process.env.GITHUB_REPOSITORY.split('/')[0]
+          script: return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v6.4.1
         id: get_pull_requests
@@ -44,7 +40,6 @@ jobs:
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_merge_develop_hato_bot/pr_master_to_develop/create_pull_request.js`)
             await script({github, context})
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

@@ -1,6 +1,5 @@
 ---
 name: pr-test-hato-bot
-
 # pull_requestで何かあった時に起動する
 on:
   pull_request:
@@ -8,13 +7,11 @@ on:
     branches:
       - master
       - develop
-
 jobs:
   # unittestを行う
   # testが落ちたらチェックが落ちる
   pr-test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.6.0
         with:
@@ -26,7 +23,6 @@ jobs:
           cache: pipenv
       - name: Test
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test_hato_bot/pr_test/test.sh"
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
