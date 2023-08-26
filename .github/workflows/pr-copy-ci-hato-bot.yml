@@ -1,16 +1,13 @@
 ---
 name: pr-copy-ci-hato-bot
-
 on:
   push:
     branches:
       - develop
   workflow_dispatch:
-
 jobs:
   pr-copy-ci:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3.6.0
       - uses: actions/github-script@v6.4.1
@@ -19,7 +16,6 @@ jobs:
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.js`)
             await script({ github, context })
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
