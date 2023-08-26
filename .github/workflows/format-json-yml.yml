@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-format-json-yml@v0.0.45
+      - uses: dev-hato/actions-format-json-yml@v0.0.46
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
