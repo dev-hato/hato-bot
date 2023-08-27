@@ -13,7 +13,7 @@
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
     "markdownlint-cli": "0.35.0",
-    "renovate": "36.61.0",
+    "renovate": "36.64.6",
     "textlint": "13.3.3",
     "textlint-filter-rule-comments": "1.2.2",
     "textlint-rule-abbr-within-parentheses": "1.0.2",
