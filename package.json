@@ -12,7 +12,7 @@
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
-    "markdownlint-cli": "0.35.0",
+    "markdownlint-cli": "0.36.0",
     "renovate": "36.78.8",
     "textlint": "13.3.3",
     "textlint-filter-rule-comments": "1.2.2",
