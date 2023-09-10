@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "17e1e2687c5c8f76cca2f0c09fee4e491ead851922d1abc1f90a2e155ef0b0cc"
+            "sha256": "42146c1db2aefa9624a0dbc24a5d6fa3fcbda8f8cc38a2b8e40cab1c04d53e45"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1088,7 +1088,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "112b1cba5c1aae39f2bcf017bc24dfb81d1166df"
+            "ref": "0e78a6e31bf9bc66be12ac7a34cf2ebcf70e60e0"
         },
         "tqdm": {
             "hashes": [
@@ -1988,12 +1988,12 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:52b872acf3a6bbab240415ce797722bf6eeab83361f2755acc465e393f6efde8",
-                "sha256:726e8c81afee44ab1b823b2a67a2359a75c33a85366ad79353b92fa4a4346ab1"
+                "sha256:3403ce7e9133766d7336b7e26638657ec6cc9e5610e35186b7f02cc427dd49b7",
+                "sha256:85c8b683e283ff632fe28529ddb60585ea2d1d3c614fc7a1db171632b99dcce3"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==2.3.1"
+            "version": "==2.3.2"
         },
         "tblib": {
             "hashes": [
@@ -2054,11 +2054,11 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:29c70bb9b88510f6414ac3e55c8b413a1f96239b6b789ca123437d5e892190cb",
-                "sha256:772b05bfda7ed3b8ecd16021ca9716273ad9f4467c801f27e83ac73430246dca"
+                "sha256:b80039f280f4919c77b30f1c23294ae357c4c8701042086e3fc005963e4e537b",
+                "sha256:e8361967f6da6fbdf1426483bfe9fca8287c242ac0bc30429905721cefbff752"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==20.24.4"
+            "version": "==20.24.5"
         },
         "wrapt": {
             "hashes": [
