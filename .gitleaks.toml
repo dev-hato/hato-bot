@@ -1,7 +1,2 @@
+<a href="/super-linter/super-linter/TEMPLATES/.gitleaks.toml">Moved Permanently</a>.
 
-title = "gitleaks config"
-
-[extend]
-# useDefault will extend the base configuration with the default gitleaks config:
-# https://github.com/zricethezav/gitleaks/blob/master/config/gitleaks.toml
-useDefault = true
