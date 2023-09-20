@@ -25,7 +25,9 @@
     },
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
     "prefer-tari-tari": true,
-    "preset-ja-spacing": true,
+    "preset-ja-spacing": {
+      "ja-no-space-around-parentheses": false
+    },
     "preset-ja-technical-writing": {
       "ja-no-successive-word": {
         "allow": [
