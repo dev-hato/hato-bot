@@ -25,7 +25,9 @@
     },
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
     "prefer-tari-tari": true,
-    "preset-ja-spacing": true,
+    "preset-ja-spacing": {
+      "ja-no-space-around-parentheses": false
+    },
     "preset-ja-technical-writing": {
       "ja-no-successive-word": {
         "allow": [
@@ -36,8 +38,10 @@
     },
     "preset-jtf-style": {
       "1.1.3.箇条書き": false,
+      "3.3.かっこ類と隣接する文字の間のスペースの有無": false,
       "4.3.1.丸かっこ（）": false,
-      "4.3.2.大かっこ［］": false
+      "4.3.2.大かっこ［］": false,
+      "4.3.7.山かっこ<>": false
     },
     "terminology": true
   }

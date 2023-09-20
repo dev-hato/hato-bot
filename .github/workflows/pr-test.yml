@@ -30,11 +30,12 @@ jobs:
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: github/super-linter/slim@v5.0.0
+        uses: super-linter/super-linter/slim@v5.3.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
           LINTER_RULES_PATH: .
+          FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
