@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         id: setup_python
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
