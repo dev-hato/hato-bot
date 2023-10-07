@@ -4,7 +4,9 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["flask"],
+      "matchPackageNames": [
+        "flask"
+      ],
       "allowedVersions": "<3.0.0"
     },
     {
