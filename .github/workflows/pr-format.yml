@@ -40,9 +40,19 @@ jobs:
         continue-on-error: true
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
+      - name: Install pipenv
+        id: install_pipenv
+        continue-on-error: true
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/pipenv_install.sh"
+      - name: Install pipenv
+        id: install_pipenv
+        continue-on-error: true
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
       # formatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
