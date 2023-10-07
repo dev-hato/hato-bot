@@ -9,7 +9,7 @@ python_version = "3.11"
 [dev-packages]
 autopep8 = "==2.0.4"
 requests-mock = "==1.11.0"
-pylint = "==3.0.0"
+pylint = "==3.0.1"
 sqlfluff = "==2.3.2"
 mypy = "==1.5.1"
 flake8 = "==6.1.0"
