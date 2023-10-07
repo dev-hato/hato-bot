@@ -107,7 +107,7 @@
                 "sha256:fd1ed388ea7fbed22c4968dd64bab0198de60750a25fe8c0c9d4bef5abe13824"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==3.8.5"
+            "version": "==3.8.6"
         },
         "aiosignal": {
             "hashes": [
