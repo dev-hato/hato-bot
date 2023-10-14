@@ -68,7 +68,7 @@ jobs:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
-          files: docker-compose.yml,dev.docker-compose.yml
+          files: docker-compose.yml,dev.base.docker-compose.yml
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
@@ -94,7 +94,7 @@ jobs:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
-          files: docker-compose.yml,dev.docker-compose.yml
+          files: docker-compose.yml,dev.base.docker-compose.yml
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
