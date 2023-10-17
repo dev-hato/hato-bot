@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f6770796bef65837f23ca1e028442574701c6b482dbc2ff5cc2a170b4dfa1caf"
+            "sha256": "6da6f2f7739c8de7fd34e5c0da76e6e9643b82786cca09fd112ad9ef05279c8a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1131,7 +1131,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "8e7b83fd47129f93c80c96dd7d8a40f23d0c5498"
+            "ref": "1c2e1a595f40e1e7ca23fd02abbb58cc5d5d004f"
         },
         "tqdm": {
             "hashes": [
@@ -1159,11 +1159,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:7a7c7003b000adf9e7ca2a377c9688bbc54ed41b985789ed576570342a375cd2",
-                "sha256:b19e1a85d206b56d7df1d5e683df4a7725252a964e3993648dd0fb5a1c157564"
+                "sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84",
+                "sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.0.6"
+            "version": "==2.0.7"
         },
         "websockets": {
             "hashes": [
@@ -2004,12 +2004,12 @@
         },
         "sqlfluff": {
             "hashes": [
-                "sha256:185e1122056bee3e2098346f0123dd80ac822727cabb418e82fa56ee978db0db",
-                "sha256:a1f235f07279429e24570e76c86799616ff3e9a73134d83c31cd290f225610be"
+                "sha256:9d79ffdc3bb7790815db8b71dbf40fdb277774a12f6c14e9420f666446801ffc",
+                "sha256:cbff620077e38c68af3aa0d63d9f87d3745156ad3dcea71245f8caa0b09a0b82"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==2.3.3"
+            "version": "==2.3.4"
         },
         "tblib": {
             "hashes": [
@@ -2062,11 +2062,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:7a7c7003b000adf9e7ca2a377c9688bbc54ed41b985789ed576570342a375cd2",
-                "sha256:b19e1a85d206b56d7df1d5e683df4a7725252a964e3993648dd0fb5a1c157564"
+                "sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84",
+                "sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.0.6"
+            "version": "==2.0.7"
         },
         "virtualenv": {
             "hashes": [
