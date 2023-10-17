@@ -1,17 +1,53 @@
 ---
 version: "3.8"
 services:
+  postgres:
+    develop:
+      watch:
+        - action: rebuild
+          path: ./docker-compose.yml
+        - action: rebuild
+          path: ./dev.base.docker-compose.yml
+        - action: rebuild
+          path: ./dev.docker-compose.yml
+        - action: rebuild
+          path: ./postgres/Dockerfile
   hato-bot:
-    build:
-      cache_from:
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
-      args:
-        - ENV=dev
-    image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
-    volumes:
-      - type: bind
-        source: .
-        target: /usr/src/app
+    develop:
+      watch:
+        - action: rebuild
+          path: ./docker-compose.yml
+        - action: rebuild
+          path: ./dev.base.docker-compose.yml
+        - action: rebuild
+          path: ./dev.docker-compose.yml
+        - action: rebuild
+          path: ./Dockerfile
+        - action: rebuild
+          path: ./slackbot_settings.py
+        - action: rebuild
+          path: ./Pipfile
+        - action: rebuild
+          path: ./package.json
+        - action: rebuild
+          path: ./package-lock.json
+        - action: rebuild
+          path: ./create_env.py
+        - action: rebuild
+          path: ./entrypoint.py
+        - action: rebuild
+          path: ./post_command.py
+        - action: rebuild
+          path: ./run.py
+        - action: rebuild
+          path: ./wait_db.py
+        - action: rebuild
+          path: ./library
+        - action: rebuild
+          path: ./plugins
+        - action: rebuild
+          path: ./postgres/docker-entrypoint-initdb.d
+        - action: rebuild
+          path: ./.textlintrc
+        - action: rebuild
+          path: ./commands.txt

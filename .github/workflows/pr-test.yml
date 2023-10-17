@@ -10,7 +10,7 @@ jobs:
   pr-super-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           submodules: "recursive"
           fetch-depth: 0
@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@v5.4.0
+        uses: super-linter/super-linter/slim@v5.4.2
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false

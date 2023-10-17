@@ -1,0 +1,13 @@
+---
+version: "3.8"
+services:
+  hato-bot:
+    build:
+      cache_from:
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
+      args:
+        - ENV=dev
+    image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
