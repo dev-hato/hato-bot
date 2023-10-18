@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == github.event.pull_request.head.repo.full_name
     steps:
-      - uses: dev-hato/actions-add-to-projects@v0.0.52
+      - uses: dev-hato/actions-add-to-projects@v0.0.53
         with:
           github_app_id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           github_app_private_key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
