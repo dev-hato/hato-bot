@@ -486,14 +486,15 @@ def image_generate(client: BaseClient, message: str):
 
     url = image_create(message=message)
 
+    if url is None:
+        return "画像を生成できなかったっぽ......"
+
     """
     urlから画像ファイルをダウンロードして、画像を返す
     """
     with NamedTemporaryFile() as generated_file:
-        img = requests.get(url)
-        if img is not None:
-            generated_file.write(img.content)
-            client.upload(
-                file=generated_file.name,
-                filename="image.png",
-            )
+        generated_file.write(requests.get(url).content)
+        client.upload(
+            file=generated_file.name,
+            filename="image.png",
+        )
