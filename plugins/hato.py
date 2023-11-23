@@ -486,6 +486,9 @@ def image_generate(client: BaseClient, message: str):
 
     url = image_create(message=message)
 
+    if url is None:
+        return "画像を生成できなかったっぽ......"
+
     """
     urlから画像ファイルをダウンロードして、画像を返す
     """
