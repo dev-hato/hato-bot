@@ -1,5 +1,6 @@
-from openai import OpenAI
 from typing import Optional
+
+from openai import OpenAI
 
 import slackbot_settings as conf
 
