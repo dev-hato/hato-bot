@@ -11,13 +11,13 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
-from requests.exceptions import ReadTimeout
 
 import discord
 import websockets
 from flask import Flask, jsonify, request
 from markupsafe import escape
 from misskey import Misskey
+from requests.exceptions import ReadTimeout
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
@@ -222,9 +222,8 @@ def main():
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                    (host is None or host == conf.MISSKEY_DOMAIN)
-                                    and mentions
-                                ):
+                                    host is None or host == conf.MISSKEY_DOMAIN
+                                ) and mentions:
                                     cred = None
 
                                     for i in range(10):
