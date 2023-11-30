@@ -17,6 +17,7 @@ import websockets
 from flask import Flask, jsonify, request
 from markupsafe import escape
 from misskey import Misskey
+from requests.exceptions import ReadTimeout
 from slackeventsapi import SlackEventAdapter
 
 import slackbot_settings as conf
@@ -221,20 +222,29 @@ def main():
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                    (host is None or host == conf.MISSKEY_DOMAIN)
-                                    and mentions
-                                    and misskey_client.i()["id"] in mentions
-                                ):
-                                    client = MisskeyClient(misskey_client, note)
-                                    try:
-                                        analyze.analyze_message(
-                                            note["text"]
-                                            .replace("\xa0", " ")
-                                            .split(" ", 1)[1]
-                                        )(client)
-                                    except Exception as e:
-                                        logger.exception(e)
-                                        client.post("エラーが発生したっぽ......")
+                                    host is None or host == conf.MISSKEY_DOMAIN
+                                ) and mentions:
+                                    cred = None
+
+                                    for i in range(10):
+                                        try:
+                                            cred = misskey_client.i()
+                                            break
+                                        except ReadTimeout as e:
+                                            logger.exception(e)
+                                            time.sleep(1)
+
+                                    if cred is not None and cred["id"] in mentions:
+                                        client = MisskeyClient(misskey_client, note)
+                                        try:
+                                            analyze.analyze_message(
+                                                note["text"]
+                                                .replace("\xa0", " ")
+                                                .split(" ", 1)[1]
+                                            )(client)
+                                        except Exception as e:
+                                            logger.exception(e)
+                                            client.post("エラーが発生したっぽ......")
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
 
