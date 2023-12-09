@@ -10,7 +10,6 @@ import logging.config
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, List
 
 import discord
 import slack_bolt
@@ -50,13 +49,6 @@ def __init__():
     logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
         logging.WARNING
     )
-
-
-def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]:
-    """Slackコマンド解析"""
-
-    message = "".join([m["text"] for m in messages if "text" in m]).strip()
-    return analyze.analyze_message(message)
 
 
 @slack_app.event("app_mention")
@@ -107,7 +99,7 @@ def on_app_mention(body):
                             and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
-                                analyze_slack_message(block_element_elements[1:]),
+                                analyze.analyze_slack_message(block_element_elements[1:]),
                                 SlackClient(
                                     slack_app.client,
                                     channel,
