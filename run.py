@@ -248,7 +248,13 @@ def main():
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
 
-        asyncio.get_event_loop().run_until_complete(misskey_runner())
+        while True:
+            try:
+                asyncio.get_event_loop().run_until_complete(misskey_runner())
+                break
+            except websockets.exceptions.InvalidStatusCode as e:
+                logger.exception(e)
+                time.sleep(1)
     else:
         app.run(host="0.0.0.0", port=conf.PORT)
 
