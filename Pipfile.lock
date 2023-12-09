@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "db8416f8ae978c73fd037aa0af3c86a34f9073256a570fb986909c9be3235440"
+            "sha256": "56a7d3095231d515f1e11222c7de876afdca587a01b1f01f7a7c9f7efbd4f138"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1278,7 +1278,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "1bf22b5c4ef75c052ffca86f9cfdad3446621e7b"
+            "ref": "452670e3b7f7a931b6571c3685b9d5001c38e8ae"
         },
         "tqdm": {
             "hashes": [
@@ -1996,12 +1996,12 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:5804465c675b659b0862f07907f96295d490822a450c4c40e747d0b1c6ebcb32",
-                "sha256:841dc9aef25daba9a0238cd27984041fa0467b4199fc4852e27950664919f660"
+                "sha256:c255039ef399049a5544b6ce13d135caba8f2c28c3b4033277a788f434308376",
+                "sha256:d30bad9abf165f7785c15a21a1f46da7d0677cb00ee7ff4c579fd38922efe15d"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==3.5.0"
+            "markers": "python_version >= '3.9'",
+            "version": "==3.6.0"
         },
         "pycodestyle": {
             "hashes": [
