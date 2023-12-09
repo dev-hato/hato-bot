@@ -99,7 +99,9 @@ def on_app_mention(body):
                             and block_element_elements[0]["user_id"] in authed_users
                         ):
                             tpe.submit(
-                                analyze.analyze_slack_message(block_element_elements[1:]),
+                                analyze.analyze_slack_message(
+                                    block_element_elements[1:]
+                                ),
                                 SlackClient(
                                     slack_app.client,
                                     channel,
