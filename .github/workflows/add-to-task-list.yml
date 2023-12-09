@@ -10,7 +10,7 @@ on:
 jobs:
   add-to-task-list:
     runs-on: ubuntu-latest
-    if: github.repository == github.event.pull_request.head.repo.full_name
+    if: github.event_name == 'issues' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
       - uses: dev-hato/actions-add-to-projects@v0.0.57
         with:
