@@ -13,12 +13,12 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List
 
 import discord
+import slack_bolt
 import websockets
 from flask import Flask, jsonify, request
 from markupsafe import escape
 from misskey import Misskey
 from requests.exceptions import ReadTimeout
-import slack_bolt
 from slack_bolt.adapter.flask import SlackRequestHandler
 
 import slackbot_settings as conf
@@ -109,7 +109,9 @@ def on_app_mention(body):
                             tpe.submit(
                                 analyze_slack_message(block_element_elements[1:]),
                                 SlackClient(
-                                    slack_app.client, channel, block_element_elements[0]["user_id"]
+                                    slack_app.client,
+                                    channel,
+                                    block_element_elements[0]["user_id"],
                                 ),
                             )
 
