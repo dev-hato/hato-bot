@@ -84,21 +84,23 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     if package_name in sys.builtin_module_names:
         return True
 
+    package_spec = None
+
     # Finderを使ってパッケージ情報 (Spec) を取得する
-    try:
-        package_spec = importlib.util.find_spec(package_name)
-    except (AttributeError, ValueError, ModuleNotFoundError):
-        package_spec = None
+    for finder in sys.meta_path:
+        try:
+            package_spec = finder.find_spec(package_name, ".")
+        except (AttributeError, ValueError, ModuleNotFoundError):
+            pass
+
+        if package_spec:
+            break
 
     if package_spec is None:
-        for finder in sys.meta_path:
-            try:
-                package_spec = finder.find_spec(package_name, ".")
-            except (AttributeError, ValueError, ModuleNotFoundError):
-                pass
-
-            if package_spec:
-                break
+        try:
+            package_spec = importlib.util.find_spec(package_name)
+        except (AttributeError, ValueError, ModuleNotFoundError):
+            pass
 
     # パッケージ情報がないならばPipfileによってインストールされたものと判定する
     if package_spec is None:
