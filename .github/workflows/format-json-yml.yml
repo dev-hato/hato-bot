@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{secrets.CREATE_WORKFLOW_CI_TOKEN}}
-      - uses: dev-hato/actions-format-json-yml@v0.0.52
+      - uses: dev-hato/actions-format-json-yml@v0.0.53
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
