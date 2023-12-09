@@ -502,6 +502,6 @@ def image_generate(client: BaseClient, message: str):
 
 @action("ping")
 def ping():
-    """「ping」したら「PONG!」と返す"""
+    """「ping」したら「PONG」と返す"""
 
-    return "PONG!"
+    return "PONG"

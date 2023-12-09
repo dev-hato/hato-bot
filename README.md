@@ -153,7 +153,7 @@ pipenv run pre-commit install
     version ... バージョン情報を表示する。
     chat [text] ... ChatGPTで文章生成する。
     画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
-    ping ... 「ping」したら「PONG!」と返す。
+    ping ... 「ping」したら「PONG」と返す。
     ```
 
 ## バージョンアップによる変更点
