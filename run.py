@@ -18,7 +18,8 @@ from flask import Flask, jsonify, request
 from markupsafe import escape
 from misskey import Misskey
 from requests.exceptions import ReadTimeout
-from slackeventsapi import SlackEventAdapter
+import slack_bolt
+from slack_bolt.adapter.flask import SlackRequestHandler
 
 import slackbot_settings as conf
 from library.clientclass import (
@@ -32,9 +33,10 @@ from plugins import analyze
 
 app = Flask(__name__)
 
-slack_events_adapter = SlackEventAdapter(
-    signing_secret=conf.SLACK_SIGNING_SECRET, endpoint="/slack/events", server=app
+slack_app = slack_bolt.App(
+    token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
 )
+slack_handler = SlackRequestHandler(slack_app)
 
 
 def __init__():
@@ -57,18 +59,14 @@ def analyze_slack_message(messages: List[dict]) -> Callable[[SlackClient], None]
     return analyze.analyze_message(message)
 
 
-@slack_events_adapter.on("app_mention")
-def on_app_mention(event_data):
-    """
-    appにメンションが送られたらここが呼ばれる
-    """
+@slack_app.event("app_mention")
+def on_app_mention(body):
+    channel = body["event"]["channel"]
+    blocks = body["event"]["blocks"]
+    authed_users = body["authed_users"]
+    client_msg_id = body["event"]["client_msg_id"]
 
-    channel = event_data["event"]["channel"]
-    blocks = event_data["event"]["blocks"]
-    authed_users = event_data["authed_users"]
-    client_msg_id = event_data["event"]["client_msg_id"]
-
-    print(f"event_data: {event_data}")
+    print(f"body: {body}")
     print(f"channel: {channel}")
     print(f"blocks: {blocks}")
     print(f"authed_users: {authed_users}")
@@ -111,9 +109,17 @@ def on_app_mention(event_data):
                             tpe.submit(
                                 analyze_slack_message(block_element_elements[1:]),
                                 SlackClient(
-                                    channel, block_element_elements[0]["user_id"]
+                                    slack_app.client, channel, block_element_elements[0]["user_id"]
                                 ),
                             )
+
+
+@app.route("/slack/events", methods=["POST"])
+def slack_events():
+    """
+    appにメンションが送られたらここが呼ばれる
+    """
+    return slack_handler.handle(request)
 
 
 @app.route("/", methods=["GET", "POST"])

@@ -5,12 +5,6 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "flask"
-      ],
-      "allowedVersions": "<3.0.0"
-    },
-    {
-      "matchPackageNames": [
         "postgres"
       ],
       "matchUpdateTypes": [
