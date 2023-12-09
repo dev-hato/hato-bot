@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD024 -->
 # Changelog
 
 * このプロジェクトに対するすべての重要な変更は、このファイルに文書化されます。
