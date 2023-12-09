@@ -498,3 +498,10 @@ def image_generate(client: BaseClient, message: str):
             file=generated_file.name,
             filename="image.png",
         )
+
+
+@action("ping")
+def ping():
+    """「ping」したら「PONG」と返す"""
+
+    return "PONG"
