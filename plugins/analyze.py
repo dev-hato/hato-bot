@@ -46,6 +46,7 @@ def analyze_message(message: str) -> Callable[[BaseClient], None]:
         "画像生成": lambda m: partial(
             hato.image_generate, message=m[len("画像生成") :].strip()
         ),
+        "ping": lambda m: hato.ping,
     }
 
     for key, method in conditions.items():
