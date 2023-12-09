@@ -253,8 +253,11 @@ def main():
                 asyncio.get_event_loop().run_until_complete(misskey_runner())
                 break
             except websockets.exceptions.InvalidStatusCode as e:
-                logger.exception(e)
-                time.sleep(1)
+                if e.status_code == 502:
+                    logger.exception(e)
+                    time.sleep(1)
+                else:
+                    raise e
     else:
         app.run(host="0.0.0.0", port=conf.PORT)
 
