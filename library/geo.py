@@ -5,6 +5,7 @@ amesh
 """
 
 import re
+import unicodedata
 from random import choice
 from typing import Dict, Optional
 
@@ -77,6 +78,7 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     :return: place: 地名, lat: 緯度, lon: 経度
     """
 
+    place = unicodedata.normalize("NFKC", place)
     res = requests.get(
         "https://msearch.gsi.go.jp/address-search/AddressSearch", {"q": place}
     )
@@ -88,7 +90,9 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     partial_match_candidates = []
 
     for entry in res.json():
-        res_place = entry.get("properties", {}).get("title", "")
+        res_place = unicodedata.normalize(
+            "NFKC", entry.get("properties", {}).get("title", "")
+        )
         lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
         if lon is None or lat is None:
             continue
