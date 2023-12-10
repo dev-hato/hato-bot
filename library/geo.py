@@ -100,7 +100,7 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
         elif place in res_place:
             partial_match_candidates.append(data)
 
-    for candidates in [exactly_match_candidates,partial_match_candidates]:
+    for candidates in [exactly_match_candidates, partial_match_candidates]:
         if candidates:
             return choice(candidates)
 
