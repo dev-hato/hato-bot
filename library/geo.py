@@ -93,14 +93,12 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
         if lon is None or lat is None:
             continue
 
+        data = {"place": res_place, "lat": str(lat), "lon": str(lon)}
+
         if place == res_place:
-            exactly_match_candidates.append(
-                {"place": res_place, "lat": str(lat), "lon": str(lon)}
-            )
+            exactly_match_candidates.append(data)
         elif place in res_place:
-            partial_match_candidates.append(
-                {"place": res_place, "lat": str(lat), "lon": str(lon)}
-            )
+            partial_match_candidates.append(data)
 
     for candidates in [exactly_match_candidates,partial_match_candidates]:
         if candidates:
