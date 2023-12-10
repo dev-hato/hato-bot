@@ -133,7 +133,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
     imported_packages: set[str] = set()
 
     for file in project_root.glob("**/*.py"):
-        if "node_modules" in str(file):
+        if str(file).endswith("setup.py") or "node_modules" in str(file):
             continue
 
         with open(str(file), "r") as python_file:
