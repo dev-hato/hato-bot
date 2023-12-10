@@ -102,10 +102,8 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
                 {"place": res_place, "lat": str(lat), "lon": str(lon)}
             )
 
-    if exactly_match_candidates:
-        return choice(exactly_match_candidates)
-
-    if partial_match_candidates:
-        return choice(partial_match_candidates)
+    for candidates in [exactly_match_candidates,partial_match_candidates]:
+        if candidates:
+            return choice(candidates)
 
     return None
