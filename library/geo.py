@@ -94,9 +94,13 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
             continue
 
         if place == res_place:
-            exactly_match_candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
+            exactly_match_candidates.append(
+                {"place": res_place, "lat": str(lat), "lon": str(lon)}
+            )
         elif place in res_place:
-            partial_match_candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
+            partial_match_candidates.append(
+                {"place": res_place, "lat": str(lat), "lon": str(lon)}
+            )
 
     if exactly_match_candidates:
         return choice(exactly_match_candidates)
