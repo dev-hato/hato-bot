@@ -78,7 +78,7 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     :return: place: 地名, lat: 緯度, lon: 経度
     """
 
-    place = unicodedata.normalize('NFKC', place)
+    place = unicodedata.normalize("NFKC", place)
     res = requests.get(
         "https://msearch.gsi.go.jp/address-search/AddressSearch", {"q": place}
     )
@@ -88,7 +88,9 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
 
     candidates = []
     for entry in res.json():
-        res_place = unicodedata.normalize('NFKC', entry.get("properties", {}).get("title", ""))
+        res_place = unicodedata.normalize(
+            "NFKC", entry.get("properties", {}).get("title", "")
+        )
         lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
         if lon is None or lat is None:
             continue
