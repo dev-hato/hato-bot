@@ -107,3 +107,5 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
 
     if partial_match_candidates:
         return choice(partial_match_candidates)
+
+    return None
