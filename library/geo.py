@@ -84,7 +84,9 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     if res.status_code != 200:
         return None
 
-    candidates = []
+    exactly_match_candidates = []
+    partial_match_candidates = []
+
     for entry in res.json():
         res_place = entry.get("properties", {}).get("title", "")
         lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
@@ -92,11 +94,12 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
             continue
 
         if place == res_place:
-            return {"place": res_place, "lat": str(lat), "lon": str(lon)}
-        if place in res_place:
-            candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
+            exactly_match_candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
+        elif place in res_place:
+            partial_match_candidates.append({"place": res_place, "lat": str(lat), "lon": str(lon)})
 
-    if not candidates:
-        return None
+    if exactly_match_candidates:
+        return choice(exactly_match_candidates)
 
-    return choice(candidates)
+    if partial_match_candidates:
+        return choice(partial_match_candidates)
