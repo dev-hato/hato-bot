@@ -8,7 +8,7 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 from slack_sdk import WebClient
-
+import emoji
 
 class BaseClient(metaclass=ABCMeta):
     """
@@ -162,7 +162,7 @@ class MisskeyClient(BaseClient):
 
     def _post(self, text=None, file_ids=None):
         self.client.notes_create(
-            text=text, reply_id=self.message["id"], file_ids=file_ids
+            text=emoji.emojize(text, language='alias'), reply_id=self.message["id"], file_ids=file_ids
         )
 
     def get_send_user(self):
