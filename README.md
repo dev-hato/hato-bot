@@ -64,7 +64,7 @@
 
     MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
 
-    MISSKEY_API_TOKENには `ドライブを操作する` と、 `ノートを作成・削除する` の権限が必要です。
+    MISSKEY_API_TOKENには `ドライブを操作する`, `ノートを作成・削除する`, `アカウントの情報を見る` の権限が必要です。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
