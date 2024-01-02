@@ -209,26 +209,32 @@ def main():
 
             with ThreadPoolExecutor(max_workers=3) as tpe:
                 for block in blocks:
-                    if block["type"] == "rich_text":
-                        block_elements = block["elements"]
-                        for block_element in block_elements:
-                            if block_element["type"] == "rich_text_section":
-                                block_element_elements = block_element["elements"]
-                                if (
-                                        len(block_element_elements) > 0
-                                        and block_element_elements[0]["type"] == "user"
-                                        and block_element_elements[0]["user_id"] in authed_users
-                                ):
-                                    tpe.submit(
-                                        analyze.analyze_slack_message(
-                                            block_element_elements[1:]
-                                        ),
-                                        SlackClient(
-                                            slack_app.client,
-                                            channel,
-                                            block_element_elements[0]["user_id"],
-                                        ),
-                                    )
+                    if block["type"] != "rich_text":
+                        continue
+
+                    block_elements = block["elements"]
+
+                    for block_element in block_elements:
+                        if block_element["type"] != "rich_text_section":
+                            continue
+
+                        block_element_elements = block_element["elements"]
+
+                        if (
+                                len(block_element_elements) > 0
+                                and block_element_elements[0]["type"] == "user"
+                                and block_element_elements[0]["user_id"] in authed_users
+                        ):
+                            tpe.submit(
+                                analyze.analyze_slack_message(
+                                    block_element_elements[1:]
+                                ),
+                                SlackClient(
+                                    slack_app.client,
+                                    channel,
+                                    block_element_elements[0]["user_id"],
+                                ),
+                            )
 
         @app.route("/slack/events", methods=["POST"])
         def slack_events():
