@@ -229,7 +229,11 @@ def main():
 
                         tpe.submit(
                             analyze.analyze_slack_message(block_element_elements[1:]),
-                            SlackClient(slack_app.client, channel, block_element_elements[0]["user_id"]),
+                            SlackClient(
+                                slack_app.client,
+                                channel,
+                                block_element_elements[0]["user_id"],
+                            ),
                         )
 
         @app.route("/slack/events", methods=["POST"])
