@@ -32,11 +32,6 @@ from plugins import analyze
 
 app = Flask(__name__)
 
-slack_app = slack_bolt.App(
-    token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
-)
-slack_handler = SlackRequestHandler(slack_app)
-
 
 def __init__():
     log_format_config = {
@@ -51,93 +46,99 @@ def __init__():
     )
 
 
-@slack_app.event("app_mention")
-def on_app_mention(body):
-    channel = body["event"]["channel"]
-    blocks = body["event"]["blocks"]
-    authed_users = body["authed_users"]
-    client_msg_id = body["event"]["client_msg_id"]
+def slack_main():
+    slack_app = slack_bolt.App(
+        token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
+    )
+    slack_handler = SlackRequestHandler(slack_app)
 
-    print(f"body: {body}")
-    print(f"channel: {channel}")
-    print(f"blocks: {blocks}")
-    print(f"authed_users: {authed_users}")
-    print(f"client_msg_id: {client_msg_id}")
+    @slack_app.event("app_mention")
+    def on_app_mention(body):
+        channel = body["event"]["channel"]
+        blocks = body["event"]["blocks"]
+        authed_users = body["authed_users"]
+        client_msg_id = body["event"]["client_msg_id"]
 
-    with Database() as _db, _db.conn.cursor() as cursor:
-        cursor.execute(
-            "SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1",
-            (client_msg_id,),
-        )
+        print(f"body: {body}")
+        print(f"channel: {channel}")
+        print(f"blocks: {blocks}")
+        print(f"authed_users: {authed_users}")
+        print(f"client_msg_id: {client_msg_id}")
 
-        if cursor.fetchone():
-            print("skip")
-            return
+        with Database() as _db, _db.conn.cursor() as cursor:
+            cursor.execute(
+                "SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1",
+                (client_msg_id,),
+            )
 
-        cursor.execute(
-            "DELETE FROM slack_client_msg_id "
-            "WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
-            (client_msg_id,),
-        )
-        cursor.execute(
-            "INSERT INTO slack_client_msg_id(client_msg_id, created_at) "
-            "VALUES(%s, CURRENT_TIMESTAMP)",
-            (client_msg_id,),
-        )
-        _db.conn.commit()
+            if cursor.fetchone():
+                print("skip")
+                return
 
-    with ThreadPoolExecutor(max_workers=3) as tpe:
-        for block in blocks:
-            if block["type"] == "rich_text":
-                block_elements = block["elements"]
-                for block_element in block_elements:
-                    if block_element["type"] == "rich_text_section":
-                        block_element_elements = block_element["elements"]
-                        if (
-                            len(block_element_elements) > 0
-                            and block_element_elements[0]["type"] == "user"
-                            and block_element_elements[0]["user_id"] in authed_users
-                        ):
-                            tpe.submit(
-                                analyze.analyze_slack_message(
-                                    block_element_elements[1:]
-                                ),
-                                SlackClient(
-                                    slack_app.client,
-                                    channel,
-                                    block_element_elements[0]["user_id"],
-                                ),
-                            )
+            cursor.execute(
+                "DELETE FROM slack_client_msg_id "
+                "WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
+                (client_msg_id,),
+            )
+            cursor.execute(
+                "INSERT INTO slack_client_msg_id(client_msg_id, created_at) "
+                "VALUES(%s, CURRENT_TIMESTAMP)",
+                (client_msg_id,),
+            )
+            _db.conn.commit()
 
+        with ThreadPoolExecutor(max_workers=3) as tpe:
+            for block in blocks:
+                if block["type"] == "rich_text":
+                    block_elements = block["elements"]
+                    for block_element in block_elements:
+                        if block_element["type"] == "rich_text_section":
+                            block_element_elements = block_element["elements"]
+                            if (
+                                len(block_element_elements) > 0
+                                and block_element_elements[0]["type"] == "user"
+                                and block_element_elements[0]["user_id"] in authed_users
+                            ):
+                                tpe.submit(
+                                    analyze.analyze_slack_message(
+                                        block_element_elements[1:]
+                                    ),
+                                    SlackClient(
+                                        slack_app.client,
+                                        channel,
+                                        block_element_elements[0]["user_id"],
+                                    ),
+                                )
 
-@app.route("/slack/events", methods=["POST"])
-def slack_events():
-    """
-    appにメンションが送られたらここが呼ばれる
-    """
-    return slack_handler.handle(request)
+    @app.route("/slack/events", methods=["POST"])
+    def slack_events():
+        """
+        appにメンションが送られたらここが呼ばれる
+        """
+        return slack_handler.handle(request)
 
+    @app.route("/", methods=["GET", "POST"])
+    def http_app():
+        """
+        localでテストできます
 
-@app.route("/", methods=["GET", "POST"])
-def http_app():
-    """
-    localでテストできます
+        <コマンド例>
+        curl -XPOST -d '{"message": "鳩", "channel": "C0123A4B5C6", "user": "U012A34BCDE"}' \
+            -H "Content-Type: application/json" http://localhost:3000/
 
-    <コマンド例>
-    curl -XPOST -d '{"message": "鳩", "channel": "C0123A4B5C6", "user": "U012A34BCDE"}' \
-        -H "Content-Type: application/json" http://localhost:3000/
+        or
 
-    or
+        pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
+        """
+        msg = request.json["message"]
+        channel = request.json["channel"]
+        user = request.json["user"]
+        client = SlackClient(slack_app.client, channel, user)
+        client.post(f"コマンド: {msg}")
+        analyze.analyze_message(msg)(client)
+        return "success"
 
-    pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
-    """
-    msg = request.json["message"]
-    channel = request.json["channel"]
-    user = request.json["user"]
-    client = SlackClient(slack_app.client, channel, user)
-    client.post(f"コマンド: {msg}")
-    analyze.analyze_message(msg)(client)
-    return "success"
+    app.run(host="0.0.0.0", port=conf.PORT)
 
 
 @app.route("/healthcheck", methods=["GET", "POST"])
@@ -261,7 +262,7 @@ def main():
                 else:
                     raise e
     else:
-        app.run(host="0.0.0.0", port=conf.PORT)
+        slack_main()
 
 
 if __name__ == "__main__":
