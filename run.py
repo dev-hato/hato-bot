@@ -215,10 +215,9 @@ def main():
                             if block_element["type"] == "rich_text_section":
                                 block_element_elements = block_element["elements"]
                                 if (
-                                    len(block_element_elements) > 0
-                                    and block_element_elements[0]["type"] == "user"
-                                    and block_element_elements[0]["user_id"]
-                                    in authed_users
+                                        len(block_element_elements) > 0
+                                        and block_element_elements[0]["type"] == "user"
+                                        and block_element_elements[0]["user_id"] in authed_users
                                 ):
                                     tpe.submit(
                                         analyze.analyze_slack_message(
