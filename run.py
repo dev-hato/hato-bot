@@ -214,22 +214,22 @@ def main():
                         for block_element in block_elements:
                             if block_element["type"] == "rich_text_section":
                                 block_element_elements = block_element["elements"]
-                                if (
-                                    len(block_element_elements) > 0
-                                    and block_element_elements[0]["type"] == "user"
-                                    and block_element_elements[0]["user_id"]
-                                    in authed_users
-                                ):
-                                    tpe.submit(
-                                        analyze.analyze_slack_message(
-                                            block_element_elements[1:]
-                                        ),
-                                        SlackClient(
-                                            slack_app.client,
-                                            channel,
-                                            block_element_elements[0]["user_id"],
-                                        ),
-                                    )
+                                if len(block_element_elements) > 0:
+                                    block_element_element = block_element_elements[0]
+                                    if (
+                                            block_element_element["type"] == "user"
+                                            and block_element_element["user_id"] in authed_users
+                                    ):
+                                        tpe.submit(
+                                            analyze.analyze_slack_message(
+                                                block_element_elements[1:]
+                                            ),
+                                            SlackClient(
+                                                slack_app.client,
+                                                channel,
+                                                block_element_elements[0]["user_id"],
+                                            ),
+                                        )
 
         @app.route("/slack/events", methods=["POST"])
         def slack_events():
