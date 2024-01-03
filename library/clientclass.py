@@ -162,8 +162,11 @@ class MisskeyClient(BaseClient):
             self._post(file_ids=[drive_file["id"]])
 
     def _post(self, text=None, file_ids=None):
+        if text is not None:
+            text = emoji.emojize(text, language="alias")
+
         self.client.notes_create(
-            text=emoji.emojize(text, language="alias"),
+            text=text,
             reply_id=self.message["id"],
             file_ids=file_ids,
         )
