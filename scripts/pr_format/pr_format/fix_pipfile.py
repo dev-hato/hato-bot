@@ -80,6 +80,10 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     :param package_name: 判定対象のパッケージ名
     :return: 与えられたパッケージが標準パッケージ or 独自に定義したものであるか
     """
+    # sudden_deathは修正対象から除外したいので、独自定義扱いにする
+    if package_name == 'sudden_death':
+        return True
+
     # 与えられたパッケージがビルドインのモジュールならば標準パッケージと判定する
     if package_name in sys.builtin_module_names:
         return True
@@ -112,8 +116,6 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     # パッケージのファイルパスが取得できないならばPipfileによってインストールされたものと判定する
     if not package_origin:
         return False
-
-    print(package_origin)
 
     # パッケージのファイルパスがプロジェクト内のものであれば独自に定義したものと判定する
     if project_root.resolve() in Path(package_origin).resolve().parents:
