@@ -138,7 +138,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
 
         with open(str(file), "r") as python_file:
             for imported_package in re.findall(
-                r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+                    r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
             ):
                 if not is_std_or_local_lib(project_root, imported_package):
                     imported_packages.add(imported_package)
@@ -160,9 +160,9 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
         if not is_pipfile_packages(pipfile_value):
             raise TypeError("Failed to cast to PipfilePackages: " + str(pipfile_value))
 
+        print(pipfile_value)
         pipfile_packages |= set(pipfile_value.keys())
 
-    print(pipfile_packages)
     return pipfile_packages
 
 
@@ -182,7 +182,7 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 
 def get_missing_packages(
-    imported_packages: set[str], pipfile_packages: set[str]
+        imported_packages: set[str], pipfile_packages: set[str]
 ) -> dict[str, str] | NoReturn:
     """
     プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージ一覧を取得する
