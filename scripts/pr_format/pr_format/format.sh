@@ -4,6 +4,7 @@ set -e
 echo aaa
 pipenv run python "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/fix_pipfile.py"
 echo iii
+exit 1
 pipenv install --dev
 echo uuu
 pipenv run autopep8 --exit-code --in-place --recursive .
