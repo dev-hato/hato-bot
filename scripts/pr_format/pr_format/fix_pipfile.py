@@ -113,6 +113,8 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     if not package_origin:
         return False
 
+    print(package_origin)
+
     # パッケージのファイルパスがプロジェクト内のものであれば独自に定義したものと判定する
     if project_root.resolve() in Path(package_origin).resolve().parents:
         return True
@@ -160,7 +162,6 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
         if not is_pipfile_packages(pipfile_value):
             raise TypeError("Failed to cast to PipfilePackages: " + str(pipfile_value))
 
-        print(pipfile_value)
         pipfile_packages |= set(pipfile_value.keys())
 
     return pipfile_packages
