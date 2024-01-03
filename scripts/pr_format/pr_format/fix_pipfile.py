@@ -140,9 +140,8 @@ def get_imported_packages(project_root: Path) -> set[str]:
             for imported_package in re.findall(
                 r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
             ):
-                if (
-                    imported_package != 'sudden_death'
-                    and not is_std_or_local_lib(project_root, imported_package)
+                if imported_package != "sudden_death" and not is_std_or_local_lib(
+                    project_root, imported_package
                 ):
                     imported_packages.add(imported_package)
 
