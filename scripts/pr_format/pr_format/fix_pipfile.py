@@ -230,10 +230,10 @@ def main():
         pipfile[key] = fix_package_version(pipfile[key])
 
         # プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージをPipfileの「packages」セクションに追加する
-        if key == "packages":
-            pipfile[key] |= get_missing_packages(
-                get_imported_packages(project_root), get_pipfile_packages(pipfile)
-            )
+        # if key == "packages":
+        #     pipfile[key] |= get_missing_packages(
+        #         get_imported_packages(project_root), get_pipfile_packages(pipfile)
+        #     )
 
     with open(pipfile_path, "w") as f:
         toml.dump(pipfile, f)
