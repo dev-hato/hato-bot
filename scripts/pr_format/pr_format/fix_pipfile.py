@@ -80,10 +80,6 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     :param package_name: 判定対象のパッケージ名
     :return: 与えられたパッケージが標準パッケージ or 独自に定義したものであるか
     """
-    # sudden_deathは修正対象から除外したいので、独自定義扱いにする
-    if package_name == 'sudden_death':
-        return True
-
     # 与えられたパッケージがビルドインのモジュールならば標準パッケージと判定する
     if package_name in sys.builtin_module_names:
         return True
@@ -142,9 +138,9 @@ def get_imported_packages(project_root: Path) -> set[str]:
 
         with open(str(file), "r") as python_file:
             for imported_package in re.findall(
-                    r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+                r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
             ):
-                if not is_std_or_local_lib(project_root, imported_package):
+                if imported_package != 'sudden_death' and not is_std_or_local_lib(project_root, imported_package):
                     imported_packages.add(imported_package)
 
     return imported_packages
@@ -185,7 +181,7 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
 
 
 def get_missing_packages(
-        imported_packages: set[str], pipfile_packages: set[str]
+    imported_packages: set[str], pipfile_packages: set[str]
 ) -> dict[str, str] | NoReturn:
     """
     プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージ一覧を取得する
