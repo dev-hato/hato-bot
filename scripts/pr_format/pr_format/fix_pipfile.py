@@ -189,6 +189,8 @@ def get_missing_packages(
     :param pipfile_packages: Pipfile内のパッケージ一覧
     :return: プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージ一覧。Pipfile内でのパッケージ名がkey、バージョンがvalueになっている。
     """
+    print(imported_packages)
+    print(pipfile_packages)
     # import時のパッケージ名とPipfile内でのパッケージ名の対応表
     distributions = importlib_metadata.packages_distributions()
 
@@ -230,10 +232,10 @@ def main():
         pipfile[key] = fix_package_version(pipfile[key])
 
         # プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージをPipfileの「packages」セクションに追加する
-        # if key == "packages":
-        #     pipfile[key] |= get_missing_packages(
-        #         get_imported_packages(project_root), get_pipfile_packages(pipfile)
-        #     )
+        if key == "packages":
+            pipfile[key] |= get_missing_packages(
+                get_imported_packages(project_root), get_pipfile_packages(pipfile)
+            )
 
     with open(pipfile_path, "w") as f:
         toml.dump(pipfile, f)
