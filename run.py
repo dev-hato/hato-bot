@@ -102,15 +102,19 @@ def slack_main():
                     block_element_elements = block_element["elements"]
 
                     if (
-                            len(block_element_elements) == 0
-                            or block_element_elements[0]["type"] != "user"
-                            or block_element_elements[0]["user_id"] not in authed_users
+                        len(block_element_elements) == 0
+                        or block_element_elements[0]["type"] != "user"
+                        or block_element_elements[0]["user_id"] not in authed_users
                     ):
                         continue
 
                     tpe.submit(
                         analyze.analyze_slack_message(block_element_elements[1:]),
-                        SlackClient(slack_app.client, channel, block_element_elements[0]["user_id"]),
+                        SlackClient(
+                            slack_app.client,
+                            channel,
+                            block_element_elements[0]["user_id"],
+                        ),
                     )
 
     @app.route("/slack/events", methods=["POST"])
@@ -175,7 +179,10 @@ discordClient = discord.Client(intents=intents)
 
 @discordClient.event
 async def on_message(message):
-    if message.author == discordClient.user or discordClient.user not in message.mentions:
+    if (
+        message.author == discordClient.user
+        or discordClient.user not in message.mentions
+    ):
         return
 
     async with message.channel.typing():
@@ -194,11 +201,11 @@ async def misskey_runner(misskey_client):
         try:
             # pylint: disable=E1101
             async with websockets.connect(
-                    "wss://"
-                    + misskey_client.address
-                    + "/streaming"
-                    + "?i="
-                    + misskey_client.token
+                "wss://"
+                + misskey_client.address
+                + "/streaming"
+                + "?i="
+                + misskey_client.token
             ) as ws:
                 await ws.send(
                     json.dumps(
@@ -218,7 +225,9 @@ async def misskey_runner(misskey_client):
                     host = note["user"].get("host")
                     mentions = note.get("mentions")
 
-                    if (host is not None and host != conf.MISSKEY_DOMAIN) or not mentions:
+                    if (
+                        host is not None and host != conf.MISSKEY_DOMAIN
+                    ) or not mentions:
                         continue
 
                     cred = None
@@ -237,7 +246,9 @@ async def misskey_runner(misskey_client):
                     client = MisskeyClient(misskey_client, note)
 
                     try:
-                        analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(client)
+                        analyze.analyze_message(
+                            note["text"].replace("\xa0", " ").split(" ", 1)[1]
+                        )(client)
                     except Exception as e:
                         logger.exception(e)
                         client.post("エラーが発生したっぽ......")
@@ -254,7 +265,9 @@ def main():
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
         while True:
             try:
-                asyncio.get_event_loop().run_until_complete(misskey_runner(misskey_client))
+                asyncio.get_event_loop().run_until_complete(
+                    misskey_runner(misskey_client)
+                )
                 break
             except websockets.exceptions.InvalidStatusCode as e:
                 if e.status_code == 502:
