@@ -253,6 +253,7 @@ async def misskey_runner(misskey_client):
         except websockets.ConnectionClosedError:
             time.sleep(1)
 
+
 def misskey_main():
     misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
     while True:
@@ -265,6 +266,7 @@ def misskey_main():
                 time.sleep(1)
             else:
                 raise e
+
 
 def main():
     """メイン関数"""
