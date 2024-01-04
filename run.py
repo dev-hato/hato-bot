@@ -31,6 +31,7 @@ from library.database import Database
 from plugins import analyze
 
 app = Flask(__name__)
+logger = logging.getLogger(__name__)
 
 
 def __init__():
@@ -89,26 +90,28 @@ def slack_main():
 
         with ThreadPoolExecutor(max_workers=3) as tpe:
             for block in blocks:
-                if block["type"] == "rich_text":
-                    block_elements = block["elements"]
-                    for block_element in block_elements:
-                        if block_element["type"] == "rich_text_section":
-                            block_element_elements = block_element["elements"]
-                            if (
-                                len(block_element_elements) > 0
-                                and block_element_elements[0]["type"] == "user"
-                                and block_element_elements[0]["user_id"] in authed_users
-                            ):
-                                tpe.submit(
-                                    analyze.analyze_slack_message(
-                                        block_element_elements[1:]
-                                    ),
-                                    SlackClient(
-                                        slack_app.client,
-                                        channel,
-                                        block_element_elements[0]["user_id"],
-                                    ),
-                                )
+                if block["type"] != "rich_text":
+                    continue
+
+                block_elements = block["elements"]
+
+                for block_element in block_elements:
+                    if block_element["type"] != "rich_text_section":
+                        continue
+
+                    block_element_elements = block_element["elements"]
+
+                    if (
+                            len(block_element_elements) == 0
+                            or block_element_elements[0]["type"] != "user"
+                            or block_element_elements[0]["user_id"] not in authed_users
+                    ):
+                        continue
+
+                    tpe.submit(
+                        analyze.analyze_slack_message(block_element_elements[1:]),
+                        SlackClient(slack_app.client, channel, block_element_elements[0]["user_id"]),
+                    )
 
     @app.route("/slack/events", methods=["POST"])
     def slack_events():
@@ -172,88 +175,86 @@ discordClient = discord.Client(intents=intents)
 
 @discordClient.event
 async def on_message(message):
-    if message.author == discordClient.user:
+    if message.author == discordClient.user or discordClient.user not in message.mentions:
         return
 
-    if discordClient.user in message.mentions:
-        async with message.channel.typing():
-            await asyncio.get_event_loop().run_in_executor(
-                None,
-                analyze.analyze_message(
-                    # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
-                    message.content.replace("\xa0", " ").split(" ", 1)[1]
-                ),
-                DiscordClient(discordClient, message),
-            )
+    async with message.channel.typing():
+        await asyncio.get_event_loop().run_in_executor(
+            None,
+            analyze.analyze_message(
+                # `message.content.replace("\xa0", " ").split(" ", 1)[1]` は、メンション先を除いた文字列
+                message.content.replace("\xa0", " ").split(" ", 1)[1]
+            ),
+            DiscordClient(discordClient, message),
+        )
+
+
+async def misskey_runner(misskey_client):
+    while True:
+        try:
+            # pylint: disable=E1101
+            async with websockets.connect(
+                    "wss://"
+                    + misskey_client.address
+                    + "/streaming"
+                    + "?i="
+                    + misskey_client.token
+            ) as ws:
+                await ws.send(
+                    json.dumps(
+                        {
+                            "type": "connect",
+                            "body": {"channel": "main", "id": "main"},
+                        }
+                    )
+                )
+                while True:
+                    data = json.loads(await ws.recv())
+
+                    if data["type"] != "channel" or data["body"]["type"] != "mention":
+                        continue
+
+                    note = data["body"]["body"]
+                    host = note["user"].get("host")
+                    mentions = note.get("mentions")
+
+                    if (host is not None and host != conf.MISSKEY_DOMAIN) or not mentions:
+                        continue
+
+                    cred = None
+
+                    for i in range(10):
+                        try:
+                            cred = misskey_client.i()
+                            break
+                        except ReadTimeout as e:
+                            logger.exception(e)
+                            time.sleep(1)
+
+                    if cred is None or cred["id"] not in mentions:
+                        continue
+
+                    client = MisskeyClient(misskey_client, note)
+
+                    try:
+                        analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(client)
+                    except Exception as e:
+                        logger.exception(e)
+                        client.post("エラーが発生したっぽ......")
+        except websockets.ConnectionClosedError:
+            time.sleep(1)
 
 
 def main():
     """メイン関数"""
 
-    logger = logging.getLogger(__name__)
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
-
-        async def misskey_runner():
-            while True:
-                try:
-                    # pylint: disable=E1101
-                    async with websockets.connect(
-                        "wss://"
-                        + misskey_client.address
-                        + "/streaming"
-                        + "?i="
-                        + misskey_client.token
-                    ) as ws:
-                        await ws.send(
-                            json.dumps(
-                                {
-                                    "type": "connect",
-                                    "body": {"channel": "main", "id": "main"},
-                                }
-                            )
-                        )
-                        while True:
-                            data = json.loads(await ws.recv())
-                            if (
-                                data["type"] == "channel"
-                                and data["body"]["type"] == "mention"
-                            ):
-                                note = data["body"]["body"]
-                                host = note["user"].get("host")
-                                mentions = note.get("mentions")
-                                if (
-                                    host is None or host == conf.MISSKEY_DOMAIN
-                                ) and mentions:
-                                    cred = None
-
-                                    for i in range(10):
-                                        try:
-                                            cred = misskey_client.i()
-                                            break
-                                        except ReadTimeout as e:
-                                            logger.exception(e)
-                                            time.sleep(1)
-
-                                    if cred is not None and cred["id"] in mentions:
-                                        client = MisskeyClient(misskey_client, note)
-                                        try:
-                                            analyze.analyze_message(
-                                                note["text"]
-                                                .replace("\xa0", " ")
-                                                .split(" ", 1)[1]
-                                            )(client)
-                                        except Exception as e:
-                                            logger.exception(e)
-                                            client.post("エラーが発生したっぽ......")
-                except websockets.ConnectionClosedError:
-                    time.sleep(1)
-
         while True:
             try:
-                asyncio.get_event_loop().run_until_complete(misskey_runner())
+                asyncio.get_event_loop().run_until_complete(misskey_runner(misskey_client))
                 break
             except websockets.exceptions.InvalidStatusCode as e:
                 if e.status_code == 502:
