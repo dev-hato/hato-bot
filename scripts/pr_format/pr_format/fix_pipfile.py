@@ -162,7 +162,9 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
         if not is_pipfile_packages(pipfile_value):
             raise TypeError("Failed to cast to PipfilePackages: " + str(pipfile_value))
 
-        pipfile_packages |= set(pipfile_value.keys())
+        for package_name in pipfile_value.keys():
+            pipfile_packages.add(package_name)
+            pipfile_packages.add(package_name.lower())
 
     return pipfile_packages
 
