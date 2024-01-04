@@ -102,20 +102,18 @@ def slack_main():
                     block_element_elements = block_element["elements"]
 
                     if (
-                        len(block_element_elements) == 0
-                        or block_element_elements[0]["type"] != "user"
-                        or block_element_elements[0]["user_id"] not in authed_users
+                        len(block_element_elements) > 0
+                        and block_element_elements[0]["type"] == "user"
+                        and block_element_elements[0]["user_id"] in authed_users
                     ):
-                        continue
-
-                    tpe.submit(
-                        analyze.analyze_slack_message(block_element_elements[1:]),
-                        SlackClient(
-                            slack_app.client,
-                            channel,
-                            block_element_elements[0]["user_id"],
-                        ),
-                    )
+                        tpe.submit(
+                            analyze.analyze_slack_message(block_element_elements[1:]),
+                            SlackClient(
+                                slack_app.client,
+                                channel,
+                                block_element_elements[0]["user_id"],
+                            ),
+                        )
 
     @app.route("/slack/events", methods=["POST"])
     def slack_events():
@@ -179,10 +177,10 @@ discordClient = discord.Client(intents=intents)
 
 @discordClient.event
 async def on_message(message):
-    if (
-        message.author == discordClient.user
-        or discordClient.user not in message.mentions
-    ):
+    if message.author == discordClient.user:
+        return
+
+    if discordClient.user not in message.mentions:
         return
 
     async with message.channel.typing():
@@ -255,6 +253,18 @@ async def misskey_runner(misskey_client):
         except websockets.ConnectionClosedError:
             time.sleep(1)
 
+def misskey_main():
+    misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
+    while True:
+        try:
+            asyncio.get_event_loop().run_until_complete(misskey_runner(misskey_client))
+            break
+        except websockets.exceptions.InvalidStatusCode as e:
+            if e.status_code == 502:
+                logger.exception(e)
+                time.sleep(1)
+            else:
+                raise e
 
 def main():
     """メイン関数"""
@@ -262,19 +272,7 @@ def main():
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
-        misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
-        while True:
-            try:
-                asyncio.get_event_loop().run_until_complete(
-                    misskey_runner(misskey_client)
-                )
-                break
-            except websockets.exceptions.InvalidStatusCode as e:
-                if e.status_code == 502:
-                    logger.exception(e)
-                    time.sleep(1)
-                else:
-                    raise e
+        misskey_main()
     else:
         slack_main()
 
