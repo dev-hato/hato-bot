@@ -163,7 +163,7 @@ def get_pipfile_packages(pipfile: Pipfile) -> set[str] | NoReturn:
             raise TypeError("Failed to cast to PipfilePackages: " + str(pipfile_value))
 
         for package_name in pipfile_value.keys():
-            pipfile_packages.add(package_name.lower())
+            pipfile_packages.add(package_name.lower().replace("_", "-"))
 
     return pipfile_packages
 
@@ -176,7 +176,7 @@ def exist_package_in_pipfile(packages: list[str], pipfile_packages: set[str]) ->
     :return: 与えられたパッケージ群のいずれかがPipfile内に存在するか
     """
     for package_name in packages:
-        if package_name.lower() in pipfile_packages:
+        if package_name.lower().replace("_", "-") in pipfile_packages:
             return True
 
     return False
