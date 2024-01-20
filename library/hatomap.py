@@ -358,17 +358,18 @@ class RasterLayer(Layer):
         if self.brightness != 1.0 or self.chroma != 1.0:
             img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
             img_hsv = img_hsv.astype(np.float32)  # HSV値をfloatに変換
-            img_hsv[..., 1] = img_hsv[..., 1] * self.brightness
-            img_hsv[..., 2] = img_hsv[..., 2] * self.chroma
+            img_hsv[..., 1] = np.clip(img_hsv[..., 1] * self.brightness, 0, 255)
+            img_hsv[..., 2] = np.clip(img_hsv[..., 2] * self.chroma, 0, 255)
             img_hsv = img_hsv.astype(np.uint8)  # HSV値を元の型に戻す
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
         if self.opacity != 1.0:
-            layer_img = layer_img.astype(np.float32)  # この行を追加
-            layer_img[layer_img[..., 3] != 0, 3] = int(round(self.opacity * 256))
+            layer_img = layer_img.astype(np.float32)  # HSV値をfloatに変換
+            layer_img[layer_img[..., 3] != 0, 3] = np.clip(layer_img[layer_img[..., 3] != 0, 3] * self.opacity * 256, 0, 255)
             layer_img = layer_img.astype(np.uint8)  # 画像を元の型に戻す
 
         return layer_img
+
 
 
 def cv2_putText_3(img, text, org, fontFace, fontScale, color):
