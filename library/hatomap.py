@@ -359,12 +359,15 @@ class RasterLayer(Layer):
             img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
             img_hsv = img_hsv.astype(np.float32)  # HSV値をfloatに変換
 
-            # 明示的な型キャストを試みる
-            brightness = float(self.brightness)
-            chroma = float(self.chroma)
+            # 中間変数を使用（self.brightness と self.chroma を直接使用）
+            hsv_1 = img_hsv[..., 1] * self.brightness
+            hsv_2 = img_hsv[..., 2] * self.chroma
 
-            img_hsv[..., 1] = np.clip(img_hsv[..., 1] * brightness, 0, 255)
-            img_hsv[..., 2] = np.clip(img_hsv[..., 2] * chroma, 0, 255)
+            # 型アサーションを追加
+            assert hsv_1.dtype == np.float32 and hsv_2.dtype == np.float32
+
+            img_hsv[..., 1] = np.clip(hsv_1, 0, 255)
+            img_hsv[..., 2] = np.clip(hsv_2, 0, 255)
             img_hsv = img_hsv.astype(np.uint8)  # HSV値を元の型に戻す
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
