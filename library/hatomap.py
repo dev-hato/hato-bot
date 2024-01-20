@@ -365,11 +365,12 @@ class RasterLayer(Layer):
 
         if self.opacity != 1.0:
             layer_img = layer_img.astype(np.float32)  # HSV値をfloatに変換
-            layer_img[layer_img[..., 3] != 0, 3] = np.clip(layer_img[layer_img[..., 3] != 0, 3] * self.opacity * 256, 0, 255)
+            layer_img[layer_img[..., 3] != 0, 3] = np.clip(
+                layer_img[layer_img[..., 3] != 0, 3] * self.opacity * 256, 0, 255
+            )
             layer_img = layer_img.astype(np.uint8)  # 画像を元の型に戻す
 
         return layer_img
-
 
 
 def cv2_putText_3(img, text, org, fontFace, fontScale, color):
