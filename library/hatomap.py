@@ -358,8 +358,13 @@ class RasterLayer(Layer):
         if self.brightness != 1.0 or self.chroma != 1.0:
             img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
             img_hsv = img_hsv.astype(np.float32)  # HSV値をfloatに変換
-            img_hsv[..., 1] = np.clip(img_hsv[..., 1] * self.brightness, 0, 255)
-            img_hsv[..., 2] = np.clip(img_hsv[..., 2] * self.chroma, 0, 255)
+
+            # 明示的な型キャストを試みる
+            brightness = float(self.brightness)
+            chroma = float(self.chroma)
+
+            img_hsv[..., 1] = np.clip(img_hsv[..., 1] * brightness, 0, 255)
+            img_hsv[..., 2] = np.clip(img_hsv[..., 2] * chroma, 0, 255)
             img_hsv = img_hsv.astype(np.uint8)  # HSV値を元の型に戻す
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
