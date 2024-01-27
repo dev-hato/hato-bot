@@ -289,7 +289,10 @@ def amedas(client: BaseClient, place: str):
         client.post("気象状況を取得できなかったっぽ......")
         return
 
-    res = [f"{amedas_data['datetime']}現在の{amedas_data['place']}の気象状況をお知らせするっぽ！", "```"]
+    res = [
+        f"{amedas_data['datetime']}現在の{amedas_data['place']}の気象状況をお知らせするっぽ！",
+        "```",
+    ]
 
     if "temp" in amedas_data:
         res.append(f"気温: {amedas_data['temp'][0]}℃")
@@ -331,7 +334,8 @@ def electricity_demand(client: BaseClient):
     df_percent = df_base[:24]["使用率(%)"].dropna().astype(int)
     latest_data = df_percent[df_percent > 0]
     client.post(
-        f"東京電力管内の電力使用率をお知らせするっぽ！\n" f"{latest_data.index[-1]}時点 {latest_data[-1]}%"
+        f"東京電力管内の電力使用率をお知らせするっぽ！\n"
+        f"{latest_data.index[-1]}時点 {latest_data[-1]}%"
     )
     df_percent.plot()
 
@@ -444,15 +448,25 @@ class OmikujiEnum(Enum):
 
 omikuji_results = OmikujiResults(
     {
-        OmikujiEnum.DAI_KICHI: OmikujiResult(12, ":tada: 大吉 何でもうまくいく!!気がする!!"),
+        OmikujiEnum.DAI_KICHI: OmikujiResult(
+            12, ":tada: 大吉 何でもうまくいく!!気がする!!"
+        ),
         OmikujiEnum.KICHI: OmikujiResult(100, ":smirk: 吉 まあうまくいくかも!?"),
-        OmikujiEnum.CHU_KICHI: OmikujiResult(100, ":smile: 中吉 そこそこうまくいくかも!?"),
-        OmikujiEnum.SHO_KICHI: OmikujiResult(100, ":smiley: 小吉 なんとなくうまくいくかも!?"),
+        OmikujiEnum.CHU_KICHI: OmikujiResult(
+            100, ":smile: 中吉 そこそこうまくいくかも!?"
+        ),
+        OmikujiEnum.SHO_KICHI: OmikujiResult(
+            100, ":smiley: 小吉 なんとなくうまくいくかも!?"
+        ),
         OmikujiEnum.SUE_KICHI: OmikujiResult(
             37, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
         ),
-        OmikujiEnum.AGE_KICHI: OmikujiResult(2, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"),
-        OmikujiEnum.KYO: OmikujiResult(12, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"),
+        OmikujiEnum.AGE_KICHI: OmikujiResult(
+            2, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
+        ),
+        OmikujiEnum.KYO: OmikujiResult(
+            12, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+        ),
         OmikujiEnum.DAI_KYO: OmikujiResult(
             2, ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
         ),
