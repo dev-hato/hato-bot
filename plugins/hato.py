@@ -417,7 +417,7 @@ def version():
 
     str_ver += (
         "\n"
-        "Copyright (C) 2022 hato-bot Development team\n"
+        "Copyright (C) 2024 hato-bot Development team\n"
         "https://github.com/dev-hato/hato-bot\n```"
     )
     return str_ver
