@@ -37,6 +37,7 @@ jobs:
           LINTER_RULES_PATH: .
           FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: develop
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
   pr-dotenv-linter:
