@@ -10,7 +10,7 @@ else
 fi
 
 sudo apt-get update
-sudo apt-get install -y --no-install-recommends build-essential python-dev libxml2 libxml2-dev zlib1g-dev
+sudo apt-get install -y --no-install-recommends build-essential python-dev-is-python3 libxml2 libxml2-dev zlib1g-dev
 pip install "${package_name_v}"
 pipenv --version
 pipenv install --dev
