@@ -9,8 +9,8 @@ else
 	package_name_v=${package_name}
 fi
 
-apt-get update
-apt-get install -y --no-install-recommends build-essential python-dev libxml2 libxml2-dev zlib1g-dev
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends build-essential python-dev libxml2 libxml2-dev zlib1g-dev
 pip install "${package_name_v}"
 pipenv --version
 pipenv install --dev
