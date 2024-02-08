@@ -2,8 +2,14 @@
 name: pr-master-to-develop-hato-bot
 on:
   push:
-    branches:
-      - master
+                      branches:
+                        - master
+
+
+
+
+
+
 jobs:
   # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
   # masterとdevelopの間でコミットログに差異が出ないようにする
