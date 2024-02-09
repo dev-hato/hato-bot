@@ -30,13 +30,15 @@ jobs:
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@v5.7.2
+        uses: super-linter/super-linter/slim@v6.0.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
+          VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
           LINTER_RULES_PATH: .
           FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: develop
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
   pr-dotenv-linter:
