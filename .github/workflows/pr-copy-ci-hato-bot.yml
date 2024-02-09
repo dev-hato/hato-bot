@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@v1.7.0
+        uses: actions/create-github-app-token@v1.8.0
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
