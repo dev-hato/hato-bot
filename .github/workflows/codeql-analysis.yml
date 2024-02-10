@@ -43,14 +43,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set up Python
-        uses: actions/setup-python@v5.0.0
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         if: matrix.language == 'python'
         with:
           python-version-file: .python-version
           cache: pipenv
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@65c74964a9ed8c44ed9f19d4bbc5757a6a8e9ab9 # codeql-bundle-v2.16.1
         with:
           languages: ${{ matrix.language }}
           # If you wish to specify custom queries, you can do so here or in a config file.
@@ -62,7 +62,7 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@65c74964a9ed8c44ed9f19d4bbc5757a6a8e9ab9 # codeql-bundle-v2.16.1
       # - run: |
       #     echo "Run, Build Application using script"
       #     ./location_of_script_within_repo/buildscript.sh
@@ -72,7 +72,7 @@ jobs:
 
         #   If the Autobuild fails above, remove it and uncomment the following three lines.
         #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@65c74964a9ed8c44ed9f19d4bbc5757a6a8e9ab9 # codeql-bundle-v2.16.1
         with:
           category: "/language:${{matrix.language}}"
 concurrency:

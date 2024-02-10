@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python
-        uses: actions/setup-python@v5.0.0
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         id: setup_python
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
@@ -48,7 +48,7 @@ jobs:
         id: format
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.1.12
+      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
         if: success() || failure()
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

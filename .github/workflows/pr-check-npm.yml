@@ -26,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4.0.2
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
@@ -34,7 +34,7 @@ jobs:
         id: get_npm_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/pr_update_version/get_npm_version.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.1.12
+      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -52,14 +52,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Node.js
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.1.12
+      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
