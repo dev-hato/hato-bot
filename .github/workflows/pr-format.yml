@@ -48,7 +48,7 @@ jobs:
         id: format
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.1.11
+      - uses: dev-hato/actions-diff-pr-management@v1.1.12
         if: success() || failure()
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
