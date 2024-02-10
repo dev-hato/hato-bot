@@ -13,18 +13,11 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-depth: 0
-      - name: Set org name
-        uses: actions/github-script@v7.0.1
-        id: set_org_name
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v7.0.1
         id: get_pull_requests
         env:
-          ORG_NAME: ${{steps.set_org_name.outputs.result}}
+          ORG_NAME: ${{ github.repository_owner }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -34,7 +27,7 @@ jobs:
         uses: actions/github-script@v7.0.1
         if: ${{ steps.get_pull_requests.outputs.result == 0 }}
         env:
-          ORG_NAME: ${{steps.set_org_name.outputs.result}}
+          ORG_NAME: ${{ github.repository_owner }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
