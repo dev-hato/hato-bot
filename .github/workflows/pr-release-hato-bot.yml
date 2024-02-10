@@ -19,8 +19,6 @@ jobs:
         uses: actions/github-script@v7.0.1
         if: ${{ steps.get_diff.outputs.result != '' }}
         id: get_pull_requests
-        env:
-          ORG_NAME: ${{ github.repository_owner }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -29,8 +27,6 @@ jobs:
       - name: Create PullRequest
         uses: actions/github-script@v7.0.1
         if: ${{ steps.get_diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 }}
-        env:
-          ORG_NAME: ${{ github.repository_owner }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |

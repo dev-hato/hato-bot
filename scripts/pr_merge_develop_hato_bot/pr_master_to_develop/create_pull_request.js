@@ -6,7 +6,7 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo
   }
   const pullsCreateParams = {
-    head: process.env.ORG_NAME + ':master',
+    head: context.repo.owner + ':master',
     base: 'develop',
     title: 'master -> develop',
     body: '鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！',
