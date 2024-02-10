@@ -2,7 +2,7 @@ module.exports = async ({ github, context }) => {
   const pullsListParams = {
     owner: context.repo.owner,
     repo: context.repo.repo,
-    head: process.env.ORG_NAME + ':develop',
+    head: context.repo.owner + ':develop',
     base: 'master',
     state: 'open'
   }

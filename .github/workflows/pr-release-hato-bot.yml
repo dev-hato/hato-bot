@@ -15,19 +15,10 @@ jobs:
       - name: Get diff
         id: get_diff
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/get_diff.sh"
-      - name: Set org name
-        uses: actions/github-script@v7.0.1
-        id: set_org_name
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: return process.env.GITHUB_REPOSITORY.split('/')[0]
       - name: Get PullRequests
         uses: actions/github-script@v7.0.1
         if: ${{ steps.get_diff.outputs.result != '' }}
         id: get_pull_requests
-        env:
-          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -36,8 +27,6 @@ jobs:
       - name: Create PullRequest
         uses: actions/github-script@v7.0.1
         if: ${{ steps.get_diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 }}
-        env:
-          ORG_NAME: ${{steps.set_org_name.outputs.result}}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |

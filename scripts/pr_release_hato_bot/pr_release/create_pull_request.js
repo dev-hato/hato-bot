@@ -6,7 +6,7 @@ module.exports = async ({ github, context }) => {
     repo: context.repo.repo
   }
   const pullsCreateParams = {
-    head: process.env.ORG_NAME + ':develop',
+    head: context.repo.owner + ':develop',
     base: 'master',
     title: 'リリース',
     body: '鳩は唐揚げになるため、片栗粉へ飛び込む',
