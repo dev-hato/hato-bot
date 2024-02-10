@@ -18,15 +18,21 @@ jobs:
   format-json-yml:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1.8.0
+        with:
+          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-          token: ${{secrets.CREATE_WORKFLOW_CI_TOKEN}}
-      - uses: dev-hato/actions-format-json-yml@7d1e77234d72fec1cbab4a092565f097e989c996 # v0.0.56
+          token: ${{steps.generate_token.outputs.token}}
+      - uses: dev-hato/actions-format-json-yml@v0.0.61
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

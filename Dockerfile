@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.12.1-slim-bullseye
+FROM python:3.12.2-slim-bullseye
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -31,7 +31,7 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2023.11.15 --no-cache-dir && \
+    pip install pipenv==2023.12.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \

@@ -4,6 +4,7 @@ Pipfileに対して以下の修正を行う。
 * Pipfileでのバージョン指定が「*」となっているパッケージについて、バージョン指定を実際にインストールされるものに修正する
 * プロジェクト内のPythonファイルでimportされているがPipfile内には存在しないパッケージをPipfileの「packages」セクションに追加する
 """
+
 import importlib.util
 import re
 import sys

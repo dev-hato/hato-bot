@@ -15,7 +15,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        uses: actions/setup-python@v5.0.0
         with:
           python-version-file: .python-version
           cache: pipenv
@@ -24,19 +24,21 @@ jobs:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
+        uses: actions/setup-node@v4.0.2
         with:
           cache: npm
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@a8150b40c89574adb5f68bf9502b890a236a06b3 # v5.7.2
+        uses: super-linter/super-linter/slim@v6.0.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
+          VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
           LINTER_RULES_PATH: .
           FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
   pr-dotenv-linter:
@@ -47,7 +49,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@501832aa89e07af7fc4599029544dda0598ec0d1 # v2.18.0
+        uses: dotenv-linter/action-dotenv-linter@v2.18.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
