@@ -1302,7 +1302,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "4a1399779649b91334abec04b5f81f373daad8c8"
+            "ref": "8eb795c0fc02b8516b01c78cbbfe2e0d83b826c2"
         },
         "tqdm": {
             "hashes": [
