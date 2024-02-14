@@ -10,10 +10,15 @@ on:
 jobs:
   add-to-task-list:
     runs-on: ubuntu-latest
-    if: github.repository == github.event.pull_request.head.repo.full_name
+    if: github.event_name == 'issues' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
-      - uses: dev-hato/actions-add-to-projects@v0.0.31
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@f4c6bf6752984b3a29fcc135a5e70eb792c40c6b # v1.8.0
         with:
-          github_app_id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
-          github_app_private_key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+      - uses: dev-hato/actions-add-to-projects@dcafd4eb5253d6ae0f4f29cff0dc46fd29bb5128 # v0.0.60
+        with:
+          github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1

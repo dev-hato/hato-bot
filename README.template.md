@@ -1,4 +1,4 @@
-# 鳩bot - 愛嬌のあるSlack Bot
+# 鳩bot - 愛嬌のあるBot
 
 ![badge](https://github.com/dev-hato/hato-bot/workflows/pr-test/badge.svg)
 
@@ -64,7 +64,7 @@
 
     MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
 
-    MISSKEY_API_TOKENには `ドライブを操作する` と、 `ノートを作成・削除する` の権限が必要です。
+    MISSKEY_API_TOKENには `ドライブを操作する`, `ノートを作成・削除する`, `アカウントの情報を見る` の権限が必要です。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
@@ -77,7 +77,8 @@
 
     ```sh
     export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose -f docker-compose.yml -f dev.docker-compose.yml up -d --wait
+    docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml build
+    docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml watch
     ```
 
 7. コードの変更はdocker composeの再起動で適用できます。
@@ -87,12 +88,7 @@
     docker compose restart
     ```
 
-   開発時は代わりに次のコマンドを実行します。
-
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose -f docker-compose.yml -f dev.docker-compose.yml restart
-    ```
+   開発時は自動的にDockerイメージの再ビルドが行われ反映されます。
 
 #### lintをかける方法
 

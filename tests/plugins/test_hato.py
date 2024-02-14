@@ -1,6 +1,7 @@
 """
 hato.pyのテスト
 """
+
 import json
 import os
 import re
@@ -194,7 +195,9 @@ class TestAmesh(unittest.TestCase):
                 ]
             }
             set_yahoo_mock("東京", mocker, False, content)
-            self.amesh_upload_png_test(mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！")
+            self.amesh_upload_png_test(
+                mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！"
+            )
 
     def test_amesh_with_params(self):
         """
@@ -202,7 +205,9 @@ class TestAmesh(unittest.TestCase):
         """
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
-            self.amesh_upload_png_test(mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
+            self.amesh_upload_png_test(
+                mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！"
+            )
 
 
 class TestAmedas(unittest.TestCase):
@@ -345,7 +350,8 @@ class TestAltitude(unittest.TestCase):
             }
             client1 = self.altitude_test(mocker, "", coordinates, altitude_content)
             self.assertEqual(
-                client1.get_post_message(), f"東京都世田谷区の標高は{altitude_setagaya}mっぽ！"
+                client1.get_post_message(),
+                f"東京都世田谷区の標高は{altitude_setagaya}mっぽ！",
             )
 
     def test_altitude_with_params(self):

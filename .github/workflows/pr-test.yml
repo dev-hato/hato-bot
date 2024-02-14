@@ -10,45 +10,46 @@ jobs:
   pr-super-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - run: echo "PYTHON_VERSION=$(cat .python-version)" >> "${GITHUB_ENV}"
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4.5.0
+      - name: Set up Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: .python-version
           cache: pipenv
       - name: Install pipenv
         env:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           cache: npm
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: github/super-linter/slim@v4.10.1
+        uses: super-linter/super-linter/slim@ff5037c06042e564803502feb97f8a686f3b0171 # v6.0.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
+          VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
           LINTER_RULES_PATH: .
+          FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
-          PATH: /github/workspace/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/node_modules/.bin:/venvs/ansible-lint/bin:/venvs/black/bin:/venvs/cfn-lint/bin:/venvs/cpplint/bin:/venvs/flake8/bin:/venvs/isort/bin:/venvs/mypy/bin:/venvs/pylint/bin:/venvs/snakefmt/bin:/venvs/snakemake/bin:/venvs/sqlfluff/bin:/venvs/yamllint/bin:/venvs/yq/bin:/var/cache/dotnet/tools:/usr/share/dotnet
   pr-dotenv-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           submodules: "recursive"
           fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@v2.17.0
+        uses: dotenv-linter/action-dotenv-linter@501832aa89e07af7fc4599029544dda0598ec0d1 # v2.18.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

@@ -7,9 +7,8 @@ import os
 from abc import ABCMeta, abstractmethod
 
 import discord
-from slack import WebClient
-
-import slackbot_settings as conf
+import emoji
+from slack_sdk import WebClient
 
 
 class BaseClient(metaclass=ABCMeta):
@@ -52,8 +51,8 @@ class SlackClient(BaseClient):
     Slackを操作するClient
     """
 
-    def __init__(self, channel, send_user):
-        self.client = WebClient(token=conf.SLACK_API_TOKEN)
+    def __init__(self, client: WebClient, channel, send_user):
+        self.client = client
         self.slack_channel = channel
         self.send_user = send_user
         self.send_user_name = self.client.users_info(user=send_user)["user"]["name"]
@@ -64,8 +63,8 @@ class SlackClient(BaseClient):
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        self.client.files_upload(
-            channels=self.slack_channel, file=file, filename=filename
+        self.client.files_upload_v2(
+            channel=self.slack_channel, file=file, filename=filename
         )
 
     def get_send_user(self):
@@ -163,8 +162,13 @@ class MisskeyClient(BaseClient):
             self._post(file_ids=[drive_file["id"]])
 
     def _post(self, text=None, file_ids=None):
+        if text is not None:
+            text = emoji.emojize(text, language="alias")
+
         self.client.notes_create(
-            text=text, reply_id=self.message["id"], file_ids=file_ids
+            text=text,
+            reply_id=self.message["id"],
+            file_ids=file_ids,
         )
 
     def get_send_user(self):

@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.11.3-slim-bullseye
+FROM python:3.12.2-slim-bullseye
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -22,12 +22,16 @@ COPY package-lock.json package-lock.json
 # * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
+# * gnupg: Node.jsのインストールの際に必要
 # * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2023.3.20 --no-cache-dir && \
+    pip install pipenv==2023.12.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
@@ -35,12 +39,12 @@ RUN apt-get update && \
     fi && \
     npm install && \
     pip uninstall -y pipenv virtualenv && \
-    apt-get remove -y git gcc libc6-dev && \
+    apt-get remove -y git gcc libc6-dev gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp /root/.npm /usr/src/app/node_modules/re2/.github/actions/*/Dockerfile && \
-    find / -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; && \
-    find / -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; && \
+    find / -type f -perm /u+s -ignore_readdir_race -not -path '/sys/devices/virtual/powercap/*' -exec chmod u-s {} \; && \
+    find / -type f -perm /g+s -ignore_readdir_race -not -path '/sys/devices/virtual/powercap/*' -exec chmod g-s {} \; && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 USER nonroot

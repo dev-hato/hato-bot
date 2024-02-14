@@ -1,6 +1,7 @@
 """
 amesh.pyのテスト
 """
+
 import json
 import unittest
 
@@ -43,7 +44,11 @@ class TestGetYahooGeoData(unittest.TestCase):
         """正しい地名を指定した場合"""
         with requests_mock.Mocker() as mocker:
             place = "長野"
-            result = {"place": "長野県長野市", "lat": "36.64858580", "lon": "138.19477310"}
+            result = {
+                "place": "長野県長野市",
+                "lat": "36.64858580",
+                "lon": "138.19477310",
+            }
             content = {
                 "Feature": [
                     {
@@ -164,6 +169,49 @@ class TestGetGsiGeoData(unittest.TestCase):
                     "properties": {
                         "addressCode": "20215",
                         "title": "高ボッチ牧場",
+                        "dataSource": "1",
+                    },
+                },
+            ]
+            set_gsi_mock(place, mocker, content)
+            self.assertEqual(get_gsi_geo_data(place), result)
+
+    def test_valid_full_width_place(self):
+        """完全一致のある地名 (APIからの取得結果は全角) を指定した場合"""
+
+        with requests_mock.Mocker() as mocker:
+            place = "岡谷JCT"
+            result = {
+                "place": "岡谷JCT",
+                "lat": "36.0516068611111",
+                "lon": "138.043510944444",
+            }
+            content = [
+                {
+                    "geometry": {
+                        "coordinates": [138.049454, 36.066944],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "長野県岡谷市"},
+                },
+                {
+                    "geometry": {
+                        "coordinates": [133.773621, 34.651913],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "岡山県総社市岡谷"},
+                },
+                {
+                    "geometry": {
+                        "coordinates": [138.043510944444, 36.0516068611111],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {
+                        "addressCode": "20204",
+                        "title": "岡谷ＪＣＴ",
                         "dataSource": "1",
                     },
                 },

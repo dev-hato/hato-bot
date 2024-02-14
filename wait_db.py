@@ -1,6 +1,7 @@
 """
 DBが起動するまで待機する
 """
+
 from time import sleep
 
 import psycopg2
