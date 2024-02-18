@@ -356,7 +356,9 @@ class RasterLayer(Layer):
         layer_img = np.array(RasterTileServer(url).request(bbox), dtype=np.float64)
 
         if self.brightness != 1.0 or self.chroma != 1.0:
-            img_hsv = np.array(cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV), dtype=np.float64)
+            img_hsv = np.array(
+                cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV), dtype=np.float64
+            )
             img_hsv[..., 1] = img_hsv[..., 1] * self.brightness
             img_hsv[..., 2] = img_hsv[..., 2] * self.chroma
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
