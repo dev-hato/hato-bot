@@ -338,10 +338,18 @@ class MarkerTrace(Layer):
 class RasterLayer(Layer):
     url: Optional[str] = None
     url_list: Optional[List[str]] = None
-    opacity: float = 1.0
-    brightness: float = 1.0
-    chroma: float = 1.0
+    opacity: np.float32 = np.float32(1.0)
+    brightness: np.float32 = np.float32(1.0)
+    chroma: np.float32 = np.float32(1.0)
 
+    def __init__(Layer, **kwargs):
+        self.url = kwargs.get('url', None)
+        self.url_list = kwargs.get('url_list', None)
+        self.opacity = np.float32(kwargs.get('opacity', 1.0))
+        self.brightness = np.float32(kwargs.get('brightness', 1.0))
+        self.chroma = np.float32(kwargs.get('chroma', 1.0))
+        
+    
     def __post_init__(self):
         if not (0 <= self.opacity <= 1.0):
             raise ValueError("Opacity is out of range.")
@@ -353,13 +361,15 @@ class RasterLayer(Layer):
             url = self.url
         else:
             raise ValueError("You should give url_list or url")
-        layer_img = RasterTileServer(url).request(bbox)
+        layer_img = np.array(RasterTileServer(url).request(bbox), dtype=np.float32)
 
         if self.brightness != 1.0 or self.chroma != 1.0:
-            img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
+            img_hsv = np.array(
+                cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV), dtype=np.float32
+            )
             img_hsv[..., 1] = img_hsv[..., 1] * self.brightness
             img_hsv[..., 2] = img_hsv[..., 2] * self.chroma
-            layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
+            layer_img = np.array(cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR), dtype=np.float32)
 
         if self.opacity != 1.0:
             layer_img[layer_img[..., 3] != 0, 3] = int(round(self.opacity * 256))
