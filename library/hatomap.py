@@ -338,9 +338,9 @@ class MarkerTrace(Layer):
 class RasterLayer(Layer):
     url: Optional[str] = None
     url_list: Optional[List[str]] = None
-    opacity: np.float32 = np.float32(1.0)
-    brightness: np.float32 = np.float32(1.0)
-    chroma: np.float32 = np.float32(1.0)
+    opacity: np.float32
+    brightness: np.float32
+    chroma: np.float32
 
     def __init__(self, **kwargs):
         self.url = kwargs.get("url", None)
