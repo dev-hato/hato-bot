@@ -338,9 +338,9 @@ class MarkerTrace(Layer):
 class RasterLayer(Layer):
     url: Optional[str] = None
     url_list: Optional[List[str]] = None
-    opacity: float = 1.0
-    brightness: float = 1.0
-    chroma: float = 1.0
+    opacity: np.float64 = np.float64(1.0)
+    brightness: np.float64 = np.float64(1.0)
+    chroma: np.float64 = np.float64(1.0)
 
     def __post_init__(self):
         if not (0 <= self.opacity <= 1.0):
@@ -353,10 +353,10 @@ class RasterLayer(Layer):
             url = self.url
         else:
             raise ValueError("You should give url_list or url")
-        layer_img = RasterTileServer(url).request(bbox)
+        layer_img = np.array(RasterTileServer(url).request(bbox), dtype=np.float64)
 
         if self.brightness != 1.0 or self.chroma != 1.0:
-            img_hsv = cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV)
+            img_hsv = np.array(cv2.cvtColor(layer_img, cv2.COLOR_BGR2HSV), dtype=np.float64)
             img_hsv[..., 1] = img_hsv[..., 1] * self.brightness
             img_hsv[..., 2] = img_hsv[..., 2] * self.chroma
             layer_img = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
