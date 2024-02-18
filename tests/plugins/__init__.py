@@ -9,12 +9,14 @@ class TestClient(BaseClient):
     """
     モッククライアント
     """
+    post_message: str
+    filename: str
 
-    def __init__(self):
-        self.post_message: str = ""
-        self.filename: str = ""
+    def __init__(self) -> None:
+        self.post_message = ""
+        self.filename = ""
 
-    def post(self, message: str):
+    def post(self, message: str) -> None:
         self.post_message = message
 
     def get_post_message(self) -> str:
