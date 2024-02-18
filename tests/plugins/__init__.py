@@ -9,6 +9,7 @@ class TestClient(BaseClient):
     """
     モッククライアント
     """
+
     post_message: str
     filename: str
 
