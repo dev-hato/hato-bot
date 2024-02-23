@@ -44,7 +44,7 @@ class HatoMikuji:
                 37, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
             ),
             OmikujiEnum.AGE_KICHI: OmikujiResult(
-                2, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
+                50, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
             ),
             OmikujiEnum.KYO: OmikujiResult(
                 12, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
