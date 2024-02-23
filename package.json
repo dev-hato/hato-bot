@@ -29,6 +29,6 @@
     "textlint-rule-terminology": "4.0.1"
   },
   "engines": {
-    "npm": "^10.2.3 || ^8.19.2"
+    "npm": "^10.2.4 || ^8.19.2"
   }
 }
