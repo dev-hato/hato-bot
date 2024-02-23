@@ -3,13 +3,17 @@ hato-bot用のおみくじラッパー
 """
 
 from enum import Enum, auto
+
 from library.omikuji import OmikujiResult, OmikujiResults, draw
 
 # 以下おみくじの設定
+
+
 class OmikujiEnum(Enum):
     """
     おみくじの結果一覧
     """
+
     DAI_KICHI = auto()
     CHU_KICHI = auto()
     SHO_KICHI = auto()
@@ -18,6 +22,7 @@ class OmikujiEnum(Enum):
     AGE_KICHI = auto()
     KYO = auto()
     DAI_KYO = auto()
+
 
 class HatoMikuji:
     OMIKUJI_CONFIG = OmikujiResults(
