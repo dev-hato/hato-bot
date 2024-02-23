@@ -428,8 +428,6 @@ def yoshiyoshi():
     return "よしよし"
 
 
-
-
 @action("おみくじ")
 def omikuji():
     """
