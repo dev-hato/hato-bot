@@ -36,10 +36,10 @@ class HatoMikuji:
             ),
             OmikujiEnum.KICHI: OmikujiResult(100, ":smirk: 吉 まあうまくいくかも!?"),
             OmikujiEnum.CHU_KICHI: OmikujiResult(
-                300, ":smile: 中吉 そこそこうまくいくかも!?"
+                250, ":smile: 中吉 そこそこうまくいくかも!?"
             ),
             OmikujiEnum.SHO_KICHI: OmikujiResult(
-                330, ":smiley: 小吉 なんとなくうまくいくかも!?"
+                280, ":smiley: 小吉 なんとなくうまくいくかも!?"
             ),
             OmikujiEnum.SUE_KICHI: OmikujiResult(
                 165, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
