@@ -28,26 +28,27 @@ class HatoMikuji:
         KYO = auto()
         DAI_KYO = auto()
 
+    # メンテナンス性のために排出率をパーミルに正規化(合計1000)すること
     OMIKUJI_CONFIG = OmikujiResults(
         {
             OmikujiEnum.DAI_KICHI: OmikujiResult(
-                12, ":tada: 大吉 何でもうまくいく!!気がする!!"
+                15, ":tada: 大吉 何でもうまくいく!!気がする!!"
             ),
             OmikujiEnum.KICHI: OmikujiResult(100, ":smirk: 吉 まあうまくいくかも!?"),
             OmikujiEnum.CHU_KICHI: OmikujiResult(
-                100, ":smile: 中吉 そこそこうまくいくかも!?"
+                250, ":smile: 中吉 そこそこうまくいくかも!?"
             ),
             OmikujiEnum.SHO_KICHI: OmikujiResult(
-                100, ":smiley: 小吉 なんとなくうまくいくかも!?"
+                280, ":smiley: 小吉 なんとなくうまくいくかも!?"
             ),
             OmikujiEnum.SUE_KICHI: OmikujiResult(
-                37, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
+                165, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
             ),
             OmikujiEnum.AGE_KICHI: OmikujiResult(
-                2, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
+                160, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
             ),
             OmikujiEnum.KYO: OmikujiResult(
-                12, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
+                28, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
             ),
             OmikujiEnum.DAI_KYO: OmikujiResult(
                 2, ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
