@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "06a7acaa5264ca4744a4a6361aa5ce01c62fb716473dead846abc240b3170c01"
+            "sha256": "441b3cca3ed45e5507ef74a44e98d49e792a85dd5d8a87f25845a350e9a75d42"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1302,7 +1302,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "9f4a27521f870d23eb6a77817ebfad1701518705"
+            "ref": "68eb840c8667874fcc7ca166b787c2de06a8ebbf"
         },
         "tqdm": {
             "hashes": [
@@ -2002,11 +2002,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:d4051d623a2e0b7e51960ba963193b09ce6daeb9759a451844a21e4ddedfc1bd",
-                "sha256:edfaaef32ce5172d5466b5127b42e0d6d35ebbe4453f0e3505d96afd93f6b096"
+                "sha256:2a8386cfc11fa9d2c50ee7b2a57e7d898ef90470a7a34c4b949ff59662bb78b7",
+                "sha256:ac978141a75948948817d360297b7aae0fcb9d6ff6bc9ec6d514b85d5a65c044"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==8.0.2"
+            "version": "==8.1.1"
         },
         "pyyaml": {
             "hashes": [
@@ -2241,11 +2241,12 @@
         },
         "types-toml": {
             "hashes": [
-                "sha256:58b0781c681e671ff0b5c0319309910689f4ab40e8a2431e205d70c94bb6efb1",
-                "sha256:61951da6ad410794c97bec035d59376ce1cbf4453dc9b6f90477e81e4442d631"
+                "sha256:3d41501302972436a6b8b239c850b26689657e25281b48ff0ec06345b8830331",
+                "sha256:627b47775d25fa29977d9c70dc0cbab3f314f32c8d8d0c012f2ef5de7aaec05d"
             ],
             "index": "pypi",
-            "version": "==0.10.8.7"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.10.8.20240310"
         },
         "typing-extensions": {
             "hashes": [
