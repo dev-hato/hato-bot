@@ -26,7 +26,7 @@ jobs:
       packages: write
     if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         with:
           fetch-depth: 0
       - name: Set .env
@@ -111,7 +111,7 @@ jobs:
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
@@ -130,7 +130,7 @@ jobs:
   update-dockle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
@@ -147,7 +147,7 @@ jobs:
       DOCKER_CONTENT_TRUST: 1
       REPOSITORY: ${{github.repository}}
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
