@@ -8,8 +8,8 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 import emoji
-from slack_sdk import WebClient
 from misskey import NoteVisibility
+from slack_sdk import WebClient
 
 
 class BaseClient(metaclass=ABCMeta):
