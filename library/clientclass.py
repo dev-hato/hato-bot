@@ -9,6 +9,7 @@ from abc import ABCMeta, abstractmethod
 import discord
 import emoji
 from slack_sdk import WebClient
+from misskey import NoteVisibility
 
 
 class BaseClient(metaclass=ABCMeta):
@@ -167,6 +168,7 @@ class MisskeyClient(BaseClient):
 
         self.client.notes_create(
             text=text,
+            visibility=NoteVisibility.HOME,
             reply_id=self.message["id"],
             file_ids=file_ids,
         )
