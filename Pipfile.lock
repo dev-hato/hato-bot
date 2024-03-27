@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "45c0b265cca26e42df3d6bdb42745f571c0559751cdc7d8fa9c94d2fa2f5cd9b"
+            "sha256": "cb9659550d038e1f5b5739923ccec25d3ab9a1b60ff6f2a1ee9e1dd0b40d4561"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1302,7 +1302,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "3ab63103b69d562ea987fd5488f00643755ad976"
+            "ref": "be25d5643ef084a1db203ac9c07591ca870af927"
         },
         "tqdm": {
             "hashes": [
@@ -2175,11 +2175,11 @@
         },
         "requests-mock": {
             "hashes": [
-                "sha256:ef10b572b489a5f28e09b708697208c4a3b2b89ef80a9f01584340ea357ec3c4",
-                "sha256:f7fae383f228633f6bececebdab236c478ace2284d6292c6e7e2867b9ab74d15"
+                "sha256:4e34f2a2752f0b78397fb414526605d95fcdeab021ac1f26d18960e7eb41f6a8",
+                "sha256:4f6fdf956de568e0bac99eee4ad96b391c602e614cc0ad33e7f5c72edd699e70"
             ],
             "index": "pypi",
-            "version": "==1.11.0"
+            "version": "==1.12.0"
         },
         "setuptools": {
             "hashes": [
@@ -2188,14 +2188,6 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==69.2.0"
-        },
-        "six": {
-            "hashes": [
-                "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
-                "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
-            ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==1.16.0"
         },
         "sqlfluff": {
             "hashes": [
