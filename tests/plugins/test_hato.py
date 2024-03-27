@@ -17,10 +17,10 @@ from plugins.hato import (
     amesh,
     earth_quake,
     omikuji,
-    omikuji_results,
     split_command,
     yoshiyoshi,
 )
+from plugins.hato_mikuji import HatoMikuji
 from tests.library.test_geo import set_yahoo_mock
 from tests.plugins import TestClient
 
@@ -399,7 +399,7 @@ class TestOmikuji(unittest.TestCase):
         omikuji(client1)
         self.assertIn(
             client1.get_post_message(),
-            map(lambda e: e.message, omikuji_results.values()),
+            map(lambda e: e.message, HatoMikuji.OMIKUJI_CONFIG.values()),
         )
 
 

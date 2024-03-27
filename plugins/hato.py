@@ -6,7 +6,6 @@ import imghdr
 import json
 import os
 import re
-from enum import Enum, auto
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List, Optional
@@ -26,8 +25,6 @@ from library.hatokaraage import hato_ha_karaage
 from library.hukidasi import generator
 from library.jma_amedas import get_jma_amedas
 from library.jma_amesh import jma_amesh
-from library.omikuji import OmikujiResult, OmikujiResults
-from library.omikuji import draw as omikuji_draw
 from library.textlint import get_textlint_result
 from library.vocabularydb import (
     add_vocabulary,
@@ -36,6 +33,7 @@ from library.vocabularydb import (
     show_random_vocabulary,
     show_vocabulary,
 )
+from plugins.hato_mikuji import HatoMikuji
 
 logger = getLogger(__name__)
 
@@ -429,58 +427,13 @@ def yoshiyoshi():
     return "よしよし"
 
 
-# 以下おみくじの設定
-# Refer: dev-hato/hato-bot#876
-class OmikujiEnum(Enum):
-    """
-    おみくじの結果一覧
-    """
-
-    DAI_KICHI = auto()
-    CHU_KICHI = auto()
-    SHO_KICHI = auto()
-    KICHI = auto()
-    SUE_KICHI = auto()
-    AGE_KICHI = auto()
-    KYO = auto()
-    DAI_KYO = auto()
-
-
-omikuji_results = OmikujiResults(
-    {
-        OmikujiEnum.DAI_KICHI: OmikujiResult(
-            12, ":tada: 大吉 何でもうまくいく!!気がする!!"
-        ),
-        OmikujiEnum.KICHI: OmikujiResult(100, ":smirk: 吉 まあうまくいくかも!?"),
-        OmikujiEnum.CHU_KICHI: OmikujiResult(
-            100, ":smile: 中吉 そこそこうまくいくかも!?"
-        ),
-        OmikujiEnum.SHO_KICHI: OmikujiResult(
-            100, ":smiley: 小吉 なんとなくうまくいくかも!?"
-        ),
-        OmikujiEnum.SUE_KICHI: OmikujiResult(
-            37, ":expressionless: 末吉 まあ多分うまくいくかもね……!?"
-        ),
-        OmikujiEnum.AGE_KICHI: OmikujiResult(
-            2, ":poultry_leg: 揚げ吉 鳩を揚げると良いことあるよ!!"
-        ),
-        OmikujiEnum.KYO: OmikujiResult(
-            12, ":cry: 凶 ちょっと慎重にいったほうがいいかも……"
-        ),
-        OmikujiEnum.DAI_KYO: OmikujiResult(
-            2, ":crying_cat_face: 大凶 そういう時もあります……猫になって耐えましょう"
-        ),
-    }
-)
-
-
 @action("おみくじ")
 def omikuji():
     """
     おみくじ結果を返す
     """
 
-    return omikuji_draw(omikuji_results)[1].message
+    return HatoMikuji.draw()
 
 
 @action("chat")
