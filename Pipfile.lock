@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6310b0492b946465f770dede01d5b487f4f405637bf930e7f36775c1a15ee691"
+            "sha256": "bd20b846edd7b421d00034c57ad5ef22f08670aa714ad260c05a68e6aeecb558"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -898,12 +898,12 @@
         },
         "openai": {
             "hashes": [
-                "sha256:af9227052d15a987dde9837b3b159b3b1bdb75a791cc07c6af01a13784993910",
-                "sha256:ec22e6c3790ef9cb38877b801368dcd2ab6d8a2acd21d718dd600f77badce143"
+                "sha256:65f6bed84ecde0fc20e4f3b458000deb775531aa29154ff4d679e937d7e4370d",
+                "sha256:7b6e4d59f3686fcd94efdb2ee61052bf6c9dbb58052b5116fc0d75ba7adbf329"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.1'",
-            "version": "==1.21.1"
+            "version": "==1.21.2"
         },
         "opencv-python": {
             "hashes": [
