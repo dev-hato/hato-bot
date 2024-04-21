@@ -33,7 +33,6 @@ from plugins import analyze
 app = Flask(__name__)
 
 
-
 def slack_main():
     slack_app = slack_bolt.App(
         token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
