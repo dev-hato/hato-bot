@@ -21,9 +21,9 @@
 
 - Dockerが動作するPC
 - Slack API Token ([Slack API Tokenの取得手順](./doc/01_Get_Slack_API_Token.md)) (Slackで動かす場合のみ)
-- Discord Bot Token ([Discord Bot Tokenの取得手順](./doc/03_Get_Discord_Bot_Token)) (Discordで動かす場合のみ)
-- Misskeyアクセストークン ([Misskeyアクセストークンの取得手順](./doc/04_Get_Misskey_Access_Token)) (Misskeyで動かす場合のみ)
-- Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/05_Get_Yahoo_API_Token))
+- Discord Bot Token ([Discord Bot Tokenの取得手順](./doc/03_Get_Discord_Bot_Token.md)) (Discordで動かす場合のみ)
+- Misskeyアクセストークン ([Misskeyアクセストークンの取得手順](./doc/04_Get_Misskey_Access_Token.md)) (Misskeyで動かす場合のみ)
+- Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/05_Get_Yahoo_API_Token.md))
 - OpenAI API Key ([OpenAI API Keyの取得手順](./doc/06_Get_OpenAI_API_Token.md))
 
 ### 自分のPC上で動かす
