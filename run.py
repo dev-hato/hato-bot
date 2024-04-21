@@ -33,19 +33,6 @@ from plugins import analyze
 app = Flask(__name__)
 
 
-def __init__():
-    log_format_config = {
-        "format": "[%(asctime)s] %(message)s",
-        "datefmt": "%Y-%m-%d %H:%M:%S",
-        "level": logging.DEBUG,
-        "stream": sys.stdout,
-    }
-    logging.basicConfig(**log_format_config)
-    logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
-        logging.WARNING
-    )
-
-
 def slack_main():
     slack_app = slack_bolt.App(
         token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
@@ -190,6 +177,16 @@ async def on_message(message):
 def main():
     """メイン関数"""
 
+    log_format_config = {
+        "format": "[%(asctime)s] %(message)s",
+        "datefmt": "%Y-%m-%d %H:%M:%S",
+        "level": logging.DEBUG,
+        "stream": sys.stdout,
+    }
+    logging.basicConfig(**log_format_config)
+    logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+        logging.WARNING
+    )
     logger = logging.getLogger(__name__)
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
