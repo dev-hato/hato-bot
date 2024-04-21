@@ -184,3 +184,6 @@ class MisskeyClient(BaseClient):
     def get_type():
         """misskey"""
         return "misskey"
+
+    def add_waiting_reaction(self):
+        self.client.notes_reactions_create(note_id=self.message["id"], reaction="👀")
