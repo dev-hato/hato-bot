@@ -239,6 +239,7 @@ def main():
 
                                     if cred is not None and cred["id"] in mentions:
                                         client = MisskeyClient(misskey_client, note)
+                                        client.add_waiting_reaction()
                                         try:
                                             analyze.analyze_message(
                                                 note["text"]
