@@ -20,8 +20,11 @@
 鳩botを使うには以下が必要です。
 
 - Dockerが動作するPC
-- Slack API Token ([Slack API Tokenの取得手順](./doc/01_Get_Slack_API_Token.md))
-- Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/02_Get_Yahoo_API_Token.md))
+- Slack API Token ([Slack API Tokenの取得手順](./doc/01_Get_Slack_API_Token.md)) (Slackで動かす場合のみ)
+- Discord Bot Token ([Discord Bot Tokenの取得手順](./doc/03_Get_Discord_Bot_Token)) (Discordで動かす場合のみ)
+- Misskeyアクセストークン ([Misskeyアクセストークンの取得手順](./doc/04_Get_Misskey_Access_Token)) (Misskeyで動かす場合のみ)
+- Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/05_Get_Yahoo_API_Token))
+- OpenAI API Key ([OpenAI API Keyの取得手順](./doc/06_Get_OpenAI_API_Token.md))
 
 ### 自分のPC上で動かす
 
@@ -53,18 +56,7 @@
     `.env.example` をコピーして使うとよいでしょう
 
     MODEに `discord` を指定すると、DiscordのBotとして動作します。
-
-    DISCORD_API_TOKENにDiscordのBot Tokenを指定します。
-
-    DISCORD_API_TOKENには `Read Messages/View Channels` と、 `Send Messages` の権限が必要です。
-
-    MODEに `misskey` を指定すると、自分のサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
-
-    MISSKEY_URLにBotのいるMisskeyサーバーのドメインを指定します。
-
-    MISSKEY_API_TOKENにMisskeyのBotのアクセストークンを指定します。
-
-    MISSKEY_API_TOKENには `ドライブを操作する`, `ノートを作成・削除する`, `アカウントの情報を見る`, `リアクションを操作する` の権限が必要です。
+    MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
