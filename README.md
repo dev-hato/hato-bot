@@ -56,6 +56,7 @@
     `.env.example` をコピーして使うとよいでしょう
 
     MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
     MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
