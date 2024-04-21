@@ -186,4 +186,4 @@ class MisskeyClient(BaseClient):
         return "misskey"
 
     def add_waiting_reaction(self):
-        self.client.notes_reactions_create(note_id=self.message["id"], reaction='👀')
+        self.client.notes_reactions_create(note_id=self.message["id"], reaction="👀")
