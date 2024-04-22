@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
-      - uses: dev-hato/github-actions-cache-cleaner@8631f246ce2cc3142a954ada28c9c6671d4655ca # v0.0.37
+      - uses: dev-hato/github-actions-cache-cleaner@41c19bd5bf4d9b243b001500ca2e00c90f63e811 # v0.0.38
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
