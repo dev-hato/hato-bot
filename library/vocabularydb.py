@@ -70,7 +70,7 @@ def get_vocabularys():
             slack_msg = slack_msg + f"\n {cnt}. {text}"
             cnt += 1
 
-        slack_msg = slack_msg + "```"
+        slack_msg = slack_msg + "\n```"
 
         return slack_msg
     return "登録されている単語はないっぽ！"

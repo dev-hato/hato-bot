@@ -166,9 +166,14 @@ class MisskeyClient(BaseClient):
         if text is not None:
             text = emoji.emojize(text, language="alias")
 
+        visibility = self.message["visibility"]
+
+        if self.message["visibility"] == "public":
+            visibility = NoteVisibility.HOME
+
         self.client.notes_create(
             text=text,
-            visibility=NoteVisibility.HOME,
+            visibility=visibility,
             reply_id=self.message["id"],
             file_ids=file_ids,
         )
@@ -184,3 +189,6 @@ class MisskeyClient(BaseClient):
     def get_type():
         """misskey"""
         return "misskey"
+
+    def add_waiting_reaction(self):
+        self.client.notes_reactions_create(note_id=self.message["id"], reaction="👀")
