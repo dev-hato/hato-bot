@@ -6,6 +6,7 @@ import imghdr
 import json
 import os
 import re
+from functools import partial
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 from typing import List, Optional
@@ -36,6 +37,36 @@ from library.vocabularydb import (
 from plugins.hato_mikuji import HatoMikuji
 
 logger = getLogger(__name__)
+
+conditions = {
+    "help": lambda m: help_message,
+    "eq": lambda m: partial(earth_quake),
+    "地震": lambda m: partial(earth_quake),
+    "textlint": lambda m: partial(textlint, text=m[len("textlint ") :]),
+    "text list": lambda m: get_text_list,
+    "text add ": lambda m: partial(add_text, word=m[len("text add ") :]),
+    "text show ": lambda m: partial(
+        show_text, power_word_id=m[len("text show ") :]
+    ),
+    "text delete ": lambda m: partial(
+        delete_text, power_word_id=m[len("text delete ") :]
+    ),
+    "text random": lambda m: show_random_text,
+    "text": lambda m: show_random_text,
+    ">< ": lambda m: partial(totuzensi, message=m[len(">< ") :]),
+    "amesh": lambda m: partial(amesh, place=m[len("amesh") :].strip()),
+    "amedas": lambda m: partial(amedas, place=m[len("amedas") :].strip()),
+    "電力": lambda m: electricity_demand,
+    "標高": lambda m: partial(altitude, place=m[len("標高") :].strip()),
+    "version": lambda m: version,
+    "にゃーん": lambda m: yoshiyoshi,
+    "おみくじ": lambda m: omikuji,
+    "chat": lambda m: partial(chat, message=m[len("chat") :].strip()),
+    "画像生成": lambda m: partial(
+        image_generate, message=m[len("画像生成") :].strip()
+    ),
+    "ping": lambda m: ping,
+}
 
 
 def action(plugin_name: str, with_client: bool = False):
@@ -83,11 +114,14 @@ def help_message():
         return os.linesep.join(str_help)
 
 
-@action("default")
-def default_action():
+@action("default", with_client=True)
+def default_action(client: BaseClient, message: str):
     """どのコマンドにもマッチしなかった"""
 
-    return conf.DEFAULT_REPLY
+    try:
+        conditions["chat"](message)(client)
+    except Exception as _e:
+        client.post(conf.DEFAULT_REPLY)
 
 
 @action("eq", with_client=True)
