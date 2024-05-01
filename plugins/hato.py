@@ -45,9 +45,7 @@ conditions = {
     "textlint": lambda m: partial(textlint, text=m[len("textlint ") :]),
     "text list": lambda m: get_text_list,
     "text add ": lambda m: partial(add_text, word=m[len("text add ") :]),
-    "text show ": lambda m: partial(
-        show_text, power_word_id=m[len("text show ") :]
-    ),
+    "text show ": lambda m: partial(show_text, power_word_id=m[len("text show ") :]),
     "text delete ": lambda m: partial(
         delete_text, power_word_id=m[len("text delete ") :]
     ),
@@ -62,9 +60,7 @@ conditions = {
     "にゃーん": lambda m: yoshiyoshi,
     "おみくじ": lambda m: omikuji,
     "chat": lambda m: partial(chat, message=m[len("chat") :].strip()),
-    "画像生成": lambda m: partial(
-        image_generate, message=m[len("画像生成") :].strip()
-    ),
+    "画像生成": lambda m: partial(image_generate, message=m[len("画像生成") :].strip()),
     "ping": lambda m: ping,
 }
 
