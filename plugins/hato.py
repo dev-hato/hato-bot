@@ -116,7 +116,8 @@ def default_action(client: BaseClient, message: str):
 
     try:
         conditions["chat"](message)(client)
-    except Exception as _e:
+    except Exception as e:
+        logger.exception(e)
         client.post(conf.DEFAULT_REPLY)
 
 
