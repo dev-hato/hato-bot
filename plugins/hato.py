@@ -115,7 +115,7 @@ def default_action(client: BaseClient, message: str):
     """どのコマンドにもマッチしなかった"""
 
     try:
-        conditions["chat"](message)(client)
+        conditions["chat"](message)(client=client)
     except Exception as e:
         logger.exception(e)
         client.post(conf.DEFAULT_REPLY)
