@@ -49,6 +49,9 @@ RUN apt-get update && \
     chown -R nonroot /usr/src/app
 USER nonroot
 
+# Matplotlib用のフォントキャッシュ生成
+RUN python -c 'import matplotlib.pyplot'
+
 COPY *.py ./
 COPY library library
 COPY plugins plugins
