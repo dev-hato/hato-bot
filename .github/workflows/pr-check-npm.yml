@@ -30,6 +30,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: package.json
       - name: Get npm version
         id: get_npm_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -56,6 +57,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: package.json
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_check_npm/npm_install.sh"
