@@ -26,6 +26,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: package.json
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
