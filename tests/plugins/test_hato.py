@@ -342,7 +342,7 @@ class TestAltitude(unittest.TestCase):
             geo_content = [
                 {
                     "geometry": {
-                        "coordinates": reversed(coordinates),
+                        "coordinates": list(reversed(coordinates)),
                         "type": "Point",
                     },
                     "type": "Feature",
