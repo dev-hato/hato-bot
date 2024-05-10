@@ -354,7 +354,9 @@ class TestAltitude(unittest.TestCase):
             altitude_content = {
                 "Feature": [{"Property": {"Altitude": altitude_setagaya}}]
             }
-            client1 = self.altitude_test(mocker, "", [str(c) for c in reversed(coordinates)], altitude_content)
+            client1 = self.altitude_test(
+                mocker, "", [str(c) for c in reversed(coordinates)], altitude_content
+            )
             self.assertEqual(
                 client1.get_post_message(),
                 f"東京都世田谷区の標高は{altitude_setagaya}mっぽ！",
