@@ -21,7 +21,7 @@ from plugins.hato import (
     yoshiyoshi,
 )
 from plugins.hato_mikuji import HatoMikuji
-from tests.library.test_geo import set_yahoo_mock
+from tests.library.test_geo import set_gsi_mock
 from tests.plugins import TestClient
 
 
@@ -186,15 +186,17 @@ class TestAmesh(unittest.TestCase):
         引数なしでameshコマンドが実行できるかテスト
         """
         with requests_mock.Mocker() as mocker:
-            content = {
-                "Feature": [
-                    {
-                        "Name": "東京都世田谷区",
-                        "Geometry": {"Coordinates": "139.65324950,35.64657460"},
-                    }
-                ]
-            }
-            set_yahoo_mock("東京", mocker, False, content)
+            content = [
+                {
+                    "geometry": {
+                        "coordinates": [139.6532495, 35.6465746],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "東京都世田谷区"},
+                },
+            ]
+            set_gsi_mock("東京", mocker, content)
             self.amesh_upload_png_test(
                 mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！"
             )
@@ -252,15 +254,17 @@ class TestAmedas(unittest.TestCase):
         引数なしでamedasコマンドが実行できるかテスト
         """
         with requests_mock.Mocker() as mocker:
-            content = {
-                "Feature": [
-                    {
-                        "Name": "東京都世田谷区",
-                        "Geometry": {"Coordinates": "139.65324950,35.64657460"},
-                    }
-                ]
-            }
-            set_yahoo_mock("東京", mocker, False, content)
+            content = [
+                {
+                    "geometry": {
+                        "coordinates": [139.6532495, 35.6465746],
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "東京都世田谷区"},
+                },
+            ]
+            set_gsi_mock("東京", mocker, content)
             self.get_amedas_test(
                 mocker,
                 "",
@@ -335,15 +339,17 @@ class TestAltitude(unittest.TestCase):
         """
         with requests_mock.Mocker() as mocker:
             coordinates = ["35.64657460", "139.65324950"]
-            geo_content = {
-                "Feature": [
-                    {
-                        "Name": "東京都世田谷区",
-                        "Geometry": {"Coordinates": ",".join(reversed(coordinates))},
-                    }
-                ]
-            }
-            set_yahoo_mock("東京", mocker, False, geo_content)
+            geo_content = [
+                {
+                    "geometry": {
+                        "coordinates": reversed(coordinates),
+                        "type": "Point",
+                    },
+                    "type": "Feature",
+                    "properties": {"addressCode": "", "title": "東京都世田谷区"},
+                },
+            ]
+            set_gsi_mock("東京", mocker, geo_content)
             altitude_setagaya = 35.4
             altitude_content = {
                 "Feature": [{"Property": {"Altitude": altitude_setagaya}}]
