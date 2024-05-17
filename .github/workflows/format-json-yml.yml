@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{steps.generate_token.outputs.token}}
-      - uses: dev-hato/actions-format-json-yml@b2e6e458b96076aa3755a70720dd43abf43cf528 # v0.0.63
+      - uses: dev-hato/actions-format-json-yml@364a3279a0b6988ec5e81a80407246d7dc075c39 # v0.0.64
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
