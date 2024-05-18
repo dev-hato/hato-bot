@@ -41,7 +41,7 @@
     ```
 5. 次のコマンドを実行してfly.ioへのデプロイを行います。
     ```sh
-    fly launch --copy-config
+    fly launch --copy-config --vm-memory=256mb
     ```
 
    次の表示が出たら `y` と入力します。
@@ -52,8 +52,6 @@
 6. ブラウザ上で次のように設定し、 `Confirm Settings` をクリックします。その後、CLIに戻るとfly.ioへのデプロイが進みます。
    * Basics
      * App name: 適当なアプリ名
-   * Memory & CPU
-     * VM Memory: `256MB`
    * Database
      * Provider: `Fly Postgres`
      * Name: 適当なDB名
