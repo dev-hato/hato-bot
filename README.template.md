@@ -29,8 +29,8 @@
 ### fly.io上で動かす
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
-2. https://fly.io/docs/hands-on/install-flyctl/ に記載されている手順で `fly` コマンドをインストールします。
-3. https://fly.io/docs/hands-on/sign-up-sign-in/ に記載されている手順でfly.ioへの登録・ログインを行います。
+2. [Install flyctl · Fly Docs](https://fly.io/docs/hands-on/install-flyctl/)に記載されている手順で `fly` コマンドをインストールします。
+3. [Sign up / Sign in · Fly Docs](https://fly.io/docs/hands-on/sign-up-sign-in/)に記載されている手順でfly.ioへの登録・ログインを行います。
 4. このリポジトリをcloneします。
 
    安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
@@ -39,17 +39,17 @@
     git clone -b master https://github.com/dev-hato/hato-bot.git
     cd hato-bot
     ```
-5. 以下のコマンドを実行してfly.ioへのデプロイを行います。
+5. 次のコマンドを実行してfly.ioへのデプロイを行います。
     ```sh
-    $ fly launch --copy-config
+    fly launch --copy-config
     ```
 
-   以下の表示が出たら `y` と入力します。
+   次の表示が出たら `y` と入力します。
 
     ```
     ? Do you want to tweak these settings before proceeding?
     ```
-6. ブラウザ上で以下のように設定し、 `Confirm Settings` をクリックします。その後、CLIに戻るとfly.ioへのデプロイが進みます。
+6. ブラウザ上で次のように設定し、 `Confirm Settings` をクリックします。その後、CLIに戻るとfly.ioへのデプロイが進みます。
    * Basics
      * App name: 適当なアプリ名
    * Memory & CPU
@@ -66,11 +66,11 @@
 
    MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
-8. 以下のコマンドを実行して、Secretをセットします。
+8. 次のコマンドを実行して、Secretをセットします。
     ```sh
     fly secrets import < .env
     ```
-9. 以下のコマンドを実行して、マシンを起動します。
+9. 次のコマンドを実行して、マシンを起動します。
     ```sh
     fly machine start
     ```
