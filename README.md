@@ -46,7 +46,7 @@
 
    次の表示が出たら `y` と入力します。
 
-    ```
+    ```sh
     ? Do you want to tweak these settings before proceeding?
     ```
 6. ブラウザ上で次のように設定し、 `Confirm Settings` をクリックします。その後、CLIに戻るとfly.ioへのデプロイが進みます。
@@ -60,7 +60,7 @@
      * Configuration: `Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk`
 7. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-   `.env.example` をコピーして使うとよいでしょう。ただし、 `DATABASE_URL` はデプロイ時に既に設定されているので削除する必要があります。
+   `.env.example` をコピーして使うとよいでしょう。ただし、 `DATABASE_URL` はデプロイ時にすでに設定されているので削除する必要があります。
 
    MODEに `discord` を指定すると、DiscordのBotとして動作します。
 
