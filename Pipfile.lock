@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "57f278335f9e71fbe354b9914f48dc7879ed52fd4f68b8e46a39cb5a9f31a23f"
+            "sha256": "6ce5bc3119021a5d5d653fa8a8c142aeaede7ee403b87e41b38df523faebabbc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1304,7 +1304,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "1694a7a65a04b907aed4496911305b05b34284bf"
+            "ref": "da0ffef993a013fcf58190489141aba2565dcd79"
         },
         "tqdm": {
             "hashes": [
@@ -1532,11 +1532,11 @@
         },
         "astroid": {
             "hashes": [
-                "sha256:16ee8ca5c75ac828783028cc1f967777f0e507c6886a295ad143e0f405b975a2",
-                "sha256:f7f829f8506ade59f1b3c6c93d8fac5b1ebc721685fa9af23e9794daf1d450a3"
+                "sha256:902564b36796ba1eab3ad2c7a694861fbd926f574d5dbb5fa1d86778a2ba2d91",
+                "sha256:b452064132234819f023b94f4bd045b250ea0009f372b4377cfcd87f10806ca5"
             ],
             "markers": "python_full_version >= '3.8.0'",
-            "version": "==3.2.0"
+            "version": "==3.2.1"
         },
         "autopep8": {
             "hashes": [
@@ -1995,12 +1995,12 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:9f20c05398520474dac03d7abb21ab93181f91d4c110e1e0b32bc0d016c34fa4",
-                "sha256:ad8baf17c8ea5502f23ae38d7c1b7ec78bd865ce34af9a0b986282e2611a8ff2"
+                "sha256:93643d4caa0f5ca3c24e16ed0cc835e9a1481870c3abcb481aad0cb4cb121243",
+                "sha256:c4ab2acdffeb1bead50ecf41b15b38ebe61a173e4234d5545bddd732f1f3380a"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.8.0'",
-            "version": "==3.2.0"
+            "version": "==3.2.1"
         },
         "pytest": {
             "hashes": [
