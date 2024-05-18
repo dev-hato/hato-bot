@@ -3,7 +3,9 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
+# TODO: アプリ名設定
 app = 'hato-bot'
+
 primary_region = 'nrt'
 
 [build]
