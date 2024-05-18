@@ -26,6 +26,53 @@
 - Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/05_Get_Yahoo_API_Token.md))
 - OpenAI API Key ([OpenAI API Keyの取得手順](./doc/06_Get_OpenAI_API_Token.md))
 
+### fly.io上で動かす
+
+1. 事前にSlack API TokenとYahoo API Tokenを取得します。
+2. [Install flyctl · Fly Docs](https://fly.io/docs/hands-on/install-flyctl/)に記載されている手順で `fly` コマンドをインストールします。
+3. [Sign up / Sign in · Fly Docs](https://fly.io/docs/hands-on/sign-up-sign-in/)に記載されている手順でfly.ioへの登録・ログインを行います。
+4. このリポジトリをcloneします。
+
+   安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
+
+    ```sh
+    git clone -b master https://github.com/dev-hato/hato-bot.git
+    cd hato-bot
+    ```
+5. 次のコマンドを実行してfly.ioへのデプロイを行います。
+    ```sh
+    fly launch --copy-config --vm-memory=256mb
+    ```
+
+   次の表示が出たら `y` と入力します。
+
+    ```sh
+    ? Do you want to tweak these settings before proceeding?
+    ```
+6. ブラウザ上で次のように設定し、 `Confirm Settings` をクリックします。その後、CLIに戻るとfly.ioへのデプロイが進みます。
+   * Basics
+     * App name: 適当なアプリ名
+   * Database
+     * Provider: `Fly Postgres`
+     * Name: 適当なDB名
+     * Configuration: `Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk`
+7. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+
+   `.env.example` をコピーして使うとよいでしょう。ただし、 `DATABASE_URL` はデプロイ時にすでに設定されているので削除する必要があります。
+
+   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+
+8. 次のコマンドを実行して、Secretをセットします。
+    ```sh
+    fly secrets import < .env
+    ```
+9. 次のコマンドを実行して、マシンを起動します。
+    ```sh
+    fly machine start
+    ```
+
 ### 自分のPC上で動かす
 
 自分のPCで動かすこともできます。
