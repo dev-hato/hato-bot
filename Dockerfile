@@ -14,6 +14,7 @@ ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
+COPY .npmrc .npmrc
 COPY Pipfile Pipfile
 COPY package.json package.json
 COPY package-lock.json package-lock.json
