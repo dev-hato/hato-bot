@@ -9,7 +9,7 @@ app = 'hato-bot'
 primary_region = 'nrt'
 
 [build]
-image = 'tmp-hato-bot-flyio'
+  image = 'tmp-hato-bot-flyio'
 
 [http_service]
   internal_port = 8080
