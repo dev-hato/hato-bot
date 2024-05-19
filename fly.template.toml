@@ -20,3 +20,4 @@ primary_region = 'nrt'
 
 [[vm]]
   size = 'shared-cpu-1x'
+  memory = '256'
