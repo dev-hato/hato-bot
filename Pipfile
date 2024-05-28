@@ -7,7 +7,7 @@ verify_ssl = true
 python_version = "3.12"
 
 [dev-packages]
-autopep8 = "==2.1.1"
+autopep8 = "==2.1.2"
 requests-mock = "==1.12.1"
 pylint = "==3.2.2"
 sqlfluff = "==3.0.7"
