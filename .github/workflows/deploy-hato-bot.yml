@@ -127,6 +127,61 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-python-version
           pr-title-prefix: .python-versionを直してあげたよ！
+  pr-update-version:
+    runs-on: ubuntu-latest
+    needs: deploy_docker_image
+    if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          cache: npm
+          node-version-file: package.json
+      - name: Get npm version
+        id: get_npm_version
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
+        env:
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-version
+          pr-title-prefix: nodeをアップデートしてあげたよ！
+  # package.jsonに差分があれば、package.jsonからpackage-lock.jsonを作り出す
+  pr-check-npm:
+    runs-on: ubuntu-latest
+    needs: pr-update-version
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
+          # submodule: 'recursive'
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          cache: npm
+          node-version-file: package.json
+      - name: Install dependencies
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
+      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: npm
+          pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
   update-dockle:
     runs-on: ubuntu-latest
     steps:
@@ -156,12 +211,13 @@ jobs:
     if: always()
     needs:
       - update-version-python-version
+      - pr-check-npm
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-check-npm.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-check-npm.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))) }}
         run: exit 1
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
