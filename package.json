@@ -12,7 +12,7 @@
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
-    "markdownlint-cli": "0.40.0",
+    "markdownlint-cli": "0.41.0",
     "textlint": "14.0.4",
     "textlint-filter-rule-comments": "1.2.2",
     "textlint-rule-abbr-within-parentheses": "1.0.2",
@@ -26,10 +26,10 @@
     "textlint-rule-prefer-tari-tari": "1.0.3",
     "textlint-rule-preset-ja-spacing": "2.4.3",
     "textlint-rule-preset-ja-technical-writing": "10.0.1",
-    "textlint-rule-terminology": "5.0.1"
+    "textlint-rule-terminology": "5.0.9"
   },
   "engines": {
     "node": ">=20",
-    "npm": "^10.5.2 || ^10.7.0 || ^8.19.2"
+    "npm": "^10.7.0 || ^10.7.0 || ^8.19.2"
   }
 }
