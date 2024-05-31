@@ -21,11 +21,11 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
     :return: place: 地名, lat: 緯度, lon: 経度
     """
 
-    geo_data = get_gsi_geo_data(place)
+    geo_data = get_yahoo_geo_data(place)
     if geo_data is not None:
         return geo_data
 
-    return get_yahoo_geo_data(place)
+    return get_gsi_geo_data(place)
 
 
 def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
