@@ -171,11 +171,17 @@ class MisskeyClient(BaseClient):
         if self.message["visibility"] == "public":
             visibility = NoteVisibility.HOME
 
+        if self.message['cw']:
+            cw = '隠すっぽ！'
+        else:
+            cw = None
+
         self.client.notes_create(
             text=text,
             visibility=visibility,
             reply_id=self.message["id"],
             file_ids=file_ids,
+            cw=cw,
         )
 
     def get_send_user(self):
