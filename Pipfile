@@ -43,5 +43,5 @@ numpy = "==1.26.4"
 emoji = "==2.12.1"
 
 [packages.sudden-death]
-git = "git+https://github.com/dev-hato/sudden-death"
+git = "https://github.com/dev-hato/sudden-death"
 ref = "master"
