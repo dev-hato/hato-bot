@@ -171,8 +171,8 @@ class MisskeyClient(BaseClient):
         if self.message["visibility"] == "public":
             visibility = NoteVisibility.HOME
 
-        if self.message['cw']:
-            cw = '隠すっぽ！'
+        if self.message["cw"]:
+            cw = "隠すっぽ！"
         else:
             cw = None
 
