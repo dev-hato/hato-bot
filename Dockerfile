@@ -34,9 +34,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
     pip install pipenv==2024.0.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system --skip-lock --dev; \
+      pipenv install --system --skip-lock --dev -v; \
     else \
-      pipenv install --system --skip-lock; \
+      pipenv install --system --skip-lock -v; \
     fi && \
     npm install && \
     pip uninstall -y pipenv virtualenv && \
