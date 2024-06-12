@@ -41,4 +41,7 @@ flask = "==3.0.3"
 markupsafe = "==2.1.5"
 numpy = "==1.26.4"
 emoji = "==2.12.1"
-sudden-death = {ref = "master", git = "git+https://github.com/dev-hato/sudden-death"}
+
+[packages.sudden-death]
+ref = "master"
+git = "git+https://github.com/dev-hato/sudden-death"
