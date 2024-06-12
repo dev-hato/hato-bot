@@ -33,6 +33,8 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
     pip install pipenv==2024.0.1 --no-cache-dir && \
+    python --version && \
+    pip --version && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev -v; \
     else \
