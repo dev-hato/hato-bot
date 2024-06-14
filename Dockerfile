@@ -28,7 +28,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev && \
     pip install pipenv==2024.0.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system 'git+https://github.com/dev-hato/sudden-death@master'; \
+      pipenv install 'git+https://github.com/dev-hato/sudden-death@master'; \
     else \
-      pipenv install --system 'git+https://github.com/dev-hato/sudden-death@master'; \
+      pipenv install 'git+https://github.com/dev-hato/sudden-death@master'; \
     fi
