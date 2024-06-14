@@ -31,4 +31,5 @@ RUN apt-get update && \
       pipenv install 'git+https://github.com/dev-hato/sudden-death@master'; \
     else \
       pipenv install 'git+https://github.com/dev-hato/sudden-death@master'; \
-    fi
+    fi \
+    && cat Pipfile && exit 1
