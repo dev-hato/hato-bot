@@ -32,7 +32,7 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install git+https://github.com/pypa/pipenv.git@6abb08cd9a6702912c25a374338b25469517a931 --no-cache-dir && \
+    pip install git+https://github.com/pypa/pipenv.git@66eef03cccc0901e830561ea45e97307adac95fa --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev; \
     else \
