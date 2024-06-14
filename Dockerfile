@@ -29,7 +29,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev && \
     pip install pipenv==2024.0.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system --skip-lock --dev; \
+      pipenv install --system --skip-lock --dev || cat /tmp/pipenv-*-requirements/pipenv-*-reqs.txt; \
     else \
-      pipenv install --system --skip-lock; \
+      pipenv install --system --skip-lock || cat /tmp/pipenv-*-requirements/pipenv-*-reqs.txt; \
     fi
