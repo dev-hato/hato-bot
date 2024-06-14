@@ -6,6 +6,5 @@ verify_ssl = true
 [requires]
 python_version = "3.12"
 
-[packages.sudden-death]
-git = "https://github.com/dev-hato/sudden-death"
-ref = "master"
+[packages]
+sudden-death = {ref = "master", git = "git+https://github.com/dev-hato/sudden-death"}
