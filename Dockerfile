@@ -31,7 +31,7 @@ RUN apt-get update && \
     if [ "${ENV}" = 'dev' ]; then \
       pipenv install --system --skip-lock --dev || for d in /tmp/pipenv-*-requirements/; \
       do \
-          for f in ${d}/pipenv-*-reqs.txt; \
+          for f in ${d}pipenv-*-reqs.txt; \
           do \
               cat $f; \
           done; \
@@ -39,7 +39,7 @@ RUN apt-get update && \
     else \
       pipenv install --system --skip-lock || for d in /tmp/pipenv-*-requirements/; \
       do \
-          for f in ${d}/pipenv-*-reqs.txt; \
+          for f in ${d}pipenv-*-reqs.txt; \
           do \
               cat $f; \
           done; \
