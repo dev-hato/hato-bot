@@ -16,6 +16,7 @@ WORKDIR /usr/src/app
 
 COPY .npmrc .npmrc
 COPY Pipfile Pipfile
+COPY Pipfile.lock Pipfile.lock
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
@@ -32,11 +33,11 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2023.12.1 --no-cache-dir && \
+    pip install pipenv==2024.0.1 --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system --skip-lock --dev; \
+      pipenv install --system --dev; \
     else \
-      pipenv install --system --skip-lock; \
+      pipenv install --system; \
     fi && \
     npm install && \
     pip uninstall -y pipenv virtualenv && \
