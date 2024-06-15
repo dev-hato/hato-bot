@@ -1,11 +1,13 @@
+FROM python:3.12.4-slim AS base
+
 # バージョン情報に表示する commit hash を埋め込む
-FROM debian:bullseye-slim AS commit-hash
+FROM base AS commit-hash
 COPY .git slackbot_settings.py /
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.12.4-slim-bullseye
+FROM base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
