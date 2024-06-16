@@ -215,9 +215,9 @@ jobs:
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-check-npm.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && needs.pr-check-npm.result == 'success' && (github.event.action == 'closed' || needs.dockle.result == 'success')))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
         run: exit 1
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
