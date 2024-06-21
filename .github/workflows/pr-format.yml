@@ -38,7 +38,7 @@ jobs:
       - name: Install pipenv
         id: install_pipenv
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
+        run: pip install -r requirements.txt
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/pipenv_install.sh"
