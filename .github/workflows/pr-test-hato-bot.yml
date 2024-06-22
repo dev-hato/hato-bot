@@ -21,6 +21,8 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pipenv
+      - name: Install dependencies
+        run: bash "${GITHUB_WORKSPACE}/scripts/pipenv_install.sh"
       - name: Test
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test_hato_bot/pr_test/test.sh"
 concurrency:
