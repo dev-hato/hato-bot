@@ -35,13 +35,9 @@ jobs:
           cache: pipenv
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: sed -i -e "s/python_version = \".*\"/python_version = \"$(echo ${{ steps.setup_python.outputs.python-version }} | sed -e 's/\([0-9]*\.[0-9]*\).*/\1/g')\"/g" Pipfile
-      - name: Install pipenv
-        id: install_pipenv
-        if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/install_pipenv.sh"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/pipenv_install.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pipenv_install.sh"
       # formatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
