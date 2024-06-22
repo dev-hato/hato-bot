@@ -20,9 +20,11 @@ jobs:
           python-version-file: .python-version
           cache: pipenv
       - name: Install pipenv
+        run: bash "${GITHUB_WORKSPACE}/scripts/pipenv_install.sh"
+      - name: Set venv path
         env:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/set_venv_path.sh"
       - name: Set up Node.js
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:

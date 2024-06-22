@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-pip install -r requirements.txt
-pipenv --version
-pipenv install --dev
-
 # 環境ファイルを使ってenvにsetしている
 # 参考URL: https://bit.ly/2KJhjqk
 venv_path=$(pipenv --venv)
