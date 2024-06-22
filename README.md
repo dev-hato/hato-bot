@@ -29,8 +29,8 @@
 ### fly.io上で動かす
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
-2. [Install flyctl · Fly Docs](https://fly.io/docs/getting-started/launch-demo/)に記載されている手順で `fly` コマンドをインストールします。
-3. [Sign up / Sign in · Fly Docs](https://fly.io/docs/getting-started/launch-demo/)に記載されている手順でfly.ioへの登録・ログインを行います。
+2. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#1-install-flyctl)に記載されている手順で `fly` コマンドをインストールします。
+3. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#2-sign-up-or-sign-in)に記載されている手順でfly.ioへの登録・ログインを行います。
 4. [Dashboard · Fly](https://fly.io/dashboard/)内の `Billing` からクレジットカードを登録します (無料枠で使用する場合も必須)。
 5. [`yq` コマンドのGitHub](https://github.com/mikefarah/yq/?tab=readme-ov-file#install)に記載されている手順で `yq` コマンドをインストールします。
 6. このリポジトリをcloneします。
