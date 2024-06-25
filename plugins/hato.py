@@ -324,7 +324,7 @@ def amedas(client: BaseClient, place: str):
     ]
 
     if "temp" in amedas_data:
-        res.append(f"気温: {amedas_data['temp'][0]}℃")
+        res.append(f"気温: 摂氏{amedas_data['temp'][0]}度")
 
     if "precipitation1h" in amedas_data:
         res.append(f"降水量 (前1時間): {amedas_data['precipitation1h'][0]}mm")
