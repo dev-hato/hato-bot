@@ -22,7 +22,9 @@
         "ignore": [
             "https://github.com/dev-hato/hato-bot/releases/latest",
             "https://platform.openai.com/api-keys",
-            "https://fly.io/dashboard/"
+            "https://fly.io/dashboard/",
+            "https://fly.io/docs/getting-started/launch-demo/#1-install-flyctl",
+            "https://fly.io/docs/getting-started/launch-demo/#2-sign-up-or-sign-in"
         ]
     },
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
