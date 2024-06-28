@@ -26,7 +26,7 @@
     "textlint-rule-prefer-tari-tari": "1.0.3",
     "textlint-rule-preset-ja-spacing": "2.4.3",
     "textlint-rule-preset-ja-technical-writing": "10.0.1",
-    "textlint-rule-terminology": "5.0.21"
+    "textlint-rule-terminology": "5.1.0"
   },
   "engines": {
     "node": ">=20",
