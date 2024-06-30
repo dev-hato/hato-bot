@@ -34,7 +34,8 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
     :param place: 地名・住所・郵便番号
     :return: place: 地名, lat: 緯度, lon: 経度
     """
-    is_zip_code = re.match(r"[0-9]{3}-[0-9]{4}", place)
+    # 曖昧な指定に対応できるよう、3桁以上で始まっているなら郵便番号としている
+    is_zip_code = re.match(r"^[0-9]{3}", place)
 
     if is_zip_code:
         url = "https://map.yahooapis.jp/search/zip/V1/zipCodeSearch"
