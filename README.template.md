@@ -26,6 +26,36 @@
 - Yahoo API Token ([Yahoo API Tokenの取得手順](./doc/05_Get_Yahoo_API_Token.md))
 - OpenAI API Key ([OpenAI API Keyの取得手順](./doc/06_Get_OpenAI_API_Token.md))
 
+### fly.io上で動かす
+
+1. 事前にSlack API TokenとYahoo API Tokenを取得します。
+2. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#1-install-flyctl)に記載されている手順で `fly` コマンドをインストールします。
+3. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#2-sign-up-or-sign-in)に記載されている手順でfly.ioへの登録・ログインを行います。
+4. [Dashboard · Fly](https://fly.io/dashboard/)内の `Billing` からクレジットカードを登録します (無料枠で使用する場合も必須)。
+5. [`yq` コマンドのGitHub](https://github.com/mikefarah/yq/?tab=readme-ov-file#install)に記載されている手順で `yq` コマンドをインストールします。
+6. このリポジトリをcloneします。
+
+   安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
+
+    ```sh
+    git clone -b master https://github.com/dev-hato/hato-bot.git
+    cd hato-bot
+    ```
+7. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+
+   `.env.example` をコピーして使うとよいでしょう。
+
+   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+8. `fly.toml` ファイルを作成します。
+
+   `fly.template.toml` をコピーし、TODOコメントに従って編集すると良いでしょう。
+9. 次のコマンドを実行してfly.ioへのデプロイを行います。
+    ```sh
+    ./flyio_deploy.sh
+    ```
+
 ### 自分のPC上で動かす
 
 自分のPCで動かすこともできます。

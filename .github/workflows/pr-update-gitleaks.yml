@@ -17,7 +17,7 @@ jobs:
   pr-update-gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
@@ -26,10 +26,11 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
+          node-version-file: package.json
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - uses: dev-hato/actions-update-gitleaks@34f266de641d346891e8f15ddae1e0a774583e98 # v0.0.68
+      - uses: dev-hato/actions-update-gitleaks@f5d97e2ae62ce61e0cfcc2489dc1bf80f33ae75d # v0.0.72
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:

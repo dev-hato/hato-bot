@@ -153,7 +153,7 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
-intents = discord.Intents.all()
+intents = discord.Intents(messages=True, typing=True)
 discordClient = discord.Client(intents=intents)
 
 

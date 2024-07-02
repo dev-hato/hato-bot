@@ -21,7 +21,8 @@
     "no-dead-link": {
         "ignore": [
             "https://github.com/dev-hato/hato-bot/releases/latest",
-            "https://platform.openai.com/api-keys"
+            "https://platform.openai.com/api-keys",
+            "https://fly.io/dashboard/"
         ]
     },
     "no-mixed-zenkaku-and-hankaku-alphabet": true,
