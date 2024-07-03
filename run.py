@@ -233,8 +233,10 @@ def main():
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                    host is None or host == conf.MISSKEY_DOMAIN
-                                ) and mentions and cred["id"] in mentions:
+                                    (host is None or host == conf.MISSKEY_DOMAIN)
+                                    and mentions
+                                    and cred["id"] in mentions
+                                ):
                                     client = MisskeyClient(misskey_client, note)
                                     client.add_waiting_reaction()
                                     try:
