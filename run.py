@@ -193,6 +193,17 @@ def main():
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
 
+        for i in range(10):
+            try:
+                cred = misskey_client.i()
+                break
+            except ReadTimeout as e:
+                if i < 9:
+                    logger.exception(e)
+                    time.sleep(1)
+                else:
+                    raise e
+
         async def misskey_runner():
             while True:
                 try:
@@ -222,30 +233,21 @@ def main():
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 if (
-                                    host is None or host == conf.MISSKEY_DOMAIN
-                                ) and mentions:
-                                    cred = None
-
-                                    for i in range(10):
-                                        try:
-                                            cred = misskey_client.i()
-                                            break
-                                        except ReadTimeout as e:
-                                            logger.exception(e)
-                                            time.sleep(1)
-
-                                    if cred is not None and cred["id"] in mentions:
-                                        client = MisskeyClient(misskey_client, note)
-                                        client.add_waiting_reaction()
-                                        try:
-                                            analyze.analyze_message(
-                                                note["text"]
-                                                .replace("\xa0", " ")
-                                                .split(" ", 1)[1]
-                                            )(client)
-                                        except Exception as e:
-                                            logger.exception(e)
-                                            client.post("エラーが発生したっぽ......")
+                                    (host is None or host == conf.MISSKEY_DOMAIN)
+                                    and mentions
+                                    and cred["id"] in mentions
+                                ):
+                                    client = MisskeyClient(misskey_client, note)
+                                    client.add_waiting_reaction()
+                                    try:
+                                        analyze.analyze_message(
+                                            note["text"]
+                                            .replace("\xa0", " ")
+                                            .split(" ", 1)[1]
+                                        )(client)
+                                    except Exception as e:
+                                        logger.exception(e)
+                                        client.post("エラーが発生したっぽ......")
                 except websockets.ConnectionClosedError:
                     time.sleep(1)
 
