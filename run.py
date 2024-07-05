@@ -192,6 +192,7 @@ def main():
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
+        misskey_client.timeout = 2
 
         for i in range(10):
             try:
