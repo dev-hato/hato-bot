@@ -233,7 +233,7 @@ def main():
                                             break
                                         except ReadTimeout as e:
                                             logger.exception(e)
-                                            time.sleep(1)
+                                            await asyncio.sleep(1)
 
                                     if cred is not None and cred["id"] in mentions:
                                         client = MisskeyClient(misskey_client, note)
@@ -248,7 +248,7 @@ def main():
                                             logger.exception(e)
                                             client.post("エラーが発生したっぽ......")
                 except websockets.ConnectionClosedError:
-                    time.sleep(1)
+                    await asyncio.sleep(1)
 
         while True:
             try:
