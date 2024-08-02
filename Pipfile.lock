@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9c52821464ae9c844c5bb7c2b2455acbd0564dfa02ccc19c9ee0a51f3cd855c3"
+            "sha256": "097e289c73e8f47c84fe708a21c76b57f840052e229770cf6088b6eb7d8144ff"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "aiohappyeyeballs": {
             "hashes": [
-                "sha256:77e15a733090547a1f5369a1287ddfc944bd30df0eb8993f585259c34b405f4e",
-                "sha256:903282fb08c8cfb3de356fd546b263248a477c99cb147e20a115e14ab942a4ae"
+                "sha256:40a16ceffcf1fc9e142fd488123b2e218abc4188cf12ac20c67200e1579baa42",
+                "sha256:7e1ae8399c320a8adec76f6c919ed5ceae6edd4c3672f4d9eae2b27e37c80ff6"
             ],
             "markers": "python_version >= '3.8' and python_version < '4.0'",
-            "version": "==2.3.2"
+            "version": "==2.3.4"
         },
         "aiohttp": {
             "hashes": [
@@ -916,12 +916,12 @@
         },
         "openai": {
             "hashes": [
-                "sha256:9a6adda0d6ae8fce02d235c5671c399cfa40d6a281b3628914c7ebf244888ee3",
-                "sha256:faf87206785a6b5d9e34555d6a3242482a6852bc802e453e2a891f68ee04ce55"
+                "sha256:22dfcf48cd9ff1a6b1d8de09121261bc72315515a9faadad541be93a8bb1e961",
+                "sha256:fd97cb235cfce0f7c902c64e58a5cd9fea19e7c180d9a4e2a2b8e533dbd9f424"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.1'",
-            "version": "==1.37.1"
+            "version": "==1.37.2"
         },
         "opencv-python": {
             "hashes": [
@@ -1342,7 +1342,7 @@
         },
         "sudden-death": {
             "git": "https://github.com/dev-hato/sudden-death",
-            "ref": "d22c51f35746e392e2a3b3b59cd3e90fc2733720"
+            "ref": "0f880f9c68c974688336b3f59db94e7afccaf069"
         },
         "tqdm": {
             "hashes": [
