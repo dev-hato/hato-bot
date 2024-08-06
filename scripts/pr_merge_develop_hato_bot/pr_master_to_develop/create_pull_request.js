@@ -1,4 +1,6 @@
-const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/create_pull_request_hato_bot.js`);
+const script = require(
+  `${process.env.GITHUB_WORKSPACE}/scripts/create_pull_request_hato_bot.js`,
+);
 
 module.exports = async ({ github, context }) => {
   const commonParams = {
