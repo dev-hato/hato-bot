@@ -33,12 +33,14 @@ jobs:
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@3fe03abab2eafb293ace16d4a3b07aeabcb3f1a0 # v6.7.0
+        uses: super-linter/super-linter/slim@b4515bd4ad9d0aa4681960e053916ab991bdbe96 # v6.8.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
           VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
           VALIDATE_JSCPD: false
+          JAVASCRIPT_DEFAULT_STYLE: prettier
+          VALIDATE_JAVASCRIPT_STANDARD: false
           LINTER_RULES_PATH: .
           FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
