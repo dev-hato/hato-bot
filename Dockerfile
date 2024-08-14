@@ -1,4 +1,4 @@
-FROM python:3.12.4-slim AS base
+FROM python:3.12.5-slim AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
