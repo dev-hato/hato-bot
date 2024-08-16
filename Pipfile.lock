@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "844c3c1cd95bc4a6a54f36e156e06522e443cc5463326b990c256f9324f17d78"
+            "sha256": "b7580ff2c669175bcecb19bbeffc6df4a4f1ee44406dd10841b84025a151e681"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "aiohappyeyeballs": {
             "hashes": [
-                "sha256:4d6dea59215537dbc746e93e779caea8178c866856a721c9c660d7a5a7b8be03",
-                "sha256:6fa48b9f1317254f122a07a131a86b71ca6946ca989ce6326fff54a99a920105"
+                "sha256:15dca2611fa78442f1cb54cf07ffb998573f2b4fbeab45ca8554c045665c896b",
+                "sha256:88211068d2a40e0436033956d7de3926ff36d54776f8b1022d6b21320cadae79"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.3.5"
+            "version": "==2.3.6"
         },
         "aiohttp": {
             "hashes": [
@@ -994,12 +994,12 @@
         },
         "openai": {
             "hashes": [
-                "sha256:3ed4ddad48e0dde059c9b4d3dc240e47781beca2811e52ba449ddc4a471a2fd4",
-                "sha256:e225f830b946378e214c5b2cfa8df28ba2aeb7e9d44f738cb2a926fd971f5bc0"
+                "sha256:26b81f39b49dce92ff5d30c373625ddb212c2f1050e1574e456d18423730cdd0",
+                "sha256:3b6cca4571667f3e0800442ef8f2bfa6a6f3301c51776bc7626159a4d81c242c"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.1'",
-            "version": "==1.40.8"
+            "version": "==1.41.0"
         },
         "opencv-python": {
             "hashes": [
