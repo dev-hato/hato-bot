@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f43e23b195290a035ee2940bff49c0ff7a7665d6228f17ee9ee83126281d13e0"
+            "sha256": "3ca9263f8e9f9d271dbf518a6a0c1639e729366362704acf558cd13199b185fa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -540,11 +540,11 @@
         },
         "idna": {
             "hashes": [
-                "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc",
-                "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"
+                "sha256:050b4e5baadcd44d760cedbd2b8e639f2ff89bbc7a5730fcc662954303377aac",
+                "sha256:d838c2c0ed6fced7693d5e8ab8e734d5f8fda53a039c0164afb0b82e771e3603"
             ],
-            "markers": "python_version >= '3.5'",
-            "version": "==3.7"
+            "markers": "python_version >= '3.6'",
+            "version": "==3.8"
         },
         "itsdangerous": {
             "hashes": [
@@ -1408,12 +1408,12 @@
         },
         "slack-bolt": {
             "hashes": [
-                "sha256:373d76a2b1a8ed91d5fe011bd3f671a05ec8620210c3a6ad99477e39d6b2b7fa",
-                "sha256:e253dcae69ac7eea189b3270307fba6d733eb0764ae223b494427a9023a57380"
+                "sha256:4657e592339797b9b804547a21e6b35dd8e2cd1eab676bfb23960660aae049fd",
+                "sha256:8fa26e72b0e55c18c1d34a73558e7fe2150bdc7c947de780b938fdb1d7e854fe"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==1.20.0"
+            "version": "==1.20.1"
         },
         "slack-sdk": {
             "hashes": [
@@ -1571,11 +1571,11 @@
         },
         "werkzeug": {
             "hashes": [
-                "sha256:097e5bfda9f0aba8da6b8545146def481d06aa7d3266e7448e2cccf67dd8bd18",
-                "sha256:fc9645dc43e03e4d630d23143a04a7f947a9a3b5727cd535fdfe155a17cc48c8"
+                "sha256:02c9eb92b7d6c06f31a782811505d2157837cea66aaede3e217c7c27c039476c",
+                "sha256:34f2371506b250df4d4f84bfe7b0921e4762525762bbd936614909fe25cd7306"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==3.0.3"
+            "version": "==3.0.4"
         },
         "yarl": {
             "hashes": [
@@ -1915,11 +1915,11 @@
         },
         "idna": {
             "hashes": [
-                "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc",
-                "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"
+                "sha256:050b4e5baadcd44d760cedbd2b8e639f2ff89bbc7a5730fcc662954303377aac",
+                "sha256:d838c2c0ed6fced7693d5e8ab8e734d5f8fda53a039c0164afb0b82e771e3603"
             ],
-            "markers": "python_version >= '3.5'",
-            "version": "==3.7"
+            "markers": "python_version >= '3.6'",
+            "version": "==3.8"
         },
         "importlib-metadata": {
             "hashes": [
