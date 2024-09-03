@@ -39,7 +39,7 @@ openai = "==1.43.0"
 websockets = "==13.0.1"
 flask = "==3.0.3"
 markupsafe = "==2.1.5"
-numpy = "==2.1.0"
+numpy = "==2.1.1"
 emoji = "==2.12.1"
 
 [packages.sudden-death]
