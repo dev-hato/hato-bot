@@ -225,8 +225,13 @@ def main():
                                 # FEDERATIONがtrueならばリモートからのメンションにも応答する。
                                 # falseならばローカルのメンションのみに応答する。
                                 if (
-                                    ( conf.MISSKEY_FEDERATION == "true" ) or
-                                    ( conf.MISSKEY_FEDERATION == "false" and ( host is None or host == conf.MISSKEY_DOMAIN ))
+                                    (conf.MISSKEY_FEDERATION == "true")
+                                    or (
+                                        conf.MISSKEY_FEDERATION == "false"
+                                        and (
+                                            host is None or host == conf.MISSKEY_DOMAIN
+                                        )
+                                    )
                                 ) and mentions:
                                     cred = None
 
