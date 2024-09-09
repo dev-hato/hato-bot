@@ -37,24 +37,27 @@
 
    安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
 
-    ```sh
-    git clone -b master https://github.com/dev-hato/hato-bot.git
-    cd hato-bot
-    ```
-7. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+   ```sh
+   git clone -b master https://github.com/dev-hato/hato-bot.git
+   cd hato-bot
+   ```
+
+7. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
    `.env.example` をコピーして使うとよいでしょう。
 
    MODEに `discord` を指定すると、DiscordのBotとして動作します。
 
    MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+
 8. `fly.toml` ファイルを作成します。
 
    `fly.template.toml` をコピーし、TODOコメントに従って編集すると良いでしょう。
+
 9. 次のコマンドを実行してfly.ioへのデプロイを行います。
-    ```sh
-    ./flyio_deploy.sh
-    ```
+   ```sh
+   ./flyio_deploy.sh
+   ```
 
 ### 自分のPC上で動かす
 
@@ -65,51 +68,51 @@
 
 3. このリポジトリをcloneします。
 
-    安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
+   安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
 
-    ```sh
-    git clone -b master https://github.com/dev-hato/hato-bot.git
-    cd hato-bot
-    ```
+   ```sh
+   git clone -b master https://github.com/dev-hato/hato-bot.git
+   cd hato-bot
+   ```
 
-    または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
+   または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
 
 4. 必要に応じてパッケージをインストールします。
 
-    ```sh
-    pipenv install
-    npm install
-    ```
+   ```sh
+   pipenv install
+   npm install
+   ```
 
-5. `.env` ファイルを作成し  Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-    `.env.example` をコピーして使うとよいでしょう
+   `.env.example` をコピーして使うとよいでしょう
 
-    MODEに `discord` を指定すると、DiscordのBotとして動作します。
+   MODEに `discord` を指定すると、DiscordのBotとして動作します。
 
-    MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose up -d --wait
-    ```
+   ```sh
+   export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
+   docker compose up -d --wait
+   ```
 
-    開発時は代わりに次のコマンドを実行します。
+   開発時は代わりに次のコマンドを実行します。
 
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml build
-    docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml watch
-    ```
+   ```sh
+   export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
+   docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml build
+   docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml watch
+   ```
 
 7. コードの変更はdocker composeの再起動で適用できます。
 
-    ```sh
-    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
-    docker compose restart
-    ```
+   ```sh
+   export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
+   docker compose restart
+   ```
 
    開発時は自動的にDockerイメージの再ビルドが行われ反映されます。
 
@@ -123,17 +126,17 @@ npm run lint
 
 - 鳩botに対しコマンドを実行したいときは `post_command.py` を使うと便利です。
 
-    ```sh
-    pipenv run python post_command.py --channel {投稿先のチャンネルのchannel id} \
-                                      --user {自分のuser_id} \
-                                      "{hato-botのコマンド}"
-    ```
+  ```sh
+  pipenv run python post_command.py --channel {投稿先のチャンネルのchannel id} \
+                                    --user {自分のuser_id} \
+                                    "{hato-botのコマンド}"
+  ```
 
 - または[ngrok](https://ngrok.com/)を使うこともできます。
 
-    ```sh
-    ./ngrok http 3000
-    ```
+  ```sh
+  ./ngrok http 3000
+  ```
 
 #### コミットする前に行うこと
 
@@ -152,32 +155,32 @@ pipenv run pre-commit install
 
 - 鳩botで使用可能なコマンドは次の通りです。
 
-    ```text
-    amesh ... 東京のamesh(雨雲情報)を表示する。
-    amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
-    amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
-    amedas ... 東京のamedas(気象情報)を表示する。
-    amedas [text] ... 指定した地名・住所・郵便番号[text]のamedas(気象情報)を表示する。
-    amedas [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamedas(気象情報)を表示する。
-    電力 ... 東京電力管内の電力使用率を表示する。
-    標高 ... 東京の標高を表示する。
-    標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
-    標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
-    eq ... 最新の地震情報を3件表示する。
-    textlint [text] ... 文字列[text]を校正する。
-    text list ... パワーワード一覧を表示する。
-    text random ... パワーワードをひとつ、ランダムで表示する。
-    text show [int] ... 指定した番号[int]のパワーワードを表示する。
-    text add [text] ... パワーワードに[text]を登録する。
-    text delete [int] ... 指定した番号[int]のパワーワードを削除する。
-    >< [text] ... 文字列[text]を吹き出しで表示する。
-    にゃーん ... 「よしよし」と返す。
-    おみくじ ... おみくじを引いて返す。
-    version ... バージョン情報を表示する。
-    chat [text] ... ChatGPTで文章生成する。
-    画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
-    ping ... 「ping」したら「PONG」と返す。
-    ```
+  ```text
+  amesh ... 東京のamesh(雨雲情報)を表示する。
+  amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
+  amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
+  amedas ... 東京のamedas(気象情報)を表示する。
+  amedas [text] ... 指定した地名・住所・郵便番号[text]のamedas(気象情報)を表示する。
+  amedas [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamedas(気象情報)を表示する。
+  電力 ... 東京電力管内の電力使用率を表示する。
+  標高 ... 東京の標高を表示する。
+  標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
+  標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
+  eq ... 最新の地震情報を3件表示する。
+  textlint [text] ... 文字列[text]を校正する。
+  text list ... パワーワード一覧を表示する。
+  text random ... パワーワードをひとつ、ランダムで表示する。
+  text show [int] ... 指定した番号[int]のパワーワードを表示する。
+  text add [text] ... パワーワードに[text]を登録する。
+  text delete [int] ... 指定した番号[int]のパワーワードを削除する。
+  >< [text] ... 文字列[text]を吹き出しで表示する。
+  にゃーん ... 「よしよし」と返す。
+  おみくじ ... おみくじを引いて返す。
+  version ... バージョン情報を表示する。
+  chat [text] ... ChatGPTで文章生成する。
+  画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
+  ping ... 「ping」したら「PONG」と返す。
+  ```
 
 ## バージョンアップによる変更点
 
@@ -186,7 +189,7 @@ pipenv run pre-commit install
 ## バグ報告や機能の要望について
 
 - バグ報告や機能追加の要望がある場合は [Issues](https://github.com/dev-hato/hato-bot/issues) の
-     `New Issue` から報告をお願いします。
+  `New Issue` から報告をお願いします。
 
 - プルリクエストも大歓迎です。
 
