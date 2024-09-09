@@ -222,8 +222,11 @@ def main():
                                 note = data["body"]["body"]
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
+                                # FEDERATIONがtrueならばリモートからのメンションにも応答する。
+                                # falseならばローカルのメンションのみに応答する。
                                 if (
-                                    host is None or host == conf.MISSKEY_DOMAIN
+                                    ( conf.MISSKEY_FEDERATION == "true" ) or
+                                    ( conf.MISSKEY_FEDERATION == "false" and ( host is None or host == conf.MISSKEY_DOMAIN ))
                                 ) and mentions:
                                     cred = None
 
