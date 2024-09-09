@@ -226,9 +226,7 @@ def main():
                                 # falseならばローカルのメンションのみに応答する。
                                 if (
                                     (conf.MISSKEY_FEDERATION == "true")
-                                    or (
-                                        host is None or host == conf.MISSKEY_DOMAIN
-                                    )
+                                    or (host is None or host == conf.MISSKEY_DOMAIN)
                                 ) and mentions:
                                     cred = None
 
