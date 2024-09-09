@@ -42,7 +42,7 @@
    cd hato-bot
    ```
 
-7. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+7. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
    `.env.example` をコピーして使うとよいでしょう。
 
@@ -84,7 +84,7 @@
    npm install
    ```
 
-5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
    `.env.example` をコピーして使うとよいでしょう
 
