@@ -43,7 +43,7 @@ DISCORD_API_TOKEN = str(os.environ["DISCORD_API_TOKEN"])
 # Misskey用の設定
 MISSKEY_DOMAIN = str(os.environ["MISSKEY_DOMAIN"])
 MISSKEY_API_TOKEN = str(os.environ["MISSKEY_API_TOKEN"])
-MISSKEY_FEDERATION = bool(os.environ.get("MISSKEY_FEDERATION","False"))
+MISSKEY_FEDERATION = bool(os.environ.get("MISSKEY_FEDERATION", "False"))
 
 MODE = str(os.environ["MODE"])
 
