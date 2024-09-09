@@ -5,10 +5,7 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          137.593,
-          41.471
-        ]
+        "coordinates": [137.593, 41.471]
       },
       "properties": {
         "id": "nowc_20220507064500_20220507064500_liden_0",
