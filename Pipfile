@@ -19,6 +19,7 @@ pre-commit = "==3.8.0"
 importlib-metadata = "==8.4.0"
 toml = "==0.10.2"
 types-toml = "==0.10.8.20240310"
+pyink = "==24.8.0"
 
 [packages]
 python-dotenv = "==1.0.1"
@@ -41,7 +42,6 @@ flask = "==3.0.3"
 markupsafe = "==2.1.5"
 numpy = "==2.1.1"
 emoji = "==2.12.1"
-pyink = "==24.8.0"
 
 [packages.sudden-death]
 git = "https://github.com/dev-hato/sudden-death"
