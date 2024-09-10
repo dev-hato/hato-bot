@@ -161,7 +161,6 @@ pipenv run pre-commit install
 
   ```text
   amesh ... 東京のamesh(雨雲情報)を表示する。
-<<<<<<< HEAD
     amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
     amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
     amedas ... 東京のamedas(気象情報)を表示する。
@@ -185,31 +184,6 @@ pipenv run pre-commit install
     chat [text] ... ChatGPTで文章生成する。
     画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
     ping ... 「ping」したら「PONG」と返す。
-=======
-  amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
-  amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
-  amedas ... 東京のamedas(気象情報)を表示する。
-  amedas [text] ... 指定した地名・住所・郵便番号[text]のamedas(気象情報)を表示する。
-  amedas [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamedas(気象情報)を表示する。
-  電力 ... 東京電力管内の電力使用率を表示する。
-  標高 ... 東京の標高を表示する。
-  標高 [text] ... 指定した地名・住所・郵便番号[text]の標高を表示する。
-  標高 [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])の標高を表示する。
-  eq ... 最新の地震情報を3件表示する。
-  textlint [text] ... 文字列[text]を校正する。
-  text list ... パワーワード一覧を表示する。
-  text random ... パワーワードをひとつ、ランダムで表示する。
-  text show [int] ... 指定した番号[int]のパワーワードを表示する。
-  text add [text] ... パワーワードに[text]を登録する。
-  text delete [int] ... 指定した番号[int]のパワーワードを削除する。
-  >< [text] ... 文字列[text]を吹き出しで表示する。
-  にゃーん ... 「よしよし」と返す。
-  おみくじ ... おみくじを引いて返す。
-  version ... バージョン情報を表示する。
-  chat [text] ... ChatGPTで文章生成する。
-  画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
-  ping ... 「ping」したら「PONG」と返す。
->>>>>>> f781a92d (formatが間違ってたので直してあげたよ！)
   ```
 
 ## バージョンアップによる変更点
