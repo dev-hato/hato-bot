@@ -220,6 +220,7 @@ class RasterTileServer:
 
 @dataclass
 class Layer(metaclass=ABCMeta):
+
     @abstractmethod
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         pass
