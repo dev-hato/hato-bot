@@ -84,17 +84,16 @@
    npm install
    ```
 
-<<<<<<< HEAD
-5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
-=======
-5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
->>>>>>> f781a92d (formatが間違ってたので直してあげたよ！)
+<<<<<<< HEAD 5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+======= 5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-   `.env.example` をコピーして使うとよいでしょう
+> > > > > > > f781a92d (formatが間違ってたので直してあげたよ！)
 
-   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+`.env.example` をコピーして使うとよいでしょう
 
-   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
@@ -161,7 +160,7 @@ pipenv run pre-commit install
 
   ```text
   amesh ... 東京のamesh(雨雲情報)を表示する。
-<<<<<<< HEAD
+  <<<<<<< HEAD
     amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
     amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
     amedas ... 東京のamedas(気象情報)を表示する。
@@ -185,7 +184,7 @@ pipenv run pre-commit install
     chat [text] ... ChatGPTで文章生成する。
     画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
     ping ... 「ping」したら「PONG」と返す。
-=======
+  =======
   amesh [text] ... 指定した地名・住所・郵便番号[text]のamesh(雨雲情報)を表示する。
   amesh [緯度 (float)] [経度 (float)] ... 指定した座標([緯度 (float)], [経度 (float)])のamesh(雨雲情報)を表示する。
   amedas ... 東京のamedas(気象情報)を表示する。
@@ -209,7 +208,7 @@ pipenv run pre-commit install
   chat [text] ... ChatGPTで文章生成する。
   画像生成 [text] ... openAIのImage generationで画像生成する。[text]は英語での入力推奨。
   ping ... 「ping」したら「PONG」と返す。
->>>>>>> f781a92d (formatが間違ってたので直してあげたよ！)
+  >>>>>>> f781a92d (formatが間違ってたので直してあげたよ！)
   ```
 
 ## バージョンアップによる変更点

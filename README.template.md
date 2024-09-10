@@ -84,17 +84,16 @@
    npm install
    ```
 
-<<<<<<< HEAD
-5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
-=======
-5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
->>>>>>> f781a92d (formatが間違ってたので直してあげたよ！)
+<<<<<<< HEAD 5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+======= 5. `.env` ファイルを作成し Slack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-   `.env.example` をコピーして使うとよいでしょう
+> > > > > > > f781a92d (formatが間違ってたので直してあげたよ！)
 
-   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+`.env.example` をコピーして使うとよいでしょう
 
-   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+MODEに `discord` を指定すると、DiscordのBotとして動作します。
+
+MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. docker composeで鳩botとPostgreSQLを起動します。
 
