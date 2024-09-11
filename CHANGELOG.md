@@ -9,7 +9,7 @@
   - `Removed` 削除された機能について。
   - `Fixed` バグ修正について。
 
-## Unrelease
+## v3.0.5
 
 ### Added
 
