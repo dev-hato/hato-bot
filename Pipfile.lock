@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "684c4b6bc5afd1f60ab4e3533510bd59c929494459b71604c4611051213dcf76"
+            "sha256": "d843835dfc5d7fc6cc9b769f6aed1956e058a37e76eb5110a4eab451548bb32c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1404,7 +1404,7 @@
                 "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
                 "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.9.0.post0"
         },
         "python-dotenv": {
@@ -1437,7 +1437,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
         },
         "slack-bolt": {
@@ -1451,12 +1451,12 @@
         },
         "slack-sdk": {
             "hashes": [
-                "sha256:af8fc4ef1d1cbcecd28d01acf6955a3bb5b13d56f0a43a1b1c7e3b212cc5ec5b",
-                "sha256:f35e85f2847e6c25cf7c2d1df206ca0ad75556263fb592457bf03cca68ef64bb"
+                "sha256:070eb1fb355c149a5f80fa0be6eeb5f5588e4ddff4dd76acf060454435cb037e",
+                "sha256:853bb55154115d080cae342c4099f2ccb559a78ae8d0f5109b49842401a920fa"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==3.32.0"
+            "version": "==3.33.0"
         },
         "smmap": {
             "hashes": [
@@ -2407,7 +2407,7 @@
                 "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
             ],
             "index": "pypi",
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.10.2"
         },
         "tomlkit": {
