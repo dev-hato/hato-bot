@@ -41,7 +41,7 @@ websockets = "==13.0.1"
 flask = "==3.0.3"
 markupsafe = "==2.1.5"
 numpy = "==2.1.1"
-emoji = "==2.12.1"
+emoji = "==2.13.0"
 
 [packages.sudden-death]
 git = "https://github.com/dev-hato/sudden-death"
