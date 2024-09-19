@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4ac32558ba72bdcbd7623fc2c8e492da0f5ea43e502c8033e9170805bbcc0557"
+            "sha256": "a514b3c0ec6e3a63e1f13c07ac0334ed43bbbcee0784da04a34ef18f81c6a85f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -139,11 +139,11 @@
         },
         "anyio": {
             "hashes": [
-                "sha256:5aadc6a1bbb7cdb0bede386cac5e2940f5e2ff3aa20277e991cf028e0585ce94",
-                "sha256:c1b2d8f46a8a812513012e1107cb0e68c17159a7a594208005a57dc776e1bdc7"
+                "sha256:c5a275fe5ca0afd788001f58fca1e69e29ce706d746e317d660e21f70c530ef9",
+                "sha256:fdeb095b7cc5a5563175eedd926ec4ae55413bb4be5770c424af0ba46ccb4a78"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.4.0"
+            "version": "==4.5.0"
         },
         "attrs": {
             "hashes": [
@@ -1451,12 +1451,12 @@
         },
         "slack-sdk": {
             "hashes": [
-                "sha256:070eb1fb355c149a5f80fa0be6eeb5f5588e4ddff4dd76acf060454435cb037e",
-                "sha256:853bb55154115d080cae342c4099f2ccb559a78ae8d0f5109b49842401a920fa"
+                "sha256:e328bb661d95db5f66b993b1d64288ac7c72201a745b4c7cf8848dafb7b74e40",
+                "sha256:ef93beec3ce9c8f64da02fd487598a05ec4bc9c92ceed58f122dbe632691cbe2"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==3.33.0"
+            "version": "==3.33.1"
         },
         "smmap": {
             "hashes": [
