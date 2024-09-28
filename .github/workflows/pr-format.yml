@@ -19,7 +19,7 @@ jobs:
   pr-format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
@@ -44,7 +44,7 @@ jobs:
         id: format
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/format.sh"
-      - uses: dev-hato/actions-diff-pr-management@128afc4203b4e391e03868be91c987b2ddba7ea5 # v1.1.12
+      - uses: dev-hato/actions-diff-pr-management@7cc8ab103917849f6995064afae9f4cbcfd009ae # v1.1.13
         if: success() || failure()
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
