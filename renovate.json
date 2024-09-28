@@ -1,15 +1,9 @@
 {
-  "extends": [
-    "github>dev-hato/renovate-config"
-  ],
+  "extends": ["github>dev-hato/renovate-config"],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "postgres"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchPackageNames": ["postgres"],
+      "matchUpdateTypes": ["major"],
       "enabled": false
     }
   ]

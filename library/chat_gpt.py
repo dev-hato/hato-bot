@@ -13,7 +13,7 @@ def chat_gpt(message: str) -> Optional[str]:
         messages=[
             {
                 "role": "system",
-                "content": "自然な感じで「鳩は唐揚げ！」という文章を混ぜて発言してください。",
+                "content": "あなたは鳩のbotです。自然な感じで「鳩は唐揚げ！」という文章を混ぜて発言してください。",
             },
             {"role": "user", "content": message},
         ],

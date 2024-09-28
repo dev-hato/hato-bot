@@ -6,14 +6,14 @@ on:
       - develop
       - master
   schedule:
-    - cron: '0 21 * * *' # 06:00 JST
+    - cron: "0 21 * * *" # 06:00 JST
   workflow_dispatch:
 jobs:
   github-actions-cache-cleaner:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
-      - uses: dev-hato/github-actions-cache-cleaner@8631f246ce2cc3142a954ada28c9c6671d4655ca # v0.0.37
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: dev-hato/github-actions-cache-cleaner@d37872269f7da1f1763264f96f3d571c39fb91e1 # v0.0.52
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:

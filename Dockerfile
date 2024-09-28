@@ -1,11 +1,13 @@
+FROM python:3.12.6-slim AS base
+
 # バージョン情報に表示する commit hash を埋め込む
-FROM debian:bullseye-slim AS commit-hash
+FROM base AS commit-hash
 COPY .git slackbot_settings.py /
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && sed -i "s/^\(GIT_COMMIT_HASH = \).*\$/\1'$(git rev-parse HEAD)'/" slackbot_settings.py
 
-FROM python:3.12.3-slim-bullseye
+FROM base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -14,7 +16,10 @@ ENV ENV="${ENV}"
 
 WORKDIR /usr/src/app
 
+COPY .npmrc .npmrc
+COPY requirements.txt requirements.txt
 COPY Pipfile Pipfile
+COPY Pipfile.lock Pipfile.lock
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
@@ -28,14 +33,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install pipenv==2023.12.1 --no-cache-dir && \
+    pip install -r requirements.txt --no-cache-dir && \
     if [ "${ENV}" = 'dev' ]; then \
-      pipenv install --system --skip-lock --dev; \
+      pipenv install --system --dev; \
     else \
-      pipenv install --system --skip-lock; \
+      pipenv install --system; \
     fi && \
     npm install && \
     pip uninstall -y pipenv virtualenv && \
@@ -48,6 +53,9 @@ RUN apt-get update && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 USER nonroot
+
+# Matplotlib用のフォントキャッシュ生成
+RUN python -c 'import matplotlib.pyplot'
 
 COPY *.py ./
 COPY library library

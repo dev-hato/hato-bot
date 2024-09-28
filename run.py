@@ -153,7 +153,7 @@ def status():
     return jsonify({"message": "hato-bot is running", "version": conf.VERSION}), 200
 
 
-intents = discord.Intents.all()
+intents = discord.Intents(messages=True, typing=True)
 discordClient = discord.Client(intents=intents)
 
 
@@ -192,6 +192,7 @@ def main():
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
         misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
+        misskey_client.timeout = 2
 
         async def misskey_runner():
             while True:
@@ -221,8 +222,11 @@ def main():
                                 note = data["body"]["body"]
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
+                                # FEDERATIONがtrueならばリモートからのメンションにも応答する。
+                                # falseならばローカルのメンションのみに応答する。
                                 if (
-                                    host is None or host == conf.MISSKEY_DOMAIN
+                                    (conf.MISSKEY_FEDERATION == "true")
+                                    or (host is None or host == conf.MISSKEY_DOMAIN)
                                 ) and mentions:
                                     cred = None
 
@@ -232,7 +236,7 @@ def main():
                                             break
                                         except ReadTimeout as e:
                                             logger.exception(e)
-                                            time.sleep(1)
+                                            await asyncio.sleep(1)
 
                                     if cred is not None and cred["id"] in mentions:
                                         client = MisskeyClient(misskey_client, note)
@@ -247,12 +251,11 @@ def main():
                                             logger.exception(e)
                                             client.post("エラーが発生したっぽ......")
                 except websockets.ConnectionClosedError:
-                    time.sleep(1)
+                    await asyncio.sleep(1)
 
         while True:
             try:
-                asyncio.get_event_loop().run_until_complete(misskey_runner())
-                break
+                asyncio.run(misskey_runner())
             except websockets.exceptions.InvalidStatusCode as e:
                 if e.status_code == 502:
                     logger.exception(e)

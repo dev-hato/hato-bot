@@ -10,31 +10,37 @@ jobs:
   pr-super-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           submodules: "recursive"
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
         with:
           python-version-file: .python-version
           cache: pipenv
       - name: Install pipenv
+        run: bash "${GITHUB_WORKSPACE}/scripts/pipenv_install.sh"
+      - name: Set venv path
         env:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/install_pipenv.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/set_venv_path.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
         with:
           cache: npm
+          node-version-file: package.json
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@92e2606383320f72e6129f8a50d8537cf9c84ed6 # v6.3.1
+        uses: super-linter/super-linter/slim@b92721f792f381cedc002ecdbb9847a15ece5bb8 # v7.1.0
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false
           VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
+          VALIDATE_JSCPD: false
+          JAVASCRIPT_DEFAULT_STYLE: prettier
+          VALIDATE_JAVASCRIPT_STANDARD: false
           LINTER_RULES_PATH: .
           FILTER_REGEX_EXCLUDE: ".*assets/.*.txt"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,12 +50,12 @@ jobs:
   pr-dotenv-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           submodules: "recursive"
           fetch-depth: 0
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@2358fce7165b02bf363eeabc5d2c2db3eb3aaadd # v2.20.0
+        uses: dotenv-linter/action-dotenv-linter@9c9a09ba60235ae0b92b2e2ed8f4268ac76d075f # v2.23.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
