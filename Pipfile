@@ -39,7 +39,7 @@ openai = "==1.51.1"
 "misskey.py" = "==4.1.0"
 websockets = "==13.1"
 flask = "==3.0.3"
-markupsafe = "==2.1.5"
+markupsafe = "==3.0.0"
 numpy = "==2.1.2"
 emoji = "==2.14.0"
 
