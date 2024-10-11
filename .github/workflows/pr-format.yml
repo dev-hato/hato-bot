@@ -38,7 +38,6 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/pipenv_install.sh"
-      - run: pipenv install "psycopg[binary,pool]"
       # formatする
       # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
       - name: Format files
