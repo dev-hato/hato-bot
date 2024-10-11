@@ -2,7 +2,6 @@
 
 """hatobotのチャット部分"""
 
-import puremagic
 import json
 import os
 import re
@@ -13,6 +12,7 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import puremagic
 import requests
 from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
