@@ -42,6 +42,7 @@ flask = "==3.0.3"
 markupsafe = "==3.0.1"
 numpy = "==2.1.2"
 emoji = "==2.14.0"
+audioop-lts = "==0.2.1"
 
 [packages.sudden-death]
 git = "https://github.com/dev-hato/sudden-death"
