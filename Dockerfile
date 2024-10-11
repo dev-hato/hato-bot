@@ -25,13 +25,12 @@ COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
 # * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
-# * libpq-dev: psycopgのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
 # * gnupg: Node.jsのインストールの際に必要
 # * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg libpq-dev && \
+    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
