@@ -44,9 +44,9 @@ def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackage
             if not isinstance(k2, str):
                 return False
 
-            if isinstance(v2, dict):
-                for k3, v3 in v2.items():
-                    if not isinstance(k3, str) or not isinstance(v3, str):
+            if isinstance(v2, list):
+                for v3 in v2:
+                    if not isinstance(v3, str):
                         return False
             elif not isinstance(v2, str):
                 return False
