@@ -15,7 +15,7 @@ import importlib_metadata
 import toml
 
 # Pipfileの「packages」「dev-packages」セクションのデータ型
-PipfilePackages = dict[str, str | dict[str, str]]
+PipfilePackages = dict[str, str | dict[str, str | list[str]]]
 
 # Pipfileのいずれかのセクションのデータ型
 PipfileValue = PipfilePackages | list[dict[str, str | bool]]
