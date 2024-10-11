@@ -28,7 +28,6 @@ Pillow = ">=7.1.2"
 opencv-python = "==4.10.0.84"
 pyperclip = "==1.9.0"
 click = "==8.1.7"
-psycopg = {extras = ["binary", "pool"], version = "==3.2.3"}
 slack-bolt = "==1.20.1"
 slack-sdk = "==3.33.1"
 gitpython = "==3.1.43"
@@ -44,4 +43,11 @@ numpy = "==2.1.2"
 emoji = "==2.14.0"
 puremagic = "==1.28"
 audioop-lts = "==0.2.1"
-sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
+
+[packages.psycopg]
+extras = ["binary", "pool"]
+version = "==3.2.3"
+
+[packages.sudden-death]
+git = "https://github.com/dev-hato/sudden-death"
+ref = "master"
