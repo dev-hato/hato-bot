@@ -25,7 +25,7 @@ COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
 # * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
-# * libpq-dev: psycopg2-binaryのインストールの際に必要
+# * libpq-dev: psycopgのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
 # * gnupg: Node.jsのインストールの際に必要
