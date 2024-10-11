@@ -44,3 +44,4 @@ emoji = "==2.14.0"
 puremagic = "==1.28"
 audioop-lts = "==0.2.1"
 sudden-death = {git = "https://github.com/dev-hato/sudden-death", ref = "master"}
+psycopg = {extras = ["binary", "pool"], version = "*"}
