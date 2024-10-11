@@ -45,7 +45,7 @@ puremagic = "==1.28"
 audioop-lts = "==0.2.1"
 
 [packages.psycopg]
-extras = ["binary", "pool"]
+extras = [ "binary", "pool",]
 version = "==3.2.3"
 
 [packages.sudden-death]
