@@ -87,10 +87,10 @@ def action(plugin_name: str, with_client: bool = False):
     return _action
 
 
-def split_command(command: str, maxsplit: int = 0) -> List[str]:
+def split_command(command: str, max_split: int = 0) -> List[str]:
     """コマンドを分離する"""
 
-    return re.split(r"\s+", command.strip().strip("　"), maxsplit)
+    return re.split(r"\s+", command.strip().strip("　"), max_split)
 
 
 @action("help")
