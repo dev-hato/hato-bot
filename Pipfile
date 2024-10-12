@@ -41,6 +41,7 @@ flask = "==3.0.3"
 markupsafe = "==3.0.1"
 numpy = "==2.1.2"
 emoji = "==2.14.0"
+puremagic = "==1.28"
 
 [packages.psycopg]
 extras = [ "binary", "pool",]
