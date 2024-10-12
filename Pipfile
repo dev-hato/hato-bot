@@ -7,6 +7,7 @@ verify_ssl = true
 python_version = "3.12"
 
 [dev-packages]
+autopep8 = "==2.3.1"
 requests-mock = "==1.12.1"
 black = "==24.10.0"
 isort = "==5.13.2"
