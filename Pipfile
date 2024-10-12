@@ -18,6 +18,7 @@ isort = "==5.13.2"
 pre-commit = "==4.0.1"
 importlib-metadata = "==8.5.0"
 toml = "==0.10.2"
+types-toml = "==0.10.8.20240310"
 
 [packages]
 python-dotenv = "==1.0.1"
