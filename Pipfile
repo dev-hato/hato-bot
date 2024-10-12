@@ -8,6 +8,7 @@ python_version = "3.12"
 
 [dev-packages]
 black = "==24.10.0"
+isort = "==5.13.2"
 
 [packages]
 Flask = "==3.0.3"
