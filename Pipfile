@@ -19,7 +19,6 @@ pre-commit = "==4.0.1"
 importlib-metadata = "==8.5.0"
 toml = "==0.10.2"
 types-toml = "==0.10.8.20240310"
-pyink = "==24.8.0"
 
 [packages]
 python-dotenv = "==1.0.1"
