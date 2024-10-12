@@ -196,8 +196,12 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        with Pool(16) as p:
+        try:
+            p = Pool(16)
             imgs = list(p.imap(self._get_image_content, request_urls))
+        finally:
+            p.close()
+            p.terminate()
 
         tile_width_cnt = rb_tilepx.tile.tile_x + 1 - tl_tilepx.tile.tile_x
         tile_height_cnt = rb_tilepx.tile.tile_y + 1 - tl_tilepx.tile.tile_y
