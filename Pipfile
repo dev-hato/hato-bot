@@ -28,13 +28,13 @@ pandas = "==2.2.3"
 matplotlib = "==3.9.2"
 openai = "==1.51.2"
 "discord.py" = "==2.4.0"
-
-[packages.sudden-death]
-git = "https://github.com/dev-hato/sudden-death"
-ref = "master"
 "misskey.py" = "==4.1.0"
 websockets = "==13.1"
 flask = "==3.0.3"
 markupsafe = "==3.0.1"
 numpy = "==2.1.2"
 emoji = "==2.14.0"
+
+[packages.sudden-death]
+git = "https://github.com/dev-hato/sudden-death"
+ref = "master"
