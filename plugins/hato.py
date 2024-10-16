@@ -2,7 +2,6 @@
 
 """hatobotのチャット部分"""
 
-import imghdr
 import json
 import os
 import re
@@ -13,6 +12,7 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import puremagic
 import requests
 from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
@@ -90,7 +90,7 @@ def action(plugin_name: str, with_client: bool = False):
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
     """コマンドを分離する"""
 
-    return re.split(r"\s+", command.strip().strip("　"), maxsplit)
+    return re.split(r"\s+", command.strip().strip("　"), maxsplit=maxsplit)
 
 
 @action("help")
@@ -181,7 +181,7 @@ def earth_quake(client: BaseClient):
                 map_img.save(map_file, format="PNG")
 
                 filename = ["map"]
-                ext = imghdr.what(map_file.name)
+                ext = puremagic.what(map_file.name)
 
                 if ext:
                     filename.append(ext)
@@ -281,7 +281,7 @@ def amesh(client: BaseClient, place: str):
         amesh_img.save(weather_map_file, format="PNG")
 
         filename = ["amesh"]
-        ext = imghdr.what(weather_map_file.name)
+        ext = puremagic.what(weather_map_file.name)
 
         if ext:
             filename.append(ext)
