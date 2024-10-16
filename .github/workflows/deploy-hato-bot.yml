@@ -190,7 +190,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@7d767818acf33e5f6f7a4887566aa5f8f36bdf53 # v0.0.100
+      - uses: dev-hato/actions-update-dockle@2d3a229030f8a7df780f2a6a751a9fa7f05e6b34 # v0.0.102
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
   dockle:
