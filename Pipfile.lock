@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a3e8e3503147f460b34bc3d64480e956360c9f261659d0a76319975333ec3ce2"
+            "sha256": "a1ff5279d624715e4c7bb11d88f330b405a575051ee12a956286901a58b2f744"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1645,12 +1645,12 @@
         },
         "slack-bolt": {
             "hashes": [
-                "sha256:4657e592339797b9b804547a21e6b35dd8e2cd1eab676bfb23960660aae049fd",
-                "sha256:8fa26e72b0e55c18c1d34a73558e7fe2150bdc7c947de780b938fdb1d7e854fe"
+                "sha256:12f99fe26f7b1b762955053ebce303d4e2394cee1e3058e35a270185f2a31e40",
+                "sha256:438bee336440e78222064416c75e9353ee57e4c0377f2f41bda2212acad2387a"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==1.20.1"
+            "version": "==1.21.0"
         },
         "slack-sdk": {
             "hashes": [
