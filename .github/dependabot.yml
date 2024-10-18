@@ -5,6 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "pyink"
     open-pull-requests-limit: 1
   - package-ecosystem: docker
     directory: "/"
