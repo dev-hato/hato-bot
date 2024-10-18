@@ -15,7 +15,7 @@ import importlib_metadata
 import toml
 
 # Pipfileの「packages」「dev-packages」セクションのデータ型
-PipfilePackages = dict[str, str | dict[str, str]]
+PipfilePackages = dict[str, str | dict[str, str | list[str]]]
 
 # Pipfileのいずれかのセクションのデータ型
 PipfileValue = PipfilePackages | list[dict[str, str | bool]]
@@ -41,7 +41,14 @@ def is_pipfile_packages(pipfile_value: PipfileValue) -> TypeGuard[PipfilePackage
             continue
 
         for k2, v2 in v.items():
-            if not isinstance(k2, str) or not isinstance(v2, str):
+            if not isinstance(k2, str):
+                return False
+
+            if isinstance(v2, list):
+                for v3 in v2:
+                    if not isinstance(v3, str):
+                        return False
+            elif not isinstance(v2, str):
                 return False
 
     return True
