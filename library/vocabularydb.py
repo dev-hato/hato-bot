@@ -2,7 +2,7 @@
 パワーワード機能
 """
 
-import psycopg2
+import psycopg
 
 from library.database import Database
 
@@ -16,7 +16,7 @@ class VocabularyDatabase(Database):
             try:
                 cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
                 results = cursor.fetchall()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(select_list).")
 
         return results
@@ -28,7 +28,7 @@ class VocabularyDatabase(Database):
             try:
                 cursor.execute("SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
                 results = cursor.fetchone()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(select_random).")
 
         return results
@@ -40,7 +40,7 @@ class VocabularyDatabase(Database):
             try:
                 cursor.execute("INSERT INTO vocabulary(word) VALUES(%s);", (word,))
                 self.conn.commit()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(add).")
 
     def delete_word(self, word_id: int) -> None:
@@ -50,7 +50,7 @@ class VocabularyDatabase(Database):
             try:
                 cursor.execute("DELETE FROM vocabulary WHERE no = %s;", (word_id,))
                 self.conn.commit()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(delete).")
 
 
