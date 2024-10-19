@@ -7,18 +7,15 @@ export async function script(
   github: InstanceType<typeof GitHub>,
   context: Context,
 ) {
-  const commonParams = {
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-  };
   const pullsCreateParams: RestEndpointMethodTypes["pulls"]["create"]["parameters"] =
     {
+      owner: context.repo.owner,
+      repo: context.repo.repo,
       head: context.repo.owner + ":develop",
       base: "master",
       title: "リリース",
       body: "鳩は唐揚げになるため、片栗粉へ飛び込む",
       draft: true,
-      ...commonParams,
     };
-  await createPullRequestHatoBot(github, pullsCreateParams, commonParams);
+  await createPullRequestHatoBot(github, context, pullsCreateParams);
 }
