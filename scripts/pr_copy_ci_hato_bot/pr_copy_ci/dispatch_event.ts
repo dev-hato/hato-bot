@@ -6,13 +6,12 @@ export async function script(
   github: InstanceType<typeof GitHub>,
   context: Context,
 ) {
-  const actionsCreateWorkflowDispatchParams: RestEndpointMethodTypes["actions"]["createWorkflowDispatch"]["parameters"] =
-    {
-      owner: context.repo.owner,
-      repo: "sudden-death",
-      workflow_id: 2452313,
-      ref: "master",
-    };
+  const actionsCreateWorkflowDispatchParams: RestEndpointMethodTypes["actions"]["createWorkflowDispatch"]["parameters"] = {
+    owner: context.repo.owner,
+    repo: "sudden-death",
+    workflow_id: 2452313,
+    ref: "master",
+  };
   console.log("call actions.createWorkflowDispatch:");
   console.log(actionsCreateWorkflowDispatchParams);
   await github.rest.actions.createWorkflowDispatch(
