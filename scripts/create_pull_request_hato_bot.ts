@@ -13,19 +13,21 @@ export async function createPullRequestHatoBot(
   const createPullRes = await github.rest.pulls.create(pullsCreateParams);
   const number = createPullRes.data.number;
   const releaseUsers = ["nakkaa"];
-  const pullsRequestReviewsParams: RestEndpointMethodTypes["pulls"]["requestReviewers"]["parameters"] = {
-    pull_number: number,
-    reviewers: releaseUsers,
-    ...commonParams,
-  };
+  const pullsRequestReviewsParams: RestEndpointMethodTypes["pulls"]["requestReviewers"]["parameters"] =
+    {
+      pull_number: number,
+      reviewers: releaseUsers,
+      ...commonParams,
+    };
   console.log("call pulls.requestReviewers:");
   console.log(pullsRequestReviewsParams);
   await github.rest.pulls.requestReviewers(pullsRequestReviewsParams);
-  const issuesAddAssigneesParams: RestEndpointMethodTypes["issues"]["addAssignees"]["parameters"] = {
-    issue_number: number,
-    assignees: releaseUsers,
-    ...commonParams,
-  };
+  const issuesAddAssigneesParams: RestEndpointMethodTypes["issues"]["addAssignees"]["parameters"] =
+    {
+      issue_number: number,
+      assignees: releaseUsers,
+      ...commonParams,
+    };
   console.log("call issues.addAssignees:");
   console.log(issuesAddAssigneesParams);
   await github.rest.issues.addAssignees(issuesAddAssigneesParams);
