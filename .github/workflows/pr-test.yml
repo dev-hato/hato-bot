@@ -36,8 +36,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { tsImport } = require('tsx/esm/api');
-            const { a } = await tsImport('./test.ts', process.env.GITHUB_WORKSPACE+'/');
+            const {tsImport} = require('tsx/esm/api');
+            const {a} = await tsImport('./test.ts', process.env.GITHUB_WORKSPACE + '/');
             console.log(a(1));
       - name: Lint files
         uses: super-linter/super-linter/slim@b92721f792f381cedc002ecdbb9847a15ece5bb8 # v7.1.0
