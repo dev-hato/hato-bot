@@ -1,5 +1,6 @@
 {
   "extends": ["github>dev-hato/renovate-config"],
+  "ignoreDeps": ["pyink"],
   "packageRules": [
     {
       "matchPackageNames": ["postgres"],
