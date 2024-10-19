@@ -1,3 +1,3 @@
 export const a = (i: number): number => {
-    return i + 1;
+  return i + 1;
 };
