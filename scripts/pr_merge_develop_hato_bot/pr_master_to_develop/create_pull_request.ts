@@ -1,6 +1,6 @@
 import type { Context } from "@actions/github/lib/context";
 import type { GitHub } from "@actions/github/lib/utils";
-import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
+import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { createPullRequestHatoBot } from "../../create_pull_request_hato_bot";
 
 export async function script(

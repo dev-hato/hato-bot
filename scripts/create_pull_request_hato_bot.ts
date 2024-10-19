@@ -1,5 +1,5 @@
 import type { GitHub } from "@actions/github/lib/utils";
-import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
+import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 export async function createPullRequestHatoBot(
   github: InstanceType<typeof GitHub>,
