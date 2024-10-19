@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - name: Set up Node.js
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          cache: npm
+          node-version-file: package.json
+      - run: npm ci
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
@@ -22,8 +28,12 @@ jobs:
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.js`)
-            await script({ github, context })
+            const {tsImport} = require('tsx/esm/api')
+            const {script} = await tsImport(
+              './scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.ts',
+              process.env.GITHUB_WORKSPACE + '/'
+            )
+            await script(github, context)
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

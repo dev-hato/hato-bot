@@ -1,18 +1,22 @@
-const script = require(
-  `${process.env.GITHUB_WORKSPACE}/scripts/create_pull_request_hato_bot.js`,
-);
+import type { Context } from "@actions/github/lib/context";
+import type { GitHub } from "@actions/github/lib/utils";
+import {RestEndpointMethodTypes} from "@octokit/plugin-rest-endpoint-methods";
+import {createPullRequestHatoBot} from '../../create_pull_request_hato_bot';
 
-module.exports = async ({ github, context }) => {
+export async function script(
+    github: InstanceType<typeof GitHub>,
+    context: Context
+) {
   const commonParams = {
     owner: context.repo.owner,
     repo: context.repo.repo,
   };
-  const pullsCreateParams = {
+  const pullsCreateParams:RestEndpointMethodTypes["pulls"]["create"]["parameters"] = {
     head: context.repo.owner + ":master",
     base: "develop",
     title: "master -> develop",
     body: "鳩の歴史は同期される\ndevelopに新たなコミットがpushされる前にマージしてね！",
     ...commonParams,
   };
-  script({ github, pullsCreateParams, commonParams });
-};
+  await createPullRequestHatoBot(github, pullsCreateParams, commonParams);
+}
