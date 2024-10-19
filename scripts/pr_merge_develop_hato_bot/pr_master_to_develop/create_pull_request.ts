@@ -4,8 +4,8 @@ import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-meth
 import { createPullRequestHatoBot } from "../../create_pull_request_hato_bot";
 
 export async function script(
-    github: InstanceType<typeof GitHub>,
-    context: Context
+  github: InstanceType<typeof GitHub>,
+  context: Context,
 ) {
   const pullsCreateParams: RestEndpointMethodTypes["pulls"]["create"]["parameters"] =
     {
