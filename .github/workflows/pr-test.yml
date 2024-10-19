@@ -36,7 +36,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { tsImport } = await import('${{ github.workspace }}/node_modules/tsx/dist/esm/api/index.cjs');
+            const { tsImport } = await import('${{ github.workspace }}/node_modules/tsx/dist/esm/api');
             const { a } = await tsImport('./test.ts', '${{ github.workspace }}/');
             console.log(a(1));
       - name: Lint files
