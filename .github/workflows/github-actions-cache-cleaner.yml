@@ -12,7 +12,7 @@ jobs:
   github-actions-cache-cleaner:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: dev-hato/github-actions-cache-cleaner@0a731b19b53bac2c5e7f2b9cb9f9a17d91c50604 # v0.0.56
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
