@@ -1,3 +1,4 @@
 function a(): string {
-    return "s"
-};a()
+  return "s";
+}
+a();
