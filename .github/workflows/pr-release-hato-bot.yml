@@ -9,9 +9,15 @@ jobs:
   pr-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          cache: npm
+          node-version-file: package.json
+      - run: npm ci
       - name: Get diff
         id: get_diff
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/get_diff.sh"
@@ -22,16 +28,24 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/get_pull_requests_hato_bot.js`)
-            return await script({github, context})
+            const {tsImport} = require('tsx/esm/api')
+            const {script} = await tsImport(
+              './scripts/get_pull_requests_hato_bot.ts',
+              process.env.GITHUB_WORKSPACE + '/'
+            )
+            return await script(github, context)
       - name: Create PullRequest
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         if: ${{ steps.get_diff.outputs.result != '' && steps.get_pull_requests.outputs.result == 0 }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_release_hato_bot/pr_release/create_pull_request.js`)
-            await script({github, context})
+            const {tsImport} = require('tsx/esm/api')
+            const {script} = await tsImport(
+              './scripts/pr_release_hato_bot/pr_release/create_pull_request.ts',
+              process.env.GITHUB_WORKSPACE + '/'
+            )
+            await script(github, context)
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
