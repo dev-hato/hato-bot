@@ -26,6 +26,11 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+      - uses: massongit/github-script@feature/typescript_test
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const {test} = await import('${{ github.workspace }}/importable.cts')
       - name: Set up Python
         uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         id: setup_python
