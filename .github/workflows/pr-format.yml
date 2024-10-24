@@ -26,7 +26,7 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: kf6kjg/github-script@feature/typescript
+      - uses: massongit/github-script@feature/typescript_test
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
