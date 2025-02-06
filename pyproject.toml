@@ -6,7 +6,7 @@ requires-python = "==3.13.1"
 dependencies = [ "python-dotenv==1.0.1", "requests==2.32.3", "Pillow>=7.1.2", "opencv-python==4.11.0.86", "slack-bolt==1.22.0", "slack-sdk==3.34.0", "gitpython==3.1.44", "pandas==2.2.3", "matplotlib==3.10.0", "openai==1.61.1", "discord.py==2.4.0", "misskey.py==4.1.0", "websockets==14.2", "flask==3.1.0", "markupsafe==3.0.2", "numpy==2.2.2", "emoji==2.14.1", "puremagic==1.28", "audioop-lts==0.2.1", "psycopg[binary,pool]==3.2.4", "sudden-death==0.0.1",]
 
 [dependency-groups]
-dev = [ "autopep8==2.3.2", "requests-mock==1.12.1", "pylint==3.3.4", "sqlfluff==3.3.1", "mypy==1.14.1", "flake8==7.1.1", "isort==6.0.0", "pre-commit==4.1.0", "importlib-metadata==8.6.1", "toml==0.10.2", "types-toml==0.10.8.20240310", "pyink==24.10.0",]
+dev = [ "autopep8==2.3.2", "requests-mock==1.12.1", "pylint==3.3.4", "sqlfluff==3.3.1", "mypy==1.15.0", "flake8==7.1.1", "isort==6.0.0", "pre-commit==4.1.0", "importlib-metadata==8.6.1", "toml==0.10.2", "types-toml==0.10.8.20240310", "pyink==24.10.0",]
 
 [tool.uv]
 [[tool.uv.index]]
