@@ -56,7 +56,7 @@ USER nonroot
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
 # Matplotlib用のフォントキャッシュ生成
-RUN uv python -c 'import matplotlib.pyplot'
+RUN uv run python -c 'import matplotlib.pyplot'
 
 COPY *.py ./
 COPY library library
@@ -68,4 +68,4 @@ COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
 ENV NODE_OPTIONS="--max-old-space-size=512"
-CMD ["uv", "python", "entrypoint.py"]
+CMD ["uv", "run", "python", "entrypoint.py"]
