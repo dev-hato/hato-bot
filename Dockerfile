@@ -52,18 +52,3 @@ RUN apt-get update && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 USER nonroot
-
-# Matplotlib用のフォントキャッシュ生成
-RUN uv run python -c 'import matplotlib.pyplot'
-
-COPY *.py ./
-COPY library library
-COPY plugins plugins
-COPY postgres/docker-entrypoint-initdb.d postgres/docker-entrypoint-initdb.d
-COPY .textlintrc .textlintrc
-COPY commands.txt commands.txt
-COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
-
-ENV GIT_PYTHON_REFRESH=quiet
-ENV NODE_OPTIONS="--max-old-space-size=512"
-CMD ["uv", "run", "python", "entrypoint.py"]
