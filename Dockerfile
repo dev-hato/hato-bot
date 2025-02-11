@@ -53,8 +53,6 @@ RUN apt-get update && \
     chown -R nonroot /usr/src/app
 USER nonroot
 
-ENV PATH="/usr/src/app/.venv/bin:$PATH"
-
 # Matplotlib用のフォントキャッシュ生成
 RUN uv run python -c 'import matplotlib.pyplot'
 
