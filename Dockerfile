@@ -43,7 +43,6 @@ RUN apt-get update && \
       uv sync --frozen; \
     fi && \
     npm install && \
-    pip uninstall -y uv virtualenv && \
     apt-get remove -y git gcc libc6-dev gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
@@ -57,7 +56,7 @@ USER nonroot
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
 # Matplotlib用のフォントキャッシュ生成
-RUN python -c 'import matplotlib.pyplot'
+RUN uv python -c 'import matplotlib.pyplot'
 
 COPY *.py ./
 COPY library library
@@ -69,4 +68,4 @@ COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
 ENV NODE_OPTIONS="--max-old-space-size=512"
-CMD ["python", "entrypoint.py"]
+CMD ["uv", "python", "entrypoint.py"]
