@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = "==3.13.1"
 resolution-markers = [
     "sys_platform == 'darwin'",
