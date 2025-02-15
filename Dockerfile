@@ -18,8 +18,6 @@ WORKDIR /usr/src/app
 
 COPY .npmrc .npmrc
 COPY requirements.txt requirements.txt
-COPY pyproject.toml pyproject.toml
-COPY uv.lock uv.lock
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
@@ -37,21 +35,35 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
     pip install -r requirements.txt --no-cache-dir && \
-    if [ "${ENV}" = 'dev' ]; then \
-      uv sync --frozen --dev; \
-    else \
-      uv sync --frozen; \
-    fi && \
     npm install && \
-    pip uninstall -y uv virtualenv && \
-    apt-get remove -y git gcc libc6-dev gnupg && \
+    apt-get remove -y gcc libc6-dev gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists ~/.cache /tmp /root/.npm /usr/src/app/node_modules/re2/.github/actions/*/Dockerfile && \
+    rm -rf /var/lib/apt/lists ~/.cache /tmp/* /root/.npm /usr/src/app/node_modules/re2/.github/actions/*/Dockerfile && \
     find / -type f -perm /u+s -ignore_readdir_race -not -path '/sys/devices/virtual/powercap/*' -exec chmod u-s {} \; && \
     find / -type f -perm /g+s -ignore_readdir_race -not -path '/sys/devices/virtual/powercap/*' -exec chmod g-s {} \; && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
+
+USER nonroot
+
+COPY pyproject.toml pyproject.toml
+COPY uv.lock uv.lock
+
+RUN if [ "${ENV}" = 'dev' ]; then \
+      uv sync --frozen --dev; \
+    else \
+      uv sync --frozen; \
+    fi
+
+USER root
+
+RUN pip uninstall -y uv virtualenv && \
+    apt-get remove -y git && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists ~/.cache /tmp
+
 USER nonroot
 
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
