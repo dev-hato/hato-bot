@@ -1,4 +1,4 @@
-FROM python:3.13.2-slim@sha256:ae9f9ac89467077ed1efefb6d9042132d28134ba201b2820227d46c9effd3174 AS base
+FROM ghcr.io/astral-sh/uv:0.6.1-python3.13-bookworm-slim AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
@@ -17,7 +17,6 @@ ENV ENV="${ENV}"
 WORKDIR /usr/src/app
 
 COPY .npmrc .npmrc
-COPY requirements.txt requirements.txt
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
@@ -34,7 +33,6 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install -r requirements.txt --no-cache-dir && \
     npm install && \
     apt-get remove -y gcc libc6-dev gnupg && \
     apt-get autoremove -y && \
