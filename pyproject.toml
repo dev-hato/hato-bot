@@ -10,7 +10,6 @@ dev = [ "autopep8==2.3.2", "requests-mock==1.12.1", "pylint==3.3.4", "sqlfluff==
 
 [tool.uv]
 required-version = "0.6.1"
-
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
