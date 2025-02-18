@@ -56,8 +56,7 @@ RUN if [ "${ENV}" = 'dev' ]; then \
 
 USER root
 
-RUN pip uninstall -y uv virtualenv && \
-    apt-get remove -y git && \
+RUN apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp
