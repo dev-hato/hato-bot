@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ ! -f .env.example ]; then
+  exit 0
+fi
+
 cp .env.example .env
 export TAG_NAME="${HEAD_REF//\//-}"
 docker compose pull
