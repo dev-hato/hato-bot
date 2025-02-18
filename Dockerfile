@@ -64,7 +64,8 @@ RUN apt-get remove -y git && \
 USER nonroot
 
 # Matplotlib用のフォントキャッシュ生成
-RUN echo 'import matplotlib.pyplot' | uv run -
+RUN echo 'import matplotlib.pyplot' | uv run - && \
+    rm -rf /tmp/*
 
 COPY *.py ./
 COPY library library
