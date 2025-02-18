@@ -59,7 +59,7 @@ USER root
 RUN apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists ~/.cache /tmp
+    rm -rf /var/lib/apt/lists ~/.cache /tmp/*
 
 USER nonroot
 
