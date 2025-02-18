@@ -1,4 +1,4 @@
-FROM python:3.13.2-slim@sha256:ae9f9ac89467077ed1efefb6d9042132d28134ba201b2820227d46c9effd3174 AS base
+FROM ghcr.io/astral-sh/uv:0.6.1-python3.13-bookworm-slim AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
@@ -17,26 +17,24 @@ ENV ENV="${ENV}"
 WORKDIR /usr/src/app
 
 COPY .npmrc .npmrc
-COPY requirements.txt requirements.txt
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
 # 必要なパッケージ
-# * git, gcc, libc6-dev: Pythonライブラリのインストールの際に必要
+# * git: Pythonライブラリのインストールの際に必要
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
 # * gnupg: Node.jsのインストールの際に必要
 # * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git gcc libc6-dev libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg && \
+    apt-get install -y --no-install-recommends git libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    pip install -r requirements.txt --no-cache-dir && \
     npm install && \
-    apt-get remove -y gcc libc6-dev gnupg && \
+    apt-get remove -y gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp/* /root/.npm /usr/src/app/node_modules/re2/.github/actions/*/Dockerfile && \
@@ -58,18 +56,16 @@ RUN if [ "${ENV}" = 'dev' ]; then \
 
 USER root
 
-RUN pip uninstall -y uv virtualenv && \
-    apt-get remove -y git && \
+RUN apt-get remove -y git && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists ~/.cache /tmp
+    rm -rf /var/lib/apt/lists ~/.cache /tmp/*
 
 USER nonroot
 
-ENV PATH="/usr/src/app/.venv/bin:$PATH"
-
 # Matplotlib用のフォントキャッシュ生成
-RUN python -c 'import matplotlib.pyplot'
+RUN echo 'import matplotlib.pyplot' | uv run - && \
+    rm -rf /tmp/*
 
 COPY *.py ./
 COPY library library
@@ -81,4 +77,4 @@ COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 
 ENV GIT_PYTHON_REFRESH=quiet
 ENV NODE_OPTIONS="--max-old-space-size=512"
-CMD ["python", "entrypoint.py"]
+CMD ["uv", "run", "entrypoint.py"]

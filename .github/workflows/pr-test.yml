@@ -14,13 +14,9 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - name: Get uv version
-        id: get_uv_version
-        run: echo "uv_version=$(sed -e 's/uv==//g' requirements.txt)" >> "$GITHUB_OUTPUT"
       - name: Set up uv
         uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355 # v5.2.2
         with:
-          version: ${{steps.get_uv_version.outputs.uv_version}}
           enable-cache: true
       - name: Install uv
         run: bash "${GITHUB_WORKSPACE}/scripts/uv_install.sh"
