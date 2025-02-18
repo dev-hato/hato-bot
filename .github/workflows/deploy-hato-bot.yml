@@ -128,7 +128,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@cc201e3df74a342983025c4e97b7216b4e77f9f1 # v2.0.0
+      - uses: dev-hato/actions-diff-pr-management@cea263ca46759ebc8c812b8595be4df129761037 # v2.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pyproject
@@ -157,7 +157,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@cc201e3df74a342983025c4e97b7216b4e77f9f1 # v2.0.0
+      - uses: dev-hato/actions-diff-pr-management@cea263ca46759ebc8c812b8595be4df129761037 # v2.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -183,7 +183,7 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@cc201e3df74a342983025c4e97b7216b4e77f9f1 # v2.0.0
+      - uses: dev-hato/actions-diff-pr-management@cea263ca46759ebc8c812b8595be4df129761037 # v2.1.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
