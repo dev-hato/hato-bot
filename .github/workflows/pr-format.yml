@@ -34,10 +34,6 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{steps.generate_token.outputs.token}}
-      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/pr_format/pr_format/update_uv_version.sh"
-        env:
-          HEAD_REF: ${{github.head_ref}}
       - name: Set up uv
         uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355 # v5.2.2
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
