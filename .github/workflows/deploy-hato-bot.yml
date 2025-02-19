@@ -28,7 +28,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Get uv version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_uv_version/get_uv_version.sh"
+        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
       - uses: dev-hato/actions-diff-pr-management@cea263ca46759ebc8c812b8595be4df129761037 # v2.1.0
