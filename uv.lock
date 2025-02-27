@@ -1097,14 +1097,14 @@ wheels = [
 
 [[package]]
 name = "psycopg-pool"
-version = "3.2.5"
+version = "3.2.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/17/2c/35fd33fa2019ba26b4e6fb6f468ba6a23bfacd98b9fb278dda851e3a1e2c/psycopg_pool-3.2.5.tar.gz", hash = "sha256:507d845bd13da83df449ded7fb581b35dba613421bdb12962e608b16e70d6be9", size = 29750 }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/13/1e7850bb2c69a63267c3dbf37387d3f71a00fd0e2fa55c5db14d64ba1af4/psycopg_pool-3.2.6.tar.gz", hash = "sha256:0f92a7817719517212fbfe2fd58b8c35c1850cdd2a80d36b581ba2085d9148e5", size = 29770 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2a/2c/0f7d80486e601feb98958af3bd2ad3fddf8e5f5ab1b57e3c72dfb39d9727/psycopg_pool-3.2.5-py3-none-any.whl", hash = "sha256:522b9befae8631550217fd2ae9904622daaf4b28a0a36ccfcc87ba3d2abc7100", size = 38245 },
+    { url = "https://files.pythonhosted.org/packages/47/fd/4feb52a55c1a4bd748f2acaed1903ab54a723c47f6d0242780f4d97104d4/psycopg_pool-3.2.6-py3-none-any.whl", hash = "sha256:5887318a9f6af906d041a0b1dc1c60f8f0dda8340c2572b74e10907b51ed5da7", size = 38252 },
 ]
 
 [[package]]
