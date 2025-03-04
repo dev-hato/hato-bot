@@ -314,15 +314,15 @@ wheels = [
 
 [[package]]
 name = "discord-py"
-version = "2.5.0"
+version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "audioop-lts" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/7e/a778257411e86d834c94ea6d67abacca8f0efac62996882898d55e475748/discord_py-2.5.0.tar.gz", hash = "sha256:f6827909b87ea89bdb2cc49d475cb1fada2e73235a3e4568fc8b113660340c73", size = 1054589 }
+sdist = { url = "https://files.pythonhosted.org/packages/02/96/5c5e57ea6b68f96c5c72067c24ce06974316b4df661036876a21217364b4/discord_py-2.5.1.tar.gz", hash = "sha256:59a2e1a3bee90d45ab2cee1abf2fefbb3f4ca5124cb4290702f08e6c54282f64", size = 1054895 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8a/d5/2f54c110f6707bf563957349f8ca9cdf883f420699cd61ec8b48018754bb/discord.py-2.5.0-py3-none-any.whl", hash = "sha256:8e1e3b3ff5a112a4ab3a615059a285238eea34edff6de8737db6e1f72ea05195", size = 1154805 },
+    { url = "https://files.pythonhosted.org/packages/e4/8b/d1e9e96b026885b169122046eac6e6fe204a086709370cc5a41cc77128b1/discord_py-2.5.1-py3-none-any.whl", hash = "sha256:4d997eb3ffc1e204499fb7099c433ff177cfec5785fe7198708c30a0a21b810d", size = 1155097 },
 ]
 
 [[package]]
@@ -512,7 +512,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "audioop-lts", specifier = "==0.2.1" },
-    { name = "discord-py", specifier = "==2.5.0" },
+    { name = "discord-py", specifier = "==2.5.1" },
     { name = "emoji", specifier = "==2.14.1" },
     { name = "flask", specifier = "==3.1.0" },
     { name = "gitpython", specifier = "==3.1.44" },
