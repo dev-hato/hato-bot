@@ -9,9 +9,11 @@
     "lint:dockerfile": "hadolint -c .hadolint.yaml Dockerfile",
     "lint:secret": "docker run --rm --platform=linux/amd64 -v $(pwd):/path -w /path zricethezav/gitleaks protect --verbose --redact"
   },
-  "devDependencies": {
+  "dependencies": {
     "@actions/github": "6.0.0",
-    "@octokit/plugin-rest-endpoint-methods": "13.3.1",
+    "@octokit/plugin-rest-endpoint-methods": "13.3.1"
+  },
+  "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "3.1.2",
     "@textlint-ja/textlint-rule-no-insert-dropping-sa": "2.0.1",
     "markdownlint-cli": "0.44.0",
