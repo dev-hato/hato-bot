@@ -155,7 +155,7 @@ wheels = [
 
 [[package]]
 name = "black"
-version = "24.8.0"
+version = "24.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -164,9 +164,13 @@ dependencies = [
     { name = "pathspec" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/04/b0/46fb0d4e00372f4a86a6f8efa3cb193c9f64863615e39010b1477e010578/black-24.8.0.tar.gz", hash = "sha256:2500945420b6784c38b9ee885af039f5e7471ef284ab03fa35ecdde4688cd83f", size = 644810 }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/0d/cc2fb42b8c50d80143221515dd7e4766995bd07c56c9a3ed30baf080b6dc/black-24.10.0.tar.gz", hash = "sha256:846ea64c97afe3bc677b761787993be4991810ecc7a4a937816dd6bddedc4875", size = 645813 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/1e/83fa8a787180e1632c3d831f7e58994d7aaf23a0961320d21e84f922f919/black-24.8.0-py3-none-any.whl", hash = "sha256:972085c618ee94f402da1af548a4f218c754ea7e5dc70acb168bfaca4c2542ed", size = 206504 },
+    { url = "https://files.pythonhosted.org/packages/d0/a0/a993f58d4ecfba035e61fca4e9f64a2ecae838fc9f33ab798c62173ed75c/black-24.10.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:1cbacacb19e922a1d75ef2b6ccaefcd6e93a2c05ede32f06a21386a04cedb981", size = 1643986 },
+    { url = "https://files.pythonhosted.org/packages/37/d5/602d0ef5dfcace3fb4f79c436762f130abd9ee8d950fa2abdbf8bbc555e0/black-24.10.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:1f93102e0c5bb3907451063e08b9876dbeac810e7da5a8bfb7aeb5a9ef89066b", size = 1448085 },
+    { url = "https://files.pythonhosted.org/packages/47/6d/a3a239e938960df1a662b93d6230d4f3e9b4a22982d060fc38c42f45a56b/black-24.10.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ddacb691cdcdf77b96f549cf9591701d8db36b2f19519373d60d31746068dbf2", size = 1760928 },
+    { url = "https://files.pythonhosted.org/packages/dd/cf/af018e13b0eddfb434df4d9cd1b2b7892bab119f7a20123e93f6910982e8/black-24.10.0-cp313-cp313-win_amd64.whl", hash = "sha256:680359d932801c76d2e9c9068d05c6b107f2584b2a5b88831c83962eb9984c1b", size = 1436875 },
+    { url = "https://files.pythonhosted.org/packages/8d/a7/4b27c50537ebca8bec139b872861f9d2bf501c5ec51fcf897cb924d9e264/black-24.10.0-py3-none-any.whl", hash = "sha256:3bb2b7a1f7b685f85b11fed1ef10f8a9148bceb49853e47a294a3dd963c1dd7d", size = 206898 },
 ]
 
 [[package]]
@@ -542,7 +546,7 @@ dev = [
     { name = "isort", specifier = "==6.0.1" },
     { name = "mypy", specifier = "==1.15.0" },
     { name = "pre-commit", specifier = "==4.1.0" },
-    { name = "pyink", specifier = "==24.10.0" },
+    { name = "pyink", specifier = "==24.10.1" },
     { name = "pylint", specifier = "==3.3.4" },
     { name = "requests-mock", specifier = "==1.12.1" },
     { name = "sqlfluff", specifier = "==3.3.1" },
@@ -1184,7 +1188,7 @@ wheels = [
 
 [[package]]
 name = "pyink"
-version = "24.10.0"
+version = "24.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "black" },
@@ -1194,9 +1198,9 @@ dependencies = [
     { name = "pathspec" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/2e/5876fbad09a89b1f3ef999c53fa46f76d97b96ae5a4d3ce9e1419bf81b47/pyink-24.10.0.tar.gz", hash = "sha256:3217023e5875c269c2cfd5b22bcec973b7ceb3592b87b45b3373f29e95647c54", size = 266231 }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/a1/e5e28626fca4266a94c2e1c9264fbf915b9e83e94f52e965190e48fd0cbf/pyink-24.10.1.tar.gz", hash = "sha256:5ec4339aa4953f796e88d90bcac3e3472161e4c36dbde203d80f5f76721ac718", size = 267230 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/72/37d76e26bc9cc5ffb90cd2c29adcf0476922e8d89da6061682298e231a3b/pyink-24.10.0-py3-none-any.whl", hash = "sha256:98d5250e77a44e906d8fcbf10582ca12f2404a0d38dfe99320bf81ca08c418b9", size = 136396 },
+    { url = "https://files.pythonhosted.org/packages/1f/12/2f271b3601ae25731879f160d6b3941d80eb6b4f3e24be90289e33fb1dc4/pyink-24.10.1-py3-none-any.whl", hash = "sha256:6349bf6ab75e2ea39a5f0bc3dee7ede7f4af8529291472638026de5fd4af80d2", size = 137118 },
 ]
 
 [[package]]
