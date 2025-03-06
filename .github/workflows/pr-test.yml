@@ -54,7 +54,6 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_RENOVATE: false
           VALIDATE_SHELL_SHFMT: false
-          VALIDATE_TYPESCRIPT_PRETTIER: false
           VALIDATE_YAML: false
           VALIDATE_YAML_PRETTIER: false
   pr-dotenv-linter:
