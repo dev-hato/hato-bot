@@ -46,7 +46,6 @@ jobs:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           WORKON_HOME: ""
           PYTHONPATH: ${{ env.PYTHONPATH }}
-          VALIDATE_GIT_MERGE_CONFLICT_MARKERS: false
           VALIDATE_JSON: false
           VALIDATE_JSON_PRETTIER: false
           VALIDATE_MARKDOWN: false
