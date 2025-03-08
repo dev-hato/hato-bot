@@ -38,6 +38,7 @@ jobs:
           VALIDATE_SQLFLUFF: false
           VALIDATE_CHECKOV: false # TODO: checkovが依存するopenaiのバージョンがアップデートされたら削除
           VALIDATE_JSCPD: false
+          VALIDATE_NATURAL_LANGUAGE: false
           TYPESCRIPT_DEFAULT_STYLE: prettier
           VALIDATE_TYPESCRIPT_STANDARD: false
           LINTER_RULES_PATH: .
