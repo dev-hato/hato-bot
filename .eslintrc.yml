@@ -44,8 +44,8 @@ overrides:
       - "**/*.mjs"
       - "**/*.cjs"
       - "**/*.jsx"
-    extends:
-      - "plugin:react/recommended"
+    #extends:
+    #  - "plugin:react/recommended"
     parserOptions:
       sourceType: module
       ecmaVersion: latest
@@ -61,7 +61,7 @@ overrides:
     extends:
       - "plugin:@typescript-eslint/recommended"
       - plugin:n/recommended
-      - plugin:react/recommended
+      #- plugin:react/recommended
       - prettier
     rules:
       n/no-missing-import: off
