@@ -3,6 +3,10 @@
   "ignoreDeps": ["pyink"],
   "packageRules": [
     {
+      "groupName": "slack",
+      "matchPackageNames": ["slack-bolt", "slack-sdk"]
+    },
+    {
       "matchPackageNames": ["postgres"],
       "matchUpdateTypes": ["major"],
       "enabled": false
