@@ -3,6 +3,10 @@
   "ignoreDeps": ["pyink"],
   "packageRules": [
     {
+      "matchPackageNames": ["ghcr.io/astral-sh/uv"],
+      "prPriority": 10
+    },
+    {
       "groupName": "slack",
       "matchPackageNames": ["slack-bolt", "slack-sdk"]
     },
