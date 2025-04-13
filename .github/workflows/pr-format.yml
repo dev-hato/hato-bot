@@ -34,6 +34,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{steps.generate_token.outputs.token}}
+          persist-credentials: false
       - name: Set up uv
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 # v5.4.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
