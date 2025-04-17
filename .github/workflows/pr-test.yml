@@ -14,6 +14,7 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up uv
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 # v5.4.1
         with:
@@ -53,6 +54,7 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
+          persist-credentials: false
       - name: Lint dotenv
         uses: dotenv-linter/action-dotenv-linter@382525b7d91e7b71b52e064b8f1fa5908c4650d2 # v2.24.0
 concurrency:

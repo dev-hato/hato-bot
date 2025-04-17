@@ -26,6 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Get uv version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
@@ -51,6 +52,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Set .env
         run: cp .env.example .env
       - name: Login to GitHub Container Registry
@@ -144,6 +146,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Get Python version
         id: get_python_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -168,6 +171,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
@@ -196,6 +200,7 @@ jobs:
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -218,6 +223,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - uses: dev-hato/actions-update-dockle@f95d8f643c638d132b0d1daf3e3c8910a12863df # v0.0.110
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -231,6 +237,8 @@ jobs:
       REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
