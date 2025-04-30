@@ -9,7 +9,7 @@ dependencies = [ "python-dotenv==1.1.0", "requests==2.32.3", "Pillow>=7.1.2", "o
 dev = [ "autopep8==2.3.2", "requests-mock==1.12.1", "pylint==3.3.6", "sqlfluff==3.4.0", "mypy==1.15.0", "flake8==7.2.0", "isort==6.0.1", "pre-commit==4.2.0", "importlib-metadata==8.7.0", "toml==0.10.2", "types-toml==0.10.8.20240310", "pyink==24.10.1",]
 
 [tool.uv]
-required-version = "0.7.0"
+required-version = "0.7.2"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
