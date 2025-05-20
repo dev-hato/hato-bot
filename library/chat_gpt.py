@@ -30,4 +30,8 @@ def chat_gpt(message: str) -> Optional[str]:
 
 def image_create(message: str) -> Optional[str]:
     response = client.images.generate(prompt=message, n=1, size="512x512")
+
+    if response.data is None:
+        return response.data
+
     return response.data[0].url
