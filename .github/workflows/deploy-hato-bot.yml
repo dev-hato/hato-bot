@@ -73,7 +73,7 @@ jobs:
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
@@ -81,7 +81,7 @@ jobs:
           files: build.docker-compose.yml
           source: .
       - name: Build and push (main)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
@@ -89,7 +89,7 @@ jobs:
           files: docker-compose.yml
           source: .
       - name: Build and push (dev)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
@@ -99,7 +99,7 @@ jobs:
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -108,7 +108,7 @@ jobs:
           files: build.docker-compose.yml
           source: .
       - name: Build and push (main) (latest)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -117,7 +117,7 @@ jobs:
           files: docker-compose.yml
           source: .
       - name: Build and push (dev) (latest)
-        uses: docker/bake-action@212c36739681a6271d58dcfe0d001d2ad13f8e75 # v6.7.0
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
