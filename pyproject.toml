@@ -2,7 +2,7 @@
 name = "hato-bot"
 version = "3.0.5"
 description = "愛嬌のあるBot"
-requires-python = "==3.13.5"
+requires-python = "==3.13.4"
 dependencies = [ "python-dotenv==1.1.0", "requests==2.32.4", "Pillow>=7.1.2", "opencv-python==4.11.0.86", "slack-bolt==1.23.0", "slack-sdk==3.35.0", "gitpython==3.1.44", "pandas==2.3.0", "matplotlib==3.10.3", "openai==1.86.0", "discord.py==2.5.2", "misskey.py==4.1.0", "websockets==15.0.1", "flask==3.1.1", "markupsafe==3.0.2", "numpy==2.3.0", "emoji==2.14.1", "puremagic==1.29", "audioop-lts==0.2.1", "psycopg[binary,pool]==3.2.9", "sudden-death==0.0.1",]
 
 [dependency-groups]
