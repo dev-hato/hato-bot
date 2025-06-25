@@ -1,8 +1,15 @@
 ---
 name: pr-test-hato-bot
-# pull_requestで何かあった時に起動する
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    branches:
+      - develop
+      - master
   push:
     branches:
       - master

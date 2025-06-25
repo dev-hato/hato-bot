@@ -8,6 +8,9 @@ on:
       - synchronize
       - reopened
       - closed
+    branches:
+      - develop
+      - master
   push:
     branches:
       - master
