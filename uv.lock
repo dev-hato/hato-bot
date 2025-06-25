@@ -1,6 +1,6 @@
 version = 1
 revision = 2
-requires-python = "==3.13.4"
+requires-python = "==3.13.5"
 resolution-markers = [
     "sys_platform == 'darwin'",
     "platform_machine == 'aarch64' and sys_platform == 'linux'",
@@ -1473,7 +1473,7 @@ wheels = [
 [[package]]
 name = "sudden-death"
 version = "0.0.1"
-source = { git = "https://github.com/dev-hato/sudden-death?branch=master#9dd0795dad53ce1ff87348b5ba0c41f3711c1fd6" }
+source = { git = "https://github.com/dev-hato/sudden-death?branch=master#e668531cc78548f2110c8f0bb0f69f5f53ac18e3" }
 dependencies = [
     { name = "click" },
     { name = "pyperclip" },
