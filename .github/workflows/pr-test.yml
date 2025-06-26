@@ -2,11 +2,6 @@
 name: pr-test
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - closed
     branches:
       - develop
       - master
