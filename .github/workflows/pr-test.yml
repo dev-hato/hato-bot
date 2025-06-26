@@ -2,6 +2,9 @@
 name: pr-test
 on:
   pull_request:
+    branches:
+      - develop
+      - master
   push:
     branches:
       - master
