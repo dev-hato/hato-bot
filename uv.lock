@@ -545,7 +545,7 @@ requires-dist = [
     { name = "matplotlib", specifier = "==3.10.3" },
     { name = "misskey-py", specifier = "==4.1.0" },
     { name = "numpy", specifier = "==2.3.1" },
-    { name = "openai", specifier = "==1.91.0" },
+    { name = "openai", specifier = "==1.92.2" },
     { name = "opencv-python", specifier = "==4.11.0.86" },
     { name = "pandas", specifier = "==2.3.0" },
     { name = "pillow", specifier = ">=7.1.2" },
@@ -921,7 +921,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.91.0"
+version = "1.92.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -933,9 +933,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/e2/a22f2973b729eff3f1f429017bdf717930c5de0fbf9e14017bae330e4e7a/openai-1.91.0.tar.gz", hash = "sha256:d6b07730d2f7c6745d0991997c16f85cddfc90ddcde8d569c862c30716b9fc90", size = 472529, upload-time = "2025-06-23T18:27:10.961Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/11/44/9dba6f521591c49d3ba70b6800b32cb3f8feec89648b27fcce766046c57c/openai-1.92.2.tar.gz", hash = "sha256:b571a79fc7e165e7d00e6963a8a95eb5f42b60ac89fd316f1dc0a2dac5c6fae1", size = 485428, upload-time = "2025-06-26T19:38:01.228Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7a/d2/f99bdd6fc737d6b3cf0df895508d621fc9a386b375a1230ee81d46c5436e/openai-1.91.0-py3-none-any.whl", hash = "sha256:207f87aa3bc49365e014fac2f7e291b99929f4fe126c4654143440e0ad446a5f", size = 735837, upload-time = "2025-06-23T18:27:08.913Z" },
+    { url = "https://files.pythonhosted.org/packages/3d/e4/e558d3049feedab15fabf3cb704837b21c8194c133b9fb9fe56b8b82ca30/openai-1.92.2-py3-none-any.whl", hash = "sha256:abb64bee7f2571709edf9a856f598ffe871730129a7d807a8a4d8d2958f5c842", size = 753297, upload-time = "2025-06-26T19:37:59.35Z" },
 ]
 
 [[package]]
