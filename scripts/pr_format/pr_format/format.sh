@@ -12,5 +12,5 @@ if [ "$(yq .tool.uv.sources.sudden-death.git pyproject.toml)" != 'null' ]; then
 fi
 
 uv tool run autopep8 --exit-code --in-place --recursive --exclude pyproject.toml .
-uv tool run pyink --config .python-black .
+uv tool run pyink --config .python-black --exclude pyproject.toml .
 uv tool run isort --sp .isort.cfg .
