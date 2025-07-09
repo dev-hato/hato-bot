@@ -10,7 +10,3 @@ uv sync --dev
 if [ "$(yq .tool.uv.sources.sudden-death.git pyproject.toml)" != 'null' ]; then
 	uv lock --upgrade-package sudden-death
 fi
-
-uv tool run autopep8 --exit-code --in-place --recursive --exclude pyproject.toml .
-uv tool run pyink --config .python-black --exclude pyproject.toml .
-uv tool run isort --sp .isort.cfg .
