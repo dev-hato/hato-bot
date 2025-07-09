@@ -3,10 +3,45 @@ name = "hato-bot"
 version = "3.0.5"
 description = "愛嬌のあるBot"
 requires-python = "==3.13.5"
-dependencies = [ "python-dotenv==1.1.1", "requests==2.32.4", "Pillow>=7.1.2", "opencv-python==4.12.0.88", "slack-bolt==1.23.0", "slack-sdk==3.35.0", "gitpython==3.1.44", "pandas==2.3.1", "matplotlib==3.10.3", "openai==1.93.2", "discord.py==2.5.2", "misskey.py==4.1.0", "websockets==15.0.1", "flask==3.1.1", "markupsafe==3.0.2", "numpy==2.2.6", "emoji==2.14.1", "puremagic==1.30", "audioop-lts==0.2.1", "psycopg[binary,pool]==3.2.9", "sudden-death==0.0.1",]
+dependencies = [
+  "python-dotenv==1.1.1",
+  "requests==2.32.4",
+  "Pillow>=7.1.2",
+  "opencv-python==4.12.0.88",
+  "slack-bolt==1.23.0",
+  "slack-sdk==3.35.0",
+  "gitpython==3.1.44",
+  "pandas==2.3.1",
+  "matplotlib==3.10.3",
+  "openai==1.93.2",
+  "discord.py==2.5.2",
+  "misskey.py==4.1.0",
+  "websockets==15.0.1",
+  "flask==3.1.1",
+  "markupsafe==3.0.2",
+  "numpy==2.2.6",
+  "emoji==2.14.1",
+  "puremagic==1.30",
+  "audioop-lts==0.2.1",
+  "psycopg[binary,pool]==3.2.9",
+  "sudden-death==0.0.1",
+]
 
 [dependency-groups]
-dev = [ "autopep8==2.3.2", "requests-mock==1.12.1", "pylint==3.3.7", "sqlfluff==3.4.1", "mypy==1.16.1", "flake8==7.3.0", "isort==6.0.1", "pre-commit==4.2.0", "importlib-metadata==8.7.0", "toml==0.10.2", "types-toml==0.10.8.20240310", "pyink==24.10.1",]
+dev = [
+  "autopep8==2.3.2",
+  "requests-mock==1.12.1",
+  "pylint==3.3.7",
+  "sqlfluff==3.4.1",
+  "mypy==1.16.1",
+  "flake8==7.3.0",
+  "isort==6.0.1",
+  "pre-commit==4.2.0",
+  "importlib-metadata==8.7.0",
+  "toml==0.10.2",
+  "types-toml==0.10.8.20240310",
+  "pyink==24.10.1",
+]
 
 [tool.uv]
 required-version = "0.7.19"
