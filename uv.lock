@@ -545,7 +545,7 @@ requires-dist = [
     { name = "matplotlib", specifier = "==3.10.3" },
     { name = "misskey-py", specifier = "==4.1.0" },
     { name = "numpy", specifier = "==2.2.6" },
-    { name = "openai", specifier = "==1.93.2" },
+    { name = "openai", specifier = "==1.93.3" },
     { name = "opencv-python", specifier = "==4.12.0.88" },
     { name = "pandas", specifier = "==2.3.1" },
     { name = "pillow", specifier = ">=7.1.2" },
@@ -554,7 +554,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = "==1.1.1" },
     { name = "requests", specifier = "==2.32.4" },
     { name = "slack-bolt", specifier = "==1.23.0" },
-    { name = "slack-sdk", specifier = "==3.35.0" },
+    { name = "slack-sdk", specifier = "==3.36.0" },
     { name = "sudden-death", git = "https://github.com/dev-hato/sudden-death?branch=master" },
     { name = "websockets", specifier = "==15.0.1" },
 ]
@@ -923,7 +923,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.93.2"
+version = "1.93.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -935,9 +935,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/18/2b/0d93a981afe76b4e89c57b69bf421b5f15878983fccbad321f142ba6e89b/openai-1.93.2.tar.gz", hash = "sha256:4a7312b426b5e4c98b78dfa1148b5683371882de3ad3d5f7c8e0c74f3cc90778", size = 487225, upload-time = "2025-07-08T15:38:00.218Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e0/66/fadc0cad6a229c6a85c3aa5f222a786ec4d9bf14c2a004f80ffa21dbaf21/openai-1.93.3.tar.gz", hash = "sha256:488b76399238c694af7e4e30c58170ea55e6f65038ab27dbe95b5077a00f8af8", size = 487595, upload-time = "2025-07-09T14:08:27.789Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/03/22/f7b90b519e8a5867dc96d411615eb7f987d2d5474c22e7d37c7170a132da/openai-1.93.2-py3-none-any.whl", hash = "sha256:5adbbebd48eae160e6d68efc4c0a4f7cb1318a44c62d9fc626cec229f418eab4", size = 755084, upload-time = "2025-07-08T15:37:58.045Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/b9/0df6351b25c6bd494c534d2a8191dc9460fb5bb09c88b1427775d49fde05/openai-1.93.3-py3-none-any.whl", hash = "sha256:41aaa7594c7d141b46eed0a58dcd75d20edcc809fdd2c931ecbb4957dc98a892", size = 755132, upload-time = "2025-07-09T14:08:25.533Z" },
 ]
 
 [[package]]
@@ -1425,11 +1425,11 @@ wheels = [
 
 [[package]]
 name = "slack-sdk"
-version = "3.35.0"
+version = "3.36.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/32/a5/13077a5696ded22cc955ff6314028b7e6140b1c989b19ca27a6b26590e6e/slack_sdk-3.35.0.tar.gz", hash = "sha256:8183b6cbf26a0c1e2441478cd9c0dc4eef08d60c1394cfdc9a769e309a9b6459", size = 232887, upload-time = "2025-03-17T15:32:51.959Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/73/1e/bbf7fdd00306f097ddb839c23628b7e271128cc8f584b9cae8f704b3924e/slack_sdk-3.36.0.tar.gz", hash = "sha256:8586022bdbdf9f8f8d32f394540436c53b1e7c8da9d21e1eab4560ba70cfcffa", size = 233382, upload-time = "2025-07-09T20:58:22.838Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/8e/eed71dc79a187ba32681f12a104786ab89355bc474082211d92e1fba6bcf/slack_sdk-3.35.0-py2.py3-none-any.whl", hash = "sha256:00933d171fbd8a068b321ebb5f89612cc781d3183d8e3447c85499eca9d865be", size = 293272, upload-time = "2025-03-17T15:32:50.294Z" },
+    { url = "https://files.pythonhosted.org/packages/70/9a/380d20856d9ea39fbc4d3bb66f076b0d72035ebe873eb05fc88ebee4125f/slack_sdk-3.36.0-py2.py3-none-any.whl", hash = "sha256:6c96887d7175fc1b0b2777b73bb65f39b5b8bee9bd8acfec071d64014f9e2d10", size = 293949, upload-time = "2025-07-09T20:58:21.233Z" },
 ]
 
 [[package]]

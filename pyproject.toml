@@ -9,11 +9,11 @@ dependencies = [
   "Pillow>=7.1.2",
   "opencv-python==4.12.0.88",
   "slack-bolt==1.23.0",
-  "slack-sdk==3.35.0",
+  "slack-sdk==3.36.0",
   "gitpython==3.1.44",
   "pandas==2.3.1",
   "matplotlib==3.10.3",
-  "openai==1.93.2",
+  "openai==1.93.3",
   "discord.py==2.5.2",
   "misskey.py==4.1.0",
   "websockets==15.0.1",
@@ -44,7 +44,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.7.19"
+required-version = "0.7.20"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
