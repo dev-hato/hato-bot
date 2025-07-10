@@ -25,6 +25,7 @@ dependencies = [
   "audioop-lts==0.2.1",
   "psycopg[binary,pool]==3.2.9",
   "sudden-death==0.0.1",
+  "tomlkit==0.13.3",
 ]
 
 [dependency-groups]
