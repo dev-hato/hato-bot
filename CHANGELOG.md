@@ -58,7 +58,7 @@
 
 ### Changed
 
-- slack sdkを置き換えました。(#2668, #2697)
+- Slack sdkを置き換えました。(#2668, #2697)
 
 ### Fixed
 
@@ -145,13 +145,13 @@
 
 ### Fixed
 
-- docker compose時の `TAG_NAME` を指定する際のコマンドを修正しました。(#802)
+- Docker compose時の `TAG_NAME` を指定する際のコマンドを修正しました。(#802)
 
 ## v2.2.1 - 2022-02-11
 
 ### Fixed
 
-- docker compose時に `TAG_NAME` を指定する記述を追加しました。(#788)
+- Docker compose時に `TAG_NAME` を指定する記述を追加しました。(#788)
 
 ## v2.2.0 - 2022-02-10
 
