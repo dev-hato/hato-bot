@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import NoReturn, TypeGuard
 
 import importlib_metadata
-import toml
+import tomlkit
 
 # pyproject.tomlのproject.dependenciesやdependency-groups.devのデータ型
 PyProjectDependencies = list[str]
@@ -232,7 +232,8 @@ def main():
     if not pyproject_path.exists():
         raise FileNotFoundError("pyproject.toml not found.")
 
-    pyproject = toml.load(pyproject_path)
+    with open(pyproject_path) as f:
+        pyproject = tomlkit.load(f)
 
     if not is_pyproject_dependencies(pyproject["project"]["dependencies"]):
         raise TypeError(
@@ -260,7 +261,7 @@ def main():
     )
 
     with open(pyproject_path, "w") as f:
-        toml.dump(pyproject, f)
+        tomlkit.dump(pyproject, f)
 
 
 if __name__ == "__main__":
