@@ -93,7 +93,7 @@
 
    MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
-6. docker composeで鳩botとPostgreSQLを起動します。
+6. Docker composeで鳩botとPostgreSQLを起動します。
 
    ```sh
    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
@@ -108,7 +108,7 @@
    docker compose -f docker-compose.yml -f dev.base.docker-compose.yml -f dev.docker-compose.yml watch
    ```
 
-7. コードの変更はdocker composeの再起動で適用できます。
+7. コードの変更はDocker composeの再起動で適用できます。
 
    ```sh
    export TAG_NAME=$(git symbolic-ref --short HEAD | sed -e "s:/:-:g")
