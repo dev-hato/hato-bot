@@ -13,7 +13,7 @@ dependencies = [
     "gitpython==3.1.44",
     "pandas==2.3.1",
     "matplotlib==3.10.3",
-    "openai==1.96.1",
+    "openai==1.97.0",
     "discord.py==2.5.2",
     "misskey.py==4.1.0",
     "websockets==15.0.1",
