@@ -39,7 +39,7 @@ dev = [
   "pre-commit==4.2.0",
   "importlib-metadata==8.7.0",
   "tomlkit==0.13.3",
-  "pyink==24.10.1",
+  "pyink==",
 ]
 
 [tool.uv]
