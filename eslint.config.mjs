@@ -115,6 +115,10 @@ export default defineConfig([
       ecmaVersion: "latest",
       sourceType: "module",
     },
+
+    rules: {
+      "n/no-missing-import": "off",
+    },
   },
   {
     files: ["**/*.vue"],
