@@ -200,21 +200,3 @@ uv tool run pre-commit install
 Botで利用しているサービスのクレジットを記載します。
 
 - [Web Services by Yahoo! JAPAN](https://developer.yahoo.co.jp/sitemap/)
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
