@@ -201,3 +201,4 @@ Botで利用しているサービスのクレジットを記載します。
 
 - [Web Services by Yahoo! JAPAN](https://developer.yahoo.co.jp/sitemap/)
 1
+2
