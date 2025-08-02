@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.8.3-python3.13-bookworm-slim@sha256:0e781e30ba62d0c9feb3f91da614a58d3486e23c0d0038c748e3218cc2951dec AS base
+FROM ghcr.io/astral-sh/uv:0.8.4-python3.13-bookworm-slim@sha256:b93f8bbb995fa6469a40978d63278714c442eac4208f7e29529fcd2215584521 AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
