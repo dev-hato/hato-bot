@@ -12,7 +12,7 @@ dependencies = [
     "slack-sdk==3.36.0",
     "gitpython==3.1.45",
     "pandas==2.3.1",
-    "matplotlib==3.10.3",
+    "matplotlib==3.10.5",
     "openai==1.98.0",
     "discord.py==2.5.2",
     "misskey.py==4.1.0",
