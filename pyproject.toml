@@ -22,7 +22,7 @@ dependencies = [
     "numpy==2.2.6",
     "emoji==2.14.1",
     "puremagic==1.30",
-    "audioop-lts==0.2.1",
+    "audioop-lts==0.2.2",
     "psycopg[binary,pool]==3.2.9",
     "sudden-death==0.0.1",
 ]
