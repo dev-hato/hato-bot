@@ -31,7 +31,7 @@ dependencies = [
 dev = [
   "autopep8==2.3.2",
   "requests-mock==1.12.1",
-  "pylint==3.3.7",
+  "pylint==3.3.8",
   "sqlfluff==3.4.2",
   "mypy==1.17.1",
   "flake8==7.3.0",
