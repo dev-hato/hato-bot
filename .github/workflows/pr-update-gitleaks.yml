@@ -34,7 +34,7 @@ jobs:
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
-      - uses: dev-hato/actions-update-gitleaks@03938dd5977a402407e294b9a056848f0e9d670e # v0.0.88
+      - uses: dev-hato/actions-update-gitleaks@016e2b941cc6e93794fc1c2bdec968a3b3f76b27 # v0.0.90
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
