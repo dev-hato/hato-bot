@@ -1433,7 +1433,7 @@ wheels = [
 [[package]]
 name = "sudden-death"
 version = "0.0.1"
-source = { git = "https://github.com/dev-hato/sudden-death?branch=master#09e6b6c9860249b2e9ce06e69a22ccd11010832c" }
+source = { git = "https://github.com/dev-hato/sudden-death?branch=master#f8d577959ba352287c3cefec5482ee360eab621d" }
 dependencies = [
     { name = "click" },
     { name = "pyperclip" },
