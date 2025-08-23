@@ -31,7 +31,7 @@ from library.clientclass import (
 from plugins import analyze
 
 app = Flask(__name__)
-status_app = Flask(__name__+"status")
+status_app = Flask(__name__ + "status")
 
 
 def slack_main():
