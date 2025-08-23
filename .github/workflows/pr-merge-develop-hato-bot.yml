@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+permissions: {}
 jobs:
   # masterにコミットがpushされたら、それをdevelopに反映するPRを作成するjob
   # masterとdevelopの間でコミットログに差異が出ないようにする

@@ -74,8 +74,10 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
         if: ${{ github.event_name == 'pull_request' }}
-      - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
+      - run: echo 'TAG_NAME=${GITHUB_EVENT_RELEASE_TAG_NAME}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
+        env:
+          GITHUB_EVENT_RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
       - name: Build and push (build)
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
         env:

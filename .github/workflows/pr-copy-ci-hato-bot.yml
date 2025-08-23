@@ -5,6 +5,7 @@ on:
     branches:
       - develop
   workflow_dispatch:
+permissions: {}
 jobs:
   pr-copy-ci:
     runs-on: ubuntu-latest
