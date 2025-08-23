@@ -13,6 +13,8 @@ on:
   push:
     branches:
       - master
+permissions:
+  pull-requests: write
 jobs:
   update-readme:
     runs-on: ubuntu-latest
