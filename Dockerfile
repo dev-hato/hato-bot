@@ -78,3 +78,5 @@ COPY --from=commit-hash slackbot_settings.py slackbot_settings.py
 ENV GIT_PYTHON_REFRESH=quiet
 ENV NODE_OPTIONS="--max-old-space-size=512"
 CMD ["uv", "run", "entrypoint.py"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:3000/status || exit 1

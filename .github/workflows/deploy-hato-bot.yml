@@ -74,7 +74,7 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref}}
         if: ${{ github.event_name == 'pull_request' }}
-      - run: echo 'TAG_NAME=${GITHUB_EVENT_RELEASE_TAG_NAME}' >> "$GITHUB_ENV"
+      - run: echo "TAG_NAME=${GITHUB_EVENT_RELEASE_TAG_NAME}" >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
         env:
           GITHUB_EVENT_RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}

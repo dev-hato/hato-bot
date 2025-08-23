@@ -31,6 +31,7 @@ from library.clientclass import (
 from plugins import analyze
 
 app = Flask(__name__)
+status_app = Flask(__name__+"status")
 
 
 def slack_main():
@@ -147,7 +148,7 @@ def healthcheck_app():
     return client.response
 
 
-@app.route("/status", methods=["GET"])
+@status_app.route("/status", methods=["GET"])
 def status():
     """
     死活監視のためのレスポンスをJSON形式で返します
@@ -190,6 +191,7 @@ def main():
         logging.WARNING
     )
     logger = logging.getLogger(__name__)
+    status_app.run(host="0.0.0.0", port=conf.PORT)
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
