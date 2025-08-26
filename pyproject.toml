@@ -14,7 +14,7 @@ dependencies = [
     "pandas==2.3.2",
     "matplotlib==3.10.5",
     "openai==1.101.0",
-    "discord.py==2.6.0",
+    "discord.py==2.6.2",
     "misskey.py==4.1.0",
     "websockets==15.0.1",
     "flask==3.1.2",
