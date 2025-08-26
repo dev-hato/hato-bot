@@ -2,18 +2,11 @@
   {
     "basetime": "20210605123000",
     "validtime": "20210605123000",
-    "elements": [
-      "hrpns",
-      "hrpns_nd"
-    ]
+    "elements": ["hrpns", "hrpns_nd"]
   },
   {
     "basetime": "20210605122500",
     "validtime": "20210605122500",
-    "elements": [
-      "hrpns",
-      "hrpns_nd",
-      "liden"
-    ]
+    "elements": ["hrpns", "hrpns_nd", "liden"]
   }
 ]
