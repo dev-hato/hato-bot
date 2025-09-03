@@ -526,7 +526,7 @@ requires-dist = [
     { name = "puremagic", specifier = "==1.30" },
     { name = "python-dotenv", specifier = "==1.1.1" },
     { name = "requests", specifier = "==2.32.5" },
-    { name = "slack-bolt", specifier = "==1.23.0" },
+    { name = "slack-bolt", specifier = "==1.24.0" },
     { name = "slack-sdk", specifier = "==3.36.0" },
     { name = "sudden-death", git = "https://github.com/dev-hato/sudden-death?branch=master" },
     { name = "websockets", specifier = "==15.0.1" },
@@ -1365,14 +1365,14 @@ wheels = [
 
 [[package]]
 name = "slack-bolt"
-version = "1.23.0"
+version = "1.24.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "slack-sdk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/c9/7421458765061cb98e01a12d6cadc273ee35e75856b0073ec7c3efa5cf46/slack_bolt-1.23.0.tar.gz", hash = "sha256:3d2c3eb13131407a94f925eb22b180d352c2d97b808303ef92b7a46d6508c843", size = 130659, upload-time = "2025-03-19T18:03:13.266Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/06/af/95750d5c7f56be5266e6e4eb6b44f689423f44f0d2e2fa222e2c4c808305/slack_bolt-1.24.0.tar.gz", hash = "sha256:203249338454d3c8d096a6a1f4ebe09f48da2f572268835d1c5ed2a64eae898d", size = 131100, upload-time = "2025-08-27T18:51:40.026Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c8/48/6f435d702a680307488c7d8d3bd6e12552bbf2ff3e0eb67ccb7d0850d122/slack_bolt-1.23.0-py2.py3-none-any.whl", hash = "sha256:6d6ae39d80c964c362505ae4e587eed2b26dbc3a9f0cb76af1150c30fb670488", size = 229691, upload-time = "2025-03-19T18:03:11.878Z" },
+    { url = "https://files.pythonhosted.org/packages/ee/31/61985f6fe279e247789040f1c726a6b09e4c0388f1ba7265b1705956fed7/slack_bolt-1.24.0-py2.py3-none-any.whl", hash = "sha256:10245bac8b6768434885cc6e896a91daf815f1f566e83c0ddb6ad846d838248e", size = 230046, upload-time = "2025-08-27T18:51:38.326Z" },
 ]
 
 [[package]]
@@ -1428,7 +1428,7 @@ wheels = [
 [[package]]
 name = "sudden-death"
 version = "0.0.1"
-source = { git = "https://github.com/dev-hato/sudden-death?branch=master#80162084bd32313553f54cc1cde5b08b3b515806" }
+source = { git = "https://github.com/dev-hato/sudden-death?branch=master#e475fb374d6fcaacc2d8becda0200026e0d4f7ee" }
 dependencies = [
     { name = "click" },
     { name = "pyperclip" },
