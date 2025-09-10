@@ -30,7 +30,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const {tsImport} = require('tsx/esm/api')
-            const {script} = await tsImport(
+            const {default: {script}} = await tsImport(
               './scripts/get_pull_requests_hato_bot.ts',
               process.env.GITHUB_WORKSPACE + '/'
             )
