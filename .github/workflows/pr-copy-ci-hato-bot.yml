@@ -31,7 +31,7 @@ jobs:
           github-token: ${{steps.generate_token.outputs.token}}
           script: |
             const {tsImport} = require('tsx/esm/api')
-            const {script} = await tsImport(
+            const {default: {script}} = await tsImport(
               './scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.ts',
               process.env.GITHUB_WORKSPACE + '/'
             )
