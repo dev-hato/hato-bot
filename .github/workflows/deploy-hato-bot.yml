@@ -175,7 +175,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
@@ -205,7 +205,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
@@ -227,7 +227,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - uses: dev-hato/actions-update-dockle@b4f54b347939d0f759d2ff68b654fbe856cdfc3d # v0.0.117
+      - uses: dev-hato/actions-update-dockle@9f34ce1d3141342191896b88a06d731ee412b13d # v0.0.120
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
   dockle:

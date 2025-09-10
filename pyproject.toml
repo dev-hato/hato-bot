@@ -8,13 +8,13 @@ dependencies = [
     "requests==2.32.5",
     "Pillow>=7.1.2",
     "opencv-python==4.12.0.88",
-    "slack-bolt==1.23.0",
+    "slack-bolt==1.24.0",
     "slack-sdk==3.36.0",
     "gitpython==3.1.45",
     "pandas==2.3.2",
-    "matplotlib==3.10.5",
-    "openai==1.101.0",
-    "discord.py==2.6.0",
+    "matplotlib==3.10.6",
+    "openai==1.107.0",
+    "discord.py==2.6.3",
     "misskey.py==4.1.0",
     "websockets==15.0.1",
     "flask==3.1.2",
@@ -23,7 +23,7 @@ dependencies = [
     "emoji==2.14.1",
     "puremagic==1.30",
     "audioop-lts==0.2.2",
-    "psycopg[binary,pool]==3.2.9",
+    "psycopg[binary,pool]==3.2.10",
     "sudden-death==0.0.1",
 ]
 
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.8.13"
+required-version = "0.8.15"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
