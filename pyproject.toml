@@ -20,7 +20,7 @@ dependencies = [
     "flask==3.1.2",
     "markupsafe==3.0.2",
     "numpy==2.2.6",
-    "emoji==2.14.1",
+    "emoji==2.15.0",
     "puremagic==1.30",
     "audioop-lts==0.2.2",
     "psycopg[binary,pool]==3.2.10",
