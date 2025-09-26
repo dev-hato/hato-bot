@@ -35,7 +35,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@ac4f08dda423d2793a7acdd58c831ed5a0f19136 # v2.2.0
+      - uses: dev-hato/actions-diff-pr-management@bda458eb55c11585595482e3ec7506b05632b5ec # v2.2.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-uv-version
@@ -156,7 +156,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@ac4f08dda423d2793a7acdd58c831ed5a0f19136 # v2.2.0
+      - uses: dev-hato/actions-diff-pr-management@bda458eb55c11585595482e3ec7506b05632b5ec # v2.2.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pyproject
@@ -186,7 +186,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@ac4f08dda423d2793a7acdd58c831ed5a0f19136 # v2.2.0
+      - uses: dev-hato/actions-diff-pr-management@bda458eb55c11585595482e3ec7506b05632b5ec # v2.2.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -213,7 +213,7 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@ac4f08dda423d2793a7acdd58c831ed5a0f19136 # v2.2.0
+      - uses: dev-hato/actions-diff-pr-management@bda458eb55c11585595482e3ec7506b05632b5ec # v2.2.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
