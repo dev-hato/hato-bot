@@ -131,12 +131,20 @@ def get_imported_packages(project_root: Path) -> set[str]:
     imported_packages: set[str] = set()
 
     for file in project_root.glob("**/*.py"):
-        if str(file).endswith("setup.py") or "node_modules" in str(file) or ".venv" in str(file):
+        if (
+            str(file).endswith("setup.py")
+            or "node_modules" in str(file)
+            or ".venv" in str(file)
+        ):
             continue
 
         with open(str(file), "r") as python_file:
-            for imported_package in re.findall(r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE):
-                if imported_package != "sudden_death" and not is_std_or_local_lib(project_root, imported_package):
+            for imported_package in re.findall(
+                r"^(?:import|from)\s+(\w+)", python_file.read(), re.MULTILINE
+            ):
+                if imported_package != "sudden_death" and not is_std_or_local_lib(
+                    project_root, imported_package
+                ):
                     imported_packages.add(imported_package)
 
     return imported_packages
@@ -155,7 +163,10 @@ def get_pyproject_packages(pyproject: PyProject) -> set[str] | NoReturn:
         pyproject["dependency-groups"]["dev"],
     ]:
         if not is_pyproject_dependencies(pyproject_dependencies):
-            raise TypeError("Failed to cast to PyProjectDependencies: " + str(pyproject_dependencies))
+            raise TypeError(
+                "Failed to cast to PyProjectDependencies: "
+                + str(pyproject_dependencies)
+            )
 
         for pyproject_dependency in pyproject_dependencies:
             package_data = version_operator_pattern.split(pyproject_dependency)
@@ -164,7 +175,9 @@ def get_pyproject_packages(pyproject: PyProject) -> set[str] | NoReturn:
     return pyproject_packages
 
 
-def exist_package_in_pyproject(packages: list[str], pyproject_packages: set[str]) -> bool:
+def exist_package_in_pyproject(
+    packages: list[str], pyproject_packages: set[str]
+) -> bool:
     """
     与えられたパッケージ群のいずれかがpyproject.toml内に存在するかを判定する
     :param packages: パッケージ群
@@ -178,7 +191,9 @@ def exist_package_in_pyproject(packages: list[str], pyproject_packages: set[str]
     return False
 
 
-def get_missing_packages(imported_packages: set[str], pyproject_packages: set[str]) -> PyProjectDependencies | NoReturn:
+def get_missing_packages(
+    imported_packages: set[str], pyproject_packages: set[str]
+) -> PyProjectDependencies | NoReturn:
     """
     プロジェクト内のPythonファイルでimportされているがpyproject.toml内には存在しないパッケージ一覧を取得する
     :param imported_packages: プロジェクト内のPythonファイルからimportされているパッケージ一覧
@@ -192,12 +207,16 @@ def get_missing_packages(imported_packages: set[str], pyproject_packages: set[st
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
-            raise ModuleNotFoundError(f"Package {imported_package} is not found. It maybe not installed.")
+            raise ModuleNotFoundError(
+                f"Package {imported_package} is not found. It maybe not installed."
+            )
 
         packages = distributions[imported_package]
 
         if len(packages) == 0:
-            raise ModuleNotFoundError(f"Package {imported_package} is not found. It maybe not installed.")
+            raise ModuleNotFoundError(
+                f"Package {imported_package} is not found. It maybe not installed."
+            )
 
         if not exist_package_in_pyproject(packages, pyproject_packages):
             package_name: str = packages[0]
@@ -217,9 +236,14 @@ def main():
         pyproject = tomlkit.load(f)
 
     if not is_pyproject_dependencies(pyproject["project"]["dependencies"]):
-        raise TypeError("Failed to cast to PyProjectDependencies: " + str(pyproject["project"]["dependencies"]))
+        raise TypeError(
+            "Failed to cast to PyProjectDependencies: "
+            + str(pyproject["project"]["dependencies"])
+        )
 
-    pyproject["project"]["dependencies"] = fix_package_version(pyproject["project"]["dependencies"])
+    pyproject["project"]["dependencies"] = fix_package_version(
+        pyproject["project"]["dependencies"]
+    )
 
     # プロジェクト内のPythonファイルでimportされているがpyproject.toml内には存在しないパッケージをpyproject.tomlの「project.dependencies」セクションに追加する
     pyproject["project"]["dependencies"] += get_missing_packages(
@@ -227,9 +251,14 @@ def main():
     )
 
     if not is_pyproject_dependencies(pyproject["dependency-groups"]["dev"]):
-        raise TypeError("Failed to cast to PyProjectDependencies: " + str(pyproject["dependency-groups"]["dev"]))
+        raise TypeError(
+            "Failed to cast to PyProjectDependencies: "
+            + str(pyproject["dependency-groups"]["dev"])
+        )
 
-    pyproject["dependency-groups"]["dev"] = fix_package_version(pyproject["dependency-groups"]["dev"])
+    pyproject["dependency-groups"]["dev"] = fix_package_version(
+        pyproject["dependency-groups"]["dev"]
+    )
 
     with open(pyproject_path, "w") as f:
         tomlkit.dump(pyproject, f)

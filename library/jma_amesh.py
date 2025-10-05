@@ -61,7 +61,13 @@ def get_latest_timestamps() -> dict:
         [
             (
                 e,
-                max([i.basetime for i in timejson if i.basetime == i.validtime and e in i.elements]),
+                max(
+                    [
+                        i.basetime
+                        for i in timejson
+                        if i.basetime == i.validtime and e in i.elements
+                    ]
+                ),
             )
             for e in elements
         ]
@@ -85,9 +91,7 @@ def get_jma_image_server(timestamp: str) -> str:
 
 def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
     """気象庁落雷JSONを取得する"""
-    liden_json_url = (
-        f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson"  # noqa: E501
-    )
+    liden_json_url = f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson"  # noqa: E501
     response = requests.get(liden_json_url)
 
     if response.status_code == 200:
@@ -102,16 +106,23 @@ def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
     return [(0.0, 0.0, 0)]
 
 
-def jma_amesh(lat: float, lng: float, zoom: int, around_tiles: int) -> Optional[Image.Image]:
+def jma_amesh(
+    lat: float, lng: float, zoom: int, around_tiles: int
+) -> Optional[Image.Image]:
     """
     気象庁雨雲レーダーとOpenStreetMap画像を取得して結合する
     Usage: jma_amesh(lat=37, lng=139, zoom=8, around_tiles=2).save('res2.png')
     """
 
     jma_timestamp = get_latest_timestamps()
-    layers: List[Layer] = [RasterLayer(url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256)]
+    layers: List[Layer] = [
+        RasterLayer(
+            url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
+        )
+    ]
     layers += [
-        LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)) for d in range(10, 60, 10)
+        LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255))
+        for d in range(10, 60, 10)
     ]
     layers.append(
         MarkerTrace(
