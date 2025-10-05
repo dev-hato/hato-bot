@@ -8,9 +8,7 @@ from library.database import execute_sql
 def create_table() -> None:
     """テーブルを作成する"""
 
-    with open(
-        "postgres/docker-entrypoint-initdb.d/02_init.sql", encoding="UTF-8"
-    ) as init_sql:
+    with open("postgres/docker-entrypoint-initdb.d/02_init.sql", encoding="UTF-8") as init_sql:
         sql = ""
         for line in init_sql.readlines():
             sql += line

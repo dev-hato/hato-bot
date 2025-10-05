@@ -3,6 +3,7 @@
 """
 clientに使うclass
 """
+
 import os
 from abc import ABCMeta, abstractmethod
 
@@ -64,9 +65,7 @@ class SlackClient(BaseClient):
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        self.client.files_upload_v2(
-            channel=self.slack_channel, file=file, filename=filename
-        )
+        self.client.files_upload_v2(channel=self.slack_channel, file=file, filename=filename)
 
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""
@@ -126,9 +125,7 @@ class DiscordClient(BaseClient):
 
     def upload(self, file, filename):
         """ファイルを投稿する"""
-        self.client.loop.create_task(
-            self.message.channel.send(file=discord.File(file, filename=filename))
-        )
+        self.client.loop.create_task(self.message.channel.send(file=discord.File(file, filename=filename)))
 
     def get_send_user(self):
         """botを呼び出したユーザーを返す"""

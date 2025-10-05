@@ -71,17 +71,13 @@ class TestEarthQuake(unittest.TestCase):
         """
         client1 = TestClient()
 
-        with open(
-            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
-        ) as picture_file:
+        with open(os.path.join(os.path.dirname(__file__), "test.png"), mode="rb") as picture_file:
             mocker.get(
                 re.compile(r"tile\.openstreetmap\.org/.+\.png"),
                 content=picture_file.read(),
             )
 
-        with open(
-            os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb"
-        ) as json_file:
+        with open(os.path.join(os.path.dirname(__file__), "test_p2pquake.json"), mode="rb") as json_file:
             mocker.get(
                 "https://api.p2pquake.net/v2/history?codes=551&limit=3",
                 content=json_file.read(),
@@ -134,9 +130,7 @@ class TestAmesh(unittest.TestCase):
         """
         client1 = TestClient()
 
-        with open(
-            os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
-        ) as picture_file:
+        with open(os.path.join(os.path.dirname(__file__), "test.png"), mode="rb") as picture_file:
             image_content = picture_file.read()
             mocker.get(
                 re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
@@ -152,18 +146,14 @@ class TestAmesh(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
             mode="rb",
         ) as json_file:
-            jma_json_url = re.compile(
-                r"www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json"
-            )
+            jma_json_url = re.compile(r"www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json")
             mocker.get(jma_json_url, content=json_file.read())
 
         with open(
             os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
             mode="rb",
         ) as liden_file:
-            jma_liden_url = re.compile(
-                r"www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson"
-            )
+            jma_liden_url = re.compile(r"www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson")
             mocker.get(jma_liden_url, content=liden_file.read())
 
         actual = amesh(client1, place=place)
@@ -195,9 +185,7 @@ class TestAmesh(unittest.TestCase):
                 ]
             }
             set_yahoo_mock("東京", mocker, False, content)
-            self.amesh_upload_png_test(
-                mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！"
-            )
+            self.amesh_upload_png_test(mocker, "", "東京都世田谷区の雨雲状況をお知らせするっぽ！")
 
     def test_amesh_with_params(self):
         """
@@ -205,9 +193,7 @@ class TestAmesh(unittest.TestCase):
         """
         with requests_mock.Mocker() as mocker:
             coordinate = ["12.345", "123.456"]
-            self.amesh_upload_png_test(
-                mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！"
-            )
+            self.amesh_upload_png_test(mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！")
 
 
 class TestAmedas(unittest.TestCase):
@@ -345,9 +331,7 @@ class TestAltitude(unittest.TestCase):
             }
             set_yahoo_mock("東京", mocker, False, geo_content)
             altitude_setagaya = 35.4
-            altitude_content = {
-                "Feature": [{"Property": {"Altitude": altitude_setagaya}}]
-            }
+            altitude_content = {"Feature": [{"Property": {"Altitude": altitude_setagaya}}]}
             client1 = self.altitude_test(mocker, "", coordinates, altitude_content)
             self.assertEqual(
                 client1.get_post_message(),
@@ -362,12 +346,10 @@ class TestAltitude(unittest.TestCase):
             coordinates = ["12.345", "123.456"]
             altitude_ = 122
             altitude_content = {"Feature": [{"Property": {"Altitude": altitude_}}]}
-            client1 = self.altitude_test(
-                mocker, " ".join(coordinates), coordinates, altitude_content
-            )
+            client1 = self.altitude_test(mocker, " ".join(coordinates), coordinates, altitude_content)
             self.assertEqual(
                 client1.get_post_message(),
-                f'{", ".join(coordinates)}の標高は{altitude_}mっぽ！',
+                f"{', '.join(coordinates)}の標高は{altitude_}mっぽ！",
             )
 
 
