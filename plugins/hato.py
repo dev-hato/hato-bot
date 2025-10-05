@@ -47,9 +47,7 @@ conditions = {
     "text list": lambda m: get_text_list,
     "text add ": lambda m: partial(add_text, word=m[len("text add ") :]),
     "text show ": lambda m: partial(show_text, power_word_id=m[len("text show ") :]),
-    "text delete ": lambda m: partial(
-        delete_text, power_word_id=m[len("text delete ") :]
-    ),
+    "text delete ": lambda m: partial(delete_text, power_word_id=m[len("text delete ") :]),
     "text random": lambda m: show_random_text,
     "text": lambda m: show_random_text,
     ">< ": lambda m: partial(totuzensi, message=m[len(">< ") :]),
@@ -187,9 +185,7 @@ def earth_quake(client: BaseClient):
                 if ext:
                     filename.append(ext)
 
-                client.upload(
-                    file=map_file.name, filename=os.path.extsep.join(filename)
-                )
+                client.upload(file=map_file.name, filename=os.path.extsep.join(filename))
 
 
 @action("textlint")
@@ -287,9 +283,7 @@ def amesh(client: BaseClient, place: str):
         if ext:
             filename.append(ext)
 
-        client.upload(
-            file=weather_map_file.name, filename=os.path.extsep.join(filename)
-        )
+        client.upload(file=weather_map_file.name, filename=os.path.extsep.join(filename))
 
 
 @action("amedas", with_client=True)
@@ -368,9 +362,7 @@ def electricity_demand(client: BaseClient):
         client.post("東京電力管内の電力使用率を取得できなかったっぽ......")
         return
 
-    client.post(
-        f"東京電力管内の電力使用率をお知らせするっぽ！\n{latest_data.index[-1]}時点 {latest_data[-1]}%"
-    )
+    client.post(f"東京電力管内の電力使用率をお知らせするっぽ！\n{latest_data.index[-1]}時点 {latest_data[-1]}%")
     df_percent.plot()
 
     plt.ylim(0, 100)
@@ -486,7 +478,9 @@ def image_generate(client: BaseClient, message: str):
         url = image_create(message=message)
     except RateLimitError as e:
         if e.code == "insufficient_quota":
-            return "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
+            return (
+                "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
+            )
         else:
             raise e
 

@@ -15,9 +15,7 @@ class Place:
 
 def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     nearest_place: Optional[Place] = None
-    place_res = requests.get(
-        "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"
-    )
+    place_res = requests.get("https://www.jma.go.jp/bosai/amedas/const/amedastable.json")
 
     if place_res.status_code != 200:
         return None
@@ -32,17 +30,13 @@ def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
     if nearest_place is None:
         return None
 
-    latest_datetime_res = requests.get(
-        "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt"
-    )
+    latest_datetime_res = requests.get("https://www.jma.go.jp/bosai/amedas/data/latest_time.txt")
 
     if latest_datetime_res.status_code != 200:
         return None
 
     latest_datetime = datetime.datetime.fromisoformat(latest_datetime_res.text)
-    amedas_url = latest_datetime.strftime(
-        "https://www.jma.go.jp/bosai/amedas/data/map/%Y%m%d%H%M%S.json"
-    )
+    amedas_url = latest_datetime.strftime("https://www.jma.go.jp/bosai/amedas/data/map/%Y%m%d%H%M%S.json")
     amedas_res = requests.get(amedas_url)
 
     if amedas_res.status_code != 200:

@@ -21,7 +21,9 @@ def chat_gpt(message: str) -> Optional[str]:
         )
     except RateLimitError as e:
         if e.code == "insufficient_quota":
-            return "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
+            return (
+                "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
+            )
         else:
             raise e
 
