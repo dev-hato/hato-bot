@@ -3,7 +3,6 @@
 """
 BotのMain関数
 """
-
 import asyncio
 import json
 import logging
@@ -35,7 +34,9 @@ app = Flask(__name__)
 
 
 def slack_main():
-    slack_app = slack_bolt.App(token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET)
+    slack_app = slack_bolt.App(
+        token=conf.SLACK_API_TOKEN, signing_secret=conf.SLACK_SIGNING_SECRET
+    )
     slack_handler = SlackRequestHandler(slack_app)
 
     @slack_app.event("app_mention")
@@ -63,11 +64,13 @@ def slack_main():
                     return
 
                 cursor.execute(
-                    "DELETE FROM slack_client_msg_id WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
+                    "DELETE FROM slack_client_msg_id "
+                    "WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
                     (client_msg_id,),
                 )
                 cursor.execute(
-                    "INSERT INTO slack_client_msg_id(client_msg_id, created_at) VALUES(%s, CURRENT_TIMESTAMP)",
+                    "INSERT INTO slack_client_msg_id(client_msg_id, created_at) "
+                    "VALUES(%s, CURRENT_TIMESTAMP)",
                     (client_msg_id,),
                 )
 
@@ -86,7 +89,9 @@ def slack_main():
                                 and block_element_elements[0]["user_id"] in authed_users
                             ):
                                 tpe.submit(
-                                    analyze.analyze_slack_message(block_element_elements[1:]),
+                                    analyze.analyze_slack_message(
+                                        block_element_elements[1:]
+                                    ),
                                     SlackClient(
                                         slack_app.client,
                                         channel,
@@ -181,7 +186,9 @@ def main():
         "stream": sys.stdout,
     }
     logging.basicConfig(**log_format_config)
-    logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(logging.WARNING)
+    logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
+        logging.WARNING
+    )
     logger = logging.getLogger(__name__)
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
@@ -194,7 +201,11 @@ def main():
                 try:
                     # pylint: disable=E1101
                     async with websockets.connect(
-                        "wss://" + misskey_client.address + "/streaming" + "?i=" + misskey_client.token
+                        "wss://"
+                        + misskey_client.address
+                        + "/streaming"
+                        + "?i="
+                        + misskey_client.token
                     ) as ws:
                         await ws.send(
                             json.dumps(
@@ -206,14 +217,18 @@ def main():
                         )
                         while True:
                             data = json.loads(await ws.recv())
-                            if data["type"] == "channel" and data["body"]["type"] == "mention":
+                            if (
+                                data["type"] == "channel"
+                                and data["body"]["type"] == "mention"
+                            ):
                                 note = data["body"]["body"]
                                 host = note["user"].get("host")
                                 mentions = note.get("mentions")
                                 # FEDERATIONがtrueならばリモートからのメンションにも応答する。
                                 # falseならばローカルのメンションのみに応答する。
                                 if (
-                                    (conf.MISSKEY_FEDERATION == "true") or (host is None or host == conf.MISSKEY_DOMAIN)
+                                    (conf.MISSKEY_FEDERATION == "true")
+                                    or (host is None or host == conf.MISSKEY_DOMAIN)
                                 ) and mentions:
                                     cred = None
 
@@ -229,9 +244,11 @@ def main():
                                         client = MisskeyClient(misskey_client, note)
                                         client.add_waiting_reaction()
                                         try:
-                                            analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(
-                                                client
-                                            )
+                                            analyze.analyze_message(
+                                                note["text"]
+                                                .replace("\xa0", " ")
+                                                .split(" ", 1)[1]
+                                            )(client)
                                         except Exception as e:
                                             logger.exception(e)
                                             client.post("エラーが発生したっぽ......")

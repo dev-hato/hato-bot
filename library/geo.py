@@ -42,7 +42,9 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
     else:
         url = "https://map.yahooapis.jp/geocode/V1/geoCoder"
 
-    res = requests.get(url, {"appid": conf.YAHOO_API_TOKEN, "query": place, "output": "json"})
+    res = requests.get(
+        url, {"appid": conf.YAHOO_API_TOKEN, "query": place, "output": "json"}
+    )
 
     if res.status_code != 200:
         return None
@@ -78,7 +80,9 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     """
 
     place = unicodedata.normalize("NFKC", place)
-    res = requests.get("https://msearch.gsi.go.jp/address-search/AddressSearch", {"q": place})
+    res = requests.get(
+        "https://msearch.gsi.go.jp/address-search/AddressSearch", {"q": place}
+    )
 
     if res.status_code != 200:
         return None
@@ -87,7 +91,9 @@ def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
     partial_match_candidates = []
 
     for entry in res.json():
-        res_place = unicodedata.normalize("NFKC", entry.get("properties", {}).get("title", ""))
+        res_place = unicodedata.normalize(
+            "NFKC", entry.get("properties", {}).get("title", "")
+        )
         lon, lat = entry.get("geometry", {}).get("coordinates", [None, None])
         if lon is None or lat is None:
             continue

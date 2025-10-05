@@ -52,7 +52,8 @@ def generate_map_img(
     """
 
     layers: List[Layer] = [
-        LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255)) for d in range(10, 60, 10)
+        LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255))
+        for d in range(10, 60, 10)
     ]
     layers.append(
         MarkerTrace(

@@ -11,7 +11,9 @@ import slackbot_settings as conf
 from library.geo import get_gsi_geo_data, get_yahoo_geo_data
 
 
-def set_yahoo_mock(place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None):
+def set_yahoo_mock(
+    place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None
+):
     """
     Mockを設定する
     :param place: 地名・住所・郵便番号
@@ -51,7 +53,9 @@ class TestGetYahooGeoData(unittest.TestCase):
                 "Feature": [
                     {
                         "Name": result["place"],
-                        "Geometry": {"Coordinates": ",".join([result["lon"], result["lat"]])},
+                        "Geometry": {
+                            "Coordinates": ",".join([result["lon"], result["lat"]])
+                        },
                     }
                 ]
             }
@@ -70,7 +74,9 @@ class TestGetYahooGeoData(unittest.TestCase):
             content = {
                 "Feature": [
                     {
-                        "Geometry": {"Coordinates": ",".join([result["lon"], result["lat"]])},
+                        "Geometry": {
+                            "Coordinates": ",".join([result["lon"], result["lat"]])
+                        },
                         "Property": {"Address": result["place"]},
                     }
                 ]
