@@ -173,6 +173,7 @@ class RasterTileServer:
 
     @staticmethod
     def _get_image_content(url):
+        print(url)
         return cv2.imdecode(
             np.asarray(
                 bytearray(
