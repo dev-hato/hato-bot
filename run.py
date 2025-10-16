@@ -7,7 +7,6 @@ import asyncio
 import json
 import logging
 import logging.config
-import multiprocessing
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
