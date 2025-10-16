@@ -141,6 +141,7 @@ class TestAmesh(unittest.TestCase):
             image_content = picture_file.read()
             mocker.get(
                 re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                headers={"user-agent": f"hato-bot/{conf.VERSION}"},
                 content=image_content,
             )
             mocker.get(
