@@ -5,6 +5,7 @@ import random
 import string
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
+import multiprocessing
 from multiprocessing import Pool
 from typing import List, Optional, Tuple
 
@@ -201,6 +202,7 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
+        multiprocessing.set_start_method(method="fork", force=True)
         with Pool(16) as p:
             imgs = list(p.imap(self._get_image_content, request_urls))
 
