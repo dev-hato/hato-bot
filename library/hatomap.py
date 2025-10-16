@@ -6,7 +6,6 @@ import random
 import string
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from typing import List, Optional, Tuple
 
 import cv2
@@ -202,7 +201,8 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        with Pool(16) as p:
+        ctx=multiprocessing.get_context(method="fork")
+        with ctx.Pool(16) as p:
             imgs = list(p.imap(self._get_image_content, request_urls))
 
         tile_width_cnt = rb_tilepx.tile.tile_x + 1 - tl_tilepx.tile.tile_x
@@ -414,10 +414,6 @@ class HatoMap:
     extra_basemap_server: Optional[str] = None
     layers: Optional[List[Layer]] = None
     title: Optional[str] = None
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        multiprocessing.set_start_method(method="fork")
 
     def update_layout(
         self, mapbox: Optional[MapBox] = None, layers: Optional[List[Layer]] = None
