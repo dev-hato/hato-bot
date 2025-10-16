@@ -191,7 +191,6 @@ def main():
         logging.WARNING
     )
     logger = logging.getLogger(__name__)
-    multiprocessing.set_start_method(method="fork")
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":

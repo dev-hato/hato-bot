@@ -415,6 +415,10 @@ class HatoMap:
     layers: Optional[List[Layer]] = None
     title: Optional[str] = None
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        multiprocessing.set_start_method(method="fork")
+
     def update_layout(
         self, mapbox: Optional[MapBox] = None, layers: Optional[List[Layer]] = None
     ) -> None:
