@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import math
+import multiprocessing
 import random
 import string
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
-import multiprocessing
 from multiprocessing import Pool
 from typing import List, Optional, Tuple
 
