@@ -202,7 +202,7 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        multiprocessing.set_start_method(method="fork", force=True)
+        multiprocessing.set_start_method(method="fork")
         with Pool(16) as p:
             imgs = list(p.imap(self._get_image_content, request_urls))
 
