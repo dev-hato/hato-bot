@@ -173,7 +173,7 @@ class RasterTileServer:
 
     @staticmethod
     def _get_image_content(url):
-        img = cv2.imdecode(
+        return cv2.imdecode(
             np.asarray(
                 bytearray(
                     requests.get(
@@ -184,12 +184,6 @@ class RasterTileServer:
             ),
             -1,
         )
-
-        # デコードに失敗した場合は、透明な256x256の画像を返す
-        if img is None:
-            return np.zeros((256, 256, 4), dtype=np.uint8)
-
-        return img
 
     def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
