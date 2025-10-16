@@ -7,6 +7,7 @@ import asyncio
 import json
 import logging
 import logging.config
+import multiprocessing
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -190,6 +191,7 @@ def main():
         logging.WARNING
     )
     logger = logging.getLogger(__name__)
+    multiprocessing.set_start_method(method="fork")
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
