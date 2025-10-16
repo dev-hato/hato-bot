@@ -8,7 +8,6 @@ import re
 import unittest
 from typing import List
 
-import requests
 import requests_mock
 
 import slackbot_settings as conf
@@ -148,14 +147,6 @@ class TestAmesh(unittest.TestCase):
                 request_headers={"user-agent": f"hato-bot/{conf.VERSION}"},
                 content=image_content,
             )
-            mocker.get(
-                re.compile(r"exampleeeeeeeeeeeeeee.com"),
-                headers={"user-agent": f"hato-bot/{conf.VERSION}"},
-                content=image_content,
-            )
-            print(f'aaaaa: {requests.get(
-                "https://exampleeeeeeeeeeeeeee.com", headers={"user-agent": f"hato-bot/{conf.VERSION}"}
-            ).status_code}')
 
         with open(
             os.path.join(os.path.dirname(__file__), "test_targetTimes_N1.json"),
