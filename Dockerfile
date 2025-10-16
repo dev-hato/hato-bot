@@ -25,7 +25,7 @@ COPY package-lock.json package-lock.json
 # * curl: ヘルスチェックの際に必要
 # * libopencv-dev, libgl1-mesa-dev, libglib2.0-0: OpenCV
 # * gnupg: Node.jsのインストールの際に必要
-# * build-essential: aiohttpのインストールの際に必要
+# * build-essential: numpyのインストールの際に必要
 # * nodejs: textlintを使用する際に必要
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git libopencv-dev libgl1-mesa-dev libglib2.0-0 curl gnupg build-essential && \
