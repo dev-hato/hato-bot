@@ -208,6 +208,10 @@ class RasterTileServer:
         tile_width_cnt = rb_tilepx.tile.tile_x + 1 - tl_tilepx.tile.tile_x
         tile_height_cnt = rb_tilepx.tile.tile_y + 1 - tl_tilepx.tile.tile_y
 
+        for i in range(0, len(imgs), tile_height_cnt):
+            print(f"imgs[{i}:{i + tile_height_cnt}]: len({len(imgs[i: i + tile_height_cnt])})")
+
+        print()
         concated = np.concatenate(
             [
                 np.concatenate(imgs[i : i + tile_height_cnt], axis=0)
