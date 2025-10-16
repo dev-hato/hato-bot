@@ -196,7 +196,7 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        ctx = multiprocessing.get_context()
+        ctx = multiprocessing.get_context(method="fork")
         with ctx.Pool(16) as p:
             imgs = list(p.imap(self._get_image_content, request_urls))
 
