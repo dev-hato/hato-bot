@@ -29,14 +29,14 @@ jobs:
           DEST_PATH: "/home/runner/work/_temp/_github_workflow/.venv"
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/set_venv_path.sh"
       - name: Set up Node.js
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           cache: npm
           node-version-file: package.json
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
-        uses: super-linter/super-linter/slim@7bba2eeb89d01dc9bfd93c497477a57e72c83240 # v8.2.0
+        uses: super-linter/super-linter/slim@2bdd90ed3262e023ac84bf8fe35dc480721fc1f2 # v8.2.1
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_SQLFLUFF: false

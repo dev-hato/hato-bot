@@ -13,7 +13,7 @@ dependencies = [
     "gitpython==3.1.45",
     "pandas==2.3.3",
     "matplotlib==3.10.7",
-    "openai==2.2.0",
+    "openai==2.3.0",
     "discord.py==2.6.4",
     "misskey.py==4.1.0",
     "websockets==15.0.1",
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.9.1"
+required-version = "0.9.3"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
