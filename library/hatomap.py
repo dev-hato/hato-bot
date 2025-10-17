@@ -196,7 +196,7 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        with multiprocessing.get_context(method="fork").Pool(16) as p:
+        with multiprocessing.get_context(method="forkserver").Pool(16) as p:
             imgs = list(p.imap(self._get_image_content, request_urls))
 
         tile_width_cnt = rb_tilepx.tile.tile_x + 1 - tl_tilepx.tile.tile_x
