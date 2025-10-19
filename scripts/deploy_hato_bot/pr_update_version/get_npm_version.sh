@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DOCKER_CMD="npm --version"
-DEPENDABOT_NPM_VERSION="9.6.5"
+DEPENDABOT_NPM_VERSION="10.9.3"
 cp .env.example .env
 export TAG_NAME="${HEAD_REF//\//-}"
 docker compose pull
