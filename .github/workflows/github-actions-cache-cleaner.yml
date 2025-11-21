@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
-      - uses: dev-hato/github-actions-cache-cleaner@86d7ef3a99a7c6f4c0f318e0b4347245ba46b7ce # v0.0.76
+      - uses: dev-hato/github-actions-cache-cleaner@c6ef3525c106808c3c9582830b5d2d05b3168add # v0.0.77
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
