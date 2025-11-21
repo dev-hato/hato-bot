@@ -33,7 +33,7 @@ jobs:
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: dev-hato/actions-format-json-yml@545842ae76c25fb0d6a4fbf2cb7b71072f30974c # v0.0.91
+      - uses: dev-hato/actions-format-json-yml@1c10501063c35e07661c6ab5b6056572c9341341 # v0.0.92
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
