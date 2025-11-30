@@ -9,6 +9,10 @@ on:
       - opened
 jobs:
   add-to-task-list:
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
