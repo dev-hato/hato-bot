@@ -8,6 +8,8 @@ updates:
     ignore:
       - dependency-name: mypy
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: docker
     directory: "/"
     schedule:
@@ -17,6 +19,8 @@ updates:
         versions:
           - 3.11.0b1-slim-bullseye
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: docker
     directory: "/postgres"
     schedule:
@@ -26,11 +30,15 @@ updates:
       - dependency-name: "postgres"
         update-types:
           - "version-update:semver-major"
+    cooldown:
+      default-days: 7
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: npm
     directory: "/"
     schedule:
@@ -39,4 +47,4 @@ updates:
       - dependency-name: "node-fetch"
     open-pull-requests-limit: 1
     cooldown:
-      default-days: 3
+      default-days: 7
