@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
       - run: perl -pe "s/{commands}/$(sed -e '2,$s/^/    /' commands.txt)/g" < README.template.md > README.md
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-      - uses: dev-hato/actions-diff-pr-management@bda458eb55c11585595482e3ec7506b05632b5ec # v2.2.1
+      - uses: dev-hato/actions-diff-pr-management@1e2c650446e6a6aab1858d55c8b693470ea5f2fe # v2.2.2
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: update-readme
