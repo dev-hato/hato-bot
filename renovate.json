@@ -1,6 +1,6 @@
 {
   "extends": ["github>dev-hato/renovate-config"],
-  "ignoreDeps": ["node-fetch", "sudden-death"],
+  "ignoreDeps": ["node-fetch", "sudden-death", "mypy"],
   "packageRules": [
     {
       "matchPackageNames": ["ghcr.io/astral-sh/uv"],
