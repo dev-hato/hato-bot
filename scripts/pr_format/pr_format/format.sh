@@ -10,4 +10,4 @@ fi
 uv tool run autopep8 --exit-code --in-place --recursive .
 uv tool run isort --sp .isort.cfg .
 action="$(yq '.jobs.pr-super-lint.steps[-1].uses | line_comment' .github/workflows/pr-test.yml)"
-docker run --rm --entrypoint '' "ghcr.io/super-linter/super-linter:slim-${action}" /bin/sh -c 'mypy --version' | sed -e 's/.* \([0-9]*\.[0-9]*\.[0-9]*\) .*/\1/'
+docker run --rm --entrypoint '' "ghcr.io/super-linter/super-linter:slim-${action}" /bin/sh -c 'mypy --version'
