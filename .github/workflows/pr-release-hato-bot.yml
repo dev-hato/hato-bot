@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+permissions: {}
 jobs:
   # リリース用のPRを作成するjob
   pr-release:

@@ -7,6 +7,7 @@ on:
   issues:
     types:
       - opened
+permissions: {}
 jobs:
   add-to-task-list:
     runs-on: ubuntu-latest
