@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 bash "${GITHUB_WORKSPACE}/scripts/npm_ci.sh"
 echo "PYTHONPATH=/github/workspace/:/github/workflow/.venv/lib/python$(uv run "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/get_python_version.py")/site-packages" >>"${GITHUB_ENV}"

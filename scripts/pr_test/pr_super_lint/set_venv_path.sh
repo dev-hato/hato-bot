@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # 環境ファイルを使ってenvにsetしている
 # 参考URL: https://bit.ly/2KJhjqk
