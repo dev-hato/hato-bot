@@ -54,7 +54,8 @@ RUN if [ "${ENV}" = 'dev' ]; then \
       uv sync --frozen --dev; \
     else \
       uv sync --frozen; \
-    fi
+    fi && \
+    rm -rf ~/.cache
 
 USER root
 
