@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cp .env.example .env
 export TAG_NAME="${HEAD_REF//\//-}"
@@ -14,7 +15,7 @@ for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -
 	if [[ "${image_name}" =~ "postgres" ]]; then
 		cmd+="-ak key "
 	elif [[ "${image_name}" =~ "hato-bot" ]]; then
-		cmd+="-i CIS-DI-0006 "
+		cmd+="-i CIS-DI-0006 -af settings.py "
 	fi
 
 	cmd+="${image_name}"
