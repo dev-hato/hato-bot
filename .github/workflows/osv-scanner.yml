@@ -10,19 +10,16 @@
 # see https://google.github.io/osv-scanner/github-action/
 
 name: OSV-Scanner
-
 on:
   pull_request:
-    branches: [ "develop", "master" ]
+    branches: ["develop", "master"]
   merge_group:
-    branches: [ "develop", "master" ]
+    branches: ["develop", "master"]
   schedule:
-    - cron: '16 19 * * 3'
+    - cron: "16 19 * * 3"
   push:
-    branches: [ "develop", "master" ]
-
+    branches: ["develop", "master"]
 permissions: {}
-
 jobs:
   scan-scheduled:
     if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
