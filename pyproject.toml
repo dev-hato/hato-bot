@@ -2,7 +2,7 @@
 name = "hato-bot"
 version = "3.0.5"
 description = "愛嬌のあるBot"
-requires-python = "==3.14.0"
+requires-python = "==3.14.2"
 dependencies = [
     "python-dotenv==1.2.1",
     "requests==2.32.5",
@@ -12,7 +12,7 @@ dependencies = [
     "slack-sdk==3.39.0",
     "gitpython==3.1.45",
     "pandas==2.3.3",
-    "matplotlib==3.10.7",
+    "matplotlib==3.10.8",
     "openai==2.9.0",
     "discord.py==2.6.4",
     "misskey.py==4.1.0",
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.9.13"
+required-version = "0.9.17"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"
