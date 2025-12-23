@@ -36,7 +36,7 @@ dev = [
   "mypy==1.19.0",
   "flake8==7.3.0",
   "isort==7.0.0",
-  "pre-commit==4.5.0",
+  "pre-commit==4.5.1",
   "importlib-metadata==8.7.0",
   "tomlkit==0.13.3",
 ]
