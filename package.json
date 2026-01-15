@@ -10,7 +10,7 @@
     "lint:secret": "docker run --rm --platform=linux/amd64 -v $(pwd):/path -w /path zricethezav/gitleaks protect --verbose --redact"
   },
   "dependencies": {
-    "@actions/github": "6.0.1",
+    "@actions/github": "7.0.0",
     "@octokit/plugin-rest-endpoint-methods": "17.0.0"
   },
   "devDependencies": {
