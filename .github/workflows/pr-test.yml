@@ -67,7 +67,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Lint dotenv
-        uses: dotenv-linter/action-dotenv-linter@21287e2624aaf2dc8da5dd8ccfe8e49c63501116 # v2.25.0
+        uses: dotenv-linter/action-dotenv-linter@afde61cfda2ecffe7bea35837b6f20b956c88689 # v3.0.0
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
