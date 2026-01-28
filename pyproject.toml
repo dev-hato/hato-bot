@@ -11,7 +11,7 @@ dependencies = [
     "slack-bolt==1.27.0",
     "slack-sdk==3.39.0",
     "gitpython==3.1.46",
-    "pandas==2.3.3",
+    "pandas==3.0.0",
     "matplotlib==3.10.8",
     "openai==2.15.0",
     "discord.py==2.6.4",
