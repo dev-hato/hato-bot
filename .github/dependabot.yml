@@ -9,6 +9,7 @@ updates:
       - dependency-name: mypy
       - dependency-name: numpy
       - dependency-name: click
+      - dependency-name: pandas
     open-pull-requests-limit: 1
     cooldown:
       default-days: 7
