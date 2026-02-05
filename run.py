@@ -85,9 +85,9 @@ def slack_main():
                         if block_element["type"] == "rich_text_section":
                             block_element_elements = block_element["elements"]
                             if (
-                                    len(block_element_elements) > 0
-                                    and block_element_elements[0]["type"] == "user"
-                                    and block_element_elements[0]["user_id"] in authed_users
+                                len(block_element_elements) > 0
+                                and block_element_elements[0]["type"] == "user"
+                                and block_element_elements[0]["user_id"] in authed_users
                             ):
                                 tpe.submit(
                                     analyze.analyze_slack_message(
@@ -209,9 +209,9 @@ async def handle_misskey_mention(misskey_client, note, logger):
         client = MisskeyClient(misskey_client, note)
         client.add_waiting_reaction()
         try:
-            analyze.analyze_message(
-                note["text"].replace("\xa0", " ").split(" ", 1)[1]
-            )(client)
+            analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(
+                client
+            )
         except Exception as e:
             logger.exception(e)
             client.post("エラーが発生したっぽ......")
@@ -223,11 +223,11 @@ async def misskey_runner(misskey_client, logger):
         try:
             # pylint: disable=E1101
             async with websockets.connect(
-                    "wss://"
-                    + misskey_client.address
-                    + "/streaming"
-                    + "?i="
-                    + misskey_client.token
+                "wss://"
+                + misskey_client.address
+                + "/streaming"
+                + "?i="
+                + misskey_client.token
             ) as ws:
                 await ws.send(
                     json.dumps(
@@ -239,18 +239,15 @@ async def misskey_runner(misskey_client, logger):
                 )
                 while True:
                     data = json.loads(await ws.recv())
-                    if (
-                            data["type"] == "channel"
-                            and data["body"]["type"] == "mention"
-                    ):
+                    if data["type"] == "channel" and data["body"]["type"] == "mention":
                         note = data["body"]["body"]
                         host = note["user"].get("host")
                         mentions = note.get("mentions")
                         # FEDERATIONがtrueならばリモートからのメンションにも応答する。
                         # falseならばローカルのメンションのみに応答する。
                         if (
-                                (conf.MISSKEY_FEDERATION == "true")
-                                or (host is None or host == conf.MISSKEY_DOMAIN)
+                            (conf.MISSKEY_FEDERATION == "true")
+                            or (host is None or host == conf.MISSKEY_DOMAIN)
                         ) and mentions:
                             await handle_misskey_mention(misskey_client, note, logger)
         except websockets.ConnectionClosedError:
