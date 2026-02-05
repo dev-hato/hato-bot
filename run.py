@@ -192,16 +192,29 @@ def setup_logging():
     return logging.getLogger(__name__)
 
 
-def main():
-    """メイン関数"""
-    logger = setup_logging()
+async def handle_misskey_mention(misskey_client, note, logger):
+    """Misskeyのメンションを処理する"""
+    cred = None
 
-    if conf.MODE == "discord":
-        discordClient.run(token=conf.DISCORD_API_TOKEN)
-    elif conf.MODE == "misskey":
-        run_misskey(logger)
-    else:
-        slack_main()
+    for _ in range(10):
+        try:
+            cred = misskey_client.i()
+            break
+        except ReadTimeout as e:
+            logger.exception(e)
+            await asyncio.sleep(1)
+
+    mentions = note.get("mentions")
+    if cred is not None and mentions and cred["id"] in mentions:
+        client = MisskeyClient(misskey_client, note)
+        client.add_waiting_reaction()
+        try:
+            analyze.analyze_message(
+                note["text"].replace("\xa0", " ").split(" ", 1)[1]
+            )(client)
+        except Exception as e:
+            logger.exception(e)
+            client.post("エラーが発生したっぽ......")
 
 
 async def misskey_runner(misskey_client, logger):
@@ -244,31 +257,6 @@ async def misskey_runner(misskey_client, logger):
             await asyncio.sleep(1)
 
 
-async def handle_misskey_mention(misskey_client, note, logger):
-    """Misskeyのメンションを処理する"""
-    cred = None
-
-    for _ in range(10):
-        try:
-            cred = misskey_client.i()
-            break
-        except ReadTimeout as e:
-            logger.exception(e)
-            await asyncio.sleep(1)
-
-    mentions = note.get("mentions")
-    if cred is not None and mentions and cred["id"] in mentions:
-        client = MisskeyClient(misskey_client, note)
-        client.add_waiting_reaction()
-        try:
-            analyze.analyze_message(
-                note["text"].replace("\xa0", " ").split(" ", 1)[1]
-            )(client)
-        except Exception as e:
-            logger.exception(e)
-            client.post("エラーが発生したっぽ......")
-
-
 def run_misskey(logger):
     """Misskeyモードで起動する"""
     misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
@@ -283,6 +271,18 @@ def run_misskey(logger):
                 time.sleep(1)
             else:
                 raise e
+
+
+def main():
+    """メイン関数"""
+    logger = setup_logging()
+
+    if conf.MODE == "discord":
+        discordClient.run(token=conf.DISCORD_API_TOKEN)
+    elif conf.MODE == "misskey":
+        run_misskey(logger)
+    else:
+        slack_main()
 
 
 if __name__ == "__main__":
