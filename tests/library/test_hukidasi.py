@@ -43,11 +43,9 @@ class TestHukidashiGenerator(unittest.TestCase):
         """
         self.assertEqual(
             generator("そして、\n鳩は唐揚げになる"),
-            textwrap.dedent(
-                """\
+            textwrap.dedent("""\
         ＿人人人人人人人人人人＿
         ＞      そして、      ＜
         ＞  鳩は唐揚げになる  ＜
-        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""
-            ),
+        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""),
         )
