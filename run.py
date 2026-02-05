@@ -262,8 +262,8 @@ def run_misskey(logger):
     while True:
         try:
             asyncio.run(misskey_runner(misskey_client, logger))
-        except websockets.exceptions.InvalidStatusCode as e:
-            if e.status_code == 502:
+        except websockets.exceptions.InvalidStatus as e:
+            if e.response.status_code == 502:
                 logger.exception(e)
                 time.sleep(1)
             else:
