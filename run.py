@@ -3,6 +3,7 @@
 """
 BotのMain関数
 """
+
 import asyncio
 import json
 import logging
