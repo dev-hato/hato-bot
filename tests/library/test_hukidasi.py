@@ -19,12 +19,10 @@ class TestHukidashiGenerator(unittest.TestCase):
         """
         self.assertEqual(
             generator("Hello, pegion!"),
-            textwrap.dedent(
-                """\
+            textwrap.dedent("""\
         ＿人人人人人人人人人＿
         ＞  Hello, pegion!  ＜
-        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""
-            ),
+        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""),
         )
 
     def test_normal_one_line_zenkaku(self):
@@ -33,12 +31,10 @@ class TestHukidashiGenerator(unittest.TestCase):
         """
         self.assertEqual(
             generator("言うことを聞け"),
-            textwrap.dedent(
-                """\
+            textwrap.dedent("""\
         ＿人人人人人人人人人＿
         ＞  言うことを聞け  ＜
-        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""
-            ),
+        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""),
         )
 
     def test_normal_multiline(self):
@@ -47,11 +43,9 @@ class TestHukidashiGenerator(unittest.TestCase):
         """
         self.assertEqual(
             generator("そして、\n鳩は唐揚げになる"),
-            textwrap.dedent(
-                """\
+            textwrap.dedent("""\
         ＿人人人人人人人人人人＿
         ＞      そして、      ＜
         ＞  鳩は唐揚げになる  ＜
-        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""
-            ),
+        ￣^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣"""),
         )

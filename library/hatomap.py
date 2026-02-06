@@ -186,7 +186,7 @@ class RasterTileServer:
         )
 
     def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
-        (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
+        tl_tilepx, rb_tilepx = bbox.covered_tiles()
 
         request_urls = []
         for x in range(tl_tilepx.tile.tile_x, rb_tilepx.tile.tile_x + 1):

@@ -3,6 +3,7 @@
 """
 clientに使うclass
 """
+
 import os
 from abc import ABCMeta, abstractmethod
 
