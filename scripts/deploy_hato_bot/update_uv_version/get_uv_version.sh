@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-uv_version=$(grep ghcr.io/astral-sh/uv: Dockerfile | sed -e 's!FROM ghcr.io/astral-sh/uv:\([0-9.]*\)-.*!\1!g')
+uv_version=$(docker run --rm ghcr.io/dependabot/dependabot-updater-uv uv --version)
 sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproject.toml
+image_name=ghcr.io/astral-sh/uv
+image_tag=$image_name:$uv_version-python3.14-bookworm-slim
+sed -i -e "s?^FROM $image_name:.[^ ]* ?FROM $image_tag@$(docker inspect "$image_tag" | yq '.[0].Id') ?g" Dockerfile
