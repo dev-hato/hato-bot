@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-uv_version=$(docker run --rm ghcr.io/dependabot/dependabot-updater-uv uv --version)
+uv_version=$(docker run --rm ghcr.io/dependabot/dependabot-updater-uv uv --version | sed -e 's/^uv //g')
 sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproject.toml
 image_name=ghcr.io/astral-sh/uv
 image_tag=$image_name:$uv_version-python3.14-bookworm-slim
