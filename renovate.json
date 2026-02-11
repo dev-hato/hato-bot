@@ -6,13 +6,10 @@
     "mypy",
     "numpy",
     "click",
-    "pandas"
+    "pandas",
+    "ghcr.io/astral-sh/uv"
   ],
   "packageRules": [
-    {
-      "matchPackageNames": ["ghcr.io/astral-sh/uv"],
-      "prPriority": 10
-    },
     {
       "groupName": "slack",
       "matchPackageNames": ["slack-bolt", "slack-sdk"]
