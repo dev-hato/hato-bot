@@ -213,7 +213,7 @@ jobs:
           node-version-file: package.json
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
+        run: npm install
       - uses: dev-hato/actions-diff-pr-management@b446497d139ed3eadc62ec1dd90dd27960ad1a0c # v2.2.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
