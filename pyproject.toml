@@ -7,7 +7,7 @@ dependencies = [
     "python-dotenv==1.2.1",
     "requests==2.32.5",
     "Pillow>=7.1.2",
-    "opencv-python==4.13.0.90",
+    "opencv-python==4.13.0.92",
     "slack-bolt==1.27.0",
     "slack-sdk==3.39.0",
     "gitpython==3.1.46",
