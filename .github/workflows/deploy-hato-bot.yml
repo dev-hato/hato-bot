@@ -176,12 +176,12 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - run: corepack enable
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
           node-version-file: package.json
+      - run: corepack enable
       - name: Get npm version
         id: get_npm_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
