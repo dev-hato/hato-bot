@@ -19,6 +19,7 @@ jobs:
         with:
           cache: npm
           node-version-file: package.json
+      - run: npm install -g "$(yq -r '.packageManager' package.json)"
       - run: npm ci
       - name: Get diff
         id: get_diff

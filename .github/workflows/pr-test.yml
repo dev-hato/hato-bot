@@ -36,6 +36,7 @@ jobs:
         with:
           cache: npm
           node-version-file: package.json
+      - run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
       - name: Lint files
