@@ -3,8 +3,8 @@ from __future__ import annotations
 import math
 import random
 import string
-from concurrent.futures import ThreadPoolExecutor
 from abc import ABCMeta, abstractmethod
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
 
