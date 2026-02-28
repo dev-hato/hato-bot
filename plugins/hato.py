@@ -182,7 +182,7 @@ def earth_quake(client: BaseClient):
                 map_img.save(map_file, format="PNG")
 
                 filename = ["map"]
-                ext = puremagic.what(map_file.name)
+                ext = puremagic.from_file(map_file.name)
 
                 if ext:
                     filename.append(ext)
@@ -282,7 +282,7 @@ def amesh(client: BaseClient, place: str):
         amesh_img.save(weather_map_file, format="PNG")
 
         filename = ["amesh"]
-        ext = puremagic.what(weather_map_file.name)
+        ext = puremagic.from_file(weather_map_file.name)
 
         if ext:
             filename.append(ext)
