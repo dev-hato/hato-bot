@@ -187,9 +187,7 @@ def earth_quake(client: BaseClient):
                 if ext:
                     filename.append(ext)
 
-                client.upload(
-                    file=map_file.name, filename="".join(filename)
-                )
+                client.upload(file=map_file.name, filename="".join(filename))
 
 
 @action("textlint")
@@ -287,9 +285,7 @@ def amesh(client: BaseClient, place: str):
         if ext:
             filename.append(ext)
 
-        client.upload(
-            file=weather_map_file.name, filename="".join(filename)
-        )
+        client.upload(file=weather_map_file.name, filename="".join(filename))
 
 
 @action("amedas", with_client=True)
