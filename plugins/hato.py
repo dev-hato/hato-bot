@@ -188,7 +188,7 @@ def earth_quake(client: BaseClient):
                     filename.append(ext)
 
                 client.upload(
-                    file=map_file.name, filename=os.path.extsep.join(filename)
+                    file=map_file.name, filename="".join(filename)
                 )
 
 
@@ -288,7 +288,7 @@ def amesh(client: BaseClient, place: str):
             filename.append(ext)
 
         client.upload(
-            file=weather_map_file.name, filename=os.path.extsep.join(filename)
+            file=weather_map_file.name, filename="".join(filename)
         )
 
 
