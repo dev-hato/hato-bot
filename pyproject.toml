@@ -35,7 +35,7 @@ dev = [
   "sqlfluff==4.0.4",
   "mypy==1.19.1",
   "flake8==7.3.0",
-  "isort==8.0.0",
+  "isort==8.0.1",
   "pre-commit==4.5.1",
   "importlib-metadata==8.7.1",
   "tomlkit==0.14.0",
