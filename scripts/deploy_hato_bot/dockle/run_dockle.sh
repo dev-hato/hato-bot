@@ -15,7 +15,7 @@ for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -
 	if [[ "${image_name}" =~ "postgres" ]]; then
 		cmd+="-ak key "
 	elif [[ "${image_name}" =~ "hato-bot" ]]; then
-		cmd+="-i CIS-DI-0006 -af settings.py "
+		cmd+="-i CIS-DI-0006 -i DKL-DI-0005 -af settings.py "
 	fi
 
 	cmd+="${image_name}"
