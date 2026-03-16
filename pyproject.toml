@@ -21,7 +21,7 @@ dependencies = [
     "markupsafe==3.0.3",
     "numpy==2.2.6",
     "emoji==2.15.0",
-    "puremagic==2.0.0",
+    "puremagic==2.0.1",
     "audioop-lts==0.2.2",
     "psycopg[binary,pool]==3.3.3",
     "sudden-death==0.0.1",
