@@ -555,7 +555,7 @@ requires-dist = [
     { name = "pandas", specifier = "==2.3.3" },
     { name = "pillow", specifier = ">=7.1.2" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = "==3.3.3" },
-    { name = "puremagic", specifier = "==2.0.2" },
+    { name = "puremagic", specifier = "==2.1.0" },
     { name = "python-dotenv", specifier = "==1.2.2" },
     { name = "requests", specifier = "==2.32.5" },
     { name = "slack-bolt", specifier = "==1.27.0" },
@@ -1193,11 +1193,11 @@ wheels = [
 
 [[package]]
 name = "puremagic"
-version = "2.0.2"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/02/3b/0fe979ea1e2768758259f4d412b8cb26d9418e82d5fd10fdf7f00dc70e15/puremagic-2.0.2.tar.gz", hash = "sha256:3ebc28f9380e19dbd8179aeaa08e9692334d71194fc6e5865818770d2bee44c8", size = 1129446, upload-time = "2026-03-09T19:27:32.882Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/61/3c849a5bd7e07fc746f26ae56cf8a1b7b4c9bed12d68d9648cc903d14fbd/puremagic-2.1.0.tar.gz", hash = "sha256:06beb598183c625bf9bfed70016930c2d1299e138cd07ed5d6085a7c5deaab19", size = 1133014, upload-time = "2026-03-13T22:14:47.082Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/67/11071126b95fba5a9f9db2c8dfbe676880bcff88eded31c0381c9bf76f7a/puremagic-2.0.2-py3-none-any.whl", hash = "sha256:31dfca8c21a818b143c667e4f89c70a6bf22fc0505a4a666a9e9b85501f73a33", size = 65819, upload-time = "2026-03-09T19:27:31.491Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/40/58652e2f46cf849e9261a4edf06610e24f11c24fb1180d65716885020640/puremagic-2.1.0-py3-none-any.whl", hash = "sha256:9e613ffe9e6e33a0f651d4c0cfc1e16f86d2220edf137dfa3dd0ba2ba353f013", size = 67860, upload-time = "2026-03-13T22:14:45.686Z" },
 ]
 
 [[package]]
