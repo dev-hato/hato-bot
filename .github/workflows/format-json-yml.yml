@@ -29,11 +29,11 @@ jobs:
           persist-credentials: false
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
         with:
           app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: dev-hato/actions-format-json-yml@b77f69e2402f84dafed16e7c3954dbc812592ce3 # v0.0.99
+      - uses: dev-hato/actions-format-json-yml@e26bb75bab9841682281db76bb3f11b9f29a29f0 # v0.0.100
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
