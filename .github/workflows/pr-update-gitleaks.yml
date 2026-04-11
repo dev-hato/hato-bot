@@ -32,6 +32,7 @@ jobs:
           cache: npm
           node-version-file: package.json
       - run: npm install -g "$(yq -r '.packageManager' package.json)"
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm ci
