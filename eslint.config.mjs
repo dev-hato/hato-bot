@@ -1,9 +1,9 @@
-// https://github.com/super-linter/super-linter/blob/644fff4cf8f9c402888e29313139dd6e7cbce40e/TEMPLATES/eslint.config.mjs
+// https://github.com/super-linter/super-linter/blob/58ee821839c7e0d8979f759a8e5ca0d99bb50737/TEMPLATES/eslint.config.mjs
 import { defineConfig, globalIgnores } from "eslint/config";
 import n from "eslint-plugin-n";
 import prettier from "eslint-plugin-prettier";
 import globals from "globals";
-import jsoncParser from "jsonc-eslint-parser";
+import eslintPluginJsonc from "eslint-plugin-jsonc";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import pluginVue from "eslint-plugin-vue";
@@ -38,48 +38,18 @@ export default defineConfig([
       },
     },
   },
-  {
+  ...eslintPluginJsonc.configs["recommended-with-json"].map((config) => ({
+    ...config,
     files: ["**/*.json"],
-    extends: compat.extends("plugin:jsonc/recommended-with-json"),
-
-    languageOptions: {
-      parser: jsoncParser,
-      ecmaVersion: "latest",
-      sourceType: "script",
-
-      parserOptions: {
-        jsonSyntax: "JSON",
-      },
-    },
-  },
-  {
+  })),
+  ...eslintPluginJsonc.configs["recommended-with-jsonc"].map((config) => ({
+    ...config,
     files: ["**/*.jsonc"],
-    extends: compat.extends("plugin:jsonc/recommended-with-jsonc"),
-
-    languageOptions: {
-      parser: jsoncParser,
-      ecmaVersion: "latest",
-      sourceType: "script",
-
-      parserOptions: {
-        jsonSyntax: "JSONC",
-      },
-    },
-  },
-  {
+  })),
+  ...eslintPluginJsonc.configs["recommended-with-json5"].map((config) => ({
+    ...config,
     files: ["**/*.json5"],
-    extends: compat.extends("plugin:jsonc/recommended-with-json5"),
-
-    languageOptions: {
-      parser: jsoncParser,
-      ecmaVersion: "latest",
-      sourceType: "script",
-
-      parserOptions: {
-        jsonSyntax: "JSON5",
-      },
-    },
-  },
+  })),
   {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx"],
     extends: compat.extends("plugin:react/recommended"),
@@ -114,10 +84,6 @@ export default defineConfig([
       parser: tsParser,
       ecmaVersion: "latest",
       sourceType: "module",
-    },
-
-    rules: {
-      "n/no-missing-import": "off",
     },
   },
   ...pluginVue.configs["flat/recommended"],
