@@ -85,6 +85,10 @@ export default defineConfig([
       ecmaVersion: "latest",
       sourceType: "module",
     },
+
+    rules: {
+      "n/no-missing-import": "off",
+    },
   },
   ...pluginVue.configs["flat/recommended"],
 ]);
