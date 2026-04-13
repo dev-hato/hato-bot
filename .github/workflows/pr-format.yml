@@ -15,9 +15,7 @@ on:
     branches:
       - master
   workflow_dispatch:
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
