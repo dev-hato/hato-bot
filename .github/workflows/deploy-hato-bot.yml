@@ -56,7 +56,7 @@ jobs:
     needs: update-uv-version
     steps:
       - name: Start Workflow Telemetry
-        uses: dev-hato/actions-workflow-metrics@aac8cafcfe01b621be2bb42dcab34baa432c4e8e # v0.0.5
+        uses: dev-hato/actions-workflow-metrics@45b554e37e02b7459582c446b17124b31d13a5f7 # v0.0.6
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
