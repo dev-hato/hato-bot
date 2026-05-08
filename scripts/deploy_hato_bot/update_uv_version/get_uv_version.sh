@@ -8,13 +8,13 @@ docker pull "$image" >&2
 
 echo "Getting uv version from $image" >&2
 uv_version="$(
-  docker run --rm --entrypoint uv "$image" --version 2>&1 |
-    sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
+	docker run --rm --entrypoint uv "$image" --version 2>&1 |
+		sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
 )"
 
 if [ -z "$uv_version" ]; then
-  echo "Error: failed to parse uv version from $image" >&2
-  exit 1
+	echo "Error: failed to parse uv version from $image" >&2
+	exit 1
 fi
 
 echo "Detected uv version: $uv_version" >&2
@@ -22,17 +22,17 @@ echo "Detected uv version: $uv_version" >&2
 sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproject.toml
 
 match="$(
-  gh api --paginate /orgs/astral-sh/packages/container/uv/versions --jq '.[].metadata.container.tags[]' |
-    awk -v pattern="^${uv_version}-python3\\.14-.+-slim$" '
+	gh api --paginate /orgs/astral-sh/packages/container/uv/versions --jq '.[].metadata.container.tags[]' |
+		awk -v pattern="^${uv_version}-python3\\.14-.+-slim$" '
       $0 ~ pattern && first == "" { first = $0 }
       END { if (first != "") print first }
     '
 )"
 
 if [ -z "$match" ]; then
-  echo "Error: uv $uv_version に対応するDebian slimタグが見つかりません。" >&2
-  echo "利用可能なタグ: https://github.com/orgs/astral-sh/packages/container/package/uv" >&2
-  exit 1
+	echo "Error: uv $uv_version に対応するDebian slimタグが見つかりません。" >&2
+	echo "利用可能なタグ: https://github.com/orgs/astral-sh/packages/container/package/uv" >&2
+	exit 1
 fi
 
 image_name=ghcr.io/astral-sh/uv
