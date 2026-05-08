@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.11.8 (x86_64-unknown-linux-musl)"
+required-version = "0.11.8"
 [[tool.uv.index]]
 name = "pypi"
 url = "https://pypi.org/simple"

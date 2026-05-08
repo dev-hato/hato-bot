@@ -8,11 +8,12 @@ docker pull "$image" >&2
 
 echo "Getting uv version from $image" >&2
 uv_version="$(
-  docker run --rm --entrypoint uv "$image" --version 2>&1 | sed -e 's/^uv //g'
+  docker run --rm --entrypoint uv "$image" --version 2>&1 |
+    sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
 )"
 
 if [ -z "$uv_version" ]; then
-  echo "Error: failed to get uv version from $image" >&2
+  echo "Error: failed to parse uv version from $image" >&2
   exit 1
 fi
 
