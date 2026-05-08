@@ -23,7 +23,10 @@ sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproje
 
 match="$(
   gh api --paginate /orgs/astral-sh/packages/container/uv/versions --jq '.[].metadata.container.tags[]' |
-    awk "/^${uv_version}-python3\\.14-.+-slim$/ { print; exit }"
+    awk -v pattern="^${uv_version}-python3\\.14-.+-slim$" '
+      $0 ~ pattern && first == "" { first = $0 }
+      END { if (first != "") print first }
+    '
 )"
 
 if [ -z "$match" ]; then
