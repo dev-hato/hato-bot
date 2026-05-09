@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = "==3.14.3"
+requires-python = "==3.14.4"
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -1568,7 +1568,7 @@ wheels = [
 [[package]]
 name = "sudden-death"
 version = "0.0.1"
-source = { git = "https://github.com/dev-hato/sudden-death?branch=master#d2025c0967de1ae14a451b679c69dcf48eca0f94" }
+source = { git = "https://github.com/dev-hato/sudden-death?branch=master#9ef5bc833cc63df167b39098ae5f431032462bf3" }
 dependencies = [
     { name = "click" },
     { name = "pyperclip" },
