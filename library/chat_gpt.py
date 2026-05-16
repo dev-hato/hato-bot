@@ -4,10 +4,22 @@ from openai import OpenAI, RateLimitError
 
 import slackbot_settings as conf
 
-client = OpenAI(api_key=conf.OPENAI_API_KEY)
+_client: Optional[OpenAI] = None
+
+
+def _get_client() -> OpenAI:
+    global _client
+    client = _client
+
+    if client is None:
+        client = OpenAI(api_key=conf.OPENAI_API_KEY)
+        _client = client
+
+    return client
 
 
 def chat_gpt(message: str) -> Optional[str]:
+    client = _get_client()
     try:
         result = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -29,7 +41,7 @@ def chat_gpt(message: str) -> Optional[str]:
 
 
 def image_create(message: str) -> Optional[str]:
-    response = client.images.generate(prompt=message, n=1, size="512x512")
+    response = _get_client().images.generate(prompt=message, n=1, size="512x512")
 
     if response.data is None:
         return response.data
