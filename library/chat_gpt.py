@@ -19,9 +19,8 @@ def _get_client() -> OpenAI:
 
 
 def chat_gpt(message: str) -> Optional[str]:
-    client = _get_client()
     try:
-        result = client.chat.completions.create(
+        result = _get_client().chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
