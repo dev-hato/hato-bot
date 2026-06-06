@@ -31,13 +31,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - run: echo "PYTHON_VERSION=$(yq .project.requires-python pyproject.toml | sed -e s/==//g)" >> "$GITHUB_ENV"
       - name: Set up uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           enable-cache: true
-          python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/uv_install.sh"
