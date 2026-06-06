@@ -31,7 +31,7 @@ jobs:
         id: generate_token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
       - uses: dev-hato/actions-format-json-yml@4cb268945c4c97e2eac4f9f118faccda54a528be # v0.0.101
         with:
