@@ -4,10 +4,10 @@
 
 鳩botでは主に次のことができます。
 
-- 雨雲情報 ... `amesh [text]` で指定した地名・住所[text]の雨雲情報を画像で表示します。
-- 最新の地震情報 ... `eq` で最新の地震情報を3件表示します。
-- パワーワードの登録、表示 ... `text` で登録したパワーワードを表示します。
-- 突然の死吹き出しで整形 ... `>< [text]` で文字列[text]を「突然の死」吹き出しで整形します。
+- 雨雲情報 ... `amesh [text]`で指定した地名・住所[text]の雨雲情報を画像で表示します。
+- 最新の地震情報 ... `eq`で最新の地震情報を3件表示します。
+- パワーワードの登録、表示 ... `text`で登録したパワーワードを表示します。
+- 突然の死吹き出しで整形 ... `>< [text]`で文字列[text]を「突然の死」吹き出しで整形します。
 
 ![hato](./doc/img/hato-bot-run-1.png)
 
@@ -29,30 +29,30 @@
 ### fly.io上で動かす
 
 1. 事前にSlack API TokenとYahoo API Tokenを取得します。
-2. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#1-install-flyctl)に記載されている手順で `fly` コマンドをインストールします。
+2. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#1-install-flyctl)に記載されている手順で`fly`コマンドをインストールします。
 3. [Launch a demo app · Fly Docs](https://fly.io/docs/getting-started/launch-demo/#2-sign-up-or-sign-in)に記載されている手順でfly.ioへの登録・ログインを行います。
-4. [Dashboard · Fly](https://fly.io/dashboard/)内の `Billing` からクレジットカードを登録します (無料枠で使用する場合も必須)。
-5. [`yq` コマンドのGitHub](https://github.com/mikefarah/yq/?tab=readme-ov-file#install)に記載されている手順で `yq` コマンドをインストールします。
+4. [Dashboard · Fly](https://fly.io/dashboard/)内の`Billing`からクレジットカードを登録します (無料枠で使用する場合も必須)。
+5. [`yq`コマンドのGitHub](https://github.com/mikefarah/yq/?tab=readme-ov-file#install)に記載されている手順で`yq`コマンドをインストールします。
 6. このリポジトリをcloneします。
 
-   安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
+   安定版を使う場合は`-b master`を指定します。最新の開発版を使う場合は指定不要です。
 
    ```sh
    git clone -b master https://github.com/dev-hato/hato-bot.git
    cd hato-bot
    ```
 
-7. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+7. `.env`ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-   `.env.example` をコピーして使うとよいでしょう。
+   `.env.example`をコピーして使うとよいでしょう。
 
-   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+   MODEに`discord`を指定すると、DiscordのBotとして動作します。
 
-   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+   MODEに`misskey`を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
-8. `fly.toml` ファイルを作成します。
+8. `fly.toml`ファイルを作成します。
 
-   `fly.template.toml` をコピーし、TODOコメントに従って編集すると良いでしょう。
+   `fly.template.toml`をコピーし、TODOコメントに従って編集すると良いでしょう。
 
 9. 次のコマンドを実行してfly.ioへのデプロイを行います。
    ```sh
@@ -68,14 +68,14 @@
 
 3. このリポジトリをcloneします。
 
-   安定版を使う場合は `-b master` を指定します。最新の開発版を使う場合は指定不要です。
+   安定版を使う場合は`-b master`を指定します。最新の開発版を使う場合は指定不要です。
 
    ```sh
    git clone -b master https://github.com/dev-hato/hato-bot.git
    cd hato-bot
    ```
 
-   または [Release](https://github.com/dev-hato/hato-bot/releases/latest) から最新の安定版をダウンロードして解凍します。
+   または[Release](https://github.com/dev-hato/hato-bot/releases/latest)から最新の安定版をダウンロードして解凍します。
 
 4. 必要に応じてパッケージをインストールします。
 
@@ -85,13 +85,13 @@
    npm install
    ```
 
-5. `.env` ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
+5. `.env`ファイルを作成しSlack API Token、PostgreSQLの認証情報、Yahoo API Tokenなどを記述します。
 
-   `.env.example` をコピーして使うとよいでしょう
+   `.env.example`をコピーして使うとよいでしょう
 
-   MODEに `discord` を指定すると、DiscordのBotとして動作します。
+   MODEに`discord`を指定すると、DiscordのBotとして動作します。
 
-   MODEに `misskey` を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
+   MODEに`misskey`を指定すると、自分のいるサーバーからのメンションに限って反応するMisskeyのBotとして動作します。
 
 6. Docker composeで鳩botとPostgreSQLを起動します。
 
@@ -125,7 +125,7 @@ npm run lint
 
 #### コマンドの実行方法
 
-- 鳩botに対しコマンドを実行したいときは `post_command.py` を使うと便利です。
+- 鳩botに対しコマンドを実行したいときは`post_command.py`を使うと便利です。
 
   ```sh
   uv run post_command.py --channel {投稿先のチャンネルのchannel id} \
@@ -141,7 +141,7 @@ npm run lint
 
 #### コミットする前に行うこと
 
-開発に必要なパッケージと `pre-commit` のインストールを行います。
+開発に必要なパッケージと`pre-commit`のインストールを行います。
 
 ```sh
 uv python install
@@ -151,7 +151,7 @@ uv tool run pre-commit install
 
 #### 補足
 
-- コードを整形する場合は `uv tool run autopep8 --in-place --recursive .` を実行します。
+- コードを整形する場合は`uv tool run autopep8 --in-place --recursive .`を実行します。
 
 ## 鳩botコマンド一覧
 
@@ -163,12 +163,12 @@ uv tool run pre-commit install
 
 ## バージョンアップによる変更点
 
-- バージョンアップによる変更点については[CHANGELOG](./CHANGELOG.md) を参照してください。
+- バージョンアップによる変更点については[CHANGELOG](./CHANGELOG.md)を参照してください。
 
 ## バグ報告や機能の要望について
 
-- バグ報告や機能追加の要望がある場合は [Issues](https://github.com/dev-hato/hato-bot/issues) の
-  `New Issue` から報告をお願いします。
+- バグ報告や機能追加の要望がある場合は[Issues](https://github.com/dev-hato/hato-bot/issues)の
+  `New Issue`から報告をお願いします。
 
 - プルリクエストも大歓迎です。
 
