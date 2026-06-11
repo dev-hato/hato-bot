@@ -236,7 +236,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - uses: dev-hato/actions-update-dockle@a0c71c830be4d9b17009a390afbe13efd55838df # v0.0.137
+      - uses: dev-hato/actions-update-dockle@c1e0c40404a0a2cc9fa764fc8293eed93501ffb9 # v0.0.139
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
   dockle:
