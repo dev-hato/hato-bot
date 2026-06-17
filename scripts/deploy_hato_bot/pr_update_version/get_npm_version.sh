@@ -11,4 +11,4 @@ HATO_BOT_NPM_VERSION="$(docker run --rm --entrypoint npm "${image}" --version)"
 echo "hato-bot npm version:" "${HATO_BOT_NPM_VERSION}"
 NPM_PATTERN_PACKAGE="s/\"npm\": \".*\"/\"npm\": \"~${HATO_BOT_NPM_VERSION} || ^${DEPENDABOT_NPM_VERSION}\"/g"
 sed -i -e "${NPM_PATTERN_PACKAGE}" package.json
-npm install --package-lock-only
+npm install --package-lock-only --ignore-scripts --no-audit --no-fund

@@ -35,7 +35,7 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
-    npm install && \
+    npm ci && \
     apt-get remove -y gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \

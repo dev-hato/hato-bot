@@ -6,8 +6,10 @@ services:
       context: .
       target: commit-hash
       cache_from:
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:buildcache
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
+      cache_to:
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:buildcache,mode=max
       args:
         BUILDKIT_INLINE_CACHE: 1
       x-bake:

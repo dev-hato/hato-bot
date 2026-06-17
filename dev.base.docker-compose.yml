@@ -3,10 +3,14 @@ services:
   hato-bot:
     build:
       cache_from:
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:buildcache
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:buildcache
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:buildcache
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
+      cache_to:
+        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:buildcache,mode=max
       args:
-        - ENV=dev
+        ENV: dev
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}

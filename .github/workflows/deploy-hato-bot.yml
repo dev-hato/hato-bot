@@ -59,7 +59,7 @@ jobs:
         uses: dev-hato/actions-workflow-metrics@0243b728a83ee9006c8ad08cd338208af312fe71 # v0.0.7
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
       - name: Set .env
         run: cp .env.example .env
@@ -227,7 +227,7 @@ jobs:
         run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm install --package-lock-only
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
