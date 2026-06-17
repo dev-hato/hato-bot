@@ -8,10 +8,8 @@ services:
       dockerfile: ./Dockerfile
       context: postgres
       cache_from:
-        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:buildcache
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
-      cache_to:
-        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:buildcache,mode=max
       args:
         BUILDKIT_INLINE_CACHE: 1
       x-bake:
@@ -34,12 +32,10 @@ services:
       dockerfile: ./Dockerfile
       context: .
       cache_from:
-        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:buildcache
-        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:buildcache
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
-      cache_to:
-        - type=registry,ref=ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:buildcache,mode=max
       args:
         BUILDKIT_INLINE_CACHE: 1
       x-bake:
