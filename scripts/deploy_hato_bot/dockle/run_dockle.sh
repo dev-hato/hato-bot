@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-cp .env.example .env
+repository="${REPOSITORY:-dev-hato/hato-bot}"
 export TAG_NAME="${HEAD_REF//\//-}"
 dockle_version="$(cat .dockle-version)"
 curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${dockle_version}/dockle_${dockle_version}_Linux-64bit.deb"
 sudo dpkg -i dockle.deb
-docker compose pull
-docker compose up -d
+images=(
+	"ghcr.io/${repository}/postgres:${TAG_NAME}"
+	"ghcr.io/${repository}/hato-bot:${TAG_NAME}"
+)
 
-for image_name in $(docker compose images | awk 'OFS=":" {print $2,$3}' | tail -n +2); do
+for image_name in "${images[@]}"; do
+	docker pull "${image_name}"
+done
+
+for image_name in "${images[@]}"; do
 	cmd="dockle --exit-code 1 "
 
 	if [[ "${image_name}" =~ "postgres" ]]; then

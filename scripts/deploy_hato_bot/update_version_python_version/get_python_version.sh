@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-cp .env.example .env
+repository="${REPOSITORY:-dev-hato/hato-bot}"
 export TAG_NAME="${HEAD_REF//\//-}"
-docker compose pull
-DOCKER_CMD="python --version 2>&1 | sed -e 's/^Python //g'"
-python_version=$(docker compose run hato-bot sh -c "${DOCKER_CMD}")
+image="ghcr.io/${repository}/hato-bot:${TAG_NAME}"
+
+docker pull "${image}"
+python_version="$(docker run --rm --entrypoint python "${image}" --version 2>&1 | sed -e 's/^Python //g')"
 echo "Python version:" "${python_version}"
 sed -i -e "s/requires-python = \"==.*\"/requires-python = \"==${python_version}\"/g" pyproject.toml

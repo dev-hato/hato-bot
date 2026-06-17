@@ -96,6 +96,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev)
         uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
         env:
@@ -104,6 +105,7 @@ jobs:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
           source: .
+          targets: hato-bot
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
@@ -124,6 +126,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev) (latest)
         uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
         if: ${{ github.event_name == 'release' }}
@@ -133,6 +136,7 @@ jobs:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
           source: .
+          targets: hato-bot
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -173,6 +177,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -221,7 +227,7 @@ jobs:
         run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm install
+        run: npm install --package-lock-only
       - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
