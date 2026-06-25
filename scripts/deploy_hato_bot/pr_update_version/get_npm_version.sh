@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-DOCKER_CMD="npm --version"
 DEPENDABOT_NPM_VERSION="10.9.3"
-cp .env.example .env
+repository="${REPOSITORY:-dev-hato/hato-bot}"
 export TAG_NAME="${HEAD_REF//\//-}"
-docker compose pull
-HATO_BOT_NPM_VERSION="$(docker compose run hato-bot sh -c "${DOCKER_CMD}")"
+image="ghcr.io/${repository}/hato-bot:${TAG_NAME}"
+
+docker pull "${image}"
+HATO_BOT_NPM_VERSION="$(docker run --rm --entrypoint npm "${image}" --version)"
 echo "hato-bot npm version:" "${HATO_BOT_NPM_VERSION}"
 NPM_PATTERN_PACKAGE="s/\"npm\": \".*\"/\"npm\": \"~${HATO_BOT_NPM_VERSION} || ^${DEPENDABOT_NPM_VERSION}\"/g"
 sed -i -e "${NPM_PATTERN_PACKAGE}" package.json
-npm install
+npm install --package-lock-only --ignore-scripts --no-audit --no-fund

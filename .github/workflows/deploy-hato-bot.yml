@@ -59,7 +59,7 @@ jobs:
         uses: dev-hato/actions-workflow-metrics@0243b728a83ee9006c8ad08cd338208af312fe71 # v0.0.7
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
       - name: Set .env
         run: cp .env.example .env
@@ -96,6 +96,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev)
         uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
         env:
@@ -104,6 +105,7 @@ jobs:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
           source: .
+          targets: hato-bot
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
@@ -124,6 +126,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev) (latest)
         uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
         if: ${{ github.event_name == 'release' }}
@@ -133,6 +136,7 @@ jobs:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
           source: .
+          targets: hato-bot
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
@@ -144,7 +148,6 @@ jobs:
       contents: write
       pull-requests: write
     env:
-      DOCKER_CONTENT_TRUST: 1
       REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
@@ -173,6 +176,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -221,7 +226,7 @@ jobs:
         run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm install
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -245,7 +250,6 @@ jobs:
       - update-dockle
       - deploy_docker_image
     env:
-      DOCKER_CONTENT_TRUST: 1
       REPOSITORY: ${{github.repository}}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
