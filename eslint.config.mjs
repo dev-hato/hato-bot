@@ -1,4 +1,4 @@
-// https://github.com/super-linter/super-linter/blob/58ee821839c7e0d8979f759a8e5ca0d99bb50737/TEMPLATES/eslint.config.mjs
+// https://github.com/super-linter/super-linter/blob/19a4b8c7dddfaf934ced443c7deed5215f8c1d07/TEMPLATES/eslint.config.mjs
 import { defineConfig, globalIgnores } from "eslint/config";
 import n from "eslint-plugin-n";
 import prettier from "eslint-plugin-prettier";
@@ -69,12 +69,14 @@ export default defineConfig([
   {
     files: ["**/*.ts", "**/*.cts", "**/*.mts", "**/*.tsx"],
 
-    extends: compat.extends(
-      "plugin:@typescript-eslint/recommended",
-      "plugin:n/recommended",
-      "plugin:react/recommended",
-      "prettier",
-    ),
+    extends: [
+      n.configs["flat/recommended"],
+      compat.extends(
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "prettier",
+      ),
+    ],
 
     plugins: {
       "@typescript-eslint": typescriptEslint,
