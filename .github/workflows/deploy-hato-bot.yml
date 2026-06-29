@@ -38,7 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-uv-version
@@ -164,7 +164,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version-pyproject
@@ -198,7 +198,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -227,7 +227,7 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - uses: dev-hato/actions-diff-pr-management@5cd3792bc98beed11cda90898bc81af6bfa199af # v2.2.5
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
