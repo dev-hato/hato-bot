@@ -191,6 +191,8 @@ jobs:
           cache: npm
           node-version-file: package.json
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Get npm version
         id: get_npm_version
@@ -222,6 +224,8 @@ jobs:
         with:
           cache: npm
           node-version-file: package.json
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
