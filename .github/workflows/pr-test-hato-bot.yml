@@ -24,6 +24,7 @@ jobs:
         uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           enable-cache: true
+      - uses: flatt-security/setup-takumi-guard-pypi@733047c120b6377fa05fb77f714df8d8cd3a41a9 # v1.0.1
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/uv_install.sh"
       - name: Test
