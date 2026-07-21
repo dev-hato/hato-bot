@@ -10,7 +10,7 @@ dependencies = [
     "opencv-python==5.0.0.93",
     "slack-bolt==1.29.0",
     "slack-sdk==3.43.0",
-    "gitpython==3.1.51",
+    "gitpython==3.1.52",
     "pandas==2.3.3",
     "matplotlib==3.11.0",
     "openai==2.45.0",
