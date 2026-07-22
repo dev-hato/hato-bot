@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.11.8-python3.14-trixie-slim@sha256:b3b7ad909281e78785cbc676c8c8b45816c31638b36dc0cbd9e51725f2f0399c AS base
+FROM ghcr.io/astral-sh/uv:0.11.12-python3.14-trixie-slim@sha256:4ec58725d2e4acfb8eccf923f9c3201f858f8ef6414deeeb8fe5a6ecc2fa5331 AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
