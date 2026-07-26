@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-image='ghcr.io/dependabot/dependabot-updater-uv:latest'
+image=$(curl https://raw.githubusercontent.com/github/dependabot-action/refs/heads/main/docker/containers.json | yq .uv)
 
 echo "Pulling $image" >&2
 docker pull "$image" >&2
