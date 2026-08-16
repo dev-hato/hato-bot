@@ -637,7 +637,7 @@ dev = [
     { name = "pre-commit", specifier = "==4.6.1" },
     { name = "pylint", specifier = "==4.0.6" },
     { name = "requests-mock", specifier = "==1.12.1" },
-    { name = "sqlfluff", specifier = "==4.2.2" },
+    { name = "sqlfluff", specifier = "==4.3.0" },
     { name = "tomlkit", specifier = "==0.15.1" },
 ]
 
@@ -1573,7 +1573,7 @@ wheels = [
 
 [[package]]
 name = "sqlfluff"
-version = "4.2.2"
+version = "4.3.0"
 source = { registry = "https://pypi.flatt.tech/simple/" }
 dependencies = [
     { name = "chardet" },
@@ -1588,9 +1588,9 @@ dependencies = [
     { name = "tblib" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://pypi.flatt.tech/files/packages/af/a3/fa28d6db93930f349a7c99774ae7b4b9c85865a780f98ef1ddeb52abdf5a/sqlfluff-4.2.2.tar.gz", hash = "sha256:0ee2bcd5d704d0bef56bf80b8f0da9b519ab3e9e0bb1d5e6e4b7e3944d3f5606", size = 1017040, upload-time = "2026-06-04T15:36:53.272Z" }
+sdist = { url = "https://pypi.flatt.tech/files/packages/c8/06/c675066797f91a77d456bc15375a0a8c9b4765f1e66db639655772a928da/sqlfluff-4.3.0.tar.gz", hash = "sha256:aa647b3721112f1aca581efe8eaa815a332ae214610a0946592f98a19ef1e8cb", size = 1068771, upload-time = "2026-08-07T09:01:19.317Z" }
 wheels = [
-    { url = "https://pypi.flatt.tech/files/packages/3a/ac/227298acc7230cdd56feb108b0f3a42e47f2e0d58bee50e35cd5facab7de/sqlfluff-4.2.2-py3-none-any.whl", hash = "sha256:62dbfbcd33728351043d216767ec017754a24cd8fb624e8321f61a79988b4fa7", size = 1005710, upload-time = "2026-06-04T15:36:51.661Z" },
+    { url = "https://pypi.flatt.tech/files/packages/79/be/0be38ce154b9d798bb00b5ce65a3ad0e1ae2bc9419fcd8e3c773c2b80c70/sqlfluff-4.3.0-py3-none-any.whl", hash = "sha256:582e12af5101bd1c5bc120cb4a6942dadcfe5e5b1e01406f220dd08f5b3f31dd", size = 1051485, upload-time = "2026-08-07T09:01:17.139Z" },
 ]
 
 [[package]]
