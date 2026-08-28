@@ -2,7 +2,7 @@
 name = "hato-bot"
 version = "3.0.5"
 description = "愛嬌のあるBot"
-requires-python = "==3.14.6"
+requires-python = "==3.14.7"
 dependencies = [
     "python-dotenv==1.2.3",
     "requests==2.34.2",
@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.uv]
-required-version = "0.12.1"
+required-version = "0.12.5"
 [[tool.uv.index]]
 url = "https://pypi.flatt.tech/simple/"
 default = true
