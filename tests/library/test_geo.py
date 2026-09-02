@@ -5,14 +5,14 @@ amesh.pyのテスト
 import json
 import unittest
 
-import requests_mock
+import responses
 
 import slackbot_settings as conf
 from library.geo import get_gsi_geo_data, get_yahoo_geo_data
 
 
 def set_yahoo_mock(
-    place: str, mocker: requests_mock.Mocker, is_zip_code: bool, content=None
+    place: str, mocker: responses.RequestsMock, is_zip_code: bool, content=None
 ):
     """
     Mockを設定する
@@ -32,7 +32,7 @@ def set_yahoo_mock(
     else:
         url = "https://map.yahooapis.jp/geocode/V1/geoCoder"
 
-    mocker.get(url + "?" + query, content=json.dumps(content).encode())
+    mocker.get(url + "?" + query, body=json.dumps(content).encode())
 
 
 class TestGetYahooGeoData(unittest.TestCase):
@@ -42,7 +42,7 @@ class TestGetYahooGeoData(unittest.TestCase):
 
     def test_valid_place(self):
         """正しい地名を指定した場合"""
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "長野"
             result = {
                 "place": "長野県長野市",
@@ -64,7 +64,7 @@ class TestGetYahooGeoData(unittest.TestCase):
 
     def test_valid_zip_code(self):
         """正しい郵便番号を指定した場合"""
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "380-8512"
             result = {
                 "place": "長野県長野市大字鶴賀緑町１６１３番地",
@@ -86,13 +86,13 @@ class TestGetYahooGeoData(unittest.TestCase):
 
     def test_invalid_place(self):
         """正しくない地名を指定した場合"""
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "hoge"
             set_yahoo_mock(place, mocker, False)
             self.assertIsNone(get_yahoo_geo_data(place))
 
 
-def set_gsi_mock(place: str, mocker: requests_mock.Mocker, content=None):
+def set_gsi_mock(place: str, mocker: responses.RequestsMock, content=None):
     """
     国土地理院用のMockを設定する
     :param place: 地名
@@ -104,7 +104,7 @@ def set_gsi_mock(place: str, mocker: requests_mock.Mocker, content=None):
 
     mocker.get(
         "https://msearch.gsi.go.jp/address-search/AddressSearch" + "?q=" + place,
-        content=json.dumps(content).encode(),
+        body=json.dumps(content).encode(),
     )
 
 
@@ -116,7 +116,7 @@ class TestGetGsiGeoData(unittest.TestCase):
     def test_valid_place(self):
         """完全一致のある地名を指定した場合"""
 
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "高ボッチ山"
             result = {
                 "place": "高ボッチ山",
@@ -179,7 +179,7 @@ class TestGetGsiGeoData(unittest.TestCase):
     def test_valid_full_width_place(self):
         """完全一致のある地名 (APIからの取得結果は全角) を指定した場合"""
 
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "岡谷JCT"
             result = {
                 "place": "岡谷JCT",
@@ -221,7 +221,7 @@ class TestGetGsiGeoData(unittest.TestCase):
 
     def test_invalid_place(self):
         """正しくない地名を指定した場合"""
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             place = "hoge"
             set_gsi_mock(place, mocker)
             self.assertIsNone(get_gsi_geo_data(place))
