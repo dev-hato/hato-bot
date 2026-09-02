@@ -183,7 +183,9 @@ class TestAmesh(unittest.TestCase):
         self.assertEqual(None, actual)
         return client1
 
-    def amesh_upload_png_test(self, mocker: responses.RequestsMock, place: str, msg: str):
+    def amesh_upload_png_test(
+        self, mocker: responses.RequestsMock, place: str, msg: str
+    ):
         """
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
         :param mocker requestsのMock
