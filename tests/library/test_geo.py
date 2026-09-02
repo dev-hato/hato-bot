@@ -25,14 +25,17 @@ def set_yahoo_mock(
         content = {}
 
     params = {"appid": conf.YAHOO_API_TOKEN, "query": place, "output": "json"}
-    query = "&".join([f"{k}={v}" for k, v in params.items()])
 
     if is_zip_code:
         url = "https://map.yahooapis.jp/search/zip/V1/zipCodeSearch"
     else:
         url = "https://map.yahooapis.jp/geocode/V1/geoCoder"
 
-    mocker.get(url + "?" + query, body=json.dumps(content).encode())
+    mocker.get(
+        url,
+        body=json.dumps(content).encode(),
+        match=[responses.matchers.query_param_matcher(params)],
+    )
 
 
 class TestGetYahooGeoData(unittest.TestCase):
@@ -103,8 +106,9 @@ def set_gsi_mock(place: str, mocker: responses.RequestsMock, content=None):
         content = {}
 
     mocker.get(
-        "https://msearch.gsi.go.jp/address-search/AddressSearch" + "?q=" + place,
+        "https://msearch.gsi.go.jp/address-search/AddressSearch",
         body=json.dumps(content).encode(),
+        match=[responses.matchers.query_param_matcher({"q": place})],
     )
 
 

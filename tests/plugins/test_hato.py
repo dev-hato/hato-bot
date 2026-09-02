@@ -336,10 +336,10 @@ class TestAltitude(unittest.TestCase):
             "coordinates": ",".join(reversed(coordinates)),
             "output": "json",
         }
-        query = "&".join([f"{k}={v}" for k, v in params.items()])
         mocker.get(
-            "https://map.yahooapis.jp/alt/V1/getAltitude?" + query,
+            "https://map.yahooapis.jp/alt/V1/getAltitude",
             body=json.dumps(content).encode(),
+            match=[responses.matchers.query_param_matcher(params)],
         )
         # pylint: disable=E1121
         actual = altitude(client1, place)
