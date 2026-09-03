@@ -86,7 +86,7 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     for finder in sys.meta_path:
         try:
             package_spec = finder.find_spec(package_name, ".")
-        except (AttributeError, ValueError, ModuleNotFoundError):
+        except AttributeError, ValueError, ModuleNotFoundError:
             pass
 
         if package_spec:
@@ -95,7 +95,7 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
     if package_spec is None:
         try:
             package_spec = importlib.util.find_spec(package_name)
-        except (AttributeError, ValueError, ModuleNotFoundError):
+        except AttributeError, ValueError, ModuleNotFoundError:
             pass
 
     # パッケージ情報がないならばpyproject.tomlによってインストールされたものと判定する

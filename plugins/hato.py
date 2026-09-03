@@ -443,7 +443,7 @@ def version():
         try:
             repo = Repo()
             str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
-        except (InvalidGitRepositoryError, GitCommandNotFound):
+        except InvalidGitRepositoryError, GitCommandNotFound:
             pass
 
     str_ver += (
