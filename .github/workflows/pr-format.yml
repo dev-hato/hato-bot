@@ -49,7 +49,7 @@ jobs:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
       # formatする
-      # --exit-codeをつけることで、autopep8内でエラーが起きれば1、差分があれば2のエラーステータスコードが返ってくる。正常時は0が返る
+      # blackとisortでformatをかけ、トラッキング対象のファイルに差分があればformat.sh内のgit diff --exit-codeで終了コード1を返す。正常時は0が返る
       - name: Format files
         id: format
         if: github.event_name != 'pull_request' || github.event.action != 'closed'

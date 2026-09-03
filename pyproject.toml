@@ -29,7 +29,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "autopep8==2.3.2",
+  "black==26.5.1",
   "responses==0.26.3",
   "pylint==4.0.7",
   "sqlfluff==4.3.0",

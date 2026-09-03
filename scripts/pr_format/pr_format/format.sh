@@ -11,5 +11,5 @@ if [ "$(yq .tool.uv.sources.sudden-death.git pyproject.toml)" != 'null' ]; then
 	uv lock --upgrade-package sudden-death
 fi
 
-uv tool run autopep8 --exit-code --in-place --recursive .
+uv tool run black .
 uv tool run isort --sp .isort.cfg .
