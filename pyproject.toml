@@ -37,7 +37,7 @@ dev = [
   "flake8==7.3.0",
   "isort==8.0.1",
   "pre-commit==4.6.2",
-  "importlib-metadata==9.0.0",
+  "importlib-metadata==9.0.1",
   "tomlkit==0.15.1",
 ]
 
