@@ -3,6 +3,7 @@
 """
 localからコマンドを実行するためのスクリプト
 """
+
 import argparse
 
 import requests

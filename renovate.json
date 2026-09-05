@@ -1,6 +1,20 @@
 {
   "extends": ["github>dev-hato/renovate-config"],
+  "ignoreDeps": [
+    "node-fetch",
+    "sudden-death",
+    "mypy",
+    "numpy",
+    "click",
+    "pandas",
+    "ghcr.io/astral-sh/uv",
+    "python"
+  ],
   "packageRules": [
+    {
+      "groupName": "slack",
+      "matchPackageNames": ["slack-bolt", "slack-sdk"]
+    },
     {
       "matchPackageNames": ["postgres"],
       "matchUpdateTypes": ["major"],

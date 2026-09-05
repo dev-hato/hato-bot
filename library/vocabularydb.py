@@ -2,63 +2,66 @@
 パワーワード機能
 """
 
-import psycopg2
+import psycopg
 
-from library.database import Database
+import slackbot_settings as conf
 
 
-class VocabularyDatabase(Database):
-    """パワーワードを扱うDBを操作するためのクラス"""
-
-    def get_word_list(self):
-        """パワーワードの一覧をDBから取得する"""
-        with self.conn.cursor() as cursor:
+def get_word_list():
+    """パワーワードの一覧をDBから取得する"""
+    with psycopg.connect(conf.DB_URL) as conn:
+        with conn.cursor() as cursor:
             try:
                 cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
                 results = cursor.fetchall()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(select_list).")
 
-        return results
+    return results
 
-    def get_random_word(self):
-        """パワーワードをDBからランダムで取得する"""
 
-        with self.conn.cursor() as cursor:
+def get_random_word():
+    """パワーワードをDBからランダムで取得する"""
+
+    with psycopg.connect(conf.DB_URL) as conn:
+        with conn.cursor() as cursor:
             try:
                 cursor.execute("SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
                 results = cursor.fetchone()
-            except psycopg2.Error:
+            except psycopg.Error:
                 print("Can not execute sql(select_random).")
 
-        return results
+    return results
 
-    def add_word(self, word: str) -> None:
-        """パワーワードをDBに登録する"""
 
-        with self.conn.cursor() as cursor:
+def add_word(word: str) -> None:
+    """パワーワードをDBに登録する"""
+
+    with psycopg.connect(conf.DB_URL) as conn:
+        with conn.cursor() as cursor:
             try:
                 cursor.execute("INSERT INTO vocabulary(word) VALUES(%s);", (word,))
-                self.conn.commit()
-            except psycopg2.Error:
+                conn.commit()
+            except psycopg.Error:
                 print("Can not execute sql(add).")
 
-    def delete_word(self, word_id: int) -> None:
-        """指定したidのパワーワードをDBから削除する"""
 
-        with self.conn.cursor() as cursor:
+def delete_word(word_id: int) -> None:
+    """指定したidのパワーワードをDBから削除する"""
+
+    with psycopg.connect(conf.DB_URL) as conn:
+        with conn.cursor() as cursor:
             try:
                 cursor.execute("DELETE FROM vocabulary WHERE no = %s;", (word_id,))
-                self.conn.commit()
-            except psycopg2.Error:
+                conn.commit()
+            except psycopg.Error:
                 print("Can not execute sql(delete).")
 
 
 def get_vocabularys():
     """一覧を表示する"""
 
-    with VocabularyDatabase() as v_d:
-        result = v_d.get_word_list()
+    result = get_word_list()
 
     if len(result) > 0:
         slack_msg = "```"
@@ -79,8 +82,7 @@ def get_vocabularys():
 def add_vocabulary(msg: str) -> None:
     """追加する"""
 
-    with VocabularyDatabase() as v_d:
-        v_d.add_word(msg)
+    add_word(msg)
 
 
 def show_vocabulary(word_id: int) -> str:
@@ -88,8 +90,7 @@ def show_vocabulary(word_id: int) -> str:
 
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
-    with VocabularyDatabase() as v_d:
-        result = v_d.get_word_list()
+    result = get_word_list()
 
     cnt = 1
     for row in result:
@@ -106,8 +107,7 @@ def show_random_vocabulary() -> str:
 
     slack_msg = "鳩は唐揚げ！！"
 
-    with VocabularyDatabase() as v_d:
-        result = v_d.get_random_word()
+    result = get_random_word()
 
     if result is not None and len(result) > 0:
         slack_msg = result[0]
@@ -120,16 +120,15 @@ def delete_vocabulary(word_id: int) -> str:
 
     slack_msg = "該当する番号は見つからなかったっぽ!"
 
-    with VocabularyDatabase() as v_d:
-        result = v_d.get_word_list()
-        cnt = 1
-        for row in result:
-            row_id, _ = row
-            if cnt == word_id:
-                delete_id = row_id
-                v_d.delete_word(delete_id)
-                slack_msg = "忘れたっぽ!"
-                break
-            cnt += 1
+    result = get_word_list()
+    cnt = 1
+    for row in result:
+        row_id, _ = row
+        if cnt == word_id:
+            delete_id = row_id
+            delete_word(delete_id)
+            slack_msg = "忘れたっぽ!"
+            break
+        cnt += 1
 
     return slack_msg

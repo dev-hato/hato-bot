@@ -10,11 +10,39 @@ on:
       - synchronize
       - reopened
       - closed
+    branches:
+      - develop
+      - master
   push:
     branches:
       - master
       - develop
+permissions: {}
 jobs:
+  update-uv-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Get uv version
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-uv-version
+          pr-title-prefix: uvのバージョンを直してあげたよ！
   deploy_docker_image:
     runs-on: ubuntu-latest
     env:
@@ -25,23 +53,27 @@ jobs:
       contents: read
       packages: write
     if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
+    needs: update-uv-version
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - name: Start Workflow Telemetry
+        uses: dev-hato/actions-workflow-metrics@c6b748e52274db07791b2117b97315c38660e333 # v0.0.8
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          persist-credentials: false
       - name: Set .env
         run: cp .env.example .env
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3.2.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
       - run: echo "TAG_NAME=${HEAD_REF//\//-}" >> "$GITHUB_ENV"
         env:
           HEAD_REF: ${{github.head_ref}}
@@ -49,84 +81,94 @@ jobs:
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: build.docker-compose.yml
+          source: .
       - name: Build and push (main)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml
+          source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
+          source: .
+          targets: hato-bot
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: build.docker-compose.yml
+          source: .
       - name: Build and push (main) (latest)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml
+          source: .
+          targets: postgres,hato-bot
       - name: Build and push (dev) (latest)
-        uses: docker/bake-action@e626c7390c9f95508a135a89e65ec698e061fb2a # v5.8.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         if: ${{ github.event_name == 'release' }}
         env:
           DOCKER_CONTENT_TRUST: 1
         with:
           push: true
           files: docker-compose.yml,dev.base.docker-compose.yml
+          source: .
+          targets: hato-bot
       - name: Start docker
         env:
           DOCKER_CONTENT_TRUST: 1
         run: docker compose up -d --wait
-  # .python-version をDockerイメージと同期させる
-  update-version-python-version:
+  # pyproject.toml をDockerイメージと同期させる
+  update-version-pyproject:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     env:
-      DOCKER_CONTENT_TRUST: 1
       REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Get Python version
         id: get_python_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@7cc8ab103917849f6995064afae9f4cbcfd009ae # v1.1.13
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          branch-name-prefix: fix-version-python-version
-          pr-title-prefix: .python-versionを直してあげたよ！
+          branch-name-prefix: fix-version-pyproject
+          pr-title-prefix: pyproject.tomlを直してあげたよ！
   pr-update-version:
     runs-on: ubuntu-latest
     needs: deploy_docker_image
@@ -134,24 +176,31 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      REPOSITORY: ${{github.repository}}
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
           node-version-file: package.json
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        uses: flatt-security/setup-takumi-guard-npm@6d4182745c1e474c35a023573c2612c085be45a4 # v1.2.0
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Get npm version
         id: get_npm_version
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
-      - uses: dev-hato/actions-diff-pr-management@7cc8ab103917849f6995064afae9f4cbcfd009ae # v1.1.13
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-version
@@ -161,23 +210,28 @@ jobs:
     runs-on: ubuntu-latest
     needs: pr-update-version
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           # ここでsubmodule持ってくるとdetached headにcommitして死ぬ
           # submodule: 'recursive'
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
           node-version-file: package.json
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        uses: flatt-security/setup-takumi-guard-npm@6d4182745c1e474c35a023573c2612c085be45a4 # v1.2.0
+      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
-      - uses: dev-hato/actions-diff-pr-management@7cc8ab103917849f6995064afae9f4cbcfd009ae # v1.1.13
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - uses: dev-hato/actions-diff-pr-management@571be0d9572aaf77cdd315c12d6e73a1112910d7 # v2.2.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: npm
@@ -185,12 +239,13 @@ jobs:
   update-dockle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: dev-hato/actions-update-dockle@c826f84c72bdedef7eb84c90d4370405b984f0dc # v0.0.97
+          persist-credentials: false
+      - uses: dev-hato/actions-update-dockle@72e192b7260c089ab406d44944ca94f928b124f6 # v0.0.144
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
   dockle:
@@ -199,10 +254,11 @@ jobs:
       - update-dockle
       - deploy_docker_image
     env:
-      DOCKER_CONTENT_TRUST: 1
       REPOSITORY: ${{github.repository}}
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/dockle/run_dockle.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
@@ -210,14 +266,14 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     needs:
-      - update-version-python-version
+      - update-version-pyproject
       - pr-check-npm
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-python-version.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
         run: exit 1
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

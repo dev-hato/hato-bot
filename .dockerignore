@@ -5,3 +5,4 @@ __pycache__/
 .mypy_cache/
 node_modules/
 docker-compose.yml
+.venv/
