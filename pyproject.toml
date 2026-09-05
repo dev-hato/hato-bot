@@ -31,7 +31,7 @@ dependencies = [
 dev = [
   "black==26.5.1",
   "responses==0.26.3",
-  "pylint==4.0.7",
+  "pylint==4.0.8",
   "sqlfluff==4.3.0",
   "mypy==2.1.0",
   "flake8==7.3.0",
