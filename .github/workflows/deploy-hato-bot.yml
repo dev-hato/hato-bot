@@ -80,32 +80,33 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
       - run: echo 'TAG_NAME=${{ github.event.release.tag_name }}' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
-      - name: Build and push (build)
-        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
-        env:
-          DOCKER_CONTENT_TRUST: 1
-        with:
-          push: true
-          files: build.docker-compose.yml
-          source: .
-      - name: Build and push (main)
-        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
-        env:
-          DOCKER_CONTENT_TRUST: 1
-        with:
-          push: true
-          files: docker-compose.yml
-          source: .
-          targets: postgres,hato-bot
-      - name: Build and push (dev)
-        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
-        env:
-          DOCKER_CONTENT_TRUST: 1
-        with:
-          push: true
-          files: docker-compose.yml,dev.base.docker-compose.yml
-          source: .
-          targets: hato-bot
+      - parallel:
+          - name: Build and push (build)
+            uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
+            env:
+              DOCKER_CONTENT_TRUST: 1
+            with:
+              push: true
+              files: build.docker-compose.yml
+              source: .
+          - name: Build and push (main)
+            uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
+            env:
+              DOCKER_CONTENT_TRUST: 1
+            with:
+              push: true
+              files: docker-compose.yml
+              source: .
+              targets: postgres,hato-bot
+          - name: Build and push (dev)
+            uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
+            env:
+              DOCKER_CONTENT_TRUST: 1
+            with:
+              push: true
+              files: docker-compose.yml,dev.base.docker-compose.yml
+              source: .
+              targets: hato-bot
       - run: echo 'TAG_NAME=latest' >> "$GITHUB_ENV"
         if: ${{ github.event_name == 'release' }}
       - name: Build and push (build) (latest)
