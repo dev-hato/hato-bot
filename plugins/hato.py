@@ -2,7 +2,6 @@
 
 """hatobotのチャット部分"""
 
-import imghdr
 import json
 import os
 import re
@@ -13,9 +12,11 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import puremagic
 import requests
 from git import Repo
 from git.exc import GitCommandNotFound, InvalidGitRepositoryError
+from openai import RateLimitError
 
 import slackbot_settings as conf
 from library.chat_gpt import chat_gpt, image_create
@@ -90,7 +91,7 @@ def action(plugin_name: str, with_client: bool = False):
 def split_command(command: str, maxsplit: int = 0) -> List[str]:
     """コマンドを分離する"""
 
-    return re.split(r"\s+", command.strip().strip("　"), maxsplit)
+    return re.split(r"\s+", command.strip().strip("　"), maxsplit=maxsplit)
 
 
 @action("help")
@@ -181,14 +182,12 @@ def earth_quake(client: BaseClient):
                 map_img.save(map_file, format="PNG")
 
                 filename = ["map"]
-                ext = imghdr.what(map_file.name)
+                ext = puremagic.from_file(map_file.name)
 
                 if ext:
                     filename.append(ext)
 
-                client.upload(
-                    file=map_file.name, filename=os.path.extsep.join(filename)
-                )
+                client.upload(file=map_file.name, filename="".join(filename))
 
 
 @action("textlint")
@@ -281,14 +280,12 @@ def amesh(client: BaseClient, place: str):
         amesh_img.save(weather_map_file, format="PNG")
 
         filename = ["amesh"]
-        ext = imghdr.what(weather_map_file.name)
+        ext = puremagic.from_file(weather_map_file.name)
 
         if ext:
             filename.append(ext)
 
-        client.upload(
-            file=weather_map_file.name, filename=os.path.extsep.join(filename)
-        )
+        client.upload(file=weather_map_file.name, filename="".join(filename))
 
 
 @action("amedas", with_client=True)
@@ -351,7 +348,7 @@ def amedas(client: BaseClient, place: str):
 @action("電力", with_client=True)
 def electricity_demand(client: BaseClient):
     """東京電力管内の電力使用率を表示する"""
-    url = "https://www.tepco.co.jp/forecast/html/images/juyo-d-j.csv"
+    url = "https://www.tepco.co.jp/forecast/html/images/juyo-d1-j.csv"
     res = requests.get(url)
 
     if res.status_code != 200:
@@ -362,6 +359,11 @@ def electricity_demand(client: BaseClient):
     df_base = pd.read_csv(res_io, encoding="shift_jis", skiprows=12, index_col="TIME")
     df_percent = df_base[:24]["使用率(%)"].dropna().astype(int)
     latest_data = df_percent[df_percent > 0]
+
+    if latest_data.empty:
+        client.post("東京電力管内の電力使用率を取得できなかったっぽ......")
+        return
+
     client.post(
         f"東京電力管内の電力使用率をお知らせするっぽ！\n"
         f"{latest_data.index[-1]}時点 {latest_data[-1]}%"
@@ -441,7 +443,7 @@ def version():
         try:
             repo = Repo()
             str_ver += f" (Commit {repo.head.commit.hexsha[:7]})"
-        except (InvalidGitRepositoryError, GitCommandNotFound):
+        except InvalidGitRepositoryError, GitCommandNotFound:
             pass
 
     str_ver += (
@@ -481,8 +483,13 @@ def image_generate(client: BaseClient, message: str):
     """
     画像生成を行う
     """
-
-    url = image_create(message=message)
+    try:
+        url = image_create(message=message)
+    except RateLimitError as e:
+        if e.code == "insufficient_quota":
+            return "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
+        else:
+            raise e
 
     if url is None:
         return "画像を生成できなかったっぽ......"

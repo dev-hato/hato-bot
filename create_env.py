@@ -2,20 +2,20 @@
 初回動かす必要のあるスクリプト
 """
 
-from library.database import Database
+from library.database import execute_sql
 
 
 def create_table() -> None:
     """テーブルを作成する"""
 
-    with Database() as _db, open(
+    with open(
         "postgres/docker-entrypoint-initdb.d/02_init.sql", encoding="UTF-8"
     ) as init_sql:
         sql = ""
         for line in init_sql.readlines():
             sql += line
             if ";" in line:
-                _db.execute_sql(sql)
+                execute_sql(sql)
                 sql = ""
 
 

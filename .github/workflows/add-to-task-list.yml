@@ -7,6 +7,7 @@ on:
   issues:
     types:
       - opened
+permissions: {}
 jobs:
   add-to-task-list:
     runs-on: ubuntu-latest
@@ -14,11 +15,11 @@ jobs:
     steps:
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: dev-hato/actions-add-to-projects@6b85916c6dcb4f2d40888c3ba373c783615538ee # v0.0.81
+      - uses: dev-hato/actions-add-to-projects@19b69be5ecacae2d6f8f09bbec7b74f2257f7426 # v1.0.9
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1

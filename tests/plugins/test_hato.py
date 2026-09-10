@@ -8,7 +8,7 @@ import re
 import unittest
 from typing import List
 
-import requests_mock
+import responses
 
 import slackbot_settings as conf
 from plugins.hato import (
@@ -64,7 +64,7 @@ class TestEarthQuake(unittest.TestCase):
     地震コマンドが正しく動作しているかテストする
     """
 
-    def get_earth_quake_test(self, mocker: requests_mock.Mocker):
+    def get_earth_quake_test(self, mocker: responses.RequestsMock):
         """
         地震情報を取得できるかテスト
         :param mocker requestsのMock
@@ -75,8 +75,8 @@ class TestEarthQuake(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), "test.png"), mode="rb"
         ) as picture_file:
             mocker.get(
-                re.compile(r"tile\.openstreetmap\.org/.+\.png"),
-                content=picture_file.read(),
+                re.compile(r".*tile\.openstreetmap\.org/.+\.png"),
+                body=picture_file.read(),
             )
 
         with open(
@@ -84,14 +84,15 @@ class TestEarthQuake(unittest.TestCase):
         ) as json_file:
             mocker.get(
                 "https://api.p2pquake.net/v2/history?codes=551&limit=3",
-                content=json_file.read(),
+                body=json_file.read(),
+                content_type="application/json",
             )
 
         actual = earth_quake(client1)
         self.assertEqual(None, actual)
         return client1
 
-    def earth_quake_upload_png_test(self, mocker: requests_mock.Mocker, msg: str):
+    def earth_quake_upload_png_test(self, mocker: responses.RequestsMock, msg: str):
         """
         地震コマンドを実行し、png画像を「map.png」としてuploadできるかテスト
         :param mocker requestsのMock
@@ -105,7 +106,7 @@ class TestEarthQuake(unittest.TestCase):
         """
         引数なしで地震コマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             self.earth_quake_upload_png_test(
                 mocker,
                 "```\n"
@@ -124,7 +125,7 @@ class TestAmesh(unittest.TestCase):
 
     def get_amesh_test(
         self,
-        mocker: requests_mock.Mocker,
+        mocker: responses.RequestsMock,
         place: str,
     ):
         """
@@ -139,13 +140,17 @@ class TestAmesh(unittest.TestCase):
         ) as picture_file:
             image_content = picture_file.read()
             mocker.get(
-                re.compile(r"www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
-                content=image_content,
+                re.compile(r".*www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+\.png"),
+                body=image_content,
             )
             mocker.get(
-                re.compile(r"tile\.openstreetmap\.org/.+\.png"),
-                request_headers={"user-agent": f"hato-bot/{conf.VERSION}"},
-                content=image_content,
+                re.compile(r".*tile\.openstreetmap\.org/.+\.png"),
+                match=[
+                    responses.matchers.header_matcher(
+                        {"user-agent": f"hato-bot/{conf.VERSION}"}
+                    )
+                ],
+                body=image_content,
             )
 
         with open(
@@ -153,24 +158,34 @@ class TestAmesh(unittest.TestCase):
             mode="rb",
         ) as json_file:
             jma_json_url = re.compile(
-                r"www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N\d.json"
+                r".*www\.jma\.go\.jp/bosai/jmatile/data/nowc/targetTimes_N\d\.json"
             )
-            mocker.get(jma_json_url, content=json_file.read())
+            mocker.get(
+                jma_json_url,
+                body=json_file.read(),
+                content_type="application/json",
+            )
 
         with open(
             os.path.join(os.path.dirname(__file__), "test_liden_data.geojson"),
             mode="rb",
         ) as liden_file:
             jma_liden_url = re.compile(
-                r"www.jma.go.jp/bosai/jmatile/data/nowc/.+/liden/data.geojson"
+                r".*www\.jma\.go\.jp/bosai/jmatile/data/nowc/.+/liden/data\.geojson"
             )
-            mocker.get(jma_liden_url, content=liden_file.read())
+            mocker.get(
+                jma_liden_url,
+                body=liden_file.read(),
+                content_type="application/json",
+            )
 
         actual = amesh(client1, place=place)
         self.assertEqual(None, actual)
         return client1
 
-    def amesh_upload_png_test(self, mocker: requests_mock.Mocker, place: str, msg: str):
+    def amesh_upload_png_test(
+        self, mocker: responses.RequestsMock, place: str, msg: str
+    ):
         """
         ameshコマンドを実行し、png画像を「amesh.png」としてuploadできるかテスト
         :param mocker requestsのMock
@@ -185,7 +200,7 @@ class TestAmesh(unittest.TestCase):
         """
         引数なしでameshコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             content = {
                 "Feature": [
                     {
@@ -203,7 +218,7 @@ class TestAmesh(unittest.TestCase):
         """
         引数ありでameshコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             coordinate = ["12.345", "123.456"]
             self.amesh_upload_png_test(
                 mocker, " ".join(coordinate), "雨雲状況をお知らせするっぽ！"
@@ -215,7 +230,7 @@ class TestAmedas(unittest.TestCase):
     amedasが正しく動作しているかテストする
     """
 
-    def get_amedas_test(self, mocker: requests_mock.Mocker, place: str, msg: str):
+    def get_amedas_test(self, mocker: responses.RequestsMock, place: str, msg: str):
         """
         amedasを取得できるかテスト
         :param mocker requestsのMock
@@ -240,7 +255,11 @@ class TestAmedas(unittest.TestCase):
                 os.path.join(os.path.dirname(__file__), mock_data["file_name"]),
                 mode="rb",
             ) as mock_file:
-                mocker.get(mock_data["url"], content=mock_file.read())
+                mocker.get(
+                    mock_data["url"],
+                    body=mock_file.read(),
+                    content_type="application/json",
+                )
 
         client1 = TestClient()
         actual = amedas(client1, place=place)
@@ -251,7 +270,7 @@ class TestAmedas(unittest.TestCase):
         """
         引数なしでamedasコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             content = {
                 "Feature": [
                     {
@@ -278,7 +297,7 @@ class TestAmedas(unittest.TestCase):
         """
         引数ありでamedasコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             coordinate = ["35.64657460", "139.65324950"]
             self.get_amedas_test(
                 mocker,
@@ -301,7 +320,7 @@ class TestAltitude(unittest.TestCase):
 
     def altitude_test(
         self,
-        mocker: requests_mock.Mocker,
+        mocker: responses.RequestsMock,
         place: str,
         coordinates: List[str],
         content=None,
@@ -319,10 +338,10 @@ class TestAltitude(unittest.TestCase):
             "coordinates": ",".join(reversed(coordinates)),
             "output": "json",
         }
-        query = "&".join([f"{k}={v}" for k, v in params.items()])
         mocker.get(
-            "https://map.yahooapis.jp/alt/V1/getAltitude?" + query,
-            content=json.dumps(content).encode(),
+            "https://map.yahooapis.jp/alt/V1/getAltitude",
+            body=json.dumps(content).encode(),
+            match=[responses.matchers.query_param_matcher(params)],
         )
         # pylint: disable=E1121
         actual = altitude(client1, place)
@@ -333,7 +352,7 @@ class TestAltitude(unittest.TestCase):
         """
         引数なしでaltitudeコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             coordinates = ["35.64657460", "139.65324950"]
             geo_content = {
                 "Feature": [
@@ -358,7 +377,7 @@ class TestAltitude(unittest.TestCase):
         """
         引数ありでaltitudeコマンドが実行できるかテスト
         """
-        with requests_mock.Mocker() as mocker:
+        with responses.RequestsMock(assert_all_requests_are_fired=False) as mocker:
             coordinates = ["12.345", "123.456"]
             altitude_ = 122
             altitude_content = {"Feature": [{"Property": {"Altitude": altitude_}}]}

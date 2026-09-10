@@ -3,6 +3,7 @@
 """
 BotのMain関数
 """
+
 import asyncio
 import json
 import logging
@@ -12,6 +13,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 import discord
+import psycopg
 import slack_bolt
 import websockets
 from flask import Flask, jsonify, request
@@ -27,7 +29,6 @@ from library.clientclass import (
     MisskeyClient,
     SlackClient,
 )
-from library.database import Database
 from plugins import analyze
 
 app = Flask(__name__)
@@ -52,27 +53,29 @@ def slack_main():
         print(f"authed_users: {authed_users}")
         print(f"client_msg_id: {client_msg_id}")
 
-        with Database() as _db, _db.conn.cursor() as cursor:
-            cursor.execute(
-                "SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1",
-                (client_msg_id,),
-            )
+        with psycopg.connect(conf.DB_URL) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "SELECT client_msg_id FROM slack_client_msg_id WHERE client_msg_id = %s LIMIT 1",
+                    (client_msg_id,),
+                )
 
-            if cursor.fetchone():
-                print("skip")
-                return
+                if cursor.fetchone():
+                    print("skip")
+                    return
 
-            cursor.execute(
-                "DELETE FROM slack_client_msg_id "
-                "WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
-                (client_msg_id,),
-            )
-            cursor.execute(
-                "INSERT INTO slack_client_msg_id(client_msg_id, created_at) "
-                "VALUES(%s, CURRENT_TIMESTAMP)",
-                (client_msg_id,),
-            )
-            _db.conn.commit()
+                cursor.execute(
+                    "DELETE FROM slack_client_msg_id "
+                    "WHERE created_at < CURRENT_TIMESTAMP - interval '10 minutes'",
+                    (client_msg_id,),
+                )
+                cursor.execute(
+                    "INSERT INTO slack_client_msg_id(client_msg_id, created_at) "
+                    "VALUES(%s, CURRENT_TIMESTAMP)",
+                    (client_msg_id,),
+                )
+
+            conn.commit()
 
         with ThreadPoolExecutor(max_workers=3) as tpe:
             for block in blocks:
@@ -115,7 +118,7 @@ def slack_main():
 
         or
 
-        pipenv run python post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
+        uv run post_command.py --channel C0123A4B5C6 --user U012A34BCDE "鳩"
         """
         msg = request.json["message"]
         channel = request.json["channel"]
@@ -174,9 +177,8 @@ async def on_message(message):
             )
 
 
-def main():
-    """メイン関数"""
-
+def setup_logging():
+    """ログ設定を行う"""
     log_format_config = {
         "format": "[%(asctime)s] %(message)s",
         "datefmt": "%Y-%m-%d %H:%M:%S",
@@ -187,81 +189,95 @@ def main():
     logging.getLogger("requests.packages.urllib3.connectionpool").setLevel(
         logging.WARNING
     )
-    logger = logging.getLogger(__name__)
+    return logging.getLogger(__name__)
+
+
+async def handle_misskey_mention(misskey_client, note, logger):
+    """Misskeyのメンションを処理する"""
+    cred = None
+
+    for _ in range(10):
+        try:
+            cred = misskey_client.i()
+            break
+        except ReadTimeout as e:
+            logger.exception(e)
+            await asyncio.sleep(1)
+
+    mentions = note.get("mentions")
+    if cred is not None and mentions and cred["id"] in mentions:
+        client = MisskeyClient(misskey_client, note)
+        client.add_waiting_reaction()
+        try:
+            analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(
+                client
+            )
+        except Exception as e:
+            logger.exception(e)
+            client.post("エラーが発生したっぽ......")
+
+
+async def misskey_runner(misskey_client, logger):
+    """Misskeyのメッセージを受信して処理する"""
+    while True:
+        try:
+            # pylint: disable=E1101
+            async with websockets.connect(
+                "wss://"
+                + misskey_client.address
+                + "/streaming"
+                + "?i="
+                + misskey_client.token
+            ) as ws:
+                await ws.send(
+                    json.dumps(
+                        {
+                            "type": "connect",
+                            "body": {"channel": "main", "id": "main"},
+                        }
+                    )
+                )
+                while True:
+                    data = json.loads(await ws.recv())
+                    if data["type"] == "channel" and data["body"]["type"] == "mention":
+                        note = data["body"]["body"]
+                        host = note["user"].get("host")
+                        mentions = note.get("mentions")
+                        # FEDERATIONがtrueならばリモートからのメンションにも応答する。
+                        # falseならばローカルのメンションのみに応答する。
+                        if (
+                            (conf.MISSKEY_FEDERATION == "true")
+                            or (host is None or host == conf.MISSKEY_DOMAIN)
+                        ) and mentions:
+                            await handle_misskey_mention(misskey_client, note, logger)
+        except websockets.ConnectionClosedError:
+            await asyncio.sleep(1)
+
+
+def run_misskey(logger):
+    """Misskeyモードで起動する"""
+    misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
+    misskey_client.timeout = 2
+
+    while True:
+        try:
+            asyncio.run(misskey_runner(misskey_client, logger))
+        except websockets.exceptions.InvalidStatus as e:
+            if e.response.status_code == 502:
+                logger.exception(e)
+                time.sleep(1)
+            else:
+                raise e
+
+
+def main():
+    """メイン関数"""
+    logger = setup_logging()
+
     if conf.MODE == "discord":
         discordClient.run(token=conf.DISCORD_API_TOKEN)
     elif conf.MODE == "misskey":
-        misskey_client = Misskey(conf.MISSKEY_DOMAIN, i=conf.MISSKEY_API_TOKEN)
-        misskey_client.timeout = 2
-
-        async def misskey_runner():
-            while True:
-                try:
-                    # pylint: disable=E1101
-                    async with websockets.connect(
-                        "wss://"
-                        + misskey_client.address
-                        + "/streaming"
-                        + "?i="
-                        + misskey_client.token
-                    ) as ws:
-                        await ws.send(
-                            json.dumps(
-                                {
-                                    "type": "connect",
-                                    "body": {"channel": "main", "id": "main"},
-                                }
-                            )
-                        )
-                        while True:
-                            data = json.loads(await ws.recv())
-                            if (
-                                data["type"] == "channel"
-                                and data["body"]["type"] == "mention"
-                            ):
-                                note = data["body"]["body"]
-                                host = note["user"].get("host")
-                                mentions = note.get("mentions")
-                                # FEDERATIONがtrueならばリモートからのメンションにも応答する。
-                                # falseならばローカルのメンションのみに応答する。
-                                if (
-                                    (conf.MISSKEY_FEDERATION == "true")
-                                    or (host is None or host == conf.MISSKEY_DOMAIN)
-                                ) and mentions:
-                                    cred = None
-
-                                    for i in range(10):
-                                        try:
-                                            cred = misskey_client.i()
-                                            break
-                                        except ReadTimeout as e:
-                                            logger.exception(e)
-                                            await asyncio.sleep(1)
-
-                                    if cred is not None and cred["id"] in mentions:
-                                        client = MisskeyClient(misskey_client, note)
-                                        client.add_waiting_reaction()
-                                        try:
-                                            analyze.analyze_message(
-                                                note["text"]
-                                                .replace("\xa0", " ")
-                                                .split(" ", 1)[1]
-                                            )(client)
-                                        except Exception as e:
-                                            logger.exception(e)
-                                            client.post("エラーが発生したっぽ......")
-                except websockets.ConnectionClosedError:
-                    await asyncio.sleep(1)
-
-        while True:
-            try:
-                asyncio.run(misskey_runner())
-            except websockets.exceptions.InvalidStatusCode as e:
-                if e.status_code == 502:
-                    logger.exception(e)
-                    time.sleep(1)
-                else:
-                    raise e
+        run_misskey(logger)
     else:
         slack_main()
 
