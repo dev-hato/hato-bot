@@ -4,8 +4,8 @@ import math
 import random
 import string
 from abc import ABCMeta, abstractmethod
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from typing import List, Optional, Tuple
 
 import cv2
@@ -186,7 +186,7 @@ class RasterTileServer:
         )
 
     def request(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
-        (tl_tilepx, rb_tilepx) = bbox.covered_tiles()
+        tl_tilepx, rb_tilepx = bbox.covered_tiles()
 
         request_urls = []
         for x in range(tl_tilepx.tile.tile_x, rb_tilepx.tile.tile_x + 1):
@@ -196,8 +196,8 @@ class RasterTileServer:
                         {"x": x, "y": y, "z": bbox.zoom}
                     )
                 )
-        with Pool(16) as p:
-            imgs = list(p.imap(self._get_image_content, request_urls))
+        with ThreadPoolExecutor(max_workers=16) as executor:
+            imgs = list(executor.map(self._get_image_content, request_urls))
 
         tile_width_cnt = rb_tilepx.tile.tile_x + 1 - tl_tilepx.tile.tile_x
         tile_height_cnt = rb_tilepx.tile.tile_y + 1 - tl_tilepx.tile.tile_y

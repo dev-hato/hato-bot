@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
+set -e
 
 # 環境ファイルを使ってenvにsetしている
 # 参考URL: https://bit.ly/2KJhjqk
-venv_path=$(pipenv --venv)
-echo "${venv_path}"
-VENV_PATH="${venv_path}"
+VENV_PATH=".venv"
 
 # https://github.com/github/super-linter/issues/157#issuecomment-648850330
 # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
