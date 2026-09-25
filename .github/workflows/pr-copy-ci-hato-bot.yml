@@ -5,25 +5,40 @@ on:
     branches:
       - develop
   workflow_dispatch:
+permissions: {}
 jobs:
   pr-copy-ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          cache: npm
+          node-version-file: package.json
+      - uses: flatt-security/setup-takumi-guard-npm@6d4182745c1e474c35a023573c2612c085be45a4 # v1.2.0
+      - run: npm install -g "$(yq -r '.packageManager' package.json)"
+      - run: npm ci
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: "sudden-death"
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           script: |
-            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.js`)
-            await script({ github, context })
+            const {tsImport} = require('tsx/esm/api')
+            const {default: {script}} = await tsImport(
+              './scripts/pr_copy_ci_hato_bot/pr_copy_ci/dispatch_event.ts',
+              process.env.GITHUB_WORKSPACE + '/'
+            )
+            await script(github, context)
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

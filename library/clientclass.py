@@ -3,6 +3,7 @@
 """
 clientに使うclass
 """
+
 import os
 from abc import ABCMeta, abstractmethod
 
@@ -159,7 +160,11 @@ class MisskeyClient(BaseClient):
     def upload(self, file, filename=None):
         """ファイルを投稿する"""
         with open(file, "rb") as f:
+            # 画像アップロードには時間がかかることがあるため、タイムアウトを一時的にデフォルト値に戻す
+            self.client.timeout = 15
+
             drive_file = self.client.drive_files_create(file=f)
+            self.client.timeout = 2
             self._post(file_ids=[drive_file["id"]])
 
     def _post(self, text=None, file_ids=None):

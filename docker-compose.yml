@@ -42,7 +42,6 @@ services:
         platforms:
           - linux/amd64
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot:${TAG_NAME}
-    platform: linux/amd64
     env_file:
       - .env
     restart: always

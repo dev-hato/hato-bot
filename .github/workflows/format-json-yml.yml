@@ -7,6 +7,9 @@ on:
       - synchronize
       - reopened
       - closed
+    branches:
+      - develop
+      - master
   push:
     branches:
       - develop
@@ -18,19 +21,19 @@ jobs:
   format-json-yml:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate a token
-        id: generate_token
-        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
-        with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
-          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-          token: ${{steps.generate_token.outputs.token}}
-      - uses: dev-hato/actions-format-json-yml@bae3230b89fddb12957fc2a7b869ef833956ec78 # v0.0.72
+          persist-credentials: false
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+      - uses: dev-hato/actions-format-json-yml@6fa1a14b2f9b42d954cd105dabc9f77c4fbce575 # v0.0.105
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:

@@ -3,6 +3,7 @@
 """
 jma_amesh
 """
+
 import datetime
 import json
 from dataclasses import dataclass
