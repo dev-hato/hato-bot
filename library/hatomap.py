@@ -6,7 +6,6 @@ import string
 from abc import ABCMeta, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -82,8 +81,8 @@ class WebMercatorPixelCoord:
                 tile_y=int(self.pixel_y // 256),
                 zoom_level=self.zoom_level,
             ),
-            int(round(self.pixel_x % 256)),
-            int(round(self.pixel_y % 256)),
+            round(self.pixel_x % 256),
+            round(self.pixel_y % 256),
         )
 
 
@@ -101,7 +100,7 @@ class WebMercatorPixelBBox:
         self.width = self.pixel_x_east - self.pixel_x_west
         self.height = self.pixel_y_south - self.pixel_y_north
 
-    def covered_tiles(self) -> Tuple[WebMercatorTilePixel, WebMercatorTilePixel]:
+    def covered_tiles(self) -> tuple[WebMercatorTilePixel, WebMercatorTilePixel]:
         return (
             WebMercatorPixelCoord(
                 self.pixel_x_west, self.pixel_y_north, self.zoom
@@ -111,11 +110,11 @@ class WebMercatorPixelBBox:
             ).belongs_tile(),
         )
 
-    def geocoord2pixel(self, geocoord: GeoCoord) -> Tuple[int, int]:
+    def geocoord2pixel(self, geocoord: GeoCoord) -> tuple[int, int]:
         wmp_coord = WebMercatorPixelCoord.from_geocoord(geocoord, self.zoom)
         return (
-            int(round(wmp_coord.pixel_x - self.pixel_x_west)),
-            int(round(wmp_coord.pixel_y - self.pixel_y_north)),
+            round(wmp_coord.pixel_x - self.pixel_x_west),
+            round(wmp_coord.pixel_y - self.pixel_y_north),
         )
 
     def geocoords2pixel_ndarray(self, geocoords: np.ndarray) -> np.ndarray:
@@ -142,8 +141,8 @@ class WebMercatorPixelBBox:
 
     def geocoords2pixel_list_ndarray(
         self,
-        geocoords: List[np.ndarray],
-    ) -> List[np.ndarray]:
+        geocoords: list[np.ndarray],
+    ) -> list[np.ndarray]:
         return [self.geocoords2pixel_ndarray(g) for g in geocoords]
 
 
@@ -156,8 +155,8 @@ class MapBox:
 
     def pixelbbox(self) -> WebMercatorPixelBBox:
         center_pixel = WebMercatorPixelCoord.from_geocoord(self.center, self.zoom)
-        origin_pixel_x = int(round(center_pixel.pixel_x - self.width / 2))
-        origin_pixel_y = int(round(center_pixel.pixel_y - self.height / 2))
+        origin_pixel_x = round(center_pixel.pixel_x - self.width / 2)
+        origin_pixel_y = round(center_pixel.pixel_y - self.height / 2)
         return WebMercatorPixelBBox(
             pixel_x_west=origin_pixel_x,
             pixel_x_east=origin_pixel_x + self.width,
@@ -228,9 +227,9 @@ class Layer(metaclass=ABCMeta):
 
 @dataclass
 class LineTrace(Layer):
-    coords: List["np.ndarray"]
+    coords: list[np.ndarray]
     width: int = 1
-    color: Tuple[int, int, int, int] = (255, 0, 255, 255)
+    color: tuple[int, int, int, int] = (255, 0, 255, 255)
 
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
@@ -250,12 +249,12 @@ class LineTrace(Layer):
 
 @dataclass
 class MarkerTrace(Layer):
-    coords: List[GeoCoord]
+    coords: list[GeoCoord]
     symbol: str = "circle"
     size: int = 4
-    border_color: Tuple[int, int, int, int] = (255, 0, 255, 255)
+    border_color: tuple[int, int, int, int] = (255, 0, 255, 255)
     border_width: int = 1
-    fill_color: Optional[Tuple[int, int, int, int]] = None
+    fill_color: tuple[int, int, int, int] | None = None
 
     def get_image(self, bbox: WebMercatorPixelBBox) -> np.ndarray:
         img = np.zeros((bbox.height, bbox.width, 4), np.uint8)
@@ -279,7 +278,7 @@ class MarkerTrace(Layer):
                     cv2.circle(
                         img,
                         c,
-                        int(round(self.size / 2)),
+                        round(self.size / 2),
                         thickness=-1,
                         color=self.fill_color,
                         lineType=cv2.LINE_AA,
@@ -287,7 +286,7 @@ class MarkerTrace(Layer):
                 cv2.circle(
                     img,
                     c,
-                    int(round(self.size / 2)),
+                    round(self.size / 2),
                     thickness=self.border_width,
                     color=self.border_color,
                     lineType=cv2.LINE_AA,
@@ -313,7 +312,7 @@ class MarkerTrace(Layer):
                     color=self.border_color,
                     lineType=cv2.LINE_AA,
                 )
-        elif self.symbol in symbols.keys():
+        elif self.symbol in symbols:
             symbol_coords = symbols[self.symbol]
             px_coords = (
                 np.repeat(px_coords[:, np.newaxis, :], symbol_coords.shape[0], axis=1)
@@ -337,11 +336,11 @@ class MarkerTrace(Layer):
 
 @dataclass
 class RasterLayer(Layer):
-    url: Optional[str] = None
-    url_list: Optional[List[str]] = None
-    opacity: np.float32 = np.float32(1.0)
-    brightness: np.float32 = np.float32(1.0)
-    chroma: np.float32 = np.float32(1.0)
+    url: str | None = None
+    url_list: list[str] | None = None
+    opacity: np.float32 = field(default_factory=lambda: np.float32(1.0))
+    brightness: np.float32 = field(default_factory=lambda: np.float32(1.0))
+    chroma: np.float32 = field(default_factory=lambda: np.float32(1.0))
 
     def __init__(self, **kwargs):
         self.url = kwargs.get("url", None)
@@ -374,7 +373,7 @@ class RasterLayer(Layer):
             )
 
         if self.opacity != 1.0:
-            layer_img[layer_img[..., 3] != 0, 3] = int(round(self.opacity * 256))
+            layer_img[layer_img[..., 3] != 0, 3] = round(self.opacity * 256)
 
         return layer_img
 
@@ -388,7 +387,7 @@ def cv2_putText_3(img, text, org, fontFace, fontScale, color):
     imgPIL = Image.fromarray(img)
     draw = ImageDraw.Draw(imgPIL)
     fontPIL = ImageFont.truetype(font=fontFace, size=fontScale)
-    _, _, w, h = draw.textbbox((0, 0), text, font=fontPIL)
+    _, _, _, h = draw.textbbox((0, 0), text, font=fontPIL)
     draw.text(xy=(x, y - h), text=text, fill=color, font=fontPIL)
     return np.array(imgPIL, dtype=np.uint8)
 
@@ -405,12 +404,12 @@ class HatoMap:
 
     mapbox: MapBox = field(default_factory=MapBox)
     basemap: str = "open-street-map"
-    extra_basemap_server: Optional[str] = None
-    layers: Optional[List[Layer]] = None
-    title: Optional[str] = None
+    extra_basemap_server: str | None = None
+    layers: list[Layer] | None = None
+    title: str | None = None
 
     def update_layout(
-        self, mapbox: Optional[MapBox] = None, layers: Optional[List[Layer]] = None
+        self, mapbox: MapBox | None = None, layers: list[Layer] | None = None
     ) -> None:
         if mapbox is not None:
             self.mapbox = mapbox
@@ -451,7 +450,7 @@ class HatoMap:
             "extra": RasterLayer(url_list=[self.extra_basemap_server]),
         }
 
-        if self.basemap in basemaps.keys():
+        if self.basemap in basemaps:
             return basemaps[self.basemap]
 
         return basemaps["open-street-map"]

@@ -18,9 +18,9 @@ def wait_db() -> None:
         try:
             execute_sql("SELECT 1")
             break
-        except psycopg.OperationalError as _e:
+        except psycopg.OperationalError:
             if i == max_attempt - 1:
-                raise _e
+                raise
 
             sleep(1)
 

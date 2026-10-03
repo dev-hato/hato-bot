@@ -1,10 +1,8 @@
-from typing import Optional
-
 from openai import OpenAI, RateLimitError
 
 import slackbot_settings as conf
 
-_client: Optional[OpenAI] = None
+_client: OpenAI | None = None
 
 
 def _get_client() -> OpenAI:
@@ -18,7 +16,7 @@ def _get_client() -> OpenAI:
     return client
 
 
-def chat_gpt(message: str) -> Optional[str]:
+def chat_gpt(message: str) -> str | None:
     try:
         result = _get_client().chat.completions.create(
             model="gpt-3.5-turbo",
@@ -34,12 +32,12 @@ def chat_gpt(message: str) -> Optional[str]:
         if e.code == "insufficient_quota":
             return "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
         else:
-            raise e
+            raise
 
     return result.choices[0].message.content
 
 
-def image_create(message: str) -> Optional[str]:
+def image_create(message: str) -> str | None:
     response = _get_client().images.generate(prompt=message, n=1, size="512x512")
 
     if response.data is None:

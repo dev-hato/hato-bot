@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """hatobotのチャット部分"""
 
 import json
@@ -8,7 +6,6 @@ import re
 from functools import partial
 from logging import getLogger
 from tempfile import NamedTemporaryFile
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -88,7 +85,7 @@ def action(plugin_name: str, with_client: bool = False):
     return _action
 
 
-def split_command(command: str, maxsplit: int = 0) -> List[str]:
+def split_command(command: str, maxsplit: int = 0) -> list[str]:
     """コマンドを分離する"""
 
     return re.split(r"\s+", command.strip().strip("　"), maxsplit=maxsplit)
@@ -117,8 +114,8 @@ def default_action(client: BaseClient, message: str):
 
     try:
         conditions["chat"](message)(client=client)
-    except Exception as e:
-        logger.exception(e)
+    except Exception:
+        logger.exception("Failed to handle chat message")
         client.post(conf.DEFAULT_REPLY)
 
 
@@ -292,8 +289,8 @@ def amesh(client: BaseClient, place: str):
 def amedas(client: BaseClient, place: str):
     """気象情報を表示する"""
 
-    lat: Optional[float] = None
-    lon: Optional[float] = None
+    lat: float | None = None
+    lon: float | None = None
     place_list = split_command(place, 2)
 
     if len(place_list) == 2:
@@ -489,7 +486,7 @@ def image_generate(client: BaseClient, message: str):
         if e.code == "insufficient_quota":
             return "栄養が足りなくて頭がうまく働かないっぽ......。このコマンドを使いたい場合は飼い主に相談してくれっぽ。"
         else:
-            raise e
+            raise
 
     if url is None:
         return "画像を生成できなかったっぽ......"

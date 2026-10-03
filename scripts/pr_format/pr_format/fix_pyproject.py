@@ -9,7 +9,7 @@ import importlib.util
 import re
 import sys
 from pathlib import Path
-from typing import NoReturn, TypeGuard
+from typing import TypeGuard
 
 import importlib_metadata
 import tomlkit
@@ -116,10 +116,7 @@ def is_std_or_local_lib(project_root: Path, package_name: str) -> bool:
         return True
 
     # パッケージのファイルパスがPythonのシステムのパスと一致するならば標準パッケージと判定する
-    if package_origin.startswith(sys.base_prefix):
-        return True
-
-    return False
+    return package_origin.startswith(sys.base_prefix)
 
 
 def get_imported_packages(project_root: Path) -> set[str]:
@@ -150,7 +147,7 @@ def get_imported_packages(project_root: Path) -> set[str]:
     return imported_packages
 
 
-def get_pyproject_packages(pyproject: PyProject) -> set[str] | NoReturn:
+def get_pyproject_packages(pyproject: PyProject) -> set[str]:
     """
     pyproject.tomlからパッケージ一覧を取得する
     :param pyproject: pyproject.tomlの中身
@@ -193,7 +190,7 @@ def exist_package_in_pyproject(
 
 def get_missing_packages(
     imported_packages: set[str], pyproject_packages: set[str]
-) -> PyProjectDependencies | NoReturn:
+) -> PyProjectDependencies:
     """
     プロジェクト内のPythonファイルでimportされているがpyproject.toml内には存在しないパッケージ一覧を取得する
     :param imported_packages: プロジェクト内のPythonファイルからimportされているパッケージ一覧
@@ -203,7 +200,7 @@ def get_missing_packages(
     # import時のパッケージ名とpyproject.toml内でのパッケージ名の対応表
     distributions = importlib_metadata.packages_distributions()
 
-    missing_packages: PyProjectDependencies = list()
+    missing_packages: PyProjectDependencies = []
 
     for imported_package in imported_packages:
         if imported_package not in distributions:
