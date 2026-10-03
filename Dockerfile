@@ -45,6 +45,7 @@ RUN apt-get update && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 
+# nonroot
 USER 1000
 
 COPY pyproject.toml pyproject.toml
@@ -57,6 +58,7 @@ RUN if [ "${ENV}" = 'dev' ]; then \
     fi && \
     rm -rf ~/.cache
 
+# root
 USER 0
 
 RUN apt-get remove -y git build-essential && \
@@ -64,6 +66,7 @@ RUN apt-get remove -y git build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp/*
 
+# nonroot
 USER 1000
 
 # Matplotlib用のフォントキャッシュ生成
