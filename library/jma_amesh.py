@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
 jma_amesh
 """
@@ -7,7 +5,6 @@ jma_amesh
 import datetime
 import json
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
 
 import requests
 from PIL import Image
@@ -39,7 +36,7 @@ class TimeJsonElement:
 
     basetime: str
     validtime: str
-    elements: List[str]
+    elements: list[str]
 
 
 def get_latest_timestamps() -> dict:
@@ -56,22 +53,17 @@ def get_latest_timestamps() -> dict:
             data = [TimeJsonElement(**i) for i in json.loads(response.text)]
             timejson += data
 
-    elements = list(set([e for i in timejson for e in i.elements]))
-    return dict(
-        [
-            (
-                e,
-                max(
-                    [
-                        i.basetime
-                        for i in timejson
-                        if i.basetime == i.validtime and e in i.elements
-                    ]
-                ),
-            )
-            for e in elements
-        ]
-    )
+    elements = list({e for i in timejson for e in i.elements})
+    return {
+        e: max(
+            [
+                i.basetime
+                for i in timejson
+                if i.basetime == i.validtime and e in i.elements
+            ]
+        )
+        for e in elements
+    }
 
 
 def timestamp2jst(timestamp: str) -> str:
@@ -86,12 +78,18 @@ def timestamp2jst(timestamp: str) -> str:
 
 def get_jma_image_server(timestamp: str) -> str:
     """気象庁雨雲レーダー画像を取得する"""
-    return f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/hrpns/${{z}}/${{x}}/${{y}}.png"  # noqa: E501
+    return (
+        f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}"
+        "/surf/hrpns/${z}/${x}/${y}.png"
+    )
 
 
-def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
+def get_liden(timestamp: str) -> list[tuple[float, float, int]]:
     """気象庁落雷JSONを取得する"""
-    liden_json_url = f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}/surf/liden/data.geojson"  # noqa: E501
+    liden_json_url = (
+        f"https://www.jma.go.jp/bosai/jmatile/data/nowc/{timestamp}/none/{timestamp}"
+        "/surf/liden/data.geojson"
+    )
     response = requests.get(liden_json_url)
 
     if response.status_code == 200:
@@ -108,14 +106,14 @@ def get_liden(timestamp: str) -> List[Tuple[float, float, int]]:
 
 def jma_amesh(
     lat: float, lng: float, zoom: int, around_tiles: int
-) -> Optional[Image.Image]:
+) -> Image.Image | None:
     """
     気象庁雨雲レーダーとOpenStreetMap画像を取得して結合する
     Usage: jma_amesh(lat=37, lng=139, zoom=8, around_tiles=2).save('res2.png')
     """
 
     jma_timestamp = get_latest_timestamps()
-    layers: List[Layer] = [
+    layers: list[Layer] = [
         RasterLayer(
             url=get_jma_image_server(jma_timestamp["hrpns_nd"]), opacity=128 / 256
         )

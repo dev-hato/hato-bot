@@ -45,7 +45,8 @@ RUN apt-get update && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 
-USER nonroot
+# nonroot
+USER 1000
 
 COPY pyproject.toml pyproject.toml
 COPY uv.lock uv.lock
@@ -57,14 +58,16 @@ RUN if [ "${ENV}" = 'dev' ]; then \
     fi && \
     rm -rf ~/.cache
 
-USER root
+# root
+USER 0
 
 RUN apt-get remove -y git build-essential && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp/*
 
-USER nonroot
+# nonroot
+USER 1000
 
 # Matplotlib用のフォントキャッシュ生成
 RUN echo 'import matplotlib.pyplot' | uv run - && \

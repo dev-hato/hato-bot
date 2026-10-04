@@ -6,7 +6,6 @@ import json
 import os
 import re
 import unittest
-from typing import List
 
 import responses
 
@@ -322,7 +321,7 @@ class TestAltitude(unittest.TestCase):
         self,
         mocker: responses.RequestsMock,
         place: str,
-        coordinates: List[str],
+        coordinates: list[str],
         content=None,
     ):
         """
@@ -418,7 +417,7 @@ class TestOmikuji(unittest.TestCase):
         omikuji(client1)
         self.assertIn(
             client1.get_post_message(),
-            map(lambda e: e.message, HatoMikuji.OMIKUJI_CONFIG.values()),
+            (e.message for e in HatoMikuji.OMIKUJI_CONFIG.values()),
         )
 
 

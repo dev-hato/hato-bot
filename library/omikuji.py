@@ -1,12 +1,10 @@
-# coding: utf-8
-
 """
 おみくじを返す
 """
 
 from dataclasses import dataclass
 from random import choices
-from typing import Tuple, TypeVar
+from typing import TypeVar
 
 
 @dataclass
@@ -31,13 +29,13 @@ TOmikujiEnum = TypeVar("TOmikujiEnum")
 OmikujiResults = dict[TOmikujiEnum, OmikujiResult]
 
 
-def draw(entries: OmikujiResults) -> Tuple[TOmikujiEnum, OmikujiResult]:
+def draw(entries: OmikujiResults) -> tuple[TOmikujiEnum, OmikujiResult]:
     """
     おみくじを引く
     """
 
     return choices(
         population=list(entries.items()),
-        weights=list(map(lambda entry: entry.appearance, entries.values())),
+        weights=[entry.appearance for entry in entries.values()],
         k=1,
     )[0]

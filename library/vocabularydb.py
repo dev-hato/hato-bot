@@ -9,13 +9,12 @@ import slackbot_settings as conf
 
 def get_word_list():
     """パワーワードの一覧をDBから取得する"""
-    with psycopg.connect(conf.DB_URL) as conn:
-        with conn.cursor() as cursor:
-            try:
-                cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
-                results = cursor.fetchall()
-            except psycopg.Error:
-                print("Can not execute sql(select_list).")
+    with psycopg.connect(conf.DB_URL) as conn, conn.cursor() as cursor:
+        try:
+            cursor.execute("SELECT no, word FROM vocabulary ORDER BY no;")
+            results = cursor.fetchall()
+        except psycopg.Error:
+            print("Can not execute sql(select_list).")
 
     return results
 
@@ -23,13 +22,12 @@ def get_word_list():
 def get_random_word():
     """パワーワードをDBからランダムで取得する"""
 
-    with psycopg.connect(conf.DB_URL) as conn:
-        with conn.cursor() as cursor:
-            try:
-                cursor.execute("SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
-                results = cursor.fetchone()
-            except psycopg.Error:
-                print("Can not execute sql(select_random).")
+    with psycopg.connect(conf.DB_URL) as conn, conn.cursor() as cursor:
+        try:
+            cursor.execute("SELECT word FROM vocabulary ORDER BY random() LIMIT 1;")
+            results = cursor.fetchone()
+        except psycopg.Error:
+            print("Can not execute sql(select_random).")
 
     return results
 
@@ -37,25 +35,23 @@ def get_random_word():
 def add_word(word: str) -> None:
     """パワーワードをDBに登録する"""
 
-    with psycopg.connect(conf.DB_URL) as conn:
-        with conn.cursor() as cursor:
-            try:
-                cursor.execute("INSERT INTO vocabulary(word) VALUES(%s);", (word,))
-                conn.commit()
-            except psycopg.Error:
-                print("Can not execute sql(add).")
+    with psycopg.connect(conf.DB_URL) as conn, conn.cursor() as cursor:
+        try:
+            cursor.execute("INSERT INTO vocabulary(word) VALUES(%s);", (word,))
+            conn.commit()
+        except psycopg.Error:
+            print("Can not execute sql(add).")
 
 
 def delete_word(word_id: int) -> None:
     """指定したidのパワーワードをDBから削除する"""
 
-    with psycopg.connect(conf.DB_URL) as conn:
-        with conn.cursor() as cursor:
-            try:
-                cursor.execute("DELETE FROM vocabulary WHERE no = %s;", (word_id,))
-                conn.commit()
-            except psycopg.Error:
-                print("Can not execute sql(delete).")
+    with psycopg.connect(conf.DB_URL) as conn, conn.cursor() as cursor:
+        try:
+            cursor.execute("DELETE FROM vocabulary WHERE no = %s;", (word_id,))
+            conn.commit()
+        except psycopg.Error:
+            print("Can not execute sql(delete).")
 
 
 def get_vocabularys():

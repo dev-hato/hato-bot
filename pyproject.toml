@@ -33,7 +33,7 @@ dev = [
   "responses==0.26.3",
   "pylint==4.0.9",
   "sqlfluff==4.3.0",
-  "mypy==2.1.0",
+  "mypy==2.3.1",
   "flake8==7.4.1",
   "isort==9.0.1",
   "pre-commit==4.6.2",

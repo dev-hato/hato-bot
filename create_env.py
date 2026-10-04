@@ -12,7 +12,7 @@ def create_table() -> None:
         "postgres/docker-entrypoint-initdb.d/02_init.sql", encoding="UTF-8"
     ) as init_sql:
         sql = ""
-        for line in init_sql.readlines():
+        for line in init_sql:
             sql += line
             if ";" in line:
                 execute_sql(sql)
