@@ -1,0 +1,7 @@
+---
+paths:
+  .github/workflows/deploy-hato-bot.yml:
+    ignore:
+      # pr-test.yml checks expanded parallel steps until actionlint supports them.
+      # https://github.com/rhysd/actionlint/issues/693
+      - '^step must run script with "run" section or run action with "uses" section$'

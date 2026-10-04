@@ -42,6 +42,18 @@ jobs:
       - run: npm install -g "$(yq -r '.packageManager' package.json)"
       - name: Install dependencies
         run: bash "${GITHUB_WORKSPACE}/scripts/pr_test/pr_super_lint/npm_ci.sh"
+      - name: Lint parallel build steps
+        run: |
+          yq --exit-status '
+            [.jobs.deploy_docker_image.steps[] | select(has("parallel"))] |
+            all_c(((keys | length) == 1) and
+              ((.parallel | tag) == "!!seq") and
+              ((.parallel | length) > 0))
+          ' .github/workflows/deploy-hato-bot.yml
+          yq '.jobs.deploy_docker_image.steps |= map(select(has("parallel") | not) // .parallel[])' .github/workflows/deploy-hato-bot.yml |
+            docker run --rm -i --entrypoint actionlint \
+              ghcr.io/super-linter/super-linter:slim-v9.0.0 \
+              -config-file /dev/null -stdin-filename .github/workflows/deploy-hato-bot.yml -
       - name: Lint files
         uses: super-linter/super-linter/slim@2da136927bd4a73596db63044b504547c62cb854 # v9.0.0
         env:
