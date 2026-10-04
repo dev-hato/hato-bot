@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-image='ghcr.io/dependabot/dependabot-updater-uv:latest'
+image=$(curl https://raw.githubusercontent.com/github/dependabot-action/refs/heads/main/docker/containers.json | yq .uv)
 
 echo "Pulling $image" >&2
 docker pull "$image" >&2
@@ -23,7 +23,7 @@ sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproje
 
 match="$(
 	gh api --paginate /orgs/astral-sh/packages/container/uv/versions --jq '.[].metadata.container.tags[]' |
-		awk -v pattern="^${uv_version}-python3\\.14-.+-slim$" '
+		awk -v pattern="^${uv_version}-python3\\\\.14-.+-slim$" '
       $0 ~ pattern && first == "" { first = $0 }
       END { if (first != "") print first }
     '

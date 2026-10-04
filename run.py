@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
 BotのMain関数
 """
@@ -200,8 +198,8 @@ async def handle_misskey_mention(misskey_client, note, logger):
         try:
             cred = misskey_client.i()
             break
-        except ReadTimeout as e:
-            logger.exception(e)
+        except ReadTimeout:
+            logger.exception("Timed out retrieving Misskey credentials")
             await asyncio.sleep(1)
 
     mentions = note.get("mentions")
@@ -212,8 +210,8 @@ async def handle_misskey_mention(misskey_client, note, logger):
             analyze.analyze_message(note["text"].replace("\xa0", " ").split(" ", 1)[1])(
                 client
             )
-        except Exception as e:
-            logger.exception(e)
+        except Exception:
+            logger.exception("Failed to handle Misskey mention")
             client.post("エラーが発生したっぽ......")
 
 
@@ -264,10 +262,10 @@ def run_misskey(logger):
             asyncio.run(misskey_runner(misskey_client, logger))
         except websockets.exceptions.InvalidStatus as e:
             if e.response.status_code == 502:
-                logger.exception(e)
+                logger.exception("Misskey streaming connection returned HTTP 502")
                 time.sleep(1)
             else:
-                raise e
+                raise
 
 
 def main():

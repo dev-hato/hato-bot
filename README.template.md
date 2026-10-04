@@ -151,7 +151,7 @@ uv tool run pre-commit install
 
 #### 補足
 
-- コードを整形する場合は`uv tool run autopep8 --in-place --recursive .`を実行します。
+- コードを整形する場合は`uv tool run black .`を実行します。
 
 ## 鳩botコマンド一覧
 

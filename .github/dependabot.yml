@@ -21,6 +21,7 @@ updates:
       - dependency-name: python
         versions:
           - 3.11.0b1-slim-bullseye
+      - dependency-name: astral-sh/uv
     open-pull-requests-limit: 1
     cooldown:
       default-days: 7

@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.11.8-python3.14-trixie-slim@sha256:b3b7ad909281e78785cbc676c8c8b45816c31638b36dc0cbd9e51725f2f0399c AS base
+FROM ghcr.io/astral-sh/uv:0.12.19-python3.14-trixie-slim@sha256:a2657d5b8da6a702204e49b2ed2467597da15fb45eb9fee00304c127dad4b1e9 AS base
 
 # バージョン情報に表示する commit hash を埋め込む
 FROM base AS commit-hash
@@ -45,7 +45,8 @@ RUN apt-get update && \
     useradd -l -m -s /bin/bash -N -u "1000" "nonroot" && \
     chown -R nonroot /usr/src/app
 
-USER nonroot
+# nonroot
+USER 1000
 
 COPY pyproject.toml pyproject.toml
 COPY uv.lock uv.lock
@@ -57,14 +58,16 @@ RUN if [ "${ENV}" = 'dev' ]; then \
     fi && \
     rm -rf ~/.cache
 
-USER root
+# root
+USER 0
 
 RUN apt-get remove -y git build-essential && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists ~/.cache /tmp/*
 
-USER nonroot
+# nonroot
+USER 1000
 
 # Matplotlib用のフォントキャッシュ生成
 RUN echo 'import matplotlib.pyplot' | uv run - && \
