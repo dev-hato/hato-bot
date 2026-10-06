@@ -19,7 +19,7 @@ jobs:
         with:
           cache: npm
           node-version-file: package.json
-      - uses: flatt-security/setup-takumi-guard-npm@3d2e7e64161c6fb76c74abd6600e4248d4859153 # v1.3.0
+      - uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
       - run: npm install -g "$(yq -r '.packageManager' package.json)"
       - run: npm ci
       - name: Get diff
