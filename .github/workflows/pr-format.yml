@@ -37,7 +37,7 @@ jobs:
         with:
           enable-cache: true
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        uses: flatt-security/setup-takumi-guard-pypi@70e2726887d30fcb1fcaef5a74965c85a623acfb # v1.2.0
+        uses: flatt-security/setup-takumi-guard-pypi@a01b3b2a6436d3df60d4e29c805ad83a704aadc5 # v1.3.0
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/uv_install.sh"
