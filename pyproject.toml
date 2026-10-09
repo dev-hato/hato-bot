@@ -32,7 +32,7 @@ dev = [
   "black==26.5.1",
   "responses==0.26.3",
   "pylint==4.1.1",
-  "sqlfluff==4.3.0",
+  "sqlfluff==4.4.0",
   "mypy==2.3.1",
   "flake8==7.4.1",
   "isort==9.0.2",
