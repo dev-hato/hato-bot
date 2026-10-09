@@ -38,7 +38,7 @@ jobs:
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm ci
-      - uses: dev-hato/actions-update-gitleaks@8c3944a2c6d9a154f81aba11dc7113660c87f09b # v0.0.111
+      - uses: dev-hato/actions-update-gitleaks@82a0cdb6623be97ad309a078f080ed451f950305 # v0.0.112
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
