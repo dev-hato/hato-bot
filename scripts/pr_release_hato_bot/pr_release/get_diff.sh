@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 result=$(git diff origin/develop origin/master)
 echo "${result}"
