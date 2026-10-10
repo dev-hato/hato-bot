@@ -18,7 +18,7 @@ dependencies = [
     "misskey.py==4.1.0",
     "websockets==17.1",
     "flask==3.1.3",
-    "markupsafe==3.0.3",
+    "markupsafe==3.0.4",
     "numpy==2.2.6",
     "emoji==2.16.0",
     "puremagic==2.2.0",
