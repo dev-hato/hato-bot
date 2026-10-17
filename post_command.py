@@ -1,8 +1,7 @@
-# coding: utf-8
-
 """
 localからコマンドを実行するためのスクリプト
 """
+
 import argparse
 
 import requests

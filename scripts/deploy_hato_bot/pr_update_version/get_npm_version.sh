@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-DOCKER_CMD="npm --version"
-DEPENDABOT_NPM_VERSION="$(docker run ghcr.io/dependabot/dependabot-core sh -c "${DOCKER_CMD}")"
-echo "Dependabot npm version:" "${DEPENDABOT_NPM_VERSION}"
-RENOVATE_NPM_VERSION="$(docker run ghcr.io/renovatebot/renovate sh -c "${DOCKER_CMD}")"
-echo "Renovate npm version:" "${RENOVATE_NPM_VERSION}"
-cp .env.example .env
+DEPENDABOT_NPM_VERSION="10.9.3"
+repository="${REPOSITORY:-dev-hato/hato-bot}"
 export TAG_NAME="${HEAD_REF//\//-}"
-docker compose pull
-HATO_BOT_NPM_VERSION="$(docker compose run hato-bot sh -c "${DOCKER_CMD}")"
+image="ghcr.io/${repository}/hato-bot:${TAG_NAME}"
+
+docker pull "${image}"
+HATO_BOT_NPM_VERSION="$(docker run --rm --entrypoint npm "${image}" --version)"
 echo "hato-bot npm version:" "${HATO_BOT_NPM_VERSION}"
-NPM_PATTERN_PACKAGE="s/\"npm\": \".*\"/\"npm\": \"^${HATO_BOT_NPM_VERSION} || ^${RENOVATE_NPM_VERSION} || ^${DEPENDABOT_NPM_VERSION}\"/g"
+NPM_PATTERN_PACKAGE="s/\"npm\": \".*\"/\"npm\": \"~${HATO_BOT_NPM_VERSION} || ^${DEPENDABOT_NPM_VERSION}\"/g"
 sed -i -e "${NPM_PATTERN_PACKAGE}" package.json
-bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/npm_install.sh"
+npm install --package-lock-only --ignore-scripts --no-audit --no-fund
