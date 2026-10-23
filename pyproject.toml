@@ -25,7 +25,6 @@ dependencies = [
     "audioop-lts==0.2.2",
     "psycopg[binary,pool]==3.3.6",
     "sudden-death==0.0.1",
-    "certifi>=2026.10.19"
 ]
 
 [dependency-groups]
