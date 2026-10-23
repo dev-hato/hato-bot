@@ -619,7 +619,6 @@ version = "3.0.5"
 source = { virtual = "." }
 dependencies = [
     { name = "audioop-lts" },
-    { name = "certifi" },
     { name = "discord-py" },
     { name = "emoji" },
     { name = "flask" },
@@ -659,7 +658,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "audioop-lts", specifier = "==0.2.2" },
-    { name = "certifi", specifier = ">=2026.10.19" },
     { name = "discord-py", specifier = "==2.7.1" },
     { name = "emoji", specifier = "==2.16.0" },
     { name = "flask", specifier = "==3.1.3" },
