@@ -17,9 +17,32 @@ if [ -z "$uv_version" ]; then
 	exit 1
 fi
 
-echo "Detected uv version: $uv_version" >&2
+echo "Detected uv version in Dependabot: $uv_version" >&2
 
-sed -i -e "s/required-version = .*/required-version = \"$uv_version\"/g" pyproject.toml
+# Dependabotのuvより古いバージョンで動かないよう下限のみ指定する
+sed -i -e "s/required-version = .*/required-version = \">=$uv_version\"/g" pyproject.toml
+
+export TAG_NAME="${HEAD_REF//\//-}"
+cp .env.example .env
+
+echo "Getting uv version from Docker image" >&2
+docker_uv_version="$(
+  docker compose run --rm -T hato-bot uv --version 2>&1 |
+    sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
+)"
+
+if [ -z "$docker_uv_version" ]; then
+  echo "Error: failed to parse uv version from Docker image" >&2
+  exit 1
+fi
+
+echo "Detected uv version in Dockerfile: $docker_uv_version" >&2
+
+# DockerイメージのuvがDependabotのuv以上であればそのままにする
+if [ "$(printf '%s\n%s\n' "$uv_version" "$docker_uv_version" | sort -V | head -n 1)" = "$uv_version" ]; then
+  echo "uv version in Dockerfile is up to date" >&2
+  exit 0
+fi
 
 match="$(
 	gh api --paginate /orgs/astral-sh/packages/container/uv/versions --jq '.[].metadata.container.tags[]' |

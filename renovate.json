@@ -7,7 +7,6 @@
     "numpy",
     "click",
     "pandas",
-    "ghcr.io/astral-sh/uv",
     "python"
   ],
   "packageRules": [
