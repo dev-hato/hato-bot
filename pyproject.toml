@@ -38,7 +38,7 @@ dev = [
   "isort==9.0.2",
   "pre-commit==4.7.0",
   "importlib-metadata==9.0.1",
-  "tomlkit==0.15.1",
+  "tomlkit==0.15.2",
 ]
 
 [tool.uv]
