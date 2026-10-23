@@ -27,21 +27,21 @@ cp .env.example .env
 
 echo "Getting uv version from Docker image" >&2
 docker_uv_version="$(
-  docker compose run --rm -T hato-bot uv --version 2>&1 |
-    sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
+	docker compose run --rm -T hato-bot uv --version 2>&1 |
+		sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
 )"
 
 if [ -z "$docker_uv_version" ]; then
-  echo "Error: failed to parse uv version from Docker image" >&2
-  exit 1
+	echo "Error: failed to parse uv version from Docker image" >&2
+	exit 1
 fi
 
 echo "Detected uv version in Dockerfile: $docker_uv_version" >&2
 
 # DockerイメージのuvがDependabotのuv以上であればそのままにする
 if [ "$(printf '%s\n%s\n' "$uv_version" "$docker_uv_version" | sort -V | head -n 1)" = "$uv_version" ]; then
-  echo "uv version in Dockerfile is up to date" >&2
-  exit 0
+	echo "uv version in Dockerfile is up to date" >&2
+	exit 0
 fi
 
 match="$(
