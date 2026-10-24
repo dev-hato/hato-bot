@@ -19,9 +19,6 @@ fi
 
 echo "Detected uv version in Dependabot: $uv_version" >&2
 
-# Dependabotのuvより古いバージョンで動かないよう下限のみ指定する
-sed -i -e "s/required-version = .*/required-version = \">=$uv_version\"/g" pyproject.toml
-
 export TAG_NAME="${HEAD_REF//\//-}"
 cp .env.example .env
 
@@ -37,6 +34,10 @@ if [ -z "$docker_uv_version" ]; then
 fi
 
 echo "Detected uv version in Dockerfile: $docker_uv_version" >&2
+
+# アプリのビルドで required-version の不一致が起きないよう、Dockerイメージのuvを調べてから更新する
+# Dependabotのuvより古いバージョンで動かないよう下限のみ指定する
+sed -i -e "s/required-version = .*/required-version = \">=$uv_version\"/g" pyproject.toml
 
 # DockerイメージのuvがDependabotのuv以上であればそのままにする
 if [ "$(printf '%s\n%s\n' "$uv_version" "$docker_uv_version" | sort -V | head -n 1)" = "$uv_version" ]; then
