@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-image=$(curl https://raw.githubusercontent.com/github/dependabot-action/refs/heads/main/docker/containers.json | yq .uv)
+dependabot_dockerfile_path=uv/Dockerfile
 
-echo "Pulling $image" >&2
-docker pull "$image" >&2
-
-echo "Getting uv version from $image" >&2
+echo "Getting uv version from dependabot/dependabot-core/$dependabot_dockerfile_path" >&2
 uv_version="$(
-	docker run --rm --entrypoint uv "$image" --version 2>&1 |
-		sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
+	gh api "/repos/dependabot/dependabot-core/contents/$dependabot_dockerfile_path" --jq '.content' |
+		base64 -d |
+		sed -nE 's?^FROM ghcr\.io/astral-sh/uv:([0-9]+\.[0-9]+\.[0-9]+).*?\1?p' |
+		head -n 1
 )"
 
 if [ -z "$uv_version" ]; then
-	echo "Error: failed to parse uv version from $image" >&2
+	echo "Error: failed to parse uv version from dependabot/dependabot-core/$dependabot_dockerfile_path" >&2
 	exit 1
 fi
 
