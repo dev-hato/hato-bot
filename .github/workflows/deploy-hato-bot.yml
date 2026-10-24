@@ -37,7 +37,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name || github.ref_name}}
       - uses: dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061 # v2.4.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
