@@ -59,7 +59,7 @@ jobs:
     if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
     steps:
       - name: Start Workflow Telemetry
-        uses: dev-hato/actions-workflow-metrics@c6b748e52274db07791b2117b97315c38660e333 # v0.0.8
+        uses: dev-hato/actions-workflow-metrics@17543dcae6053a945244b76ec3224f0e4b9395c6 # v0.0.9
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
