@@ -5,6 +5,8 @@ registries:
   takumi-guard-pypi:
     type: python-index
     url: https://pypi.flatt.tech/simple/
+    # 更新先のバージョンもpypi.orgではなくTakumi Guardのindexから探す
+    replaces-base: true
 updates:
   - package-ecosystem: pip
     directory: "/"
