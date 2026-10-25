@@ -18,23 +18,25 @@ fi
 
 echo "Detected uv version in Dependabot: $uv_version" >&2
 
-export TAG_NAME="${HEAD_REF//\//-}"
-cp .env.example .env
+repository="${REPOSITORY:-dev-hato/hato-bot}"
+image="ghcr.io/${repository}/hato-bot:${HEAD_REF//\//-}"
 
-echo "Getting uv version from Docker image" >&2
+echo "Pulling $image" >&2
+docker pull "$image" >&2
+
+echo "Getting uv version from $image" >&2
 docker_uv_version="$(
-	docker compose run --rm -T hato-bot uv --version 2>&1 |
+	docker run --rm --entrypoint uv "$image" --version 2>&1 |
 		sed -nE 's/^uv ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
 )"
 
 if [ -z "$docker_uv_version" ]; then
-	echo "Error: failed to parse uv version from Docker image" >&2
+	echo "Error: failed to parse uv version from $image" >&2
 	exit 1
 fi
 
 echo "Detected uv version in Dockerfile: $docker_uv_version" >&2
 
-# アプリのビルドで required-version の不一致が起きないよう、Dockerイメージのuvを調べてから更新する
 # Dependabotのuvより古いバージョンで動かないよう下限のみ指定する
 sed -i -e "s/required-version = .*/required-version = \">=$uv_version\"/g" pyproject.toml
 

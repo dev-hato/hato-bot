@@ -25,6 +25,10 @@ jobs:
       contents: write
       packages: read
       pull-requests: write
+    env:
+      REPOSITORY: ${{github.repository}}
+    needs: deploy_docker_image
+    if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
@@ -37,7 +41,7 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_uv_version/get_uv_version.sh"
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          HEAD_REF: ${{github.head_ref || github.event.release.tag_name || github.ref_name}}
+          HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
       - uses: dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061 # v2.4.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -53,7 +57,6 @@ jobs:
       contents: read
       packages: write
     if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.repository == github.event.pull_request.head.repo.full_name)
-    needs: update-uv-version
     steps:
       - name: Start Workflow Telemetry
         uses: dev-hato/actions-workflow-metrics@c6b748e52274db07791b2117b97315c38660e333 # v0.0.8
@@ -266,14 +269,15 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     needs:
+      - update-uv-version
       - update-version-pyproject
       - pr-check-npm
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
         run: exit 1
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
