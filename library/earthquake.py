@@ -1,11 +1,9 @@
-# coding: utf-8
-
 """
 地震情報
 """
 
 import json
-from typing import Any, List, Optional
+from typing import Any
 
 import requests
 from PIL import Image
@@ -21,7 +19,7 @@ from library.hatomap import (
 )
 
 
-def get_quake_list(limit: int = 10) -> Optional[Any]:
+def get_quake_list(limit: int = 10) -> Any | None:
     """
     地震リストを取得
     """
@@ -51,7 +49,7 @@ def generate_map_img(
                             hypocenter="石川県能登地方", magnitude=4.2, earthquake_intensity="4.0").save('res2.png')
     """
 
-    layers: List[Layer] = [
+    layers: list[Layer] = [
         LineTrace(coords=[get_circle(lat, lng, d * 1000)], color=(100, 100, 100, 255))
         for d in range(10, 60, 10)
     ]

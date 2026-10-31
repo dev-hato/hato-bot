@@ -1,11 +1,27 @@
 ---
 version: 2
+# pyproject.tomlで指定しているTakumi Guardのindexへの通信をDependabotのproxyで許可する
+registries:
+  takumi-guard-pypi:
+    type: python-index
+    url: https://pypi.flatt.tech/simple/
+    # 更新先のバージョンもpypi.orgではなくTakumi Guardのindexから探す
+    replaces-base: true
 updates:
   - package-ecosystem: pip
     directory: "/"
+    registries:
+      - takumi-guard-pypi
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: mypy
+      - dependency-name: numpy
+      - dependency-name: click
+      - dependency-name: pandas
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: docker
     directory: "/"
     schedule:
@@ -14,7 +30,10 @@ updates:
       - dependency-name: python
         versions:
           - 3.11.0b1-slim-bullseye
+      - dependency-name: astral-sh/uv
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: docker
     directory: "/postgres"
     schedule:
@@ -24,13 +43,21 @@ updates:
       - dependency-name: "postgres"
         update-types:
           - "version-update:semver-major"
+    cooldown:
+      default-days: 7
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "node-fetch"
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
