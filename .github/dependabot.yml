@@ -34,8 +34,8 @@ updates:
     open-pull-requests-limit: 1
     cooldown:
       default-days: 7
-  - package-ecosystem: docker
-    directory: "/postgres"
+  - package-ecosystem: docker-compose
+    directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 1
