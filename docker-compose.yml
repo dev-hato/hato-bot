@@ -4,19 +4,16 @@ volumes:
     driver: "local"
 services:
   postgres:
-    build:
-      dockerfile: ./Dockerfile
-      context: postgres
-      cache_from:
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
-        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres
-      args:
-        BUILDKIT_INLINE_CACHE: 1
-      x-bake:
-        platforms:
-          - linux/amd64
-          - linux/arm64
-    image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/postgres:${TAG_NAME}
+    image: postgres:17.5-bullseye@sha256:724a6dfcc90fb6b2eb7caa062c7c852fe60fc30727896a044f4d478f423f183f
+    # postgres ユーザー (UID 999)
+    user: "999"
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      retries: 20
+    # setuid/setgid による権限昇格を防ぐ
+    security_opt:
+      - no-new-privileges:true
     environment:
       POSTGRES_PASSWORD: password
     restart: always

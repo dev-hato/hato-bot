@@ -99,7 +99,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
-          targets: postgres,hato-bot
+          targets: hato-bot
       - name: Build and push (dev)
         uses: docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e # v7.5.0
         env:
@@ -129,7 +129,7 @@ jobs:
           push: true
           files: docker-compose.yml
           source: .
-          targets: postgres,hato-bot
+          targets: hato-bot
       - name: Build and push (dev) (latest)
         uses: docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e # v7.5.0
         if: ${{ github.event_name == 'release' }}
