@@ -20,6 +20,7 @@ on:
 permissions: {}
 jobs:
   update-uv-version:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -48,6 +49,7 @@ jobs:
           branch-name-prefix: fix-uv-version
           pr-title-prefix: uvのバージョンを直してあげたよ！
   deploy_docker_image:
+    timeout-minutes: 120
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
@@ -146,6 +148,7 @@ jobs:
         run: docker compose up -d --wait
   # pyproject.toml をDockerイメージと同期させる
   update-version-pyproject:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -173,6 +176,7 @@ jobs:
           branch-name-prefix: fix-version-pyproject
           pr-title-prefix: pyproject.tomlを直してあげたよ！
   pr-update-version:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
@@ -210,6 +214,7 @@ jobs:
           pr-title-prefix: nodeをアップデートしてあげたよ！
   # package.jsonに差分があれば、package.jsonからpackage-lock.jsonを作り出す
   pr-check-npm:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     needs: pr-update-version
     steps:
@@ -240,6 +245,7 @@ jobs:
           branch-name-prefix: npm
           pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
   update-dockle:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -252,6 +258,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
   dockle:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     needs:
       - update-dockle
@@ -266,6 +273,7 @@ jobs:
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
   deploy-complete:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     if: always()
     needs:

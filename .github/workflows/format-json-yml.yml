@@ -19,6 +19,7 @@ permissions:
   pull-requests: write
 jobs:
   format-json-yml:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,6 +34,9 @@ jobs:
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc # v0.0.108
         with:
           github-token: ${{steps.generate_token.outputs.token}}
