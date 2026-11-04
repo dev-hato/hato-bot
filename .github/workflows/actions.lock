@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/add-to-task-list.yml':
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-add-to-projects@92fcc876479a4e7bc33cc182484360f1ba188159'
+        - 'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5'
     '.github/workflows/deploy-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
@@ -23,7 +23,7 @@ workflows:
         - 'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'dev-hato/github-actions-cache-cleaner@5f61adf350172a1f8bff35c7cc712ac236b01ac5'
+        - 'dev-hato/github-actions-cache-cleaner@7573e531014f39613c05b8e26cc22a975094d104'
     '.github/workflows/osv-scanner.yml': []
     '.github/workflows/pr-copy-ci-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
@@ -100,9 +100,9 @@ dependencies:
         commit: 'sha1-07a047e608db84b3d8c06cd9a7c7dcc9c355c18e'
         owner_id: 115962839
         repo_id: 846733598
-    'dev-hato/actions-add-to-projects@92fcc876479a4e7bc33cc182484360f1ba188159':
-        ref: 'v1.0.10'
-        commit: 'sha1-92fcc876479a4e7bc33cc182484360f1ba188159'
+    'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5':
+        ref: 'v1.0.11'
+        commit: 'sha1-68fe0371ddf7f3192888f4a166bc13f528ae49e5'
         owner_id: 68012105
         repo_id: 526394375
         uses:
@@ -142,9 +142,9 @@ dependencies:
         commit: 'sha1-17543dcae6053a945244b76ec3224f0e4b9395c6'
         owner_id: 68012105
         repo_id: 1141833666
-    'dev-hato/github-actions-cache-cleaner@5f61adf350172a1f8bff35c7cc712ac236b01ac5':
-        ref: 'v0.0.93'
-        commit: 'sha1-5f61adf350172a1f8bff35c7cc712ac236b01ac5'
+    'dev-hato/github-actions-cache-cleaner@7573e531014f39613c05b8e26cc22a975094d104':
+        ref: 'v0.0.94'
+        commit: 'sha1-7573e531014f39613c05b8e26cc22a975094d104'
         owner_id: 68012105
         repo_id: 575637822
         uses:
