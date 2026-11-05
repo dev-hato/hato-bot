@@ -20,7 +20,7 @@ workflows:
     '.github/workflows/format-json-yml.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc'
+        - 'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865'
@@ -115,9 +115,9 @@ dependencies:
         repo_id: 350720117
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
-    'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc':
-        ref: 'v0.0.108'
-        commit: 'sha1-8159684fbca33674ff3fe02cae360f4432f9bbcc'
+    'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6':
+        ref: 'v0.0.111'
+        commit: 'sha1-3e2804614c492e381420cb831b5d0e633fb290e6'
         owner_id: 68012105
         repo_id: 515961063
         uses:
