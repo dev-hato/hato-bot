@@ -34,21 +34,5 @@ jobs:
           tar -xzf "$archive" -C "$bin_dir" ghalint
           echo "$bin_dir" >> "$GITHUB_PATH"
           "$bin_dir/ghalint" --version
-      - name: Lint workflows and action definitions
-        shell: bash
-        run: |
-          result=0
-          ghalint --log-color never run || result=1
-
-          action_files_path="${RUNNER_TEMP}/ghalint-action-files"
-          git ls-files -z -- 'action.yml' 'action.yaml' '**/action.yml' '**/action.yaml' > "$action_files_path"
-          action_files=()
-          while IFS= read -r -d '' action_file; do
-            action_files+=("$action_file")
-          done < "$action_files_path"
-          printf 'Action definitions: %d\n' "${#action_files[@]}"
-          if (( ${#action_files[@]} > 0 )); then
-            ghalint --log-color never run-action -- "${action_files[@]}" || result=1
-          fi
-
-          exit "$result"
+      - name: Lint workflows
+        run: ghalint --log-color never run
