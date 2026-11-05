@@ -21,6 +21,7 @@ permissions:
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -48,6 +49,8 @@ jobs:
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       # formatする
       - name: Format files
         id: format
