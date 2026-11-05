@@ -12,6 +12,7 @@ on:
 permissions: {}
 jobs:
   pr-super-lint:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -63,6 +64,7 @@ jobs:
           VALIDATE_BIOME_LINT: false
           VALIDATE_PYTHON_RUFF_FORMAT: false
   pr-dotenv-linter:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

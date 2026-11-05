@@ -10,6 +10,7 @@ on:
 permissions: {}
 jobs:
   add-to-task-list:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
@@ -19,6 +20,9 @@ jobs:
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-organization-projects: write
+          permission-pull-requests: read
+          permission-issues: read
       - uses: dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5 # v1.0.11
         with:
           github-token: ${{steps.generate_token.outputs.token}}
