@@ -1,0 +1,38 @@
+---
+name: ghalint
+on:
+  pull_request:
+  push:
+  merge_group:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ghalint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install ghalint
+        env:
+          GHALINT_VERSION: v1.5.7
+          GHALINT_SHA256: b8eaba77baea50540caf43e81ea32049ca07fecba267a84c78a27ce5a86631a3
+        run: |
+          version="${GHALINT_VERSION#v}"
+          archive="${RUNNER_TEMP}/ghalint.tar.gz"
+          bin_dir="${RUNNER_TEMP}/ghalint-bin"
+          curl --fail --location --retry 3 --connect-timeout 10 --max-time 120 \
+            --output "$archive" \
+            "https://github.com/suzuki-shunsuke/ghalint/releases/download/${GHALINT_VERSION}/ghalint_${version}_linux_amd64.tar.gz"
+          printf '%s  %s\n' "$GHALINT_SHA256" "$archive" | sha256sum --check --strict
+          mkdir -p "$bin_dir"
+          tar -xzf "$archive" -C "$bin_dir" ghalint
+          echo "$bin_dir" >> "$GITHUB_PATH"
+          "$bin_dir/ghalint" --version
+      - name: Lint workflows
+        run: ghalint --log-color never run
