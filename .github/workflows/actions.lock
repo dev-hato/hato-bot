@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/add-to-task-list.yml':
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5'
+        - 'dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba'
     '.github/workflows/deploy-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
@@ -20,12 +20,12 @@ workflows:
     '.github/workflows/format-json-yml.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc'
+        - 'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6'
     '.github/workflows/ghalint.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'dev-hato/github-actions-cache-cleaner@7573e531014f39613c05b8e26cc22a975094d104'
+        - 'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865'
     '.github/workflows/osv-scanner.yml': []
     '.github/workflows/pr-copy-ci-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
@@ -36,7 +36,7 @@ workflows:
     '.github/workflows/pr-format.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e'
+        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
         - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
     '.github/workflows/pr-merge-develop-hato-bot.yml':
@@ -51,12 +51,12 @@ workflows:
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
     '.github/workflows/pr-test-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e'
+        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
     '.github/workflows/pr-test.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
-        - 'astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e'
+        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
         - 'dotenv-linter/action-dotenv-linter@afde61cfda2ecffe7bea35837b6f20b956c88689'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
@@ -64,7 +64,7 @@ workflows:
     '.github/workflows/pr-update-gitleaks.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
-        - 'dev-hato/actions-update-gitleaks@9ce6c610215914b4f28829b30e7227cb6eeaab8e'
+        - 'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
     '.github/workflows/update-readme-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
@@ -97,14 +97,14 @@ dependencies:
         commit: 'sha1-949feb2413d6458794dcd2491c4babbbce0c15c1'
         owner_id: 44036562
         repo_id: 189476904
-    'astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e':
-        ref: 'v10.3.2'
-        commit: 'sha1-07a047e608db84b3d8c06cd9a7c7dcc9c355c18e'
+    'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2':
+        ref: 'v10.3.3'
+        commit: 'sha1-68559e99cc807c1eb7e9238fd43a15bba460eec2'
         owner_id: 115962839
         repo_id: 846733598
-    'dev-hato/actions-add-to-projects@68fe0371ddf7f3192888f4a166bc13f528ae49e5':
-        ref: 'v1.0.11'
-        commit: 'sha1-68fe0371ddf7f3192888f4a166bc13f528ae49e5'
+    'dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba':
+        ref: 'v1.0.14'
+        commit: 'sha1-8db568a7f7c218b090cb5a8038e261f5eb003dba'
         owner_id: 68012105
         repo_id: 526394375
         uses:
@@ -117,9 +117,9 @@ dependencies:
         repo_id: 350720117
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
-    'dev-hato/actions-format-json-yml@8159684fbca33674ff3fe02cae360f4432f9bbcc':
-        ref: 'v0.0.108'
-        commit: 'sha1-8159684fbca33674ff3fe02cae360f4432f9bbcc'
+    'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6':
+        ref: 'v0.0.111'
+        commit: 'sha1-3e2804614c492e381420cb831b5d0e633fb290e6'
         owner_id: 68012105
         repo_id: 515961063
         uses:
@@ -132,9 +132,9 @@ dependencies:
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
             - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
-    'dev-hato/actions-update-gitleaks@9ce6c610215914b4f28829b30e7227cb6eeaab8e':
-        ref: 'v0.0.113'
-        commit: 'sha1-9ce6c610215914b4f28829b30e7227cb6eeaab8e'
+    'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf':
+        ref: 'v0.0.116'
+        commit: 'sha1-91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
         owner_id: 68012105
         repo_id: 512097687
         uses:
@@ -144,9 +144,9 @@ dependencies:
         commit: 'sha1-17543dcae6053a945244b76ec3224f0e4b9395c6'
         owner_id: 68012105
         repo_id: 1141833666
-    'dev-hato/github-actions-cache-cleaner@7573e531014f39613c05b8e26cc22a975094d104':
-        ref: 'v0.0.94'
-        commit: 'sha1-7573e531014f39613c05b8e26cc22a975094d104'
+    'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865':
+        ref: 'v0.0.97'
+        commit: 'sha1-88d68a261462dd5f6f6632adec3fa5cf5466c865'
         owner_id: 68012105
         repo_id: 575637822
         uses:
