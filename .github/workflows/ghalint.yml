@@ -18,22 +18,23 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: ghalintをインストール
+      - name: Install ghalint
         env:
-          GHALINT_VERSION: 1.5.7
+          GHALINT_VERSION: v1.5.7
           GHALINT_SHA256: b8eaba77baea50540caf43e81ea32049ca07fecba267a84c78a27ce5a86631a3
         run: |
+          version="${GHALINT_VERSION#v}"
           archive="${RUNNER_TEMP}/ghalint.tar.gz"
           bin_dir="${RUNNER_TEMP}/ghalint-bin"
           curl --fail --location --retry 3 --connect-timeout 10 --max-time 120 \
             --output "$archive" \
-            "https://github.com/suzuki-shunsuke/ghalint/releases/download/v${GHALINT_VERSION}/ghalint_${GHALINT_VERSION}_linux_amd64.tar.gz"
+            "https://github.com/suzuki-shunsuke/ghalint/releases/download/${GHALINT_VERSION}/ghalint_${version}_linux_amd64.tar.gz"
           printf '%s  %s\n' "$GHALINT_SHA256" "$archive" | sha256sum --check --strict
           mkdir -p "$bin_dir"
           tar -xzf "$archive" -C "$bin_dir" ghalint
           echo "$bin_dir" >> "$GITHUB_PATH"
           "$bin_dir/ghalint" --version
-      - name: workflowとAction定義を検査
+      - name: Lint workflows and action definitions
         shell: bash
         run: |
           result=0
@@ -45,7 +46,7 @@ jobs:
           while IFS= read -r -d '' action_file; do
             action_files+=("$action_file")
           done < "$action_files_path"
-          printf 'Action定義: %d件\n' "${#action_files[@]}"
+          printf 'Action definitions: %d\n' "${#action_files[@]}"
           if (( ${#action_files[@]} > 0 )); then
             ghalint --log-color never run-action -- "${action_files[@]}" || result=1
           fi
