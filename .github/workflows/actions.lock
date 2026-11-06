@@ -66,11 +66,13 @@ workflows:
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
         - 'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
+    '.github/workflows/update-actions-lock.yml':
+        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
+        - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
+        - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
     '.github/workflows/update-readme-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
-    '.github/workflows/verify-lockfile.yml':
-        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
 dependencies:
     'actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd':
         ref: 'v2.0.0'
