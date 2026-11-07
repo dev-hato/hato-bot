@@ -20,8 +20,8 @@ jobs:
           persist-credentials: false
       - name: Install ghalint
         env:
-          GHALINT_VERSION: v1.5.7
-          GHALINT_SHA256: b8eaba77baea50540caf43e81ea32049ca07fecba267a84c78a27ce5a86631a3
+          GHALINT_VERSION: v1.6.0
+          GHALINT_SHA256: eda1af79c1a4a31c2de5831cd1333ad582fa6fa72015f8e9c1c4525d550c1d35
         run: |
           version="${GHALINT_VERSION#v}"
           archive="${RUNNER_TEMP}/ghalint.tar.gz"
