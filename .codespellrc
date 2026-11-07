@@ -1,0 +1,4 @@
+# https://github.com/super-linter/super-linter/blob/6d7d907dcc39a01c96fa8ad337174be89dc525c2/TEMPLATES/.codespellrc
+[codespell]
+check-hidden =
+skip = */package-lock.json,*.log,.git,*/uv.lock,*/tests/plugins/test_amedastable.json

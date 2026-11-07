@@ -1,0 +1,62 @@
+---
+name: update-actions-lock
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  push:
+    branches:
+      - develop
+      - master
+permissions:
+  contents: read
+jobs:
+  update-actions-lock:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Install actions-lock
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        run: gh extension install github/gh-actions-lock --pin v0.4.1
+        env:
+          GH_TOKEN: ${{ github.token }}
+      # forkからのPRではSecretsを使えないため、読み取り専用の検証のみを行う
+      - name: Verify lockfile
+        if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name != github.repository
+        run: gh actions-lock --verify --no-narrow
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Relock lockfile
+        if: github.event_name == 'push' || (github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository)
+        run: gh actions-lock --relock --no-narrow --no-interactive
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        # closed時も修正PRを閉じるためにトークンが必要になる
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
+      - uses: dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061 # v2.4.0
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          github-token: ${{ steps.generate_token.outputs.token }}
+          branch-name-prefix: fix-actions-lock
+          pr-title-prefix: actions.lockを更新してあげたよ！
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

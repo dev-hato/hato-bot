@@ -1,10 +1,35 @@
 {
   "extends": ["github>dev-hato/renovate-config"],
+  "ignoreDeps": [
+    "node-fetch",
+    "sudden-death",
+    "mypy",
+    "numpy",
+    "click",
+    "pandas",
+    "python"
+  ],
   "packageRules": [
+    {
+      "groupName": "slack",
+      "matchPackageNames": ["slack-bolt", "slack-sdk"]
+    },
     {
       "matchPackageNames": ["postgres"],
       "matchUpdateTypes": ["major"],
       "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github\\/workflows\\/ghalint\\.ya?ml$/"],
+      "matchStrings": [
+        "GHALINT_VERSION: (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)\\s+GHALINT_SHA256: (?<currentDigest>[0-9a-f]{64})"
+      ],
+      "datasourceTemplate": "github-release-attachments",
+      "depNameTemplate": "suzuki-shunsuke/ghalint",
+      "versioningTemplate": "semver"
     }
   ]
 }
