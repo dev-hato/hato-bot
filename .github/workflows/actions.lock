@@ -64,7 +64,7 @@ workflows:
     '.github/workflows/pr-update-gitleaks.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
-        - 'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
+        - 'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
     '.github/workflows/update-actions-lock.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
@@ -141,13 +141,13 @@ dependencies:
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
             - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
-    'dev-hato/actions-update-gitleaks@91a057e9974efd9a908f2e5bc1bc0ab98846e0cf':
-        ref: 'v0.0.116'
-        commit: 'sha1-91a057e9974efd9a908f2e5bc1bc0ab98846e0cf'
+    'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6':
+        ref: 'v0.0.117'
+        commit: 'sha1-d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
         owner_id: 68012105
         repo_id: 512097687
         uses:
-            - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
+            - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
     'dev-hato/actions-workflow-metrics@17543dcae6053a945244b76ec3224f0e4b9395c6':
         ref: 'v0.0.9'
         commit: 'sha1-17543dcae6053a945244b76ec3224f0e4b9395c6'
