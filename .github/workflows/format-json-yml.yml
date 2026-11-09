@@ -37,7 +37,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
           permission-workflows: write
-      - uses: dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6 # v0.0.111
+      - uses: dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc # v0.0.112
         with:
           github-token: ${{steps.generate_token.outputs.token}}
 concurrency:
