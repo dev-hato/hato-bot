@@ -51,7 +51,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
           permission-workflows: write
-      - uses: dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061 # v2.4.0
+      - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         with:
           github-token: ${{ steps.generate_token.outputs.token }}
