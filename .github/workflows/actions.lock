@@ -20,7 +20,7 @@ workflows:
     '.github/workflows/format-json-yml.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6'
+        - 'dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc'
     '.github/workflows/ghalint.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
     '.github/workflows/github-actions-cache-cleaner.yml':
@@ -112,6 +112,13 @@ dependencies:
         uses:
             - 'actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd'
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
+    'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c':
+        ref: 'v2.5.0'
+        commit: 'sha1-474e401b8a7df75f1c804a60aa987140c1e0548c'
+        owner_id: 68012105
+        repo_id: 350720117
+        uses:
+            - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
     'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061':
         ref: 'v2.4.0'
         commit: 'sha1-a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
@@ -119,13 +126,13 @@ dependencies:
         repo_id: 350720117
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
-    'dev-hato/actions-format-json-yml@3e2804614c492e381420cb831b5d0e633fb290e6':
-        ref: 'v0.0.111'
-        commit: 'sha1-3e2804614c492e381420cb831b5d0e633fb290e6'
+    'dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc':
+        ref: 'v0.0.112'
+        commit: 'sha1-6b0c6a884f1d2653ae3502c32317e8a412845acc'
         owner_id: 68012105
         repo_id: 515961063
         uses:
-            - 'dev-hato/actions-diff-pr-management@a3c6f1d6cb3f46d2f48ac3856ef603ef2e508061'
+            - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
     'dev-hato/actions-update-dockle@b4b0d3fccf24fc77325c624f52a1a1bc9aa6d4b5':
         ref: 'v0.0.151'
         commit: 'sha1-b4b0d3fccf24fc77325c624f52a1a1bc9aa6d4b5'
