@@ -133,6 +133,7 @@ dependencies:
         repo_id: 517688930
         uses:
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
+            - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
     'dev-hato/actions-update-gitleaks@d33ae3f5380b57036a94ecb1a40344d7cb3f20d6':
         ref: 'v0.0.117'
         commit: 'sha1-d33ae3f5380b57036a94ecb1a40344d7cb3f20d6'
