@@ -672,7 +672,7 @@ requires-dist = [
     { name = "opencv-python", specifier = "==5.0.0.93" },
     { name = "pandas", specifier = "==2.3.3" },
     { name = "pillow", specifier = ">=7.1.2" },
-    { name = "psycopg", extras = ["binary", "pool"], specifier = "==3.3.7" },
+    { name = "psycopg", extras = ["binary", "pool"], specifier = "==3.3.8" },
     { name = "puremagic", specifier = "==2.2.0" },
     { name = "python-dotenv", specifier = "==1.2.4" },
     { name = "requests", specifier = "==2.34.2" },
@@ -1312,14 +1312,14 @@ wheels = [
 
 [[package]]
 name = "psycopg"
-version = "3.3.7"
+version = "3.3.8"
 source = { registry = "https://pypi.flatt.tech/simple/" }
 dependencies = [
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://pypi.flatt.tech/files/packages/77/a3/55c9fb649391fddec8d7ba3005162cd76e8cb3b2eea3dc922684aa0013e4/psycopg-3.3.7.tar.gz", hash = "sha256:6574f23fd79bf129ee0616b49f6e358faf7ae1bf3a362d2ad599cf8f9c3d4935", size = 168912, upload-time = "2026-11-03T03:58:07.876Z" }
+sdist = { url = "https://pypi.flatt.tech/files/packages/11/c8/3bd7e09770a5829eb26667df5e49f084d78bd106d5949ade9447288a8e18/psycopg-3.3.8.tar.gz", hash = "sha256:86c135a9a6f5e98404975c5787e620bf436a7807e088baebd1b20fa48d3b4b4f", size = 168902, upload-time = "2026-11-04T09:44:26.142Z" }
 wheels = [
-    { url = "https://pypi.flatt.tech/files/packages/b0/2a/2e05cc01b2817b8baff419823774bb928efd0a36de12da78f19482cfa329/psycopg-3.3.7-py3-none-any.whl", hash = "sha256:d592e88a077e01ff57f22d59f16e828b92f2b2d9f439b6679d582b48d74cf306", size = 216207, upload-time = "2026-11-03T03:51:21.09Z" },
+    { url = "https://pypi.flatt.tech/files/packages/7b/5c/50a0b0796ccb69b11934f7c5758051c08019bda2fafb417501109fffd569/psycopg-3.3.8-py3-none-any.whl", hash = "sha256:ca50af6072ba9ea6866f33021975230c2555d7bfdb9d8f94ca3af5c3d1bf2167", size = 216209, upload-time = "2026-11-04T09:37:35.491Z" },
 ]
 
 [package.optional-dependencies]
@@ -1332,20 +1332,20 @@ pool = [
 
 [[package]]
 name = "psycopg-binary"
-version = "3.3.7"
+version = "3.3.8"
 source = { registry = "https://pypi.flatt.tech/simple/" }
 wheels = [
-    { url = "https://pypi.flatt.tech/files/packages/07/19/a0b79901d532257d28867c3b5345f37a30191670a8998b8fd779f935d053/psycopg_binary-3.3.7-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:d72b6bd81535303b3f6726de330c257d8912948d9e0cc1761c41911132633112", size = 4723602, upload-time = "2026-11-03T03:55:57.42Z" },
-    { url = "https://pypi.flatt.tech/files/packages/55/43/a22a87c7a51fd59c90223bd4d4fc604444b8647890af2893c50e823c1bcf/psycopg_binary-3.3.7-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:6c3753802f809d8fcec4fbf633f3c3335909a2f1638a36f9b924edfa2f6e8796", size = 4786213, upload-time = "2026-11-03T03:56:03.022Z" },
-    { url = "https://pypi.flatt.tech/files/packages/60/bb/2f6fe94326baaedcea29fc06c13b1b8b5dfe81690c422eda09039c531dbb/psycopg_binary-3.3.7-cp314-cp314-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:590c075b8645bdddb332a61ca1be5be52e7ecb57d3a3be63eba5c6a38a60b789", size = 5588332, upload-time = "2026-11-03T03:56:08.561Z" },
-    { url = "https://pypi.flatt.tech/files/packages/17/d4/4e60003f3094e71849d29ac174b355fc0b0b9b16eb5799591b05b62a3893/psycopg_binary-3.3.7-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:20dbb0f8e173a46feb803136446a89d4b04959342f5331e7f3f93b4fe7f2c32e", size = 5310722, upload-time = "2026-11-03T03:56:14.427Z" },
-    { url = "https://pypi.flatt.tech/files/packages/66/76/08edccbdc1e25e99854297bdc93ad0de34b029ff707ff6567b54e0f4421f/psycopg_binary-3.3.7-cp314-cp314-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4171b7a2d0534baf7ac1792aade1f8aba74ca06357db79915eac265140fc12c8", size = 6866520, upload-time = "2026-11-03T03:56:21.962Z" },
-    { url = "https://pypi.flatt.tech/files/packages/9f/59/b56fe4ed6747241fdd92c4859d17ea3a10bdbca586a1e1baff5bfba09eaf/psycopg_binary-3.3.7-cp314-cp314-manylinux_2_38_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:a7965237729bfec12b3682dedf84538bc0936c2c442560dbca8cd66534d62747", size = 5085522, upload-time = "2026-11-03T03:56:30.456Z" },
-    { url = "https://pypi.flatt.tech/files/packages/3c/07/4e7251607b1278aa47894fec895c6d961ff8b5d436be010557ba03647f69/psycopg_binary-3.3.7-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:100495111a2de4305c92996708469b5a461b24c28d152ba6bf2fbebe49fe02f2", size = 4633868, upload-time = "2026-11-03T03:56:36.786Z" },
-    { url = "https://pypi.flatt.tech/files/packages/71/3d/b6b09ec08b9235eea343df05b9e5d978fb784c9adea01c4a1649c440436b/psycopg_binary-3.3.7-cp314-cp314-musllinux_1_2_ppc64le.whl", hash = "sha256:f2018e449c7d60dd6e66261e7c4cd9a4274baf6d824994bbd55577435c081cea", size = 4319169, upload-time = "2026-11-03T03:56:41.292Z" },
-    { url = "https://pypi.flatt.tech/files/packages/2c/93/ea77791ceaad20970a04d3fbc132138cfb2e6f845fd9604f5705da4b0dc9/psycopg_binary-3.3.7-cp314-cp314-musllinux_1_2_riscv64.whl", hash = "sha256:8487a5e112b6a22508e603c78a0dc496372daefed22a9b9d4de4b89e2d4456bc", size = 4032876, upload-time = "2026-11-03T03:56:46.755Z" },
-    { url = "https://pypi.flatt.tech/files/packages/8c/1a/56e6bb0fad9d2751cb120a833e6113b860131e26a127f8a0e4088f56994d/psycopg_binary-3.3.7-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:a58b9a9e7b2d31367f605c53d87d501bee7c52f5c009dd8a2d341e5f2c2b6f8e", size = 4346131, upload-time = "2026-11-03T03:56:51.75Z" },
-    { url = "https://pypi.flatt.tech/files/packages/8c/4d/efd82743bef4b5ff120f57f2c3ffb5b5e72f3f66dec1b17ad215c090c084/psycopg_binary-3.3.7-cp314-cp314-win_amd64.whl", hash = "sha256:40a4231674cd06465384ade0fa5886820c6f25b5a26d38b4ce946c391162cb0f", size = 3715677, upload-time = "2026-11-03T03:56:56.651Z" },
+    { url = "https://pypi.flatt.tech/files/packages/7a/67/7da6c17ce91cc8f991c104d7d557396d37bd2394436d446af87493e8bed7/psycopg_binary-3.3.8-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:e09cc11a367cbb147bacec0a41d748d22245e322827911d9c82b6066a8ba2059", size = 4723560, upload-time = "2026-11-04T09:42:20.14Z" },
+    { url = "https://pypi.flatt.tech/files/packages/f3/0c/56a7a35b304a7ae9f2796f76dd76a847d34f0cdaa76f0945294c06d13220/psycopg_binary-3.3.8-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:bf9388216da2069ca0dbad58479bb83e4b979ed35c4a80d247399ac93361417c", size = 4786289, upload-time = "2026-11-04T09:42:25.777Z" },
+    { url = "https://pypi.flatt.tech/files/packages/17/d1/99852fa4ebae1956c664be13758cf98219e9bf9613d58b9f4b21301dd1a9/psycopg_binary-3.3.8-cp314-cp314-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:78f92c5c9c9177b247b0f72f03412bc829185786525a8cf8742460066762a7d1", size = 5573883, upload-time = "2026-11-04T09:42:30.487Z" },
+    { url = "https://pypi.flatt.tech/files/packages/6d/70/b0e38a0f80439e3b4a4ce52d1421ee5c6aa2803a43c50d32cfd16efb6df9/psycopg_binary-3.3.8-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:710183a2e29c72050c3a447f9f566de27c6efea9da40bf7b800381ac57026204", size = 5251968, upload-time = "2026-11-04T09:42:37.21Z" },
+    { url = "https://pypi.flatt.tech/files/packages/b6/b3/8bc56251ee11c9fcbf83fd87970116d9997834bb7ff8b9d1b8e23b468581/psycopg_binary-3.3.8-cp314-cp314-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:df35063b88af16c08bb8960aac9882cce620aea478dfec5a67cff397b575b97d", size = 6851902, upload-time = "2026-11-04T09:42:43.903Z" },
+    { url = "https://pypi.flatt.tech/files/packages/4a/c7/64fd282c7a16dbb56af75f336c58e16c7e00be147d8efb93eeec6a4d4def/psycopg_binary-3.3.8-cp314-cp314-manylinux_2_38_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:a63be4f745b778654e3c438d1b0e31bcf5ce265151c6982d5c6d5d286bae84c0", size = 5085640, upload-time = "2026-11-04T09:42:48.945Z" },
+    { url = "https://pypi.flatt.tech/files/packages/80/da/88d70f65c54a828f3d89597749e6c1b90991297e34de5f50b0f8f394022b/psycopg_binary-3.3.8-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:ced3499d480a979b956536b3f71a4736451bf3a976e4e400fc5c4b8dd3f43b23", size = 4617446, upload-time = "2026-11-04T09:42:53.985Z" },
+    { url = "https://pypi.flatt.tech/files/packages/e8/fe/0bdcc827e2fdb4a63e9516ad9e6e3989c39076796074ee752e0fd5c7e2bd/psycopg_binary-3.3.8-cp314-cp314-musllinux_1_2_ppc64le.whl", hash = "sha256:bf96efb4530605813b30d664f5d3b510540d89434a8e89dd7c62fb2d4fa4278f", size = 4299889, upload-time = "2026-11-04T09:42:59.846Z" },
+    { url = "https://pypi.flatt.tech/files/packages/8e/7c/d870616fd18f371c710a08fee92d1f7c663753e992e03472b84954fa8a82/psycopg_binary-3.3.8-cp314-cp314-musllinux_1_2_riscv64.whl", hash = "sha256:0fd106e47b7d1f82744b23b6dd31856435e46c3d1b3d4972325d76f2e7a3d771", size = 4025817, upload-time = "2026-11-04T09:43:07.8Z" },
+    { url = "https://pypi.flatt.tech/files/packages/1b/bd/af3b881b42954a5cf406b084588dd7e2fd069bb998beeef2ab5057d4cbec/psycopg_binary-3.3.8-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:5deec7746acf1c742572b8bf8599f2f61a38c9925015d77254d87d3781169b3f", size = 4337790, upload-time = "2026-11-04T09:43:13.097Z" },
+    { url = "https://pypi.flatt.tech/files/packages/00/72/132dd54feeac60ecb77eae04bac76cdcf84f8fc1e8e7cae596cd2a9d43c9/psycopg_binary-3.3.8-cp314-cp314-win_amd64.whl", hash = "sha256:6d899f361effad9a23d90940b6b55683bc87ed2d457ef64a7fa76fee7c3b9dfc", size = 3715672, upload-time = "2026-11-04T09:43:17.504Z" },
 ]
 
 [[package]]
