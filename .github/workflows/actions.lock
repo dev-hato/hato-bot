@@ -11,7 +11,7 @@ workflows:
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
         - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
         - 'dev-hato/actions-update-dockle@96ef4defca3dd8e2ff22c9734bfb26e6094b22d2'
-        - 'dev-hato/actions-workflow-metrics@17543dcae6053a945244b76ec3224f0e4b9395c6'
+        - 'dev-hato/actions-workflow-metrics@0e05ebe1f031840e40f354e7305ba28b6af63e1a'
         - 'docker/bake-action@59cb1203cd42bcefd40a1b6d73b589e48c86040e'
         - 'docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550'
         - 'docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069'
@@ -141,9 +141,9 @@ dependencies:
         repo_id: 512097687
         uses:
             - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
-    'dev-hato/actions-workflow-metrics@17543dcae6053a945244b76ec3224f0e4b9395c6':
-        ref: 'v0.0.9'
-        commit: 'sha1-17543dcae6053a945244b76ec3224f0e4b9395c6'
+    'dev-hato/actions-workflow-metrics@0e05ebe1f031840e40f354e7305ba28b6af63e1a':
+        ref: 'v0.1.0'
+        commit: 'sha1-0e05ebe1f031840e40f354e7305ba28b6af63e1a'
         owner_id: 68012105
         repo_id: 1141833666
     'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865':
