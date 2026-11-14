@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/add-to-task-list.yml':
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba'
+        - 'dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f'
     '.github/workflows/deploy-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
@@ -74,9 +74,9 @@ workflows:
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
 dependencies:
-    'actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd':
-        ref: 'v2.0.0'
-        commit: 'sha1-5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd'
+    'actions/add-to-project@f2c1f1fa649a891be84948ea89b5dfba1526ef05':
+        ref: 'v2.0.1'
+        commit: 'sha1-f2c1f1fa649a891be84948ea89b5dfba1526ef05'
         owner_id: 44036562
         repo_id: 454132203
     'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1':
@@ -104,13 +104,13 @@ dependencies:
         commit: 'sha1-68559e99cc807c1eb7e9238fd43a15bba460eec2'
         owner_id: 115962839
         repo_id: 846733598
-    'dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba':
-        ref: 'v1.0.14'
-        commit: 'sha1-8db568a7f7c218b090cb5a8038e261f5eb003dba'
+    'dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f':
+        ref: 'v1.0.15'
+        commit: 'sha1-3f6870416d1ebf4eae418af990a83780bdd45f1f'
         owner_id: 68012105
         repo_id: 526394375
         uses:
-            - 'actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd'
+            - 'actions/add-to-project@f2c1f1fa649a891be84948ea89b5dfba1526ef05'
             - 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3'
     'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c':
         ref: 'v2.5.0'

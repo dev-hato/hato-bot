@@ -23,7 +23,7 @@ jobs:
           permission-organization-projects: write
           permission-pull-requests: read
           permission-issues: read
-      - uses: dev-hato/actions-add-to-projects@8db568a7f7c218b090cb5a8038e261f5eb003dba # v1.0.14
+      - uses: dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f # v1.0.15
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1
