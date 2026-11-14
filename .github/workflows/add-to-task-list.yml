@@ -7,18 +7,23 @@ on:
   issues:
     types:
       - opened
+permissions: {}
 jobs:
   add-to-task-list:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' || github.repository == github.event.pull_request.head.repo.full_name
     steps:
       - name: Generate a token
         id: generate_token
-        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
-          app-id: ${{ secrets.PROJECT_AUTOMATION_APP_ID }}
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
-      - uses: dev-hato/actions-add-to-projects@6b85916c6dcb4f2d40888c3ba373c783615538ee # v0.0.81
+          permission-organization-projects: write
+          permission-pull-requests: read
+          permission-issues: read
+      - uses: dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f # v1.0.15
         with:
           github-token: ${{steps.generate_token.outputs.token}}
           project-url: https://github.com/orgs/dev-hato/projects/1

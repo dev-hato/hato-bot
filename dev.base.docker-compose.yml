@@ -6,7 +6,8 @@ services:
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash:${TAG_NAME}
+        - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot
         - ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/commit-hash
       args:
-        - ENV=dev
+        ENV: dev
     image: ghcr.io/${REPOSITORY:-dev-hato/hato-bot}/hato-bot-dev:${TAG_NAME}

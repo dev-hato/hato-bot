@@ -1,7 +1,6 @@
 import datetime
 import math
 from dataclasses import dataclass
-from typing import Dict, Optional
 
 import requests
 
@@ -13,8 +12,8 @@ class Place:
     place: str
 
 
-def get_jma_amedas(lat: float, lon: float) -> Optional[Dict]:
-    nearest_place: Optional[Place] = None
+def get_jma_amedas(lat: float, lon: float) -> dict | None:
+    nearest_place: Place | None = None
     place_res = requests.get(
         "https://www.jma.go.jp/bosai/amedas/const/amedastable.json"
     )

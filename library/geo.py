@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
 amesh
 """
@@ -7,14 +5,13 @@ amesh
 import re
 import unicodedata
 from random import choice
-from typing import Dict, Optional
 
 import requests
 
 import slackbot_settings as conf
 
 
-def get_geo_data(place: str) -> Optional[Dict[str, str]]:
+def get_geo_data(place: str) -> dict[str, str] | None:
     """
     地名や住所から座標を取得する(ラッパー)
     :param place: 地名・住所・郵便番号
@@ -28,7 +25,7 @@ def get_geo_data(place: str) -> Optional[Dict[str, str]]:
     return get_gsi_geo_data(place)
 
 
-def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
+def get_yahoo_geo_data(place: str) -> dict[str, str] | None:
     """
     地名や住所から座標を取得する(Yahoo!地図版)
     :param place: 地名・住所・郵便番号
@@ -71,7 +68,7 @@ def get_yahoo_geo_data(place: str) -> Optional[Dict[str, str]]:
     return None
 
 
-def get_gsi_geo_data(place: str) -> Optional[Dict[str, str]]:
+def get_gsi_geo_data(place: str) -> dict[str, str] | None:
     """
     地名から座標を取得する(国土地理院版)
     場所名が完全一致で優先して返し、部分一致のうちランダム返すことでそれっぽい挙動にしている
