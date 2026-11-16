@@ -11,6 +11,7 @@ on:
     branches:
       - develop
       - master
+  merge_group:
 permissions:
   contents: read
 jobs:
@@ -29,9 +30,9 @@ jobs:
         run: gh extension install github/gh-actions-lock --pin v0.4.1
         env:
           GH_TOKEN: ${{ github.token }}
-      # forkからのPRではSecretsを使えないため、読み取り専用の検証のみを行う
+      # merge_groupやforkからのPRではSecretsを使わず、読み取り専用の検証のみを行う
       - name: Verify lockfile
-        if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name != github.repository
+        if: github.event_name == 'merge_group' || github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name != github.repository
         run: gh actions-lock --verify --no-narrow
         env:
           GH_TOKEN: ${{ github.token }}

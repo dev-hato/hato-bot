@@ -14,9 +14,10 @@ on:
     branches:
       - develop
       - master
+  merge_group:
+# 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 jobs:
   format-json-yml:
     timeout-minutes: 30
@@ -28,9 +29,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
@@ -39,7 +42,7 @@ jobs:
           permission-workflows: write
       - uses: dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc # v0.0.112
         with:
-          github-token: ${{steps.generate_token.outputs.token}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true

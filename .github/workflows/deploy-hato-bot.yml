@@ -17,15 +17,16 @@ on:
     branches:
       - master
       - develop
+  merge_group:
 permissions: {}
 jobs:
   update-uv-version:
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    # 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
     permissions:
-      contents: write
+      contents: read
       packages: read
-      pull-requests: write
     env:
       REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
@@ -43,9 +44,20 @@ jobs:
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: fix-uv-version
           pr-title-prefix: uvのバージョンを直してあげたよ！
   deploy_docker_image:
@@ -150,9 +162,9 @@ jobs:
   update-version-pyproject:
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    # 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     env:
       REPOSITORY: ${{github.repository}}
     needs: deploy_docker_image
@@ -170,9 +182,20 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/update_version_python_version/get_python_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: fix-version-pyproject
           pr-title-prefix: pyproject.tomlを直してあげたよ！
   pr-update-version:
@@ -180,9 +203,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy_docker_image
     if: always() && (needs.deploy_docker_image.result == 'success' || (github.event_name == 'pull_request' && github.event.action == 'closed'))
+    # 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     env:
       REPOSITORY: ${{github.repository}}
     steps:
@@ -207,9 +230,20 @@ jobs:
         run: bash "${GITHUB_WORKSPACE}/scripts/deploy_hato_bot/pr_update_version/get_npm_version.sh"
         env:
           HEAD_REF: ${{github.head_ref || github.event.release.tag_name}}
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: fix-version
           pr-title-prefix: nodeをアップデートしてあげたよ！
   # package.jsonに差分があれば、package.jsonからpackage-lock.jsonを作り出す
@@ -239,9 +273,20 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: npm
           pr-title-prefix: package.jsonやpackage-lock.jsonが更新されたので直してあげたよ！
   update-dockle:
@@ -254,9 +299,20 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-update-dockle@96ef4defca3dd8e2ff22c9734bfb26e6094b22d2 # v0.0.152
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
   dockle:
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -283,9 +339,9 @@ jobs:
       - update-dockle
       - dockle
     steps:
-      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
+      - if: needs.update-dockle.result == 'success' && (github.event_name == 'push' || github.event_name == 'merge_group' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))
         run: exit 0
-      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
+      - if: ${{ !(needs.update-dockle.result == 'success' && (github.event_name == 'push' || github.event_name == 'merge_group' || (github.event_name == 'pull_request' && github.repository != github.event.pull_request.head.repo.full_name) || (needs.update-uv-version.result == 'success' && needs.update-version-pyproject.result == 'success' && (github.event.action == 'closed' || (needs.pr-check-npm.result == 'success' && needs.dockle.result == 'success'))))) }}
         run: exit 1
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

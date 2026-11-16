@@ -14,10 +14,11 @@ on:
   push:
     branches:
       - master
+  merge_group:
   workflow_dispatch:
+# 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 jobs:
   # PRが来たらformatをかけてみて、差分があればPRを作って、エラーで落ちるjob
   pr-format:
@@ -42,9 +43,10 @@ jobs:
       - name: Install dependencies
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/uv_install.sh"
+      # 修正PRの操作はpush・workflow_dispatchとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
       - name: Generate a token
         id: generate_token
-        if: success() || failure()
+        if: (success() || failure()) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository))
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
@@ -59,7 +61,7 @@ jobs:
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         if: success() || failure()
         with:
-          github-token: ${{steps.generate_token.outputs.token}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: fix-format
           pr-title-prefix: formatが間違ってたので直してあげたよ！
 concurrency:
