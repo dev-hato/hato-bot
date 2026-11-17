@@ -13,7 +13,7 @@ dependencies = [
     "gitpython==3.2.1",
     "pandas==2.3.3",
     "matplotlib==3.11.2",
-    "openai==3.46.0",
+    "openai==3.49.0",
     "discord.py==2.7.1",
     "misskey.py==4.1.0",
     "websockets==17.4",
@@ -37,7 +37,7 @@ dev = [
   "flake8==7.5.0",
   "isort==9.0.2",
   "pre-commit==4.7.0",
-  "importlib-metadata==10.1.0",
+  "importlib-metadata==10.2.0",
   "tomlkit==0.15.2",
 ]
 
