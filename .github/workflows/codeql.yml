@@ -42,6 +42,8 @@ jobs:
         uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           category: "/language:${{ matrix.language }}"
+          # merge_groupの一時ブランチはマージ後すぐに削除され、アップロード時に "ref not found" で失敗するため、結果をアップロードしない
+          upload: ${{ github.event_name == 'merge_group' && 'never' || 'always' }}
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
