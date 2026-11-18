@@ -13,9 +13,10 @@ on:
   push:
     branches:
       - master
+  merge_group:
+# 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENは読み取り権限のみとする
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 jobs:
   update-readme:
     timeout-minutes: 30
@@ -29,9 +30,20 @@ jobs:
           persist-credentials: false
       - run: perl -pe "s/{commands}/$(sed -e '2,$s/^/    /' commands.txt)/g" < README.template.md > README.md
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
+      # 修正PRの操作はpushとforkでないリポジトリからのpull_requestでのみ行う。それ以外のイベントでは差分の検証のみを行うため、書き込み用トークンは発行しない
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PROJECT_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - uses: dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c # v2.5.0
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ steps.generate_token.outputs.token || github.token }}
           branch-name-prefix: update-readme
           pr-title-prefix: READMEを更新してあげたよ！
 concurrency:

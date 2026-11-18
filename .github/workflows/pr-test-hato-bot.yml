@@ -5,10 +5,7 @@ on:
     branches:
       - develop
       - master
-  push:
-    branches:
-      - master
-      - develop
+  merge_group:
 permissions: {}
 jobs:
   # unittestを行う

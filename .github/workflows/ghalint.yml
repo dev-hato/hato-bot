@@ -2,7 +2,6 @@
 name: ghalint
 on:
   pull_request:
-  push:
   merge_group:
   workflow_dispatch:
 permissions:
