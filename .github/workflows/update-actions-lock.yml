@@ -27,8 +27,10 @@ jobs:
           persist-credentials: false
       - name: Install actions-lock
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: gh extension install github/gh-actions-lock --pin v0.4.1
+        run: gh extension install github/gh-actions-lock --pin "${GH_ACTIONS_LOCK_VERSION}"
         env:
+          # renovate: datasource=github-releases depName=github/gh-actions-lock
+          GH_ACTIONS_LOCK_VERSION: v0.4.1
           GH_TOKEN: ${{ github.token }}
       # merge_groupやforkからのPRではSecretsを使わず、読み取り専用の検証のみを行う
       - name: Verify lockfile
