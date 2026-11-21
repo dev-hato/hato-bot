@@ -1,16 +1,5 @@
 ---
 services:
-  postgres:
-    develop:
-      watch:
-        - action: rebuild
-          path: ./docker-compose.yml
-        - action: rebuild
-          path: ./dev.base.docker-compose.yml
-        - action: rebuild
-          path: ./dev.docker-compose.yml
-        - action: rebuild
-          path: ./postgres/Dockerfile
   hato-bot:
     develop:
       watch:
@@ -25,7 +14,7 @@ services:
         - action: rebuild
           path: ./slackbot_settings.py
         - action: rebuild
-          path: ./Pipfile
+          path: ./pyproject.toml
         - action: rebuild
           path: ./package.json
         - action: rebuild
