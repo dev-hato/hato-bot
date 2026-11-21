@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    ".markdown-lint.yml",
+    ".python-lint",
+    ".textlintrc",
+    ".gitleaks.toml",
+    ".mypy.ini",
+    ".pre-commit-config.yaml",
+    ".flake8",
+    ".python-black",
+    ".isort.cfg",
+    ".codespellrc",
+    "eslint.config.mjs",
+    "renovate.json",
+    "aqua.yaml",
+    "aqua-checksums.json",
+    ".github/dependabot.yml"
+  ],
+  "excludeWorkflows": ["*hato-bot.yml", "verify-lockfile.yml"]
+}
