@@ -27,7 +27,8 @@ workflows:
         - 'dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc'
     '.github/workflows/ghalint.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461'
+        - 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
+        - 'flatt-security/setup-takumi-guard-golang@02545d3425218766aac4dca114dcc3f6eaa0df4a'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'dev-hato/github-actions-cache-cleaner@88d68a261462dd5f6f6632adec3fa5cf5466c865'
@@ -76,11 +77,6 @@ workflows:
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
         - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
-    '.github/workflows/update-aqua-checksum.yml':
-        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
-        - 'aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461'
-        - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
     '.github/workflows/update-readme-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
@@ -106,16 +102,16 @@ dependencies:
         commit: 'sha1-3a2844b7e9c422d3c10d287c895573f7108da1b3'
         owner_id: 44036562
         repo_id: 205262760
+    'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e':
+        ref: 'v7.0.0'
+        commit: 'sha1-b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
+        owner_id: 44036562
+        repo_id: 192624594
     'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1':
         ref: 'v7.1.0'
         commit: 'sha1-949feb2413d6458794dcd2491c4babbbce0c15c1'
         owner_id: 44036562
         repo_id: 189476904
-    'aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461':
-        ref: 'v4.1.1'
-        commit: 'sha1-611554c6f0137ba41c8dd15aca8bee82504ea461'
-        owner_id: 95116411
-        repo_id: 400140776
     'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2':
         ref: 'v10.3.3'
         commit: 'sha1-68559e99cc807c1eb7e9238fd43a15bba460eec2'
@@ -195,6 +191,11 @@ dependencies:
         commit: 'sha1-afde61cfda2ecffe7bea35837b6f20b956c88689'
         owner_id: 63101922
         repo_id: 232871111
+    'flatt-security/setup-takumi-guard-golang@02545d3425218766aac4dca114dcc3f6eaa0df4a':
+        ref: 'v1.3.0'
+        commit: 'sha1-02545d3425218766aac4dca114dcc3f6eaa0df4a'
+        owner_id: 88821409
+        repo_id: 1244014855
     'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd':
         ref: 'v1.4.0'
         commit: 'sha1-14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
