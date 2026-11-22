@@ -17,10 +17,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461 # v4.1.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          aqua_version: v2.66.1
+          go-version-file: go.mod
+      # Goモジュールを取得する前に、Takumi Guard経由で取得するようGOPROXYを設定する
+      - uses: flatt-security/setup-takumi-guard-golang@02545d3425218766aac4dca114dcc3f6eaa0df4a # v1.3.0
       - name: Lint workflows
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: ghalint --log-color never run
+        run: go tool ghalint --log-color never run
