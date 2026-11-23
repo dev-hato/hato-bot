@@ -673,7 +673,7 @@ requires-dist = [
     { name = "pandas", specifier = "==2.3.3" },
     { name = "pillow", specifier = ">=7.1.2" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = "==3.3.9" },
-    { name = "puremagic", specifier = "==2.2.1" },
+    { name = "puremagic", specifier = "==2.3.0" },
     { name = "python-dotenv", specifier = "==1.2.4" },
     { name = "requests", specifier = "==2.34.2" },
     { name = "slack-bolt", specifier = "==1.30.0" },
@@ -1372,11 +1372,11 @@ wheels = [
 
 [[package]]
 name = "puremagic"
-version = "2.2.1"
+version = "2.3.0"
 source = { registry = "https://pypi.flatt.tech/simple/" }
-sdist = { url = "https://pypi.flatt.tech/files/packages/74/06/7ff22db9002cfd33740a765a28291ecbb4a688855c940d95ad15c86925f5/puremagic-2.2.1.tar.gz", hash = "sha256:f7ab764fcef4ca76c806e9242ba22bb79ecaa30427874bbb93a99172eca64852", size = 1212219, upload-time = "2026-11-13T18:59:56.225Z" }
+sdist = { url = "https://pypi.flatt.tech/files/packages/a7/8d/4d60110e23f445e2dc106340f9bd5f422bb6c540f4fb21086d3ee44b52ab/puremagic-2.3.0.tar.gz", hash = "sha256:b54e4a69dd37c50bacc879380f132382ab4e9a935529628c8975abcc73e10640", size = 1214491, upload-time = "2026-11-16T04:55:04.12Z" }
 wheels = [
-    { url = "https://pypi.flatt.tech/files/packages/a2/f8/899cdaeeaa789f9af482cb25e0543e1d110c4d2dc7e12ff0e4ee65537c61/puremagic-2.2.1-py3-none-any.whl", hash = "sha256:cd869c1fe1123ebc58e17ee4c12ced366265099b4f53eb6896bbb3b92531f07e", size = 72361, upload-time = "2026-11-13T18:59:54.54Z" },
+    { url = "https://pypi.flatt.tech/files/packages/8c/40/72fcaa2f4b850da0207c111be7d2748a57a1c8e8ab149fdc1618323a0b87/puremagic-2.3.0-py3-none-any.whl", hash = "sha256:15ce035fe4c3f23e884a105d07448a5a81dd2e297985bdb636928ddf89bb3fe7", size = 73366, upload-time = "2026-11-16T04:55:02.784Z" },
 ]
 
 [[package]]
