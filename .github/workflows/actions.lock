@@ -27,7 +27,7 @@ workflows:
         - 'dev-hato/actions-format-json-yml@6b0c6a884f1d2653ae3502c32317e8a412845acc'
     '.github/workflows/ghalint.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
+        - 'actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5'
         - 'flatt-security/setup-takumi-guard-golang@02545d3425218766aac4dca114dcc3f6eaa0df4a'
     '.github/workflows/github-actions-cache-cleaner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
@@ -102,9 +102,9 @@ dependencies:
         commit: 'sha1-3a2844b7e9c422d3c10d287c895573f7108da1b3'
         owner_id: 44036562
         repo_id: 205262760
-    'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e':
-        ref: 'v7.0.0'
-        commit: 'sha1-b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
+    'actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5':
+        ref: 'v7.1.0'
+        commit: 'sha1-d8cbb8045d7f43706b9177cceb36c1f91a6644d5'
         owner_id: 44036562
         repo_id: 192624594
     'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1':
