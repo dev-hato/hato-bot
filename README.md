@@ -188,6 +188,10 @@ uv tool run pre-commit install
 
 - バージョンアップによる変更点については[CHANGELOG](./CHANGELOG.md)を参照してください。
 
+## CIの同期
+
+sudden-deathへ共通CIを配布しています。設定を変更するときは、[同期契約と担当範囲](./doc/CI_SYNC.md)も確認してください。
+
 ## バグ報告や機能の要望について
 
 - バグ報告や機能追加の要望がある場合は[Issues](https://github.com/dev-hato/hato-bot/issues)の

@@ -22,6 +22,8 @@ jobs:
       - uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
       - run: npm install -g "$(yq -r '.packageManager' package.json)"
       - run: npm ci
+      - name: Validate CI sync contract
+        run: node scripts/pr_copy_ci_hato_bot/pr_copy_ci/validate_ci_sync.mjs
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
