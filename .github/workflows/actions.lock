@@ -42,7 +42,7 @@ workflows:
     '.github/workflows/pr-format.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc'
-        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
+        - 'astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d'
         - 'dev-hato/actions-diff-pr-management@474e401b8a7df75f1c804a60aa987140c1e0548c'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
     '.github/workflows/pr-merge-develop-hato-bot.yml':
@@ -57,12 +57,12 @@ workflows:
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
     '.github/workflows/pr-test-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
+        - 'astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
     '.github/workflows/pr-test.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
-        - 'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2'
+        - 'astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d'
         - 'dotenv-linter/action-dotenv-linter@afde61cfda2ecffe7bea35837b6f20b956c88689'
         - 'flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd'
         - 'flatt-security/setup-takumi-guard-pypi@bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
@@ -112,9 +112,9 @@ dependencies:
         commit: 'sha1-949feb2413d6458794dcd2491c4babbbce0c15c1'
         owner_id: 44036562
         repo_id: 189476904
-    'astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2':
-        ref: 'v10.3.3'
-        commit: 'sha1-68559e99cc807c1eb7e9238fd43a15bba460eec2'
+    'astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d':
+        ref: 'v10.4.0'
+        commit: 'sha1-1db35dd8eee11c5894872e0b383ae6c406cf738d'
         owner_id: 115962839
         repo_id: 846733598
     'dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f':
