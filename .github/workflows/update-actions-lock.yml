@@ -30,7 +30,7 @@ jobs:
         run: gh extension install github/gh-actions-lock --pin "${GH_ACTIONS_LOCK_VERSION}"
         env:
           # renovate: datasource=github-releases depName=github/gh-actions-lock
-          GH_ACTIONS_LOCK_VERSION: v0.5.0
+          GH_ACTIONS_LOCK_VERSION: v0.5.1
           GH_TOKEN: ${{ github.token }}
       # merge_groupやforkからのPRではSecretsを使わず、読み取り専用の検証のみを行う
       - name: Verify lockfile
