@@ -668,7 +668,7 @@ requires-dist = [
     { name = "matplotlib", specifier = "==3.11.2" },
     { name = "misskey-py", specifier = "==4.1.0" },
     { name = "numpy", specifier = "==2.2.6" },
-    { name = "openai", specifier = "==3.56.0" },
+    { name = "openai", specifier = "==3.57.0" },
     { name = "opencv-python", specifier = "==5.1.0.95" },
     { name = "pandas", specifier = "==2.3.3" },
     { name = "pillow", specifier = ">=7.1.2" },
@@ -1135,7 +1135,7 @@ sdist = { url = "https://pypi.flatt.tech/files/packages/76/21/7d2a95e4bba9dc13d0
 
 [[package]]
 name = "openai"
-version = "3.56.0"
+version = "3.57.0"
 source = { registry = "https://pypi.flatt.tech/simple/" }
 dependencies = [
     { name = "anyio" },
@@ -1145,9 +1145,9 @@ dependencies = [
     { name = "sniffio" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://pypi.flatt.tech/files/packages/71/dd/e734e29239f14c81e0ee33259bae420822b4f673cd7068b7231a40ab8821/openai-3.56.0.tar.gz", hash = "sha256:c99192c0a08f572042e50a74c42e325f70a44308fbb0c0c8f3aeb1ba0d52a567", size = 2424433, upload-time = "2026-11-19T20:57:15.425Z" }
+sdist = { url = "https://pypi.flatt.tech/files/packages/90/b2/97780581dab39384d1de4bc15f1f6cbaff26ce965a46c23a10bd948b71a8/openai-3.57.0.tar.gz", hash = "sha256:5a0a89d6a542efc85e2a8cec701ca9265b795d578c777828e10fafdf80e333b6", size = 2425150, upload-time = "2026-11-20T01:28:43.575Z" }
 wheels = [
-    { url = "https://pypi.flatt.tech/files/packages/e9/fb/0fcc715f2c9a81a2665698ccfbbbe017fcbca850efa7ee8f43af0a301c24/openai-3.56.0-py3-none-any.whl", hash = "sha256:24043ea80048ed1cd6c263c4fc4192406d05c418e87e89310eecbf55a9021c32", size = 2451118, upload-time = "2026-11-19T20:57:13.245Z" },
+    { url = "https://pypi.flatt.tech/files/packages/e0/40/0475208a470f90a1d3e94b41382678b44f311c2ea2a317228531e2193567/openai-3.57.0-py3-none-any.whl", hash = "sha256:f97bc74024c06ced8428b56c4a3594066709d3082779bf9d0b4b6092fbf587a8", size = 2451809, upload-time = "2026-11-20T01:28:41.48Z" },
 ]
 
 [[package]]
