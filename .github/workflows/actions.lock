@@ -8,7 +8,7 @@ workflows:
         - 'dev-hato/actions-add-to-projects@3f6870416d1ebf4eae418af990a83780bdd45f1f'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
-        - 'github/codeql-action@33d7b85da1a04171e211befe2c739303b9a4c066'
+        - 'github/codeql-action@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea'
     '.github/workflows/deploy-hato-bot.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
         - 'actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc'
@@ -206,9 +206,9 @@ dependencies:
         commit: 'sha1-bc8eb92eda08d7941ae58d8c27e1fe58aff7d7d9'
         owner_id: 88821409
         repo_id: 1185057622
-    'github/codeql-action@33d7b85da1a04171e211befe2c739303b9a4c066':
-        ref: 'v4.39.3'
-        commit: 'sha1-33d7b85da1a04171e211befe2c739303b9a4c066'
+    'github/codeql-action@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea':
+        ref: 'v4.39.4'
+        commit: 'sha1-1bd86f2fdb4b86187fa4059f16f31a3202acc9ea'
         owner_id: 9919
         repo_id: 259445878
     'super-linter/super-linter@2da136927bd4a73596db63044b504547c62cb854':
